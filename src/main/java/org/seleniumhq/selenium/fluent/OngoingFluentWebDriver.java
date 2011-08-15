@@ -41,7 +41,9 @@ public class OngoingFluentWebDriver extends FluentBase {
     // These though, don't return void as they do in WebElement
 
     public OngoingFluentWebDriver click() {
-        get(0).click();
+        for (WebElement webElement : this) {
+            webElement.click();
+        }
         return getSubsequentFluentWebDriver();
     }
 
@@ -50,7 +52,9 @@ public class OngoingFluentWebDriver extends FluentBase {
      */
 
     public OngoingFluentWebDriver clearField() {
-        get(0).clear();
+        for (WebElement webElement : this) {
+            webElement.clear();
+        }
         return getSubsequentFluentWebDriver();
     }
 
@@ -81,15 +85,27 @@ public class OngoingFluentWebDriver extends FluentBase {
     }
 
     public boolean isSelected() {
-        return get(0).isSelected();
+        boolean areSelected = true;
+        for (WebElement webElement : this) {
+            areSelected = areSelected & webElement.isSelected();
+        }
+        return areSelected;
     }
 
     public boolean isEnabled() {
-        return get(0).isEnabled();
+        boolean areEnabled = true;
+        for (WebElement webElement : this) {
+            areEnabled = areEnabled & webElement.isEnabled();
+        }
+        return areEnabled;
     }
 
     public boolean isDisplayed() {
-        return get(0).isDisplayed();
+        boolean areDisplayed = true;
+        for (WebElement webElement : this) {
+            areDisplayed = areDisplayed & webElement.isDisplayed();
+        }
+        return areDisplayed;
     }
 
     public Point getLocation() {

@@ -16,6 +16,7 @@ import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -146,17 +147,41 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void multiple_hits_from_the_outset() {
+    public void multiple_hits_from_the_outset_and_operations_on_the_resulting_list() {
 
-        FluentBase fb = fwd.divs().clearField();
+        OngoingFluentWebDriver ofwd = fwd.divs();
 
-        assertThat(fb, notNullValue());
+        assertThat(ofwd, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
-                "we2.getTagName() -> 'div'\n" +
-                "we1.clear()\n"
+                "we2.getTagName() -> 'div'\n"
         ));
+
+        sb.setLength(0);
+        OngoingFluentWebDriver ofwd2 = ofwd.clearField();
+        assertThat(ofwd2, sameInstance(ofwd));
+        assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
+
+        sb.setLength(0);
+        OngoingFluentWebDriver ofwd3 = ofwd.click();
+        assertThat(ofwd3, sameInstance(ofwd));
+        assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
+
+        sb.setLength(0);
+        boolean areSelected = ofwd.isSelected();
+        assertThat(areSelected, equalTo(false));
+        assertThat(sb.toString(), equalTo("we1.isSelected() -> true\nwe2.isSelected() -> false\n"));
+
+        sb.setLength(0);
+        boolean areEnabled = ofwd.isEnabled();
+        assertThat(areEnabled, equalTo(false));
+        assertThat(sb.toString(), equalTo("we1.isEnabled() -> true\nwe2.isEnabled() -> false\n"));
+
+        sb.setLength(0);
+        boolean areDisplayed = ofwd.isDisplayed();
+        assertThat(areDisplayed, equalTo(false));
+        assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\nwe2.isDisplayed() -> false\n"));
     }
 
     @Test
@@ -1205,8 +1230,10 @@ public class FluentWebDriverTest {
     private static class WebDriverJournal implements WebDriver {
 
         private Integer CTR = 1;
-
         private final StringBuilder sb;
+        public boolean lastSelected;
+        public boolean lastEnabled;
+        public boolean lastDisplayed;
 
         public WebDriverJournal(StringBuilder sb) {
             this.sb = sb;
@@ -1229,8 +1256,8 @@ public class FluentWebDriverTest {
         }
 
         public List<WebElement> findElements(By by) {
-            WebElement we = new WebElementJournal(sb, CTR++);
-            WebElement we2 = new WebElementJournal(sb, CTR++);
+            WebElement we = new WebElementJournal(sb, this);
+            WebElement we2 = new WebElementJournal(sb, this);
             List<WebElement> elems = asList(we, we2);
             sb.append(this + ".findElements(" + by + ") -> " + elems + "\n");
             return elems;
@@ -1241,7 +1268,7 @@ public class FluentWebDriverTest {
             if (by.toString().contains("mismatching_tag_name")) {
                 rv = bogusElem;
             } else {
-                rv = new WebElementJournal(sb, CTR++);
+                rv = new WebElementJournal(sb, this);
             }
             sb.append(this + ".findElement(" + by + ") -> " + rv + "\n");
             return rv;
@@ -1287,13 +1314,13 @@ public class FluentWebDriverTest {
 
     private static class WebElementJournal implements WebElement {
         private final StringBuilder sb;
-        private Integer CTR;
+        private final WebDriverJournal webDriverJournal;
         private final int ct;
 
-        public WebElementJournal(StringBuilder sb, Integer ctr) {
+        public WebElementJournal(StringBuilder sb, WebDriverJournal webDriverJournal) {
             this.sb = sb;
-            CTR = ctr;
-            ct = CTR++;
+            this.webDriverJournal = webDriverJournal;
+            ct = webDriverJournal.CTR++;
         }
 
         public void click() {
@@ -1345,13 +1372,15 @@ public class FluentWebDriverTest {
         }
 
         public boolean isSelected() {
-            sb.append(this + ".isSelected() -> true\n");
-            return true;
+            webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
+            sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
+            return webDriverJournal.lastSelected;
         }
 
         public boolean isEnabled() {
-            sb.append(this + ".isEnabled() -> true\n");
-            return true;
+            webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
+            sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
+            return webDriverJournal.lastEnabled;
         }
 
         public String getText() {
@@ -1360,22 +1389,23 @@ public class FluentWebDriverTest {
         }
 
         public List<WebElement> findElements(By by) {
-            WebElement we = new WebElementJournal(sb, CTR++);
-            WebElement we2 = new WebElementJournal(sb, CTR++);
+            WebElement we = new WebElementJournal(sb, webDriverJournal);
+            WebElement we2 = new WebElementJournal(sb, webDriverJournal);
             List<WebElement> elems = asList(we, we2);
             sb.append(this + ".findElements(" + by + ") -> " + elems + "\n");
             return elems;
         }
 
         public WebElement findElement(By by) {
-            WebElementJournal rv = new WebElementJournal(sb, CTR++);
+            WebElementJournal rv = new WebElementJournal(sb, webDriverJournal);
             sb.append(this + ".findElement(" + by + ") -> " + rv + "\n");
             return rv;
         }
 
         public boolean isDisplayed() {
-            sb.append(this + ".isDisplayed() -> true\n");
-            return true;
+            webDriverJournal.lastDisplayed = !webDriverJournal.lastDisplayed;
+            sb.append(this + ".isDisplayed() -> "+webDriverJournal.lastDisplayed+"\n");
+            return webDriverJournal.lastDisplayed;
         }
 
         public Point getLocation() {
