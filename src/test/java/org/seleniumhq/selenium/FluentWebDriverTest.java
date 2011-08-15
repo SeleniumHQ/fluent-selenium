@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentBase;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
-import org.seleniumhq.selenium.fluent.SingleOngoingFluentWebDriver;
+import org.seleniumhq.selenium.fluent.OngoingSingleElement;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -1408,7 +1408,7 @@ public class FluentWebDriverTest {
                 }
                 String className = elem.getClassName();
                 if ((className.equals(FluentBase.class.getName())
-                        || className.equals(SingleOngoingFluentWebDriver.class.getName()))
+                        || className.equals(OngoingSingleElement.class.getName()))
                         && !methodName.equals("multiple")
                         && !methodName.equals("single")) {
                     if (methodName.equals("link")) {

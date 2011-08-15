@@ -6,8 +6,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class MultipleOngoingFluentWebDriver extends OngoingFluentWebDriver {
-    public MultipleOngoingFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
+public class OngoingMultipleElements extends OngoingFluentWebDriver {
+    public OngoingMultipleElements(WebDriver delegate, List<WebElement> currentElements) {
         super(delegate, currentElements);
     }
 

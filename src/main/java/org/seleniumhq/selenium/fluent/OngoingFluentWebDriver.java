@@ -15,13 +15,13 @@ public abstract class OngoingFluentWebDriver extends FluentBase {
     }
 
     @Override
-    protected SingleOngoingFluentWebDriver getSingleOngoingFluentWebDriver() {
-        return new SingleOngoingFluentWebDriver(super.delegate, this);
+    protected OngoingSingleElement getSingleOngoingFluentWebDriver() {
+        return new OngoingSingleElement(super.delegate, this);
     }
 
     @Override
-    protected MultipleOngoingFluentWebDriver getMultipleOngoingFluentWebDriver() {
-        return new MultipleOngoingFluentWebDriver(super.delegate, this);
+    protected OngoingMultipleElements getMultipleOngoingFluentWebDriver() {
+        return new OngoingMultipleElements(super.delegate, this);
     }
 
     protected WebElement findIt(By by) {
