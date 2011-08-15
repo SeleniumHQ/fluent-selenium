@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentBase;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.SubsequentFluentWebDriver;
+import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -86,7 +86,7 @@ public class FluentWebDriverTest {
     @Test
     public void xPaths_and_non_ongoing() {
 
-        SubsequentFluentWebDriver sfwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").submit();
+        OngoingFluentWebDriver sfwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").submit();
 
         assertThat(sfwd, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -1322,7 +1322,7 @@ public class FluentWebDriverTest {
                 }
                 String className = elem.getClassName();
                 if ((className.equals(FluentBase.class.getName())
-                        || className.equals(SubsequentFluentWebDriver.class.getName()))
+                        || className.equals(OngoingFluentWebDriver.class.getName()))
                         && !methodName.equals("multiple")
                         && !methodName.equals("single")) {
                     if (methodName.equals("link")) {

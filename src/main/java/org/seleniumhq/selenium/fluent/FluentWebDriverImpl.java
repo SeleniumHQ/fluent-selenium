@@ -12,8 +12,8 @@ public final class FluentWebDriverImpl extends FluentBase implements FluentWebDr
     }
 
     @Override
-    protected SubsequentFluentWebDriver getSubsequentFluentWebDriver() {
-        return new SubsequentFluentWebDriver(super.delegate, this);
+    protected OngoingFluentWebDriver getSubsequentFluentWebDriver() {
+        return new OngoingFluentWebDriver(super.delegate, this);
     }
 
     protected final WebElement findIt(By by) {

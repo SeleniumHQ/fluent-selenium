@@ -7,15 +7,15 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class SubsequentFluentWebDriver extends FluentBase {
+public class OngoingFluentWebDriver extends FluentBase {
 
-    public SubsequentFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
+    public OngoingFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
         super(delegate);
         addAll(currentElements);
     }
 
     @Override
-    protected SubsequentFluentWebDriver getSubsequentFluentWebDriver() {
+    protected OngoingFluentWebDriver getSubsequentFluentWebDriver() {
         return this;
     }
 
@@ -40,7 +40,7 @@ public class SubsequentFluentWebDriver extends FluentBase {
 
     // These though, don't return void as they do in WebElement
 
-    public SubsequentFluentWebDriver click() {
+    public OngoingFluentWebDriver click() {
         get(0).click();
         return getSubsequentFluentWebDriver();
     }
@@ -49,7 +49,7 @@ public class SubsequentFluentWebDriver extends FluentBase {
      *  Use this instead of clear() to clear an WebElement
      */
 
-    public SubsequentFluentWebDriver clearField() {
+    public OngoingFluentWebDriver clearField() {
         get(0).clear();
         return getSubsequentFluentWebDriver();
     }
@@ -64,14 +64,14 @@ public class SubsequentFluentWebDriver extends FluentBase {
     }
 
 
-    public SubsequentFluentWebDriver submit() {
+    public OngoingFluentWebDriver submit() {
         get(0).submit();
         return getSubsequentFluentWebDriver();
     }
 
     // These are as they would be in the WebElement API
 
-    public SubsequentFluentWebDriver sendKeys(CharSequence... keysToSend) {
+    public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
         get(0).sendKeys(keysToSend);
         return getSubsequentFluentWebDriver();
     }
