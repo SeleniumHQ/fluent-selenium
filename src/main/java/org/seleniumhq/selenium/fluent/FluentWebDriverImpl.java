@@ -12,8 +12,13 @@ public final class FluentWebDriverImpl extends FluentBase implements FluentWebDr
     }
 
     @Override
-    protected OngoingFluentWebDriver getSubsequentFluentWebDriver() {
-        return new OngoingFluentWebDriver(super.delegate, this);
+    protected SingleOngoingFluentWebDriver getSingleOngoingFluentWebDriver() {
+        return new SingleOngoingFluentWebDriver(super.delegate, this);
+    }
+
+    @Override
+    protected MultipleOngoingFluentWebDriver getMultipleOngoingFluentWebDriver() {
+        return new MultipleOngoingFluentWebDriver(super.delegate, this);
     }
 
     protected final WebElement findIt(By by) {
@@ -30,5 +35,4 @@ public final class FluentWebDriverImpl extends FluentBase implements FluentWebDr
         addAll(results);
         return results;
     }
-
 }

@@ -22,11 +22,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "span");
     }
 
-    public OngoingFluentWebDriver spans() {
+    public MultipleOngoingFluentWebDriver spans() {
         return multiple(By.tagName("span"), "span");
     }
 
-    public OngoingFluentWebDriver spans(By by) {
+    public MultipleOngoingFluentWebDriver spans(By by) {
         return multiple(by, "span");
     }
 
@@ -38,11 +38,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "div");
     }
 
-    public OngoingFluentWebDriver divs() {
+    public MultipleOngoingFluentWebDriver divs() {
         return multiple(By.tagName("div"), "div");
     }
 
-    public OngoingFluentWebDriver divs(By by) {
+    public MultipleOngoingFluentWebDriver divs(By by) {
         return multiple(by, "div");
     }
 
@@ -54,11 +54,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "a");
     }
 
-    public OngoingFluentWebDriver links() {
+    public MultipleOngoingFluentWebDriver links() {
         return multiple(By.tagName("a"), "a");
     }
 
-    public OngoingFluentWebDriver links(By by) {
+    public MultipleOngoingFluentWebDriver links(By by) {
         return multiple(by, "a");
     }
 
@@ -71,11 +71,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
 
     }
 
-    public OngoingFluentWebDriver inputs() {
+    public MultipleOngoingFluentWebDriver inputs() {
         return multiple(By.tagName("input"), "input");
     }
 
-    public OngoingFluentWebDriver inputs(By by) {
+    public MultipleOngoingFluentWebDriver inputs(By by) {
         return multiple(by, "input");
     }
 
@@ -87,11 +87,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "select");
     }
 
-    public OngoingFluentWebDriver selects() {
+    public MultipleOngoingFluentWebDriver selects() {
         return multiple(By.tagName("select"), "select");
     }
 
-    public OngoingFluentWebDriver selects(By by) {
+    public MultipleOngoingFluentWebDriver selects(By by) {
         return multiple(by, "select");
     }
 
@@ -104,11 +104,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
 
     }
 
-    public OngoingFluentWebDriver h1s() {
+    public MultipleOngoingFluentWebDriver h1s() {
         return multiple(By.tagName("h1"), "h1");
     }
 
-    public OngoingFluentWebDriver h1s(By by) {
+    public MultipleOngoingFluentWebDriver h1s(By by) {
         return multiple(by, "h1");
     }
 
@@ -120,11 +120,11 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "h2");
     }
 
-    public OngoingFluentWebDriver h2s() {
+    public MultipleOngoingFluentWebDriver h2s() {
         return multiple(By.tagName("h2"), "h2");
     }
 
-    public OngoingFluentWebDriver h2s(By by) {
+    public MultipleOngoingFluentWebDriver h2s(By by) {
         return multiple(by, "h2");
     }
 
@@ -132,7 +132,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("h3"), "h3");
     }
 
-    public OngoingFluentWebDriver h3s() {
+    public MultipleOngoingFluentWebDriver h3s() {
         return multiple(By.tagName("h3"), "h3");
     }
 
@@ -140,7 +140,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "h3");
     }
 
-    public OngoingFluentWebDriver h3s(By by) {
+    public MultipleOngoingFluentWebDriver h3s(By by) {
         return multiple(by, "h3");
     }
 
@@ -148,7 +148,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("h4"), "h4");
     }
 
-    public OngoingFluentWebDriver h4s() {
+    public MultipleOngoingFluentWebDriver h4s() {
         return multiple(By.tagName("h4"), "h4");
     }
 
@@ -156,7 +156,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "h4");
     }
 
-    public OngoingFluentWebDriver h4s(By by) {
+    public MultipleOngoingFluentWebDriver h4s(By by) {
         return multiple(by, "h4");
     }
 
@@ -164,7 +164,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("p"), "p");
     }
 
-    public OngoingFluentWebDriver ps() {
+    public MultipleOngoingFluentWebDriver ps() {
         return multiple(By.tagName("p"), "p");
     }
 
@@ -172,7 +172,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "p");
     }
 
-    public OngoingFluentWebDriver ps(By by) {
+    public MultipleOngoingFluentWebDriver ps(By by) {
         return multiple(by, "p");
     }
 
@@ -180,7 +180,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("img"), "img");
     }
 
-    public OngoingFluentWebDriver imgs() {
+    public MultipleOngoingFluentWebDriver imgs() {
         return multiple(By.tagName("img"), "img");
     }
 
@@ -188,7 +188,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "img");
     }
 
-    public OngoingFluentWebDriver imgs(By by) {
+    public MultipleOngoingFluentWebDriver imgs(By by) {
         return multiple(by, "img");
     }
 
@@ -196,7 +196,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("table"), "table");
     }
 
-    public OngoingFluentWebDriver tables() {
+    public MultipleOngoingFluentWebDriver tables() {
         return multiple(By.tagName("table"), "table");
     }
 
@@ -204,7 +204,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "table");
     }
 
-    public OngoingFluentWebDriver tables(By by) {
+    public MultipleOngoingFluentWebDriver tables(By by) {
         return multiple(by, "table");
     }
 
@@ -212,7 +212,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("tr"), "tr");
     }
 
-    public OngoingFluentWebDriver trs() {
+    public MultipleOngoingFluentWebDriver trs() {
         return multiple(By.tagName("tr"), "tr");
     }
 
@@ -220,7 +220,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "tr");
     }
 
-    public OngoingFluentWebDriver trs(By by) {
+    public MultipleOngoingFluentWebDriver trs(By by) {
         return multiple(by, "tr");
     }
 
@@ -228,7 +228,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("td"), "td");
     }
 
-    public OngoingFluentWebDriver tds() {
+    public MultipleOngoingFluentWebDriver tds() {
         return multiple(By.tagName("td"), "td");
     }
 
@@ -236,7 +236,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "td");
     }
 
-    public OngoingFluentWebDriver tds(By by) {
+    public MultipleOngoingFluentWebDriver tds(By by) {
         return multiple(by, "td");
     }
 
@@ -244,7 +244,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("th"), "th");
     }
 
-    public OngoingFluentWebDriver ths() {
+    public MultipleOngoingFluentWebDriver ths() {
         return multiple(By.tagName("th"), "th");
     }
 
@@ -252,7 +252,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "th");
     }
 
-    public OngoingFluentWebDriver ths(By by) {
+    public MultipleOngoingFluentWebDriver ths(By by) {
         return multiple(by, "th");
     }
 
@@ -260,7 +260,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("ul"), "ul");
     }
 
-    public OngoingFluentWebDriver uls() {
+    public MultipleOngoingFluentWebDriver uls() {
         return multiple(By.tagName("ul"), "ul");
     }
 
@@ -268,7 +268,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "ul");
     }
 
-    public OngoingFluentWebDriver uls(By by) {
+    public MultipleOngoingFluentWebDriver uls(By by) {
         return multiple(by, "ul");
     }
 
@@ -276,7 +276,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("ol"), "ol");
     }
 
-    public OngoingFluentWebDriver ols() {
+    public MultipleOngoingFluentWebDriver ols() {
         return multiple(By.tagName("ol"), "ol");
     }
 
@@ -284,7 +284,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "ol");
     }
 
-    public OngoingFluentWebDriver ols(By by) {
+    public MultipleOngoingFluentWebDriver ols(By by) {
         return multiple(by, "ol");
     }
 
@@ -292,7 +292,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("form"), "form");
     }
 
-    public OngoingFluentWebDriver forms() {
+    public MultipleOngoingFluentWebDriver forms() {
         return multiple(By.tagName("form"), "form");
     }
 
@@ -300,7 +300,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "form");
     }
 
-    public OngoingFluentWebDriver forms(By by) {
+    public MultipleOngoingFluentWebDriver forms(By by) {
         return multiple(by, "form");
     }
 
@@ -308,7 +308,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("textarea"), "textarea");
     }
 
-    public OngoingFluentWebDriver textareas() {
+    public MultipleOngoingFluentWebDriver textareas() {
         return multiple(By.tagName("textarea"), "textarea");
     }
 
@@ -316,7 +316,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "textarea");
     }
 
-    public OngoingFluentWebDriver textareas(By by) {
+    public MultipleOngoingFluentWebDriver textareas(By by) {
         return multiple(by, "textarea");
     }
 
@@ -324,7 +324,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(By.tagName("option"), "option");
     }
 
-    public OngoingFluentWebDriver options() {
+    public MultipleOngoingFluentWebDriver options() {
         return multiple(By.tagName("option"), "option");
     }
 
@@ -332,7 +332,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "option");
     }
 
-    public OngoingFluentWebDriver options(By by) {
+    public MultipleOngoingFluentWebDriver options(By by) {
         return multiple(by, "option");
     }
 
@@ -344,15 +344,16 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         return single(by, "li");
     }
 
-    public OngoingFluentWebDriver lis() {
+    public MultipleOngoingFluentWebDriver lis() {
         return multiple(By.tagName("li"), "li");
     }
 
-    public OngoingFluentWebDriver lis(By by) {
+    public MultipleOngoingFluentWebDriver lis(By by) {
         return multiple(by, "li");
     }
 
-    protected abstract OngoingFluentWebDriver getSubsequentFluentWebDriver();
+    protected abstract SingleOngoingFluentWebDriver getSingleOngoingFluentWebDriver();
+    protected abstract MultipleOngoingFluentWebDriver getMultipleOngoingFluentWebDriver();
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -371,14 +372,14 @@ public abstract class FluentBase extends ArrayList<WebElement> {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private OngoingFluentWebDriver single(By by, String tagName) {
+    private SingleOngoingFluentWebDriver single(By by, String tagName) {
         by = fixupBy(by, tagName);
         WebElement result = findIt(by);
         assertEquals(result.getTagName(), tagName);
-        return getSubsequentFluentWebDriver();
+        return getSingleOngoingFluentWebDriver();
     }
 
-    private OngoingFluentWebDriver multiple(By by, String tagName) {
+    private MultipleOngoingFluentWebDriver multiple(By by, String tagName) {
         by = fixupBy(by, tagName);
         List<WebElement> results = findThem(by);
         for (WebElement webElement : results) {
@@ -386,7 +387,7 @@ public abstract class FluentBase extends ArrayList<WebElement> {
         }
         clear();
         addAll(results);
-        return getSubsequentFluentWebDriver();
+        return getMultipleOngoingFluentWebDriver();
     }
 
 }

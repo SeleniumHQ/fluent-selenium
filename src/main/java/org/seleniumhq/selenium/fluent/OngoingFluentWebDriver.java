@@ -7,7 +7,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class OngoingFluentWebDriver extends FluentBase {
+public abstract class OngoingFluentWebDriver extends FluentBase {
 
     public OngoingFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
         super(delegate);
@@ -15,8 +15,13 @@ public class OngoingFluentWebDriver extends FluentBase {
     }
 
     @Override
-    protected OngoingFluentWebDriver getSubsequentFluentWebDriver() {
-        return this;
+    protected SingleOngoingFluentWebDriver getSingleOngoingFluentWebDriver() {
+        return new SingleOngoingFluentWebDriver(super.delegate, this);
+    }
+
+    @Override
+    protected MultipleOngoingFluentWebDriver getMultipleOngoingFluentWebDriver() {
+        return new MultipleOngoingFluentWebDriver(super.delegate, this);
     }
 
     protected WebElement findIt(By by) {
@@ -40,93 +45,45 @@ public class OngoingFluentWebDriver extends FluentBase {
 
     // These though, don't return void as they do in WebElement
 
-    public OngoingFluentWebDriver click() {
-        for (WebElement webElement : this) {
-            webElement.click();
-        }
-        return getSubsequentFluentWebDriver();
-    }
+    public abstract OngoingFluentWebDriver click();
 
     /**
      *  Use this instead of clear() to clear an WebElement
      */
-
-    public OngoingFluentWebDriver clearField() {
-        for (WebElement webElement : this) {
-            webElement.clear();
-        }
-        return getSubsequentFluentWebDriver();
-    }
+    public abstract OngoingFluentWebDriver clearField();
 
     /**
      * Clear of Array that is the list of current WebElements
      *
      * Not to be confused with clearField() that maps to the WebElement.clear() method.
      */
-    public void clear() {
+    public final void clear() {
         super.clear();
     }
 
+    public abstract OngoingFluentWebDriver submit();
 
-    public OngoingFluentWebDriver submit() {
-        get(0).submit();
-        return getSubsequentFluentWebDriver();
-    }
+    public abstract OngoingFluentWebDriver sendKeys(CharSequence... keysToSend);
 
     // These are as they would be in the WebElement API
 
-    public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
-        get(0).sendKeys(keysToSend);
-        return getSubsequentFluentWebDriver();
-    }
+    public abstract Point getLocation();
 
-    public String getTagName() {
-        return get(0).getTagName();
-    }
+    public abstract String getCssValue(String cssName);
 
-    public boolean isSelected() {
-        boolean areSelected = true;
-        for (WebElement webElement : this) {
-            areSelected = areSelected & webElement.isSelected();
-        }
-        return areSelected;
-    }
+    public abstract String getAttribute(String attrName);
 
-    public boolean isEnabled() {
-        boolean areEnabled = true;
-        for (WebElement webElement : this) {
-            areEnabled = areEnabled & webElement.isEnabled();
-        }
-        return areEnabled;
-    }
+    public abstract String getTagName();
 
-    public boolean isDisplayed() {
-        boolean areDisplayed = true;
-        for (WebElement webElement : this) {
-            areDisplayed = areDisplayed & webElement.isDisplayed();
-        }
-        return areDisplayed;
-    }
+    public abstract Dimension getSize();
 
-    public Point getLocation() {
-        return get(0).getLocation();
-    }
+    public abstract boolean isSelected();
 
-    public Dimension getSize() {
-        return get(0).getSize();
-    }
+    public abstract boolean isEnabled();
 
-    public String getCssValue(String cssName) {
-        return get(0).getCssValue(cssName);
-    }
+    public abstract boolean isDisplayed();
 
-    public String  getAttribute(String attr) {
-        return get(0).getAttribute(attr);
-    }
-
-    public String getText() {
-        return get(0).getText();
-    }
+    public abstract String getText();
 
 
 }

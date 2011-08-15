@@ -2,6 +2,7 @@ package org.seleniumhq.selenium;
 
 import java.util.List;
 import java.util.Set;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.openqa.selenium.By;
@@ -12,11 +13,11 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentBase;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
+import org.seleniumhq.selenium.fluent.SingleOngoingFluentWebDriver;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -32,14 +33,21 @@ public class FluentWebDriverTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
-    private StringBuilder sb = new StringBuilder();
-    private WebDriver wd = new WebDriverJournal(sb);
-    private FluentWebDriverImpl fwd = new FluentWebDriverImpl(wd);
-
-    private static final WebElement bogusElem = mock(WebElement.class);
+    private StringBuilder sb;
+    private static WebElement bogusElem;
+    private WebDriver wd;
+    private FluentWebDriverImpl fwd;
 
     static {
+        bogusElem = mock(WebElement.class);
         when(bogusElem.getTagName()).thenReturn("bogus");
+    }
+
+    @Before
+    public void setup() {
+        sb = new StringBuilder();
+        wd = new WebDriverJournal(sb);
+        fwd = new FluentWebDriverImpl(wd);
     }
 
     @Test
@@ -87,7 +95,7 @@ public class FluentWebDriverTest {
     @Test
     public void xPaths_and_non_ongoing() {
 
-        OngoingFluentWebDriver sfwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").submit();
+        OngoingFluentWebDriver sfwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
 
         assertThat(sfwd, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -96,6 +104,7 @@ public class FluentWebDriverTest {
                         "we1.findElement(By.xpath: .//span[@foo = 'bar']) -> we2\n" +
                         "we2.getTagName() -> 'span'\n" +
                         "we2.sendKeys(apple)\n" +
+                        "we2.clear()\n" +
                         "we2.submit()\n"
         ));
 
@@ -160,12 +169,12 @@ public class FluentWebDriverTest {
 
         sb.setLength(0);
         OngoingFluentWebDriver ofwd2 = ofwd.clearField();
-        assertThat(ofwd2, sameInstance(ofwd));
+        assertThat(ofwd2, equalTo(ofwd));
         assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
 
         sb.setLength(0);
         OngoingFluentWebDriver ofwd3 = ofwd.click();
-        assertThat(ofwd3, sameInstance(ofwd));
+        assertThat(ofwd3, equalTo(ofwd));
         assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
 
         sb.setLength(0);
@@ -182,6 +191,56 @@ public class FluentWebDriverTest {
         boolean areDisplayed = ofwd.isDisplayed();
         assertThat(areDisplayed, equalTo(false));
         assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\nwe2.isDisplayed() -> false\n"));
+
+        sb.setLength(0);
+        OngoingFluentWebDriver ofwd4 = ofwd.sendKeys("aaa");
+        assertThat(ofwd4, notNullValue());
+        assertThat(sb.toString(), equalTo("we1.sendKeys(aaa)\nwe2.sendKeys(aaa)\n"));
+
+        sb.setLength(0);
+        OngoingFluentWebDriver ofwd5 = ofwd.submit();
+        assertThat(ofwd5, notNullValue());
+        assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
+
+        sb.setLength(0);
+        String text = ofwd.getText();
+        assertThat(text, equalTo("Mary had a little lamb.Mary had a little lamb."));
+        assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had a little lamb.'\nwe2.getText() -> 'Mary had a little lamb.'\n"));
+
+        sb.setLength(0);
+        try {
+            ofwd.getLocation();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getLocation() has no meaning for multiple elements"));
+        }
+
+        sb.setLength(0);
+        try {
+            ofwd.getSize();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getSize() has no meaning for multiple elements"));
+        }
+
+        sb.setLength(0);
+        try {
+            ofwd.getCssValue("x");
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getCssValue() has no meaning for multiple elements"));
+        }
+
+        sb.setLength(0);
+        try {
+            ofwd.getAttribute("x");
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getAttribute() has no meaning for multiple elements"));
+        }
+
+        sb.setLength(0);
+        try {
+            ofwd.getTagName();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
+        }
     }
 
     @Test
@@ -1349,7 +1408,7 @@ public class FluentWebDriverTest {
                 }
                 String className = elem.getClassName();
                 if ((className.equals(FluentBase.class.getName())
-                        || className.equals(OngoingFluentWebDriver.class.getName()))
+                        || className.equals(SingleOngoingFluentWebDriver.class.getName()))
                         && !methodName.equals("multiple")
                         && !methodName.equals("single")) {
                     if (methodName.equals("link")) {
@@ -1371,17 +1430,6 @@ public class FluentWebDriverTest {
             return s + "_value";
         }
 
-        public boolean isSelected() {
-            webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
-            sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
-            return webDriverJournal.lastSelected;
-        }
-
-        public boolean isEnabled() {
-            webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
-            sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
-            return webDriverJournal.lastEnabled;
-        }
 
         public String getText() {
             sb.append(this + ".getText() -> 'Mary had a little lamb.'\n");
@@ -1408,6 +1456,18 @@ public class FluentWebDriverTest {
             return webDriverJournal.lastDisplayed;
         }
 
+        public boolean isSelected() {
+            webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
+            sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
+            return webDriverJournal.lastSelected;
+        }
+
+        public boolean isEnabled() {
+            webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
+            sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
+            return webDriverJournal.lastEnabled;
+        }
+
         public Point getLocation() {
             sb.append(this + ".getLocation() -> 1,1\n");
             return new Point(1,1);
@@ -1428,6 +1488,5 @@ public class FluentWebDriverTest {
             return "we" + ct;
         }
     }
-
 
 }
