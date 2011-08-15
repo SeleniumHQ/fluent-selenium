@@ -42,7 +42,7 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void testBasicWithMockito() {
+    public void reference_test_with_mockito() {
         WebDriver wd = mock(WebDriver.class);
         WebElement we = mock(WebElement.class);
         WebElement we2 = mock(WebElement.class);
@@ -67,7 +67,7 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void someSimpleCasesInvolvingIDs() {
+    public void example_of_longer_query_using_IDs() {
 
         FluentBase fb = fwd.div(ID_A).div(ID_B).span().click();
 
