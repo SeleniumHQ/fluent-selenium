@@ -153,8 +153,8 @@ public class FluentWebDriverTest {
 
         sb.setLength(0);
         String text = sfwd.getText();
-        assertThat(text, equalTo("Mary had a little lamb."));
-        assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had a little lamb.'\n"));
+        assertThat(text, equalTo("Mary had 3 little lamb(s)."));
+        assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
 
@@ -207,8 +207,8 @@ public class FluentWebDriverTest {
 
         sb.setLength(0);
         String text = ofwd.getText();
-        assertThat(text, equalTo("Mary had a little lamb.Mary had a little lamb."));
-        assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had a little lamb.'\nwe2.getText() -> 'Mary had a little lamb.'\n"));
+        assertThat(text, equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+        assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 3 little lamb(s).'\nwe2.getText() -> 'Mary had 4 little lamb(s).'\n"));
 
         sb.setLength(0);
         try {
@@ -1376,8 +1376,8 @@ public class FluentWebDriverTest {
                 equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
                 "we2.getTagName() -> 'div'\n" +
-                "we1.getText() -> 'Mary had a little lamb.'\n" +
-                "we2.getText() -> 'Mary had a little lamb.'\n" +
+                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
+                "we2.getText() -> 'Mary had 4 little lamb(s).'\n" +
                 "we2.click()\n"));
     }
 
@@ -1542,8 +1542,9 @@ public class FluentWebDriverTest {
 
 
         public String getText() {
-            sb.append(this + ".getText() -> 'Mary had a little lamb.'\n");
-            return "Mary had a little lamb.";
+            String msg = "Mary had " + webDriverJournal.CTR++ + " little lamb(s).";
+            sb.append(this + ".getText() -> '" + msg + "'\n");
+            return msg;
         }
 
         public List<WebElement> findElements(By by) {
