@@ -13,11 +13,11 @@ public abstract class FluentCore {
         this.delegate = delegate;
     }
 
-    public OngoingFluentWebDriver span() {
+    public OngoingSingleElement span() {
         return single(By.tagName("span"), "span");
     }
 
-    public OngoingFluentWebDriver span(By by) {
+    public OngoingSingleElement span(By by) {
         return single(by, "span");
     }
 
@@ -29,11 +29,11 @@ public abstract class FluentCore {
         return multiple(by, "span");
     }
 
-    public OngoingFluentWebDriver div() {
+    public OngoingSingleElement div() {
         return single(By.tagName("div"), "div");
     }
 
-    public OngoingFluentWebDriver div(By by) {
+    public OngoingSingleElement div(By by) {
         return single(by, "div");
     }
 
@@ -45,11 +45,11 @@ public abstract class FluentCore {
         return multiple(by, "div");
     }
 
-    public OngoingFluentWebDriver link() {
+    public OngoingSingleElement link() {
         return single(By.tagName("a"), "a");
     }
 
-    public OngoingFluentWebDriver link(By by) {
+    public OngoingSingleElement link(By by) {
         return single(by, "a");
     }
 
@@ -61,11 +61,11 @@ public abstract class FluentCore {
         return multiple(by, "a");
     }
 
-    public OngoingFluentWebDriver input() {
+    public OngoingSingleElement input() {
         return single(By.tagName("input"), "input");
     }
 
-    public OngoingFluentWebDriver input(By by) {
+    public OngoingSingleElement input(By by) {
         return single(by, "input");
 
     }
@@ -78,11 +78,11 @@ public abstract class FluentCore {
         return multiple(by, "input");
     }
 
-    public OngoingFluentWebDriver select() {
+    public OngoingSingleElement select() {
         return single(By.tagName("select"), "select");
     }
 
-    public OngoingFluentWebDriver select(By by) {
+    public OngoingSingleElement select(By by) {
         return single(by, "select");
     }
 
@@ -94,11 +94,11 @@ public abstract class FluentCore {
         return multiple(by, "select");
     }
 
-    public OngoingFluentWebDriver h1() {
+    public OngoingSingleElement h1() {
         return single(By.tagName("h1"), "h1");
     }
 
-    public OngoingFluentWebDriver h1(By by) {
+    public OngoingSingleElement h1(By by) {
         return single(by, "h1");
 
     }
@@ -111,11 +111,11 @@ public abstract class FluentCore {
         return multiple(by, "h1");
     }
 
-    public OngoingFluentWebDriver h2() {
+    public OngoingSingleElement h2() {
         return single(By.tagName("h2"), "h2");
     }
 
-    public OngoingFluentWebDriver h2(By by) {
+    public OngoingSingleElement h2(By by) {
         return single(by, "h2");
     }
 
@@ -127,7 +127,7 @@ public abstract class FluentCore {
         return multiple(by, "h2");
     }
 
-    public OngoingFluentWebDriver h3() {
+    public OngoingSingleElement h3() {
         return single(By.tagName("h3"), "h3");
     }
 
@@ -135,7 +135,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("h3"), "h3");
     }
 
-    public OngoingFluentWebDriver h3(By by) {
+    public OngoingSingleElement h3(By by) {
         return single(by, "h3");
     }
 
@@ -143,7 +143,7 @@ public abstract class FluentCore {
         return multiple(by, "h3");
     }
 
-    public OngoingFluentWebDriver h4(){
+    public OngoingSingleElement h4(){
         return single(By.tagName("h4"), "h4");
     }
 
@@ -151,7 +151,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("h4"), "h4");
     }
 
-    public OngoingFluentWebDriver h4(By by) {
+    public OngoingSingleElement h4(By by) {
         return single(by, "h4");
     }
 
@@ -159,7 +159,7 @@ public abstract class FluentCore {
         return multiple(by, "h4");
     }
 
-    public OngoingFluentWebDriver p() {
+    public OngoingSingleElement p() {
         return single(By.tagName("p"), "p");
     }
 
@@ -167,7 +167,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("p"), "p");
     }
 
-    public OngoingFluentWebDriver p(By by) {
+    public OngoingSingleElement p(By by) {
         return single(by, "p");
     }
 
@@ -175,7 +175,7 @@ public abstract class FluentCore {
         return multiple(by, "p");
     }
 
-    public OngoingFluentWebDriver img() {
+    public OngoingSingleElement img() {
         return single(By.tagName("img"), "img");
     }
 
@@ -183,7 +183,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("img"), "img");
     }
 
-    public OngoingFluentWebDriver img(By by) {
+    public OngoingSingleElement img(By by) {
         return single(by, "img");
     }
 
@@ -191,7 +191,7 @@ public abstract class FluentCore {
         return multiple(by, "img");
     }
 
-    public OngoingFluentWebDriver table() {
+    public OngoingSingleElement table() {
         return single(By.tagName("table"), "table");
     }
 
@@ -199,7 +199,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("table"), "table");
     }
 
-    public OngoingFluentWebDriver table(By by) {
+    public OngoingSingleElement table(By by) {
         return single(by, "table");
     }
 
@@ -207,7 +207,7 @@ public abstract class FluentCore {
         return multiple(by, "table");
     }
 
-    public OngoingFluentWebDriver tr() {
+    public OngoingSingleElement tr() {
         return single(By.tagName("tr"), "tr");
     }
 
@@ -215,7 +215,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("tr"), "tr");
     }
 
-    public OngoingFluentWebDriver tr(By by) {
+    public OngoingSingleElement tr(By by) {
         return single(by, "tr");
     }
 
@@ -223,7 +223,7 @@ public abstract class FluentCore {
         return multiple(by, "tr");
     }
 
-    public OngoingFluentWebDriver td() {
+    public OngoingSingleElement td() {
         return single(By.tagName("td"), "td");
     }
 
@@ -231,7 +231,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("td"), "td");
     }
 
-    public OngoingFluentWebDriver td(By by) {
+    public OngoingSingleElement td(By by) {
         return single(by, "td");
     }
 
@@ -239,7 +239,7 @@ public abstract class FluentCore {
         return multiple(by, "td");
     }
 
-    public OngoingFluentWebDriver th() {
+    public OngoingSingleElement th() {
         return single(By.tagName("th"), "th");
     }
 
@@ -247,7 +247,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("th"), "th");
     }
 
-    public OngoingFluentWebDriver th(By by) {
+    public OngoingSingleElement th(By by) {
         return single(by, "th");
     }
 
@@ -255,7 +255,7 @@ public abstract class FluentCore {
         return multiple(by, "th");
     }
 
-    public OngoingFluentWebDriver ul() {
+    public OngoingSingleElement ul() {
         return single(By.tagName("ul"), "ul");
     }
 
@@ -263,7 +263,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("ul"), "ul");
     }
 
-    public OngoingFluentWebDriver ul(By by) {
+    public OngoingSingleElement ul(By by) {
         return single(by, "ul");
     }
 
@@ -271,7 +271,7 @@ public abstract class FluentCore {
         return multiple(by, "ul");
     }
 
-    public OngoingFluentWebDriver ol() {
+    public OngoingSingleElement ol() {
         return single(By.tagName("ol"), "ol");
     }
 
@@ -279,7 +279,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("ol"), "ol");
     }
 
-    public OngoingFluentWebDriver ol(By by) {
+    public OngoingSingleElement ol(By by) {
         return single(by, "ol");
     }
 
@@ -287,7 +287,7 @@ public abstract class FluentCore {
         return multiple(by, "ol");
     }
 
-    public OngoingFluentWebDriver form() {
+    public OngoingSingleElement form() {
         return single(By.tagName("form"), "form");
     }
 
@@ -295,7 +295,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("form"), "form");
     }
 
-    public OngoingFluentWebDriver form(By by) {
+    public OngoingSingleElement form(By by) {
         return single(by, "form");
     }
 
@@ -303,7 +303,7 @@ public abstract class FluentCore {
         return multiple(by, "form");
     }
 
-    public OngoingFluentWebDriver textarea() {
+    public OngoingSingleElement textarea() {
         return single(By.tagName("textarea"), "textarea");
     }
 
@@ -311,7 +311,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("textarea"), "textarea");
     }
 
-    public OngoingFluentWebDriver textarea(By by) {
+    public OngoingSingleElement textarea(By by) {
         return single(by, "textarea");
     }
 
@@ -319,7 +319,7 @@ public abstract class FluentCore {
         return multiple(by, "textarea");
     }
 
-    public OngoingFluentWebDriver option() {
+    public OngoingSingleElement option() {
         return single(By.tagName("option"), "option");
     }
 
@@ -327,7 +327,7 @@ public abstract class FluentCore {
         return multiple(By.tagName("option"), "option");
     }
 
-    public OngoingFluentWebDriver option(By by) {
+    public OngoingSingleElement option(By by) {
         return single(by, "option");
     }
 
@@ -335,11 +335,11 @@ public abstract class FluentCore {
         return multiple(by, "option");
     }
 
-    public OngoingFluentWebDriver li() {
+    public OngoingSingleElement li() {
         return single(By.tagName("li"), "li");
     }
 
-    public OngoingFluentWebDriver li(By by) {
+    public OngoingSingleElement li(By by) {
         return single(by, "li");
     }
 
@@ -351,8 +351,8 @@ public abstract class FluentCore {
         return multiple(by, "li");
     }
 
-    protected abstract OngoingSingleElement getSingleOngoingFluentWebDriver(WebElement result);
-    protected abstract OngoingMultipleElements getMultipleOngoingFluentWebDriver(List<WebElement> results);
+    protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result);
+    protected abstract OngoingMultipleElements getOngoingMultipleElement(List<WebElement> results);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -375,7 +375,7 @@ public abstract class FluentCore {
         by = fixupBy(by, tagName);
         WebElement result = findIt(by);
         assertEquals(result.getTagName(), tagName);
-        return getSingleOngoingFluentWebDriver(result);
+        return getOngoingSingleElement(result);
     }
 
     private OngoingMultipleElements multiple(By by, String tagName) {
@@ -384,7 +384,7 @@ public abstract class FluentCore {
         for (WebElement webElement : results) {
             assertEquals(webElement.getTagName(), tagName);
         }
-        return getMultipleOngoingFluentWebDriver(results);
+        return getOngoingMultipleElement(results);
     }
 
 }

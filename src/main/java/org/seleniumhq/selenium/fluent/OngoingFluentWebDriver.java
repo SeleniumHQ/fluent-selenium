@@ -13,12 +13,12 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected OngoingSingleElement getSingleOngoingFluentWebDriver(WebElement result) {
+    protected OngoingSingleElement getOngoingSingleElement(WebElement result) {
         return new OngoingSingleElement(super.delegate, result);
     }
 
     @Override
-    protected OngoingMultipleElements getMultipleOngoingFluentWebDriver(List<WebElement> results) {
+    protected OngoingMultipleElements getOngoingMultipleElement(List<WebElement> results) {
         return new OngoingMultipleElements(super.delegate, results);
     }
 

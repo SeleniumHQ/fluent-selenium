@@ -28,7 +28,7 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
 
     public OngoingFluentWebDriver click() {
         currentElement.click();
-        return getSingleOngoingFluentWebDriver(currentElement);
+        return getOngoingSingleElement(currentElement);
     }
 
     /**
@@ -37,20 +37,20 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
 
     public OngoingFluentWebDriver clearField() {
         currentElement.clear();
-        return getSingleOngoingFluentWebDriver(currentElement);
+        return getOngoingSingleElement(currentElement);
     }
 
 
     public OngoingFluentWebDriver submit() {
         currentElement.submit();
-        return getSingleOngoingFluentWebDriver(currentElement);
+        return getOngoingSingleElement(currentElement);
     }
 
     // These are as they would be in the WebElement API
 
     public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
         currentElement.sendKeys(keysToSend);
-        return getSingleOngoingFluentWebDriver(currentElement);
+        return getOngoingSingleElement(currentElement);
     }
 
     public String getTagName() {
