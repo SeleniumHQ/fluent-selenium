@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import static java.util.Arrays.asList;
@@ -18,6 +19,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.internal.matchers.StringContains.containsString;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -86,6 +88,27 @@ public class FluentWebDriverTest {
                         "we2.findElement(By.tagName: span) -> we3\n" +
                         "we3.getTagName() -> 'span'\n" +
                         "we3.click()\n"
+        ));
+    }
+
+    @Test
+    public void lengthier_expresion_with_late_exception() {
+
+        FluentCore fb = null;
+        try {
+            fb = fwd.div(ID_A).div(ID_B).span().sendKeys("RAIN_IN_SPAIN");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), equalTo("?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
+            assertThat(e.getCause().getMessage(), containsString("FAILED AS PER STUB SETUP"));
+        }
+
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.id: idA) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "we1.findElement(By.id: idB) -> we2\n" +
+                        "we2.getTagName() -> 'div'\n" +
+                        "we2.findElement(By.tagName: span) -> we3\n" +
+                        "we3.getTagName() -> 'span'\n"
         ));
     }
 
@@ -1341,7 +1364,7 @@ public class FluentWebDriverTest {
         elems.add(mock(WebElement.class));
         elems.add(mock(WebElement.class));
 
-        OngoingMultipleElements ogme = new OngoingMultipleElements(null, new ArrayList<WebElement>(elems));
+        OngoingMultipleElements ogme = new OngoingMultipleElements(null, new ArrayList<WebElement>(elems), "");
 
         assertThat(ogme.size(), equalTo(4));
         assertThat(ogme.get(0), equalTo(item0));
@@ -1580,6 +1603,9 @@ public class FluentWebDriverTest {
         }
 
         public void sendKeys(CharSequence... charSequences) {
+            if (charSequences[0].equals("RAIN_IN_SPAIN")) {
+                throw new WebDriverException("FAILED AS PER STUB SETUP");
+            }
             sb.append(this + ".sendKeys("+charSequences[0]+")\n");
         }
 

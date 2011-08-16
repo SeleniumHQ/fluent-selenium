@@ -8,17 +8,17 @@ import org.openqa.selenium.WebElement;
 public final class FluentWebDriverImpl extends FluentCore implements FluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
-        super(delegate);
+        super(delegate, "?");
     }
 
     @Override
-    protected OngoingSingleElement getOngoingSingleElement(WebElement result) {
-        return new OngoingSingleElement(super.delegate, result);
+    protected OngoingSingleElement getOngoingSingleElement(WebElement result, String context) {
+        return new OngoingSingleElement(super.delegate, result, context);
     }
 
     @Override
     protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results) {
-        return new OngoingMultipleElements(super.delegate, results);
+        return new OngoingMultipleElements(super.delegate, results, context);
     }
 
     protected final WebElement findIt(By by) {

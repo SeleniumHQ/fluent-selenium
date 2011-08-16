@@ -3,14 +3,17 @@ package org.seleniumhq.selenium.fluent;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public abstract class FluentCore {
 
     protected final WebDriver delegate;
+    protected final String context;
 
-    public FluentCore(WebDriver delegate) {
+    public FluentCore(WebDriver delegate, String context) {
         this.delegate = delegate;
+        this.context = context;
     }
 
     public OngoingSingleElement span() {
@@ -367,7 +370,7 @@ public abstract class FluentCore {
         return multiple(by, "li");
     }
 
-    protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result);
+    protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result, String context);
     protected abstract OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results);
 
     protected final By fixupBy(By by, String tagName) {
@@ -389,18 +392,41 @@ public abstract class FluentCore {
 
     private OngoingSingleElement single(By by, String tagName) {
         by = fixupBy(by, tagName);
-        WebElement result = findIt(by);
+        WebElement result = null;
+        String ctx = contextualize(by.toString(), tagName);
+        try {
+            result = findIt(by);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
         assertEquals(result.getTagName(), tagName);
-        return getOngoingSingleElement(result);
+        return getOngoingSingleElement(result, ctx);
+    }
+
+    private String contextualize(String by, String tagName) {
+        if (by.equals("By.tagName: " + tagName)) {
+            by = "";
+        }
+        return context + "." + tagName + "(" + by + ")";
     }
 
     private OngoingMultipleElements multiple(By by, String tagName) {
         by = fixupBy(by, tagName);
-        List<WebElement> results = findThem(by);
-        for (WebElement webElement : results) {
-            assertEquals(webElement.getTagName(), tagName);
+        List<WebElement> results;
+        String ctx = context + "." + tagName + "s(" + by + ")";
+        try {
+            results = findThem(by);
+            for (WebElement webElement : results) {
+                assertEquals(webElement.getTagName(), tagName);
+            }
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
         return getOngoingMultipleElements(results);
+    }
+
+    protected RuntimeException decorateWebDriverException(String ctx, WebDriverException e) {
+        return new RuntimeException(ctx, e);
     }
 
 }

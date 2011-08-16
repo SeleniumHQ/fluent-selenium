@@ -15,8 +15,8 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
 
     private final List<WebElement> currentElements;
 
-    public OngoingMultipleElements(WebDriver delegate, List<WebElement> currentElements) {
-        super(delegate);
+    public OngoingMultipleElements(WebDriver delegate, List<WebElement> currentElements, String context) {
+        super(delegate, context);
         this.currentElements = currentElements;
     }
 
@@ -141,7 +141,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         if (result == null) {
             throw new NothingMatches();
         }
-        return getOngoingSingleElement(result);
+        return getOngoingSingleElement(result, context);
     }
 
 

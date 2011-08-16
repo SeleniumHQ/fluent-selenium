@@ -8,18 +8,18 @@ import org.openqa.selenium.WebElement;
 
 public abstract class OngoingFluentWebDriver extends FluentCore {
 
-    public OngoingFluentWebDriver(WebDriver delegate) {
-        super(delegate);
+    public OngoingFluentWebDriver(WebDriver delegate, String context) {
+        super(delegate, context);
     }
 
     @Override
-    protected OngoingSingleElement getOngoingSingleElement(WebElement result) {
-        return new OngoingSingleElement(super.delegate, result);
+    protected OngoingSingleElement getOngoingSingleElement(WebElement result, String context) {
+        return new OngoingSingleElement(super.delegate, result, context);
     }
 
     @Override
     protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results) {
-        return new OngoingMultipleElements(super.delegate, results);
+        return new OngoingMultipleElements(super.delegate, results, context);
     }
 
     // All these have peer equivalents in the WebElement interface

@@ -5,14 +5,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public class OngoingSingleElement extends OngoingFluentWebDriver {
 
     private final WebElement currentElement;
 
-    public OngoingSingleElement(WebDriver delegate, WebElement currentElement) {
-        super(delegate);
+    public OngoingSingleElement(WebDriver delegate, WebElement currentElement, String context) {
+        super(delegate, context);
         this.currentElement = currentElement;
     }
 
@@ -28,7 +29,7 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
 
     public OngoingFluentWebDriver click() {
         currentElement.click();
-        return getOngoingSingleElement(currentElement);
+        return getOngoingSingleElement(currentElement, context);
     }
 
     /**
@@ -37,20 +38,35 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
 
     public OngoingFluentWebDriver clearField() {
         currentElement.clear();
-        return getOngoingSingleElement(currentElement);
+        return getOngoingSingleElement(currentElement, context);
     }
 
 
     public OngoingFluentWebDriver submit() {
         currentElement.submit();
-        return getOngoingSingleElement(currentElement);
+        return getOngoingSingleElement(currentElement, context);
     }
 
     // These are as they would be in the WebElement API
 
     public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
-        currentElement.sendKeys(keysToSend);
-        return getOngoingSingleElement(currentElement);
+        String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
+        try {
+            currentElement.sendKeys(keysToSend);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+
+        }
+        return getOngoingSingleElement(currentElement, ctx);
+    }
+
+    private String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
+        String keys = "";
+        for (int i = 0; i < keysToSend.length; i++) {
+            CharSequence charSequence = keysToSend[i];
+            keys = keys + ", '" + charSequence + "'";
+        }
+        return keys.substring(2);
     }
 
     public String getTagName() {
