@@ -12,6 +12,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentCore;
+import org.seleniumhq.selenium.fluent.FluentMatcher;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
 import org.seleniumhq.selenium.fluent.OngoingMultipleElements;
@@ -1365,6 +1366,36 @@ public class FluentWebDriverTest {
     }
 
 
+    @Test
+    public void prototype_of_matcher() {
+
+        FluentCore fb = fwd.divs().matching(new SecondTextContainingLamb()).click();
+
+        assertThat(fb, notNullValue());
+        assertThat(sb.toString(),
+                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
+                "we1.getTagName() -> 'div'\n" +
+                "we2.getTagName() -> 'div'\n" +
+                "we1.getText() -> 'Mary had a little lamb.'\n" +
+                "we2.getText() -> 'Mary had a little lamb.'\n" +
+                "we2.click()\n"));
+    }
+
+    public static class SecondTextContainingLamb implements FluentMatcher {
+        boolean lambFound = false;
+        public boolean matches(WebElement webElement) {
+            if (webElement.getText().contains("lamb")) {
+                if (!lambFound) {
+                    lambFound = true;
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
 
     private static class WebDriverJournal implements WebDriver {
 
@@ -1418,7 +1449,6 @@ public class FluentWebDriverTest {
         }
 
         public void close() {
-
         }
 
         public void quit() {
@@ -1448,10 +1478,10 @@ public class FluentWebDriverTest {
         public String toString() {
             return "wd0";
         }
-
     }
 
     private static class WebElementJournal implements WebElement {
+
         private final StringBuilder sb;
         private final WebDriverJournal webDriverJournal;
         private final int ct;

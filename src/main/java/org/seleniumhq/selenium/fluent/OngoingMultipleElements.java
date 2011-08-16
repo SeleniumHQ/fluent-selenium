@@ -1,5 +1,6 @@
 package org.seleniumhq.selenium.fluent;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -119,6 +120,17 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
     }
 
+    public OngoingFluentWebDriver matching(FluentMatcher matcher) {
+        ArrayList<WebElement> results = new ArrayList<WebElement>();
+        for (WebElement webElement : this) {
+            if (matcher.matches(webElement)) {
+                results.add(webElement);
+            }
+        }
+        return getMultipleOngoingFluentWebDriver(results);
+    }
+
+
     // From java.util.List
 
     public void clear() {
@@ -212,4 +224,5 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
     public List<WebElement> subList(int i, int i1) {
         return currentElements.subList(i, i1);
     }
+
 }
