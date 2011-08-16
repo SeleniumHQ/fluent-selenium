@@ -1367,9 +1367,9 @@ public class FluentWebDriverTest {
 
 
     @Test
-    public void prototype_of_matcher() {
+    public void filtering() {
 
-        FluentCore fb = fwd.divs().filter(new SecondTextContainingLamb()).click();
+        FluentCore fb = fwd.divs().filter(new FourLambFilter()).click();
 
         assertThat(fb, notNullValue());
         assertThat(sb.toString(),
@@ -1381,18 +1381,9 @@ public class FluentWebDriverTest {
                 "we2.click()\n"));
     }
 
-    public static class SecondTextContainingLamb implements FluentMatcher {
-        boolean lambFound = false;
+    public static class FourLambFilter implements FluentMatcher {
         public boolean matches(WebElement webElement) {
-            if (webElement.getText().contains("lamb")) {
-                if (!lambFound) {
-                    lambFound = true;
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            return false;
+            return webElement.getText().contains("4 little lamb(s)");
         }
     }
 
