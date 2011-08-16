@@ -18,7 +18,7 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected OngoingMultipleElements getOngoingMultipleElement(List<WebElement> results) {
+    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results) {
         return new OngoingMultipleElements(super.delegate, results);
     }
 

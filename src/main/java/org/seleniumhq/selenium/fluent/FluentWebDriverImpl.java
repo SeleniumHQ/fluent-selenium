@@ -17,7 +17,7 @@ public final class FluentWebDriverImpl extends FluentCore implements FluentWebDr
     }
 
     @Override
-    protected OngoingMultipleElements getOngoingMultipleElement(List<WebElement> results) {
+    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results) {
         return new OngoingMultipleElements(super.delegate, results);
     }
 

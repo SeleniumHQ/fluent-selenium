@@ -33,7 +33,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         for (WebElement webElement : this) {
             webElement.click();
         }
-        return getOngoingMultipleElement(this);
+        return getOngoingMultipleElements(this);
     }
 
     /**
@@ -43,14 +43,14 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         for (WebElement webElement : this) {
             webElement.clear();
         }
-        return getOngoingMultipleElement(this);
+        return getOngoingMultipleElements(this);
     }
 
     public OngoingFluentWebDriver submit() {
         for (WebElement webElement : this) {
             webElement.submit();
         }
-        return getOngoingMultipleElement(this);
+        return getOngoingMultipleElements(this);
     }
 
     // These are as they would be in the WebElement API
@@ -59,7 +59,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         for (WebElement webElement : this) {
             webElement.sendKeys(keysToSend);
         }
-        return getOngoingMultipleElement(this);
+        return getOngoingMultipleElements(this);
     }
 
     public boolean isSelected() {
@@ -127,7 +127,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
                 results.add(webElement);
             }
         }
-        return getOngoingMultipleElement(results);
+        return getOngoingMultipleElements(results);
     }
 
     public OngoingSingleElement first(FluentMatcher matcher) {

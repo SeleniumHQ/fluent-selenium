@@ -352,7 +352,7 @@ public abstract class FluentCore {
     }
 
     protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result);
-    protected abstract OngoingMultipleElements getOngoingMultipleElement(List<WebElement> results);
+    protected abstract OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -384,7 +384,7 @@ public abstract class FluentCore {
         for (WebElement webElement : results) {
             assertEquals(webElement.getTagName(), tagName);
         }
-        return getOngoingMultipleElement(results);
+        return getOngoingMultipleElements(results);
     }
 
 }
