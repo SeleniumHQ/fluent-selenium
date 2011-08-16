@@ -1387,6 +1387,26 @@ public class FluentWebDriverTest {
         }
     }
 
+    @Test
+    public void first() {
+
+        FluentCore fb = fwd.divs().first(new IsALambFilter()).click();
+
+        assertThat(fb, notNullValue());
+        assertThat(sb.toString(),
+                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
+                "we1.getTagName() -> 'div'\n" +
+                "we2.getTagName() -> 'div'\n" +
+                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
+                "we1.click()\n"));
+    }
+
+    public static class IsALambFilter implements FluentMatcher {
+        public boolean matches(WebElement webElement) {
+            return webElement.getText().contains("lamb(s)");
+        }
+    }
+
 
     private static class WebDriverJournal implements WebDriver {
 

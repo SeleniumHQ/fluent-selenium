@@ -120,7 +120,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
     }
 
-    public OngoingFluentWebDriver filter(FluentMatcher matcher) {
+    public OngoingMultipleElements filter(FluentMatcher matcher) {
         ArrayList<WebElement> results = new ArrayList<WebElement>();
         for (WebElement webElement : this) {
             if (matcher.matches(webElement)) {
@@ -128,6 +128,17 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
             }
         }
         return getOngoingMultipleElement(results);
+    }
+
+    public OngoingSingleElement first(FluentMatcher matcher) {
+        WebElement result = null;
+        for (WebElement webElement : this) {
+            if (matcher.matches(webElement)) {
+                result = webElement;
+                break;
+            }
+        }
+        return getOngoingSingleElement(result);
     }
 
 
