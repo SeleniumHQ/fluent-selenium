@@ -1,19 +1,34 @@
 package org.seleniumhq.selenium.fluent;
 
 import java.util.List;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class OngoingSingleElement extends OngoingFluentWebDriver {
-    public OngoingSingleElement(WebDriver delegate, List<WebElement> currentElements) {
-        super(delegate, currentElements);
+
+    private final WebElement currentElement;
+
+    public OngoingSingleElement(WebDriver delegate, WebElement currentElement) {
+        super(delegate);
+        this.currentElement = currentElement;
     }
 
+    protected WebElement findIt(By by) {
+        return currentElement.findElement(by);
+    }
+
+    @Override
+    protected List<WebElement> findThem(By by) {
+        return currentElement.findElements(by);
+    }
+
+
     public OngoingFluentWebDriver click() {
-        get(0).click();
-        return getSingleOngoingFluentWebDriver();
+        currentElement.click();
+        return getSingleOngoingFluentWebDriver(currentElement);
     }
 
     /**
@@ -21,57 +36,57 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
      */
 
     public OngoingFluentWebDriver clearField() {
-        get(0).clear();
-        return getSingleOngoingFluentWebDriver();
+        currentElement.clear();
+        return getSingleOngoingFluentWebDriver(currentElement);
     }
 
 
     public OngoingFluentWebDriver submit() {
-        get(0).submit();
-        return getSingleOngoingFluentWebDriver();
+        currentElement.submit();
+        return getSingleOngoingFluentWebDriver(currentElement);
     }
 
     // These are as they would be in the WebElement API
 
     public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
-        get(0).sendKeys(keysToSend);
-        return getSingleOngoingFluentWebDriver();
+        currentElement.sendKeys(keysToSend);
+        return getSingleOngoingFluentWebDriver(currentElement);
     }
 
     public String getTagName() {
-        return get(0).getTagName();
+        return currentElement.getTagName();
     }
 
     public boolean isSelected() {
-        return get(0).isSelected();
+        return currentElement.isSelected();
     }
 
     public boolean isEnabled() {
-        return get(0).isEnabled();
+        return currentElement.isEnabled();
     }
 
     public boolean isDisplayed() {
-        return get(0).isDisplayed();
+        return currentElement.isDisplayed();
     }
 
     public Point getLocation() {
-        return get(0).getLocation();
+        return currentElement.getLocation();
     }
 
     public Dimension getSize() {
-        return get(0).getSize();
+        return currentElement.getSize();
     }
 
     public String getCssValue(String cssName) {
-        return get(0).getCssValue(cssName);
+        return currentElement.getCssValue(cssName);
     }
 
     public String  getAttribute(String attr) {
-        return get(0).getAttribute(attr);
+        return currentElement.getAttribute(attr);
     }
 
     public String getText() {
-        return get(0).getText();
+        return currentElement.getText();
     }
 
 }

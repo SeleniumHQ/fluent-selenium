@@ -1,7 +1,6 @@
 package org.seleniumhq.selenium.fluent;
 
 import java.util.List;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -9,36 +8,19 @@ import org.openqa.selenium.WebElement;
 
 public abstract class OngoingFluentWebDriver extends FluentCore {
 
-    public OngoingFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
+    public OngoingFluentWebDriver(WebDriver delegate) {
         super(delegate);
-        addAll(currentElements);
     }
 
     @Override
-    protected OngoingSingleElement getSingleOngoingFluentWebDriver() {
-        return new OngoingSingleElement(super.delegate, this);
+    protected OngoingSingleElement getSingleOngoingFluentWebDriver(WebElement result) {
+        return new OngoingSingleElement(super.delegate, result);
     }
 
     @Override
-    protected OngoingMultipleElements getMultipleOngoingFluentWebDriver() {
-        return new OngoingMultipleElements(super.delegate, this);
+    protected OngoingMultipleElements getMultipleOngoingFluentWebDriver(List<WebElement> results) {
+        return new OngoingMultipleElements(super.delegate, results);
     }
-
-    protected WebElement findIt(By by) {
-        WebElement result = get(0).findElement(by);
-        clear();
-        add(result);
-        return result;
-    }
-
-    @Override
-    protected List<WebElement> findThem(By by) {
-        List<WebElement> results = get(0).findElements(by);
-        clear();
-        addAll(results);
-        return results;
-    }
-
 
     // All these have peer equivalents in the WebElement interface
     // ===========================================================
@@ -51,15 +33,6 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
      *  Use this instead of clear() to clear an WebElement
      */
     public abstract OngoingFluentWebDriver clearField();
-
-    /**
-     * Clear of Array that is the list of current WebElements
-     *
-     * Not to be confused with clearField() that maps to the WebElement.clear() method.
-     */
-    public final void clear() {
-        super.clear();
-    }
 
     public abstract OngoingFluentWebDriver submit();
 

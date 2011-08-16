@@ -1,5 +1,6 @@
 package org.seleniumhq.selenium;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentCore;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
+import org.seleniumhq.selenium.fluent.OngoingMultipleElements;
 import org.seleniumhq.selenium.fluent.OngoingSingleElement;
 
 import static java.util.Arrays.asList;
@@ -169,12 +171,12 @@ public class FluentWebDriverTest {
 
         sb.setLength(0);
         OngoingFluentWebDriver ofwd2 = ofwd.clearField();
-        assertThat(ofwd2, equalTo(ofwd));
+        assertThat(ofwd2, notNullValue());
         assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
 
         sb.setLength(0);
         OngoingFluentWebDriver ofwd3 = ofwd.click();
-        assertThat(ofwd3, equalTo(ofwd));
+        assertThat(ofwd3, notNullValue());
         assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
 
         sb.setLength(0);
@@ -1285,6 +1287,84 @@ public class FluentWebDriverTest {
 
     }
 
+    @Test
+    public void is_a_list() {
+
+        List<WebElement> elems = new ArrayList<WebElement>();
+        WebElement item0 = mock(WebElement.class);
+        elems.add(item0);
+        elems.add(mock(WebElement.class));
+        elems.add(mock(WebElement.class));
+        elems.add(mock(WebElement.class));
+
+        OngoingMultipleElements ogme = new OngoingMultipleElements(null, new ArrayList<WebElement>(elems));
+
+        assertThat(ogme.size(), equalTo(4));
+        assertThat(ogme.get(0), equalTo(item0));
+
+        {
+            List<WebElement> elems2 = new ArrayList<WebElement>();
+            elems2.add(mock(WebElement.class));
+            elems2.add(mock(WebElement.class));
+
+            ogme.addAll(elems2);
+        }
+
+        assertThat(ogme.size(), equalTo(6));
+
+        ogme.remove(item0);
+
+        assertThat(ogme.size(), equalTo(5));
+
+        ogme.removeAll(elems);
+
+        assertThat(ogme.size(), equalTo(2));
+
+        ogme.remove(0);
+
+        assertThat(ogme.size(), equalTo(1));
+
+        assertThat(ogme.contains("foo"), equalTo(false));
+
+        ogme.add(item0);
+
+        assertThat(ogme.indexOf(item0), equalTo(1));
+        assertThat(ogme.indexOf("foo"), equalTo(-1));
+
+        ogme.remove(item0);
+
+        ogme.add(0, item0);
+
+        assertThat(ogme.indexOf(item0), equalTo(0));
+        assertThat(ogme.lastIndexOf(item0), equalTo(0));
+
+        ogme.remove(0);
+        assertThat(ogme.size(), equalTo(1));
+        assertThat(ogme.isEmpty(), equalTo(false));
+        ogme.remove(0);
+        assertThat(ogme.size(), equalTo(0));
+        assertThat(ogme.isEmpty(), equalTo(true));
+
+        ogme.addAll(0, elems);
+        assertThat(ogme.size(), equalTo(4));
+
+        assertThat(ogme.toArray().length, equalTo(4));
+        WebElement[] wes = new WebElement[0] ;
+        assertThat(ogme.toArray(wes).length, equalTo(4));
+
+        assertThat(ogme.subList(1, 2).size(), equalTo(1));
+
+        assertThat(ogme.listIterator(), notNullValue());
+
+        assertThat(ogme.listIterator(0), notNullValue());
+
+        ogme.clear();
+
+        assertThat(ogme.size(), equalTo(0));
+
+    }
+
+
 
     private static class WebDriverJournal implements WebDriver {
 
@@ -1488,5 +1568,6 @@ public class FluentWebDriverTest {
             return "we" + ct;
         }
     }
+
 
 }

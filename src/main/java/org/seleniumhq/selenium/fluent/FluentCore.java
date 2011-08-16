@@ -1,12 +1,11 @@
 package org.seleniumhq.selenium.fluent;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public abstract class FluentCore extends ArrayList<WebElement> {
+public abstract class FluentCore {
 
     protected final WebDriver delegate;
 
@@ -352,8 +351,8 @@ public abstract class FluentCore extends ArrayList<WebElement> {
         return multiple(by, "li");
     }
 
-    protected abstract OngoingSingleElement getSingleOngoingFluentWebDriver();
-    protected abstract OngoingMultipleElements getMultipleOngoingFluentWebDriver();
+    protected abstract OngoingSingleElement getSingleOngoingFluentWebDriver(WebElement result);
+    protected abstract OngoingMultipleElements getMultipleOngoingFluentWebDriver(List<WebElement> results);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -376,7 +375,7 @@ public abstract class FluentCore extends ArrayList<WebElement> {
         by = fixupBy(by, tagName);
         WebElement result = findIt(by);
         assertEquals(result.getTagName(), tagName);
-        return getSingleOngoingFluentWebDriver();
+        return getSingleOngoingFluentWebDriver(result);
     }
 
     private OngoingMultipleElements multiple(By by, String tagName) {
@@ -385,9 +384,7 @@ public abstract class FluentCore extends ArrayList<WebElement> {
         for (WebElement webElement : results) {
             assertEquals(webElement.getTagName(), tagName);
         }
-        clear();
-        addAll(results);
-        return getMultipleOngoingFluentWebDriver();
+        return getMultipleOngoingFluentWebDriver(results);
     }
 
 }
