@@ -45,6 +45,22 @@ public abstract class FluentCore {
         return multiple(by, "div");
     }
 
+    public OngoingSingleElement button() {
+        return single(By.tagName("button"), "button");
+    }
+
+    public OngoingSingleElement button(By by) {
+        return single(by, "button");
+    }
+
+    public OngoingMultipleElements buttons() {
+        return multiple(By.tagName("button"), "button");
+    }
+
+    public OngoingMultipleElements buttons(By by) {
+        return multiple(by, "button");
+    }
+
     public OngoingSingleElement link() {
         return single(By.tagName("a"), "a");
     }

@@ -290,6 +290,55 @@ public class FluentWebDriverTest {
     }
 
     @Test
+    public void button_functionality() {
+
+        FluentCore fb = fwd.button()
+                .button(By.xpath("@foo = 'bar'"))
+                .button(By.cssSelector("baz"))
+                .buttons();
+
+        assertThat(fb, notNullValue());
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.tagName: button) -> we1\n" +
+                        "we1.getTagName() -> 'button'\n" +
+                        "we1.findElement(By.xpath: .//button[@foo = 'bar']) -> we2\n" +
+                        "we2.getTagName() -> 'button'\n" +
+                        "we2.findElement(By.selector: baz) -> we3\n" +
+                        "we3.getTagName() -> 'button'\n" +
+                        "we3.findElements(By.tagName: button) -> [we4, we5]\n" +
+                        "we4.getTagName() -> 'button'\n" +
+                        "we5.getTagName() -> 'button'\n"
+        ));
+    }
+
+    @Test
+    public void buttons_functionality() {
+        FluentCore fb = fwd.button()
+                .buttons(By.name("qux"));
+
+        assertThat(fb, notNullValue());
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.tagName: button) -> we1\n" +
+                        "we1.getTagName() -> 'button'\n" +
+                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
+                        "we2.getTagName() -> 'button'\n" +
+                        "we3.getTagName() -> 'button'\n"
+        ));
+    }
+
+    @Test
+    public void button_mismatched() {
+    try {
+        fwd.button(By.linkText("mismatching_tag_name"))
+                .clearField();
+        fail("should have barfed");
+    } catch (AssertionError e) {
+        assertTrue(e.getMessage().contains("tag was incorrect"));
+    }
+
+}
+
+    @Test
     public void option_functionality() {
 
         FluentCore fb = fwd.option()
