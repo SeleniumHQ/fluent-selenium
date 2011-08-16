@@ -1,4 +1,4 @@
-package org.seleniumhq.selenium;
+package org.seleniumhq.selenium.fluent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.seleniumhq.selenium.fluent.FluentCore;
-import org.seleniumhq.selenium.fluent.FluentMatcher;
-import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.OngoingFluentWebDriver;
-import org.seleniumhq.selenium.fluent.OngoingMultipleElements;
-import org.seleniumhq.selenium.fluent.OngoingSingleElement;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -1390,7 +1384,7 @@ public class FluentWebDriverTest {
     @Test
     public void first() {
 
-        FluentCore fb = fwd.divs().first(new IsALambFilter()).click();
+        FluentCore fb = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
         assertThat(fb, notNullValue());
         assertThat(sb.toString(),
@@ -1401,9 +1395,34 @@ public class FluentWebDriverTest {
                 "we1.click()\n"));
     }
 
-    public static class IsALambFilter implements FluentMatcher {
+    @Test
+    public void first_finds_nothing() {
+
+        FluentCore fb = null;
+        try {
+            fb = fwd.divs().first(new TextContainsWord("mutton")).click();
+            fail("should have barfed");
+        } catch (NothingMatches e) {
+            // expected;
+        }
+
+        assertThat(sb.toString(),
+                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
+                "we1.getTagName() -> 'div'\n" +
+                "we2.getTagName() -> 'div'\n" +
+                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
+                "we2.getText() -> 'Mary had 4 little lamb(s).'\n"));
+    }
+    public static class TextContainsWord implements FluentMatcher {
+
+        private String word;
+
+        public TextContainsWord(String word) {
+            this.word = word;
+        }
+
         public boolean matches(WebElement webElement) {
-            return webElement.getText().contains("lamb(s)");
+            return webElement.getText().contains(word);
         }
     }
 

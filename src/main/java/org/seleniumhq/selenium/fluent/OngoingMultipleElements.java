@@ -138,6 +138,9 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
                 break;
             }
         }
+        if (result == null) {
+            throw new NothingMatches();
+        }
         return getOngoingSingleElement(result);
     }
 
