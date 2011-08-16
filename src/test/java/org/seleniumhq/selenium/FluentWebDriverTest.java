@@ -1369,7 +1369,7 @@ public class FluentWebDriverTest {
     @Test
     public void prototype_of_matcher() {
 
-        FluentCore fb = fwd.divs().matching(new SecondTextContainingLamb()).click();
+        FluentCore fb = fwd.divs().filter(new SecondTextContainingLamb()).click();
 
         assertThat(fb, notNullValue());
         assertThat(sb.toString(),

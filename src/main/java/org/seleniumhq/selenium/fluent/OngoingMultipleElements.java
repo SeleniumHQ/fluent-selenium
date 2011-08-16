@@ -120,7 +120,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
         throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
     }
 
-    public OngoingFluentWebDriver matching(FluentMatcher matcher) {
+    public OngoingFluentWebDriver filter(FluentMatcher matcher) {
         ArrayList<WebElement> results = new ArrayList<WebElement>();
         for (WebElement webElement : this) {
             if (matcher.matches(webElement)) {
