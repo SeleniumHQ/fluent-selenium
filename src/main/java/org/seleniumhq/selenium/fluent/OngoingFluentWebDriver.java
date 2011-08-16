@@ -7,7 +7,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public abstract class OngoingFluentWebDriver extends FluentBase {
+public abstract class OngoingFluentWebDriver extends FluentCore {
 
     public OngoingFluentWebDriver(WebDriver delegate, List<WebElement> currentElements) {
         super(delegate);

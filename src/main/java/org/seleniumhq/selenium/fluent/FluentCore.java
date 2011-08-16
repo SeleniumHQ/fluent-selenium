@@ -6,11 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public abstract class FluentBase extends ArrayList<WebElement> {
+public abstract class FluentCore extends ArrayList<WebElement> {
 
     protected final WebDriver delegate;
 
-    public FluentBase(WebDriver delegate) {
+    public FluentCore(WebDriver delegate) {
         this.delegate = delegate;
     }
 

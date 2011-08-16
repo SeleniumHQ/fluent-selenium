@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public final class FluentWebDriverImpl extends FluentBase implements FluentWebDriver {
+public final class FluentWebDriverImpl extends FluentCore implements FluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
         super(delegate);
