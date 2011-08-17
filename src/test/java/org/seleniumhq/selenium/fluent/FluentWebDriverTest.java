@@ -332,6 +332,13 @@ public class FluentWebDriverTest {
         }
 
         try {
+            ome.click();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).click()"));
+        }
+
+        try {
             ome.submit();
             fail("should have barfed");
         } catch (RuntimeException e) {

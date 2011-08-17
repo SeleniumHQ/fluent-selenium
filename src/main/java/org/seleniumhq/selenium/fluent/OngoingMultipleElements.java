@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-public class OngoingMultipleElements extends OngoingFluentWebDriver implements List<WebElement> {
+public final class OngoingMultipleElements extends OngoingFluentWebDriver implements List<WebElement> {
 
     private final List<WebElement> currentElements;
 
