@@ -270,6 +270,52 @@ public class FluentWebDriverTest {
     }
 
     @Test
+    public void exceptions_decorated_for_filter() {
+
+        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+
+        assertThat(ome, notNullValue());
+
+        FAIL_ON_NEXT.set(true);
+
+        try {
+            ome.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Hello)"));
+        }
+    }
+
+    private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
+        return new FluentMatcher() {
+            public boolean matches(WebElement webElement) {
+                return webElement.getText().equals("it does not matter, as an exception will be thrown");
+            }
+            @Override
+            public String toString() {
+                return toString;
+            }
+        };
+    }
+
+    @Test
+    public void exceptions_decorated_for_first() {
+
+        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+
+        assertThat(ome, notNullValue());
+
+        FAIL_ON_NEXT.set(true);
+
+        try {
+            ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Goodbye)"));
+        }
+    }
+
+    @Test
     public void exceptions_decorated_for_multiple_element() {
 
         OngoingMultipleElements ome = fwd.divs(By.id("foo"));
@@ -1608,7 +1654,7 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void first() {
+    public void first_element_matched_from_larger_list() {
 
         FluentCore fb = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 

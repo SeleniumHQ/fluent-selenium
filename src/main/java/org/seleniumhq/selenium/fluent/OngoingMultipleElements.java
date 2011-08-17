@@ -161,27 +161,41 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
     }
 
     public OngoingMultipleElements filter(FluentMatcher matcher) {
-        ArrayList<WebElement> results = new ArrayList<WebElement>();
-        for (WebElement webElement : this) {
-            if (matcher.matches(webElement)) {
-                results.add(webElement);
+
+        String ctx = context + ".filter(" + matcher + ")";
+        try {
+            ArrayList<WebElement> results = new ArrayList<WebElement>();
+            for (WebElement webElement : this) {
+                if (matcher.matches(webElement)) {
+                    results.add(webElement);
+                }
             }
+            return getOngoingMultipleElements(results, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(results, "");
+
     }
 
     public OngoingSingleElement first(FluentMatcher matcher) {
-        WebElement result = null;
-        for (WebElement webElement : this) {
-            if (matcher.matches(webElement)) {
-                result = webElement;
-                break;
+
+        String ctx = context + ".filter(" + matcher + ")";
+        try {
+            WebElement result = null;
+            for (WebElement webElement : this) {
+                if (matcher.matches(webElement)) {
+                    result = webElement;
+                    break;
+                }
             }
+            if (result == null) {
+                throw new NothingMatches();
+            }
+            return getOngoingSingleElement(result, context);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        if (result == null) {
-            throw new NothingMatches();
-        }
-        return getOngoingSingleElement(result, context);
+
     }
 
 
