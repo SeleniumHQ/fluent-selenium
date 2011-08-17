@@ -47,6 +47,7 @@ public class FluentWebDriverTest {
         sb = new StringBuilder();
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
+        FAIL_ON_NEXT.set(false);
     }
 
     @Test
@@ -92,13 +93,13 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void lengthier_expresion_with_late_exception() {
+    public void lengthier_expression_with_late_exception() {
 
         FluentCore fb = null;
         try {
             fb = fwd.div(ID_A).div(ID_B).span().sendKeys("RAIN_IN_SPAIN");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
+            assertThat(e.getMessage(), equalTo("WebDriver exception during invocation of : ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause().getMessage(), containsString("FAILED AS PER STUB SETUP"));
         }
 
@@ -172,6 +173,98 @@ public class FluentWebDriverTest {
         String text = sfwd.getText();
         assertThat(text, equalTo("Mary had 3 little lamb(s)."));
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
+
+    }
+    @Test
+    public void exceptions_decorated_for_non_ongoing() {
+
+        OngoingSingleElement ose = fwd.div(By.id("THROW_WDE_ON_NEXT_OP"));
+
+        assertThat(ose, notNullValue());
+
+        FAIL_ON_NEXT.set(true);
+
+        try {
+            ose.sendKeys("a");
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).sendKeys('a')"));
+        }
+
+        try {
+            ose.submit();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).submit()"));
+        }
+
+        try {
+            ose.clearField();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).clearField()"));
+        }
+
+        try {
+            ose.getLocation();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getLocation()"));
+        }
+
+        try {
+            ose.getSize();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getSize()"));
+        }
+
+        try {
+            ose.getAttribute("valerie");
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getAttribute(valerie)"));
+        }
+        try {
+            ose.getCssValue("blort");
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getCssValue(blort)"));
+        }
+
+        try {
+            ose.getTagName();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getTagName()"));
+        }
+
+        try {
+            ose.isSelected();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isSelected()"));
+        }
+
+        try {
+            ose.isEnabled();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isEnabled()"));
+        }
+
+        try {
+            ose.isDisplayed();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isDisplayed()"));
+        }
+        try {
+            ose.getText();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getText()"));
+        }
 
     }
 
@@ -1499,6 +1592,8 @@ public class FluentWebDriverTest {
     }
 
 
+    private static ThreadLocal<Boolean> FAIL_ON_NEXT = new ThreadLocal<Boolean>();
+
     private static class WebDriverJournal implements WebDriver {
 
         private Integer CTR = 1;
@@ -1595,14 +1690,23 @@ public class FluentWebDriverTest {
         }
 
         public void click() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".click()\n");
         }
 
         public void submit() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".submit()\n");
         }
 
         public void sendKeys(CharSequence... charSequences) {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             if (charSequences[0].equals("RAIN_IN_SPAIN")) {
                 throw new WebDriverException("FAILED AS PER STUB SETUP");
             }
@@ -1610,10 +1714,16 @@ public class FluentWebDriverTest {
         }
 
         public void clear() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".clear()\n");
         }
 
         public String getTagName() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
 
             StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
             for (StackTraceElement elem : stackTraceElements) {
@@ -1641,18 +1751,27 @@ public class FluentWebDriverTest {
         }
 
         public String getAttribute(String s) {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".getAttribute("+s+") -> " + s + "_value\n");
             return s + "_value";
         }
 
 
         public String getText() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             String msg = "Mary had " + webDriverJournal.CTR++ + " little lamb(s).";
             sb.append(this + ".getText() -> '" + msg + "'\n");
             return msg;
         }
 
         public List<WebElement> findElements(By by) {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             WebElement we = new WebElementJournal(sb, webDriverJournal);
             WebElement we2 = new WebElementJournal(sb, webDriverJournal);
             List<WebElement> elems = asList(we, we2);
@@ -1661,40 +1780,61 @@ public class FluentWebDriverTest {
         }
 
         public WebElement findElement(By by) {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             WebElementJournal rv = new WebElementJournal(sb, webDriverJournal);
             sb.append(this + ".findElement(" + by + ") -> " + rv + "\n");
             return rv;
         }
 
         public boolean isDisplayed() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             webDriverJournal.lastDisplayed = !webDriverJournal.lastDisplayed;
             sb.append(this + ".isDisplayed() -> "+webDriverJournal.lastDisplayed+"\n");
             return webDriverJournal.lastDisplayed;
         }
 
         public boolean isSelected() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
             sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
             return webDriverJournal.lastSelected;
         }
 
         public boolean isEnabled() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
             sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
             return webDriverJournal.lastEnabled;
         }
 
         public Point getLocation() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".getLocation() -> 1,1\n");
             return new Point(1,1);
         }
 
         public Dimension getSize() {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".getSize() -> 10,10\n");
             return new Dimension(10,10);
         }
 
         public String getCssValue(String s) {
+            if (FAIL_ON_NEXT.get()) {
+                throw new WebDriverException();
+            }
             sb.append(this + ".getCssValue("+s+") -> "+s+"_value\n");
             return s + "_value";
         }

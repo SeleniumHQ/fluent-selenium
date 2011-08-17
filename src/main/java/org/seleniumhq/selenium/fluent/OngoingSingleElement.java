@@ -28,8 +28,13 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
 
 
     public OngoingFluentWebDriver click() {
-        currentElement.click();
-        return getOngoingSingleElement(currentElement, context);
+        String ctx = context + ".click()";
+        try {
+            currentElement.click();
+            return getOngoingSingleElement(currentElement, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     /**
@@ -37,14 +42,24 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
      */
 
     public OngoingFluentWebDriver clearField() {
-        currentElement.clear();
-        return getOngoingSingleElement(currentElement, context);
+        String ctx = context + ".clearField()";
+        try {
+            currentElement.clear();
+            return getOngoingSingleElement(currentElement, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
 
     public OngoingFluentWebDriver submit() {
-        currentElement.submit();
-        return getOngoingSingleElement(currentElement, context);
+        String ctx = context + ".submit()";
+        try {
+            currentElement.submit();
+            return getOngoingSingleElement(currentElement, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     // These are as they would be in the WebElement API
@@ -70,39 +85,84 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
     }
 
     public String getTagName() {
-        return currentElement.getTagName();
+        String ctx = context + ".getTagName()";
+        try {
+            return currentElement.getTagName();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public boolean isSelected() {
-        return currentElement.isSelected();
+        String ctx = context + ".isSelected()";
+        try {
+            return currentElement.isSelected();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public boolean isEnabled() {
-        return currentElement.isEnabled();
+        String ctx = context + ".isEnabled()";
+        try {
+            return currentElement.isEnabled();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public boolean isDisplayed() {
-        return currentElement.isDisplayed();
+        String ctx = context + ".isDisplayed()";
+        try {
+            return currentElement.isDisplayed();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public Point getLocation() {
-        return currentElement.getLocation();
+        String ctx = context + ".getLocation()";
+        try {
+            return currentElement.getLocation();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public Dimension getSize() {
-        return currentElement.getSize();
+        String ctx = context + ".getSize()";
+        try {
+            return currentElement.getSize();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public String getCssValue(String cssName) {
-        return currentElement.getCssValue(cssName);
+        String ctx = context + ".getCssValue("+cssName+")";
+        try {
+            return currentElement.getCssValue(cssName);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public String  getAttribute(String attr) {
-        return currentElement.getAttribute(attr);
+        String ctx = context + ".getAttribute("+attr+")";
+        try {
+            return currentElement.getAttribute(attr);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
     public String getText() {
-        return currentElement.getText();
+        String ctx = context + ".getText()";
+        try {
+            return currentElement.getText();
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
+        }
     }
 
 }

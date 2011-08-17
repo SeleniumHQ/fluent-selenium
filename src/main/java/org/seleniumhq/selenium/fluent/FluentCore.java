@@ -426,7 +426,7 @@ public abstract class FluentCore {
     }
 
     protected RuntimeException decorateWebDriverException(String ctx, WebDriverException e) {
-        return new RuntimeException(ctx, e);
+        return new RuntimeException("WebDriver exception during invocation of : " + ctx, e);
     }
 
 }
