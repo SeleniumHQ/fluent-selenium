@@ -316,6 +316,17 @@ public class FluentWebDriverTest {
     }
 
     @Test
+    public void further_find_element_after_multiple_is_unsupported() {
+
+        try {
+            OngoingSingleElement ose = fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+    }
+
+    @Test
     public void exceptions_decorated_for_multiple_element() {
 
         OngoingMultipleElements ome = fwd.divs(By.id("foo"));
