@@ -371,7 +371,7 @@ public abstract class FluentCore {
     }
 
     protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result, String context);
-    protected abstract OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results);
+    protected abstract OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -422,7 +422,7 @@ public abstract class FluentCore {
         } catch (WebDriverException e) {
             throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(results);
+        return getOngoingMultipleElements(results, ctx);
     }
 
     protected RuntimeException decorateWebDriverException(String ctx, WebDriverException e) {

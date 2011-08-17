@@ -75,14 +75,6 @@ public class OngoingSingleElement extends OngoingFluentWebDriver {
         return getOngoingSingleElement(currentElement, ctx);
     }
 
-    private String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
-        String keys = "";
-        for (int i = 0; i < keysToSend.length; i++) {
-            CharSequence charSequence = keysToSend[i];
-            keys = keys + ", '" + charSequence + "'";
-        }
-        return keys.substring(2);
-    }
 
     public String getTagName() {
         String ctx = context + ".getTagName()";

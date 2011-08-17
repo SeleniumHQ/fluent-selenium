@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public class OngoingMultipleElements extends OngoingFluentWebDriver implements List<WebElement> {
@@ -30,70 +31,109 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
     }
 
     public OngoingFluentWebDriver click() {
-        for (WebElement webElement : this) {
-            webElement.click();
+        String ctx = context + ".click()";
+        try {
+            for (WebElement webElement : this) {
+                webElement.click();
+            }
+            return getOngoingMultipleElements(this, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(this);
     }
 
     /**
      *  Use this instead of clear() to clear an WebElement
      */
     public OngoingFluentWebDriver clearField() {
-        for (WebElement webElement : this) {
-            webElement.clear();
+        String ctx = context + ".clearField()";
+        try {
+            for (WebElement webElement : this) {
+                webElement.clear();
+            }
+            return getOngoingMultipleElements(this, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(this);
     }
 
     public OngoingFluentWebDriver submit() {
-        for (WebElement webElement : this) {
-            webElement.submit();
+        String ctx = context + ".submit()";
+        try {
+            for (WebElement webElement : this) {
+                webElement.submit();
+            }
+            return getOngoingMultipleElements(this, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(this);
     }
 
     // These are as they would be in the WebElement API
 
     public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
-        for (WebElement webElement : this) {
-            webElement.sendKeys(keysToSend);
+        String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
+        try {
+            for (WebElement webElement : this) {
+                webElement.sendKeys(keysToSend);
+            }
+            return getOngoingMultipleElements(this, ctx);
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return getOngoingMultipleElements(this);
     }
 
     public boolean isSelected() {
-        boolean areSelected = true;
-        for (WebElement webElement : this) {
-            areSelected = areSelected & webElement.isSelected();
+        String ctx = context + ".isSelected()";
+        try {
+            boolean areSelected = true;
+            for (WebElement webElement : this) {
+                areSelected = areSelected & webElement.isSelected();
+            }
+            return areSelected;
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return areSelected;
     }
 
     public boolean isEnabled() {
-        boolean areEnabled = true;
-        for (WebElement webElement : this) {
-            areEnabled = areEnabled & webElement.isEnabled();
+        String ctx = context + ".isEnabled()";
+        try {
+            boolean areEnabled = true;
+            for (WebElement webElement : this) {
+                areEnabled = areEnabled & webElement.isEnabled();
+            }
+            return areEnabled;
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return areEnabled;
     }
 
     public boolean isDisplayed() {
-        boolean areDisplayed = true;
-        for (WebElement webElement : this) {
-            areDisplayed = areDisplayed & webElement.isDisplayed();
+        String ctx = context + ".isDisplayed()";
+        try {
+            boolean areDisplayed = true;
+            for (WebElement webElement : this) {
+                areDisplayed = areDisplayed & webElement.isDisplayed();
+            }
+            return areDisplayed;
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return areDisplayed;
     }
 
     public String getText() {
-        String text = "";
-        for (WebElement webElement : this) {
-            text = text + webElement.getText();
+        String ctx = context + ".getText()";
+        try {
+            String text = "";
+            for (WebElement webElement : this) {
+                text = text + webElement.getText();
+            }
+            return text;
+        } catch (WebDriverException e) {
+            throw decorateWebDriverException(ctx, e);
         }
-        return text;
     }
-
 
     @Override
     public Point getLocation() {
@@ -127,7 +167,7 @@ public class OngoingMultipleElements extends OngoingFluentWebDriver implements L
                 results.add(webElement);
             }
         }
-        return getOngoingMultipleElements(results);
+        return getOngoingMultipleElements(results, "");
     }
 
     public OngoingSingleElement first(FluentMatcher matcher) {

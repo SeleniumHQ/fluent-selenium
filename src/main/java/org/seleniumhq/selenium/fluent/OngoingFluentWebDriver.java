@@ -18,9 +18,18 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results) {
+    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results, String context) {
         return new OngoingMultipleElements(super.delegate, results, context);
     }
+
+    protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
+        String keys = "";
+        for (CharSequence charSequence : keysToSend) {
+            keys = keys + ", '" + charSequence + "'";
+        }
+        return keys.substring(2);
+    }
+
 
     // All these have peer equivalents in the WebElement interface
     // ===========================================================

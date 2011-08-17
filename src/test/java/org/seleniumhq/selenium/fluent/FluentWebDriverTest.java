@@ -175,10 +175,11 @@ public class FluentWebDriverTest {
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
-    @Test
-    public void exceptions_decorated_for_non_ongoing() {
 
-        OngoingSingleElement ose = fwd.div(By.id("THROW_WDE_ON_NEXT_OP"));
+    @Test
+    public void exceptions_decorated_for_single_element() {
+
+        OngoingSingleElement ose = fwd.div(By.id("foo"));
 
         assertThat(ose, notNullValue());
 
@@ -188,82 +189,142 @@ public class FluentWebDriverTest {
             ose.sendKeys("a");
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).sendKeys('a')"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).sendKeys('a')"));
         }
 
         try {
             ose.submit();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).submit()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).submit()"));
         }
 
         try {
             ose.clearField();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).clearField()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).clearField()"));
         }
 
         try {
             ose.getLocation();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getLocation()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getLocation()"));
         }
 
         try {
             ose.getSize();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getSize()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getSize()"));
         }
 
         try {
             ose.getAttribute("valerie");
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getAttribute(valerie)"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getAttribute(valerie)"));
         }
         try {
             ose.getCssValue("blort");
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getCssValue(blort)"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue(blort)"));
         }
 
         try {
             ose.getTagName();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getTagName()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getTagName()"));
         }
 
         try {
             ose.isSelected();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isSelected()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isSelected()"));
         }
 
         try {
             ose.isEnabled();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isEnabled()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isEnabled()"));
         }
 
         try {
             ose.isDisplayed();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).isDisplayed()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isDisplayed()"));
         }
         try {
             ose.getText();
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: THROW_WDE_ON_NEXT_OP).getText()"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getText()"));
+        }
+
+    }
+
+    @Test
+    public void exceptions_decorated_for_multiple_element() {
+
+        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+
+        assertThat(ome, notNullValue());
+
+        FAIL_ON_NEXT.set(true);
+
+        try {
+            ome.sendKeys("a");
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).sendKeys('a')"));
+        }
+
+        try {
+            ome.submit();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).submit()"));
+        }
+
+        try {
+            ome.clearField();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).clearField()"));
+        }
+
+        try {
+            ome.isSelected();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isSelected()"));
+        }
+
+        try {
+            ome.isEnabled();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isEnabled()"));
+        }
+
+        try {
+            ome.isDisplayed();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isDisplayed()"));
+        }
+
+        try {
+            ome.getText();
+            fail("should have barfed");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).getText()"));
         }
 
     }
