@@ -380,7 +380,7 @@ public abstract class FluentCore {
         return by;
     }
 
-    protected final void assertEquals(String is, String shouldBe) {
+    protected final void assertTagIs(String is, String shouldBe) {
         if (!is.equals(shouldBe)) {
             throw new AssertionError("tag was incorrect, should have been " + shouldBe + " but was " + is);
         }
@@ -399,7 +399,7 @@ public abstract class FluentCore {
         } catch (WebDriverException e) {
             throw decorateWebDriverException(ctx, e);
         }
-        assertEquals(result.getTagName(), tagName);
+        assertTagIs(result.getTagName(), tagName);
         return getOngoingSingleElement(result, ctx);
     }
 
@@ -417,7 +417,7 @@ public abstract class FluentCore {
         try {
             results = findThem(by);
             for (WebElement webElement : results) {
-                assertEquals(webElement.getTagName(), tagName);
+                assertTagIs(webElement.getTagName(), tagName);
             }
         } catch (WebDriverException e) {
             throw decorateWebDriverException(ctx, e);
