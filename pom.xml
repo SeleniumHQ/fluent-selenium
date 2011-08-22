@@ -16,7 +16,7 @@
     <scm>
         <connection>scm:git:git@github.com:SeleniumHQ/fluent-selenium.git</connection>
         <developerConnection>scm:git:git@github.com:SeleniumHQ/fluent-selenium.git</developerConnection>
-        <url>scm:git:git@github.com:SeleniumHQ/fluent-selenium.git</url>
+        <url>git@github.com:SeleniumHQ/fluent-selenium.git</url>
     </scm>
     <dependencies>
         <dependency>
