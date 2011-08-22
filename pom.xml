@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>fluent-selenium</name>
     <description>A Fluent API on top of Selenium's WebDriver API</description>
-    <!--url>http://github.com/SeleniumHQ/fluent-selenium</url-->
+    <url>http://github.com/SeleniumHQ/fluent-selenium</url>
     <licenses>
         <license>
             <name>Apache 2.0</name>
