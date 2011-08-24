@@ -412,7 +412,7 @@ public abstract class FluentCore {
         try {
             result = findIt(by);
         } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+            throw decorateRuntimeException(ctx, e);
         }
         assertTagIs(result.getTagName(), tagName);
         return getOngoingSingleElement(result, ctx);
@@ -435,13 +435,13 @@ public abstract class FluentCore {
                 assertTagIs(webElement.getTagName(), tagName);
             }
         } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+            throw decorateRuntimeException(ctx, e);
         }
         return getOngoingMultipleElements(results, ctx);
     }
 
-    protected RuntimeException decorateWebDriverException(String ctx, WebDriverException e) {
-        return new RuntimeException("WebDriver exception during invocation of : " + ctx, e);
+    protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
+        return new RuntimeException("RuntimeException during invocation of: " + ctx, e);
     }
 
 }

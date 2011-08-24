@@ -25,7 +25,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import static java.util.Arrays.asList;
@@ -62,7 +61,8 @@ public class FluentWebDriverTest {
         sb = new StringBuilder();
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
-        FAIL_ON_NEXT.set(false);
+        FAIL_ON_NEXT.set(null);
+
     }
 
     @Test
@@ -112,10 +112,14 @@ public class FluentWebDriverTest {
 
         FluentCore fb = null;
         try {
-            fb = fwd.div(ID_A).div(ID_B).span().sendKeys("RAIN_IN_SPAIN");
+            OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
+
+            FAIL_ON_NEXT.set(new RuntimeException());
+
+            fb = span.sendKeys("RAIN_IN_SPAIN");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("WebDriver exception during invocation of : ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
-            assertThat(e.getCause().getMessage(), containsString("FAILED AS PER STUB SETUP"));
+            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
+            assertThat(e.getCause(), notNullValue());
         }
 
         assertThat(sb.toString(), equalTo(
@@ -198,7 +202,7 @@ public class FluentWebDriverTest {
 
         assertThat(ose, notNullValue());
 
-        FAIL_ON_NEXT.set(true);
+        FAIL_ON_NEXT.set(new RuntimeException());
 
         try {
             ose.sendKeys("a");
@@ -291,7 +295,7 @@ public class FluentWebDriverTest {
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(true);
+        FAIL_ON_NEXT.set(new RuntimeException());
 
         try {
             ome.filter(makeMatcherThatUsesWebDriver("Hello"));
@@ -320,7 +324,7 @@ public class FluentWebDriverTest {
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(true);
+        FAIL_ON_NEXT.set(new RuntimeException());
 
         try {
             ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
@@ -348,7 +352,7 @@ public class FluentWebDriverTest {
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(true);
+        FAIL_ON_NEXT.set(new RuntimeException());
 
         try {
             ome.sendKeys("a");
@@ -1732,7 +1736,7 @@ public class FluentWebDriverTest {
     }
 
 
-    private static ThreadLocal<Boolean> FAIL_ON_NEXT = new ThreadLocal<Boolean>();
+    private static ThreadLocal<Throwable> FAIL_ON_NEXT = new ThreadLocal<Throwable>();
 
     private static class WebDriverJournal implements WebDriver {
 
@@ -1830,40 +1834,38 @@ public class FluentWebDriverTest {
         }
 
         public void click() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".click()\n");
         }
 
         public void submit() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".submit()\n");
         }
 
         public void sendKeys(CharSequence... charSequences) {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
-            if (charSequences[0].equals("RAIN_IN_SPAIN")) {
-                throw new WebDriverException("FAILED AS PER STUB SETUP");
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".sendKeys("+charSequences[0]+")\n");
         }
 
         public void clear() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".clear()\n");
         }
 
-        public String getTagName() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
+        private void throwExceptionMaybe(Throwable e) {
+            if (e != null) {
+                if (e instanceof AssertionError) {
+                    throw (AssertionError) e;
+                }
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
+                }
             }
+        }
+
+        public String getTagName() {
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
 
             StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
             for (StackTraceElement elem : stackTraceElements) {
@@ -1891,27 +1893,21 @@ public class FluentWebDriverTest {
         }
 
         public String getAttribute(String s) {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".getAttribute("+s+") -> " + s + "_value\n");
             return s + "_value";
         }
 
 
         public String getText() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             String msg = "Mary had " + webDriverJournal.CTR++ + " little lamb(s).";
             sb.append(this + ".getText() -> '" + msg + "'\n");
             return msg;
         }
 
         public List<WebElement> findElements(By by) {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             WebElement we = new WebElementJournal(sb, webDriverJournal);
             WebElement we2 = new WebElementJournal(sb, webDriverJournal);
             List<WebElement> elems = asList(we, we2);
@@ -1920,61 +1916,47 @@ public class FluentWebDriverTest {
         }
 
         public WebElement findElement(By by) {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             WebElementJournal rv = new WebElementJournal(sb, webDriverJournal);
             sb.append(this + ".findElement(" + by + ") -> " + rv + "\n");
             return rv;
         }
 
         public boolean isDisplayed() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             webDriverJournal.lastDisplayed = !webDriverJournal.lastDisplayed;
             sb.append(this + ".isDisplayed() -> "+webDriverJournal.lastDisplayed+"\n");
             return webDriverJournal.lastDisplayed;
         }
 
         public boolean isSelected() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
             sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
             return webDriverJournal.lastSelected;
         }
 
         public boolean isEnabled() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
             sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
             return webDriverJournal.lastEnabled;
         }
 
         public Point getLocation() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".getLocation() -> 1,1\n");
             return new Point(1,1);
         }
 
         public Dimension getSize() {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".getSize() -> 10,10\n");
             return new Dimension(10,10);
         }
 
         public String getCssValue(String s) {
-            if (FAIL_ON_NEXT.get()) {
-                throw new WebDriverException();
-            }
+            throwExceptionMaybe(FAIL_ON_NEXT.get());
             sb.append(this + ".getCssValue("+s+") -> "+s+"_value\n");
             return s + "_value";
         }

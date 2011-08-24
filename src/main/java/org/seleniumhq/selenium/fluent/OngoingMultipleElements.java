@@ -52,8 +52,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 webElement.click();
             }
             return getOngoingMultipleElements(this, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -67,8 +67,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 webElement.clear();
             }
             return getOngoingMultipleElements(this, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -79,8 +79,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 webElement.submit();
             }
             return getOngoingMultipleElements(this, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -93,8 +93,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 webElement.sendKeys(keysToSend);
             }
             return getOngoingMultipleElements(this, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -106,8 +106,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 areSelected = areSelected & webElement.isSelected();
             }
             return areSelected;
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -119,8 +119,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 areEnabled = areEnabled & webElement.isEnabled();
             }
             return areEnabled;
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -132,8 +132,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 areDisplayed = areDisplayed & webElement.isDisplayed();
             }
             return areDisplayed;
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -145,8 +145,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 text = text + webElement.getText();
             }
             return text;
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -186,8 +186,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 }
             }
             return getOngoingMultipleElements(results, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
 
     }
@@ -207,8 +207,10 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
                 throw new NothingMatches();
             }
             return getOngoingSingleElement(result, context);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (NothingMatches e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
 
     }

@@ -47,8 +47,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         try {
             currentElement.click();
             return getOngoingSingleElement(currentElement, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -61,8 +61,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         try {
             currentElement.clear();
             return getOngoingSingleElement(currentElement, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -72,8 +72,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         try {
             currentElement.submit();
             return getOngoingSingleElement(currentElement, ctx);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -83,9 +83,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
         try {
             currentElement.sendKeys(keysToSend);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
-
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
         return getOngoingSingleElement(currentElement, ctx);
     }
@@ -95,8 +94,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getTagName()";
         try {
             return currentElement.getTagName();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -104,8 +103,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".isSelected()";
         try {
             return currentElement.isSelected();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -113,8 +112,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".isEnabled()";
         try {
             return currentElement.isEnabled();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -122,8 +121,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".isDisplayed()";
         try {
             return currentElement.isDisplayed();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -131,8 +130,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getLocation()";
         try {
             return currentElement.getLocation();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -140,8 +139,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getSize()";
         try {
             return currentElement.getSize();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -149,8 +148,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getCssValue("+cssName+")";
         try {
             return currentElement.getCssValue(cssName);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -158,8 +157,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getAttribute("+attr+")";
         try {
             return currentElement.getAttribute(attr);
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
@@ -167,8 +166,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         String ctx = context + ".getText()";
         try {
             return currentElement.getText();
-        } catch (WebDriverException e) {
-            throw decorateWebDriverException(ctx, e);
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
         }
     }
 
