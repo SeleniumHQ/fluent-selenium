@@ -40,7 +40,7 @@ public class WebElementJournal implements WebElement {
         sb.append(this + ".clear()\n");
     }
 
-    private void throwExceptionMaybe(Throwable e) {
+    static void throwExceptionMaybe(Throwable e) {
         if (e != null) {
             if (e instanceof AssertionError) {
                 throw (AssertionError) e;

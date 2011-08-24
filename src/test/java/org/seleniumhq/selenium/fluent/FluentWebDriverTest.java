@@ -17,6 +17,7 @@ package org.seleniumhq.selenium.fluent;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hamcrest.core.IsSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -28,6 +29,7 @@ import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -36,6 +38,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
 /**
  * Unit test for simple App.
@@ -333,12 +336,14 @@ public class FluentWebDriverTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Hello)"));
+            assertThat(e.getCause(), sameInstance(throwable));
         }
     }
 
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
             public boolean matches(WebElement webElement) {
+                throwExceptionMaybe(FluentWebDriverTest.FAIL_ON_NEXT.get());
                 return webElement.getText().equals("it does not matter, as an exception will be thrown");
             }
             @Override
