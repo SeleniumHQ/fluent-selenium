@@ -109,7 +109,7 @@ public class FluentWebDriverTest {
             FAIL_ON_NEXT.set(new RuntimeException());
 
             fb = span.sendKeys("RAIN_IN_SPAIN");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause(), notNullValue());
         }
@@ -133,7 +133,7 @@ public class FluentWebDriverTest {
             FAIL_ON_NEXT.set(new AssertionError());
 
             fb = span.sendKeys("RAIN_IN_SPAIN");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause(), notNullValue());
         }
@@ -231,82 +231,82 @@ public class FluentWebDriverTest {
         try {
             ose.sendKeys("a");
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).sendKeys('a')"));
         }
 
         try {
             ose.submit();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).submit()"));
         }
 
         try {
             ose.clearField();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).clearField()"));
         }
 
         try {
             ose.getLocation();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getLocation()"));
         }
 
         try {
             ose.getSize();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getSize()"));
         }
 
         try {
             ose.getAttribute("valerie");
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getAttribute(valerie)"));
         }
         try {
             ose.getCssValue("blort");
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue(blort)"));
         }
 
         try {
             ose.getTagName();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getTagName()"));
         }
 
         try {
             ose.isSelected();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isSelected()"));
         }
 
         try {
             ose.isEnabled();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isEnabled()"));
         }
 
         try {
             ose.isDisplayed();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isDisplayed()"));
         }
         try {
             ose.getText();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getText()"));
         }
     }
@@ -331,7 +331,7 @@ public class FluentWebDriverTest {
         try {
             ome.filter(makeMatcherThatUsesWebDriver("Hello"));
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Hello)"));
         }
     }
@@ -368,7 +368,7 @@ public class FluentWebDriverTest {
         try {
             ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Goodbye)"));
         }
     }
@@ -404,56 +404,56 @@ public class FluentWebDriverTest {
         try {
             ome.sendKeys("a");
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).sendKeys('a')"));
         }
 
         try {
             ome.click();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).click()"));
         }
 
         try {
             ome.submit();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).submit()"));
         }
 
         try {
             ome.clearField();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).clearField()"));
         }
 
         try {
             ome.isSelected();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isSelected()"));
         }
 
         try {
             ome.isEnabled();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isEnabled()"));
         }
 
         try {
             ome.isDisplayed();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isDisplayed()"));
         }
 
         try {
             ome.getText();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).getText()"));
         }
     }

@@ -446,10 +446,10 @@ public abstract class FluentCore {
     }
 
     protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
-        return new RuntimeException("RuntimeException during invocation of: " + ctx, e);
+        return new FluentExecutionStopped("RuntimeException during invocation of: " + ctx, e);
     }
     protected RuntimeException decorateAssertionError(String ctx, AssertionError e) {
-        return new RuntimeException("AssertionError during invocation of: " + ctx, e);
+        return new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
     }
 
 }
