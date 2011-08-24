@@ -20,7 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public final class OngoingSingleElement extends OngoingFluentWebDriver {
@@ -49,6 +48,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return getOngoingSingleElement(currentElement, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -63,6 +64,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return getOngoingSingleElement(currentElement, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -74,6 +77,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return getOngoingSingleElement(currentElement, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -85,6 +90,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             currentElement.sendKeys(keysToSend);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
         return getOngoingSingleElement(currentElement, ctx);
     }
@@ -96,6 +103,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getTagName();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -105,6 +114,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.isSelected();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -114,6 +125,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.isEnabled();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -123,6 +136,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.isDisplayed();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -132,6 +147,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getLocation();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -141,6 +158,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getSize();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -150,6 +169,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getCssValue(cssName);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -159,6 +180,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getAttribute(attr);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -168,6 +191,8 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
             return currentElement.getText();
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 

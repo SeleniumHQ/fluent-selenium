@@ -100,7 +100,7 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void lengthier_expression_with_late_exception() {
+    public void lengthier_expression_with_late_runtime_exception() {
 
         FluentCore fb = null;
         try {
@@ -111,6 +111,30 @@ public class FluentWebDriverTest {
             fb = span.sendKeys("RAIN_IN_SPAIN");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
+            assertThat(e.getCause(), notNullValue());
+        }
+
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.id: idA) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "we1.findElement(By.id: idB) -> we2\n" +
+                        "we2.getTagName() -> 'div'\n" +
+                        "we2.findElement(By.tagName: span) -> we3\n" +
+                        "we3.getTagName() -> 'span'\n"
+        ));
+    }
+    @Test
+    public void lengthier_expression_with_late_assertion_error() {
+
+        FluentCore fb = null;
+        try {
+            OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
+
+            FAIL_ON_NEXT.set(new AssertionError());
+
+            fb = span.sendKeys("RAIN_IN_SPAIN");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause(), notNullValue());
         }
 
@@ -188,13 +212,21 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void exceptions_decorated_for_single_element() {
+    public void runtime_exceptions_decorated_for_single_element() {
+        wrap_exceptions_tests(new RuntimeException());
+    }
 
+    @Test
+    public void assertion_errors_decorated_for_single_element() {
+        wrap_exceptions_tests(new AssertionError());
+    }
+
+    private void wrap_exceptions_tests(Throwable throwable) {
         OngoingSingleElement ose = fwd.div(By.id("foo"));
 
         assertThat(ose, notNullValue());
 
-        FAIL_ON_NEXT.set(new RuntimeException());
+        FAIL_ON_NEXT.set(throwable);
 
         try {
             ose.sendKeys("a");
@@ -277,17 +309,24 @@ public class FluentWebDriverTest {
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getText()"));
         }
-
     }
 
     @Test
     public void exceptions_decorated_for_filter() {
+        filter_exception_handling(new RuntimeException());
+    }
 
+    @Test
+    public void assertion_errors_decorated_for_filter() {
+        filter_exception_handling(new AssertionError());
+    }
+
+    private void filter_exception_handling(Throwable throwable) {
         OngoingMultipleElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(new RuntimeException());
+        FAIL_ON_NEXT.set(throwable);
 
         try {
             ome.filter(makeMatcherThatUsesWebDriver("Hello"));
@@ -310,13 +349,21 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void exceptions_decorated_for_first() {
+    public void runtime_exceptions_decorated_for_first() {
+        first_exception_handling(new RuntimeException());
+    }
 
+    @Test
+    public void assertion_error_decorated_for_first() {
+        first_exception_handling(new AssertionError());
+    }
+
+    private void first_exception_handling(Throwable throwable) {
         OngoingMultipleElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(new RuntimeException());
+        FAIL_ON_NEXT.set(throwable);
 
         try {
             ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
@@ -338,13 +385,21 @@ public class FluentWebDriverTest {
     }
 
     @Test
-    public void exceptions_decorated_for_multiple_element() {
+    public void rumtime_exceptions_decorated_for_multiple_element() {
+        multiple_elem_exception_handling(new RuntimeException());
+    }
 
+    @Test
+    public void assertion_error_decorated_for_multiple_element() {
+        multiple_elem_exception_handling(new AssertionError());
+    }
+
+    private void multiple_elem_exception_handling(Throwable throwable) {
         OngoingMultipleElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
-        FAIL_ON_NEXT.set(new RuntimeException());
+        FAIL_ON_NEXT.set(throwable);
 
         try {
             ome.sendKeys("a");
@@ -401,7 +456,6 @@ public class FluentWebDriverTest {
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).getText()"));
         }
-
     }
 
     @Test
@@ -535,7 +589,7 @@ public class FluentWebDriverTest {
             fwd.div(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
+        } catch (AssertionError e) {        // TODO
             assertTrue(e.getMessage().contains("tag was incorrect"));
         }
 
@@ -584,7 +638,7 @@ public class FluentWebDriverTest {
         fwd.button(By.linkText("mismatching_tag_name"))
                 .clearField();
         fail("should have barfed");
-    } catch (AssertionError e) {
+    } catch (AssertionError e) { // TODO
         assertTrue(e.getMessage().contains("tag was incorrect"));
     }
 
@@ -635,7 +689,7 @@ public class FluentWebDriverTest {
             fwd.option(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
+        } catch (AssertionError e) { // TODO
             assertTrue(e.getMessage().contains("tag was incorrect"));
         }
 
@@ -686,7 +740,7 @@ public class FluentWebDriverTest {
             fwd.select(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
+        } catch (AssertionError e) { // TODO
             assertTrue(e.getMessage().contains("tag was incorrect"));
         }
 

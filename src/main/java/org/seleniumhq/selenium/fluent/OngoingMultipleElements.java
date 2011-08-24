@@ -24,7 +24,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public final class OngoingMultipleElements extends OngoingFluentWebDriver implements List<WebElement> {
@@ -54,6 +53,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return getOngoingMultipleElements(this, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -69,6 +70,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return getOngoingMultipleElements(this, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -81,6 +84,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return getOngoingMultipleElements(this, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -95,6 +100,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return getOngoingMultipleElements(this, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -108,6 +115,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return areSelected;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -121,6 +130,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return areEnabled;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -134,6 +145,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return areDisplayed;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -147,6 +160,8 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return text;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
     }
 
@@ -188,8 +203,9 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             return getOngoingMultipleElements(results, ctx);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
-
     }
 
     public OngoingSingleElement first(FluentMatcher matcher) {
@@ -211,8 +227,9 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
             throw e;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
-
     }
 
 

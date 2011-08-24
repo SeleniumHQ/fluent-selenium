@@ -18,7 +18,6 @@ package org.seleniumhq.selenium.fluent;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public abstract class FluentCore {
@@ -411,8 +410,12 @@ public abstract class FluentCore {
         String ctx = contextualize(by.toString(), tagName);
         try {
             result = findIt(by);
-        } catch (WebDriverException e) {
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
         assertTagIs(result.getTagName(), tagName);
         return getOngoingSingleElement(result, ctx);
@@ -434,14 +437,19 @@ public abstract class FluentCore {
             for (WebElement webElement : results) {
                 assertTagIs(webElement.getTagName(), tagName);
             }
-        } catch (WebDriverException e) {
+        } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
         }
         return getOngoingMultipleElements(results, ctx);
     }
 
     protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
         return new RuntimeException("RuntimeException during invocation of: " + ctx, e);
+    }
+    protected RuntimeException decorateAssertionError(String ctx, AssertionError e) {
+        return new RuntimeException("AssertionError during invocation of: " + ctx, e);
     }
 
 }
