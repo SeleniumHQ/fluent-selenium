@@ -17,7 +17,6 @@ package org.seleniumhq.selenium.fluent;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hamcrest.core.IsSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -73,9 +72,9 @@ public class FluentWebDriverTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        FluentCore fb = fwd.div(ID_A).div(ID_B);
+        FluentCore fc = fwd.div(ID_A).div(ID_B);
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
 
         InOrder io = inOrder(we, wd, we2);
         io.verify(wd).findElement(ID_A);
@@ -88,9 +87,9 @@ public class FluentWebDriverTest {
     @Test
     public void example_of_longer_query_using_IDs() {
 
-        FluentCore fb = fwd.div(ID_A).div(ID_B).span().click();
+        FluentCore fc = fwd.div(ID_A).div(ID_B).span().click();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.id: idA) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -105,13 +104,13 @@ public class FluentWebDriverTest {
     @Test
     public void lengthier_expression_with_late_runtime_exception() {
 
-        FluentCore fb = null;
+        FluentCore fc = null;
         try {
             OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
 
             FAIL_ON_NEXT.set(new RuntimeException());
 
-            fb = span.sendKeys("RAIN_IN_SPAIN");
+            fc = span.sendKeys("RAIN_IN_SPAIN");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause(), notNullValue());
@@ -129,13 +128,13 @@ public class FluentWebDriverTest {
     @Test
     public void lengthier_expression_with_late_assertion_error() {
 
-        FluentCore fb = null;
+        FluentCore fc = null;
         try {
             OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
 
             FAIL_ON_NEXT.set(new AssertionError());
 
-            fb = span.sendKeys("RAIN_IN_SPAIN");
+            fc = span.sendKeys("RAIN_IN_SPAIN");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
             assertThat(e.getCause(), notNullValue());
@@ -154,9 +153,9 @@ public class FluentWebDriverTest {
     @Test
     public void xPaths_and_non_ongoing() {
 
-        OngoingFluentWebDriver sfwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
+        OngoingFluentWebDriver ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
 
-        assertThat(sfwd, notNullValue());
+        assertThat(ofwd, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -168,48 +167,114 @@ public class FluentWebDriverTest {
         ));
 
         sb.setLength(0);
-        Point locn = sfwd.getLocation();
+        Point locn = ofwd.getLocation();
         assertThat(locn.toString(), equalTo("(1, 1)"));
         assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
-        Dimension size = sfwd.getSize();
+        Dimension size = ofwd.getSize();
         assertThat(size.toString(), equalTo("(10, 10)"));
         assertThat(sb.toString(), equalTo("we2.getSize() -> 10,10\n"));
 
         sb.setLength(0);
-        String cssVal = sfwd.getCssValue("blort");
-        assertThat(cssVal.toString(), equalTo("blort_value"));
+        String cssVal = ofwd.getCssValue("blort");
+        assertThat(cssVal, equalTo("blort_value"));
         assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
 
         sb.setLength(0);
-        String value = sfwd.getAttribute("valerie");
-        assertThat(value.toString(), equalTo("valerie_value"));
+        String value = ofwd.getAttribute("valerie");
+        assertThat(value, equalTo("valerie_value"));
         assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
 
         sb.setLength(0);
-        String tagName = sfwd.getTagName();
-        assertThat(tagName.toString(), equalTo("taggart"));
+        String tagName = ofwd.getTagName();
+        assertThat(tagName, equalTo("taggart"));
         assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
 
         sb.setLength(0);
-        boolean isSelected = sfwd.isSelected();
+        boolean isSelected = ofwd.isSelected();
         assertThat(isSelected, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isSelected() -> true\n"));
 
         sb.setLength(0);
-        boolean isEnabled = sfwd.isEnabled();
+        boolean isEnabled = ofwd.isEnabled();
         assertThat(isEnabled, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isEnabled() -> true\n"));
 
         sb.setLength(0);
-        boolean isDisplayed = sfwd.isDisplayed();
+        boolean isDisplayed = ofwd.isDisplayed();
         assertThat(isDisplayed, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isDisplayed() -> true\n"));
 
         sb.setLength(0);
-        String text = sfwd.getText();
+        String text = ofwd.getText();
         assertThat(text, equalTo("Mary had 3 little lamb(s)."));
+        assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
+
+    }
+    @Test
+
+    public void assertions_against_otherwise_non_ongoing() {
+
+        OngoingSingleElement ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
+
+        assertThat(ofwd, notNullValue());
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.tagName: div) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "we1.findElement(By.xpath: .//span[@foo = 'bar']) -> we2\n" +
+                        "we2.getTagName() -> 'span'\n" +
+                        "we2.sendKeys(apple)\n" +
+                        "we2.clear()\n" +
+                        "we2.submit()\n"
+        ));
+
+        sb.setLength(0);
+        Point locn = ofwd.location().should().be(equalTo(new Point(1, 1))).value();
+        assertThat(locn.toString(), equalTo("(1, 1)"));
+        assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
+
+        sb.setLength(0);
+        locn = ofwd.location().should().notBe(equalTo(new Point(2, 2))).value();
+        assertThat(locn.toString(), equalTo("(1, 1)"));
+        assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
+
+        sb.setLength(0);
+        Dimension size = ofwd.size().should().be(equalTo(new Dimension(10, 10))).value();
+        assertThat(sb.toString(), equalTo("we2.getSize() -> 10,10\n"));
+
+
+        sb.setLength(0);
+        String cssVal = ofwd.cssValue("blort").should().be(equalTo("blort_value")).value();
+        assertThat(cssVal, equalTo("blort_value"));
+        assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
+
+
+        sb.setLength(0);
+        String value = ofwd.attribute("valerie").should().be(equalTo("valerie_value")).value();
+        assertThat(value, equalTo("valerie_value"));
+
+        assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
+
+        sb.setLength(0);
+        String tagName = ofwd.tagName().should().be(equalTo("taggart")).value();
+        assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
+        assertThat(tagName, equalTo("taggart"));
+
+        sb.setLength(0);
+        boolean isSelected = ofwd.selected().should().be(equalTo(true)).value();
+        assertThat(sb.toString(), equalTo("we2.isSelected() -> true\n"));
+
+        sb.setLength(0);
+        boolean isEnabled = ofwd.enabled().should().be(equalTo(true)).value();
+        assertThat(sb.toString(), equalTo("we2.isEnabled() -> true\n"));
+
+        sb.setLength(0);
+        boolean isDisplayed = ofwd.displayed().should().be(equalTo(true)).value();
+        assertThat(sb.toString(), equalTo("we2.isDisplayed() -> true\n"));
+
+        sb.setLength(0);
+        String text = ofwd.text().should().be(equalTo("Mary had 3 little lamb(s).")).value();
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
@@ -554,12 +619,12 @@ public class FluentWebDriverTest {
     @Test
     public void div_functionality() {
 
-        FluentCore fb = fwd.div()
+        FluentCore fc = fwd.div()
                 .div(By.xpath("@foo = 'bar'"))
                 .div(By.cssSelector("baz"))
                 .divs();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -575,10 +640,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void divs_functionality() {
-        FluentCore fb = fwd.div()
+        FluentCore fc = fwd.div()
                 .divs(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -603,12 +668,12 @@ public class FluentWebDriverTest {
     @Test
     public void button_functionality() {
 
-        FluentCore fb = fwd.button()
+        FluentCore fc = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
                 .button(By.cssSelector("baz"))
                 .buttons();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: button) -> we1\n" +
                         "we1.getTagName() -> 'button'\n" +
@@ -624,10 +689,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void buttons_functionality() {
-        FluentCore fb = fwd.button()
+        FluentCore fc = fwd.button()
                 .buttons(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: button) -> we1\n" +
                         "we1.getTagName() -> 'button'\n" +
@@ -652,12 +717,12 @@ public class FluentWebDriverTest {
     @Test
     public void option_functionality() {
 
-        FluentCore fb = fwd.option()
+        FluentCore fc = fwd.option()
                 .option(By.xpath("@foo = 'bar'"))
                 .option(By.cssSelector("baz"))
                 .options();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: option) -> we1\n" +
                         "we1.getTagName() -> 'option'\n" +
@@ -674,10 +739,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void options_functionality() {
-        FluentCore fb = fwd.option()
+        FluentCore fc = fwd.option()
                 .options(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: option) -> we1\n" +
                         "we1.getTagName() -> 'option'\n" +
@@ -703,12 +768,12 @@ public class FluentWebDriverTest {
     @Test
     public void select_functionality() {
 
-        FluentCore fb = fwd.select()
+        FluentCore fc = fwd.select()
                 .select(By.xpath("@foo = 'bar'"))
                 .select(By.cssSelector("baz"))
                 .selects();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +
@@ -725,10 +790,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void selects_functionality() {
-        FluentCore fb = fwd.select()
+        FluentCore fc = fwd.select()
                 .selects(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +
@@ -754,12 +819,12 @@ public class FluentWebDriverTest {
     @Test
     public void span_functionality() {
 
-        FluentCore fb = fwd.span()
+        FluentCore fc = fwd.span()
                 .span(By.xpath("@foo = 'bar'"))
                 .span(By.cssSelector("baz"))
                 .spans();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: span) -> we1\n" +
                         "we1.getTagName() -> 'span'\n" +
@@ -776,10 +841,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void spans_functionality() {
-        FluentCore fb = fwd.span()
+        FluentCore fc = fwd.span()
                 .spans(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: span) -> we1\n" +
                         "we1.getTagName() -> 'span'\n" +
@@ -805,12 +870,12 @@ public class FluentWebDriverTest {
     @Test
     public void tr_functionality() {
 
-        FluentCore fb = fwd.tr()
+        FluentCore fc = fwd.tr()
                 .tr(By.xpath("@foo = 'bar'"))
                 .tr(By.cssSelector("baz"))
                 .trs();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: tr) -> we1\n" +
                         "we1.getTagName() -> 'tr'\n" +
@@ -827,10 +892,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void trs_functionality() {
-        FluentCore fb = fwd.tr()
+        FluentCore fc = fwd.tr()
                 .trs(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: tr) -> we1\n" +
                         "we1.getTagName() -> 'tr'\n" +
@@ -856,12 +921,12 @@ public class FluentWebDriverTest {
     @Test
     public void td_functionality() {
 
-        FluentCore fb = fwd.td()
+        FluentCore fc = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: td) -> we1\n" +
                         "we1.getTagName() -> 'td'\n" +
@@ -878,10 +943,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void tds_functionality() {
-        FluentCore fb = fwd.td()
+        FluentCore fc = fwd.td()
                 .tds(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: td) -> we1\n" +
                         "we1.getTagName() -> 'td'\n" +
@@ -907,12 +972,12 @@ public class FluentWebDriverTest {
     @Test
     public void table_functionality() {
 
-        FluentCore fb = fwd.table()
+        FluentCore fc = fwd.table()
                 .table(By.xpath("@foo = 'bar'"))
                 .table(By.cssSelector("baz"))
                 .tables();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: table) -> we1\n" +
                         "we1.getTagName() -> 'table'\n" +
@@ -929,10 +994,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void tables_functionality() {
-        FluentCore fb = fwd.table()
+        FluentCore fc = fwd.table()
                 .tables(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: table) -> we1\n" +
                         "we1.getTagName() -> 'table'\n" +
@@ -958,12 +1023,12 @@ public class FluentWebDriverTest {
     @Test
     public void h1_functionality() {
 
-        FluentCore fb = fwd.h1()
+        FluentCore fc = fwd.h1()
                 .h1(By.xpath("@foo = 'bar'"))
                 .h1(By.cssSelector("baz"))
                 .h1s();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h1) -> we1\n" +
                         "we1.getTagName() -> 'h1'\n" +
@@ -979,10 +1044,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void h1s_functionality() {
-        FluentCore fb = fwd.h1()
+        FluentCore fc = fwd.h1()
                 .h1s(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h1) -> we1\n" +
                         "we1.getTagName() -> 'h1'\n" +
@@ -1007,12 +1072,12 @@ public class FluentWebDriverTest {
     @Test
     public void h2_functionality() {
 
-        FluentCore fb = fwd.h2()
+        FluentCore fc = fwd.h2()
                 .h2(By.xpath("@foo = 'bar'"))
                 .h2(By.cssSelector("baz"))
                 .h2s();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h2) -> we1\n" +
                         "we1.getTagName() -> 'h2'\n" +
@@ -1028,10 +1093,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void h2s_functionality() {
-        FluentCore fb = fwd.h2()
+        FluentCore fc = fwd.h2()
                 .h2s(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h2) -> we1\n" +
                         "we1.getTagName() -> 'h2'\n" +
@@ -1056,12 +1121,12 @@ public class FluentWebDriverTest {
     @Test
     public void h3_functionality() {
 
-        FluentCore fb = fwd.h3()
+        FluentCore fc = fwd.h3()
                 .h3(By.xpath("@foo = 'bar'"))
                 .h3(By.cssSelector("baz"))
                 .h3s();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h3) -> we1\n" +
                         "we1.getTagName() -> 'h3'\n" +
@@ -1077,10 +1142,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void h3s_functionality() {
-        FluentCore fb = fwd.h3()
+        FluentCore fc = fwd.h3()
                 .h3s(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h3) -> we1\n" +
                         "we1.getTagName() -> 'h3'\n" +
@@ -1105,12 +1170,12 @@ public class FluentWebDriverTest {
     @Test
     public void h4_functionality() {
 
-        FluentCore fb = fwd.h4()
+        FluentCore fc = fwd.h4()
                 .h4(By.xpath("@foo = 'bar'"))
                 .h4(By.cssSelector("baz"))
                 .h4s();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h4) -> we1\n" +
                         "we1.getTagName() -> 'h4'\n" +
@@ -1126,10 +1191,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void h4s_functionality() {
-        FluentCore fb = fwd.h4()
+        FluentCore fc = fwd.h4()
                 .h4s(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: h4) -> we1\n" +
                         "we1.getTagName() -> 'h4'\n" +
@@ -1154,12 +1219,12 @@ public class FluentWebDriverTest {
     @Test
     public void img_functionality() {
 
-        FluentCore fb = fwd.img()
+        FluentCore fc = fwd.img()
                 .img(By.xpath("@foo = 'bar'"))
                 .img(By.cssSelector("baz"))
                 .imgs();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: img) -> we1\n" +
                         "we1.getTagName() -> 'img'\n" +
@@ -1175,10 +1240,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void imgs_functionality() {
-        FluentCore fb = fwd.img()
+        FluentCore fc = fwd.img()
                 .imgs(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: img) -> we1\n" +
                         "we1.getTagName() -> 'img'\n" +
@@ -1203,12 +1268,12 @@ public class FluentWebDriverTest {
     @Test
     public void form_functionality() {
 
-        FluentCore fb = fwd.form()
+        FluentCore fc = fwd.form()
                 .form(By.xpath("@foo = 'bar'"))
                 .form(By.cssSelector("baz"))
                 .forms();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: form) -> we1\n" +
                         "we1.getTagName() -> 'form'\n" +
@@ -1224,10 +1289,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void forms_functionality() {
-        FluentCore fb = fwd.form()
+        FluentCore fc = fwd.form()
                 .forms(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: form) -> we1\n" +
                         "we1.getTagName() -> 'form'\n" +
@@ -1252,12 +1317,12 @@ public class FluentWebDriverTest {
     @Test
     public void textarea_functionality() {
 
-        FluentCore fb = fwd.textarea()
+        FluentCore fc = fwd.textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
                 .textarea(By.cssSelector("baz"))
                 .textareas();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: textarea) -> we1\n" +
                         "we1.getTagName() -> 'textarea'\n" +
@@ -1273,10 +1338,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void textareas_functionality() {
-        FluentCore fb = fwd.textarea()
+        FluentCore fc = fwd.textarea()
                 .textareas(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: textarea) -> we1\n" +
                         "we1.getTagName() -> 'textarea'\n" +
@@ -1301,12 +1366,12 @@ public class FluentWebDriverTest {
     @Test
     public void input_functionality() {
 
-        FluentCore fb = fwd.input()
+        FluentCore fc = fwd.input()
                 .input(By.xpath("@foo = 'bar'"))
                 .input(By.cssSelector("baz"))
                 .inputs();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: input) -> we1\n" +
                         "we1.getTagName() -> 'input'\n" +
@@ -1322,10 +1387,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void inputs_functionality() {
-        FluentCore fb = fwd.input()
+        FluentCore fc = fwd.input()
                 .inputs(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: input) -> we1\n" +
                         "we1.getTagName() -> 'input'\n" +
@@ -1351,12 +1416,12 @@ public class FluentWebDriverTest {
     @Test
     public void link_functionality() {
 
-        FluentCore fb = fwd.link()
+        FluentCore fc = fwd.link()
                 .link(By.xpath("@foo = 'bar'"))
                 .link(By.cssSelector("baz"))
                 .links();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: a) -> we1\n" +
                         "we1.getTagName() -> 'a'\n" +
@@ -1372,10 +1437,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void links_functionality() {
-        FluentCore fb = fwd.link()
+        FluentCore fc = fwd.link()
                 .links(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: a) -> we1\n" +
                         "we1.getTagName() -> 'a'\n" +
@@ -1400,12 +1465,12 @@ public class FluentWebDriverTest {
     @Test
     public void p_functionality() {
 
-        FluentCore fb = fwd.p()
+        FluentCore fc = fwd.p()
                 .p(By.xpath("@foo = 'bar'"))
                 .p(By.cssSelector("baz"))
                 .ps();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: p) -> we1\n" +
                         "we1.getTagName() -> 'p'\n" +
@@ -1421,10 +1486,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void ps_functionality() {
-        FluentCore fb = fwd.p()
+        FluentCore fc = fwd.p()
                 .ps(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: p) -> we1\n" +
                         "we1.getTagName() -> 'p'\n" +
@@ -1449,12 +1514,12 @@ public class FluentWebDriverTest {
     @Test
     public void th_functionality() {
 
-        FluentCore fb = fwd.th()
+        FluentCore fc = fwd.th()
                 .th(By.xpath("@foo = 'bar'"))
                 .th(By.cssSelector("baz"))
                 .ths();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: th) -> we1\n" +
                         "we1.getTagName() -> 'th'\n" +
@@ -1470,10 +1535,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void ths_functionality() {
-        FluentCore fb = fwd.th()
+        FluentCore fc = fwd.th()
                 .ths(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: th) -> we1\n" +
                         "we1.getTagName() -> 'th'\n" +
@@ -1498,12 +1563,12 @@ public class FluentWebDriverTest {
     @Test
     public void ul_functionality() {
 
-        FluentCore fb = fwd.ul()
+        FluentCore fc = fwd.ul()
                 .ul(By.xpath("@foo = 'bar'"))
                 .ul(By.cssSelector("baz"))
                 .uls();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ul) -> we1\n" +
                         "we1.getTagName() -> 'ul'\n" +
@@ -1519,10 +1584,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void uls_functionality() {
-        FluentCore fb = fwd.ul()
+        FluentCore fc = fwd.ul()
                 .uls(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ul) -> we1\n" +
                         "we1.getTagName() -> 'ul'\n" +
@@ -1547,12 +1612,12 @@ public class FluentWebDriverTest {
     @Test
     public void ol_functionality() {
 
-        FluentCore fb = fwd.ol()
+        FluentCore fc = fwd.ol()
                 .ol(By.xpath("@foo = 'bar'"))
                 .ol(By.cssSelector("baz"))
                 .ols();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ol) -> we1\n" +
                         "we1.getTagName() -> 'ol'\n" +
@@ -1568,10 +1633,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void ols_functionality() {
-        FluentCore fb = fwd.ol()
+        FluentCore fc = fwd.ol()
                 .ols(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ol) -> we1\n" +
                         "we1.getTagName() -> 'ol'\n" +
@@ -1596,12 +1661,12 @@ public class FluentWebDriverTest {
     @Test
     public void li_functionality() {
 
-        FluentCore fb = fwd.li()
+        FluentCore fc = fwd.li()
                 .li(By.xpath("@foo = 'bar'"))
                 .li(By.cssSelector("baz"))
                 .lis();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: li) -> we1\n" +
                         "we1.getTagName() -> 'li'\n" +
@@ -1617,10 +1682,10 @@ public class FluentWebDriverTest {
 
     @Test
     public void lis_functionality() {
-        FluentCore fb = fwd.li()
+        FluentCore fc = fwd.li()
                 .lis(By.name("qux"));
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: li) -> we1\n" +
                         "we1.getTagName() -> 'li'\n" +
@@ -1723,9 +1788,9 @@ public class FluentWebDriverTest {
     @Test
     public void filtering() {
 
-        FluentCore fb = fwd.divs().filter(new FourLambFilter()).click();
+        FluentCore fc = fwd.divs().filter(new FourLambFilter()).click();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(),
                 equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
@@ -1744,9 +1809,9 @@ public class FluentWebDriverTest {
     @Test
     public void first_element_matched_from_larger_list() {
 
-        FluentCore fb = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
+        FluentCore fc = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
-        assertThat(fb, notNullValue());
+        assertThat(fc, notNullValue());
         assertThat(sb.toString(),
                 equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
@@ -1758,9 +1823,9 @@ public class FluentWebDriverTest {
     @Test
     public void first_finds_nothing() {
 
-        FluentCore fb = null;
+        FluentCore fc = null;
         try {
-            fb = fwd.divs().first(new TextContainsWord("mutton")).click();
+            fc = fwd.divs().first(new TextContainsWord("mutton")).click();
             fail("should have barfed");
         } catch (NothingMatches e) {
             // expected;

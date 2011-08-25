@@ -68,7 +68,7 @@ public class WebElementJournal implements WebElement {
                 if (methodName.equals("link")) {
                     methodName = "a";
                 }
-                if (methodName.equals("getTagName")) {
+                if (methodName.equals("getTagName") || methodName.equals("tagName")) {
                     methodName = "taggart";
                 }
                 sb.append(this + ".getTagName() -> '" + methodName + "'\n");

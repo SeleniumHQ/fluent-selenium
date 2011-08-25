@@ -82,5 +82,4 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
 
     public abstract String getText();
 
-
 }

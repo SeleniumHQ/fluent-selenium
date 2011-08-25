@@ -41,7 +41,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
     }
 
 
-    public OngoingFluentWebDriver click() {
+    public OngoingSingleElement click() {
         String ctx = context + ".click()";
         try {
             currentElement.click();
@@ -57,7 +57,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
      *  Use this instead of clear() to clear an WebElement
      */
 
-    public OngoingFluentWebDriver clearField() {
+    public OngoingSingleElement clearField() {
         String ctx = context + ".clearField()";
         try {
             currentElement.clear();
@@ -70,7 +70,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
     }
 
 
-    public OngoingFluentWebDriver submit() {
+    public OngoingSingleElement submit() {
         String ctx = context + ".submit()";
         try {
             currentElement.submit();
@@ -84,7 +84,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
 
     // These are as they would be in the WebElement API
 
-    public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
+    public OngoingSingleElement sendKeys(CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
         try {
             currentElement.sendKeys(keysToSend);
@@ -196,4 +196,48 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         }
     }
 
+    //@Override
+    public WebElementValue<Point> location() {
+        return new WebElementValue<Point>(currentElement.getLocation());
+    }
+
+    //@Override
+    public WebElementValue<Dimension> size() {
+        return new WebElementValue<Dimension>(currentElement.getSize());
+    }
+
+    //@Override
+    public WebElementValue<String> cssValue(String name) {
+        return new WebElementValue<String>(currentElement.getCssValue(name));
+    }
+
+    //@Override
+    public WebElementValue<String> attribute(String name) {
+        return new WebElementValue<String>(currentElement.getAttribute(name));
+    }
+
+    //@Override
+    public WebElementValue<String> tagName() {
+        return new WebElementValue<String>(currentElement.getTagName());
+    }
+
+    //@Override
+    public WebElementValue<Boolean> selected() {
+        return new WebElementValue<Boolean>(currentElement.isSelected());
+    }
+
+    //@Override
+    public WebElementValue<Boolean> enabled() {
+        return new WebElementValue<Boolean>(currentElement.isEnabled());
+    }
+
+    //@Override
+    public WebElementValue<Boolean> displayed() {
+        return new WebElementValue<Boolean>(currentElement.isDisplayed());
+    }
+
+    //@Override
+    public WebElementValue<String> text() {
+        return new WebElementValue<String>(currentElement.getText());
+    }
 }
