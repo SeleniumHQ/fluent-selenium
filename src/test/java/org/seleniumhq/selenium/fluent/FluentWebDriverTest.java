@@ -556,9 +556,9 @@ public class FluentWebDriverTest {
     @Test
     public void multiple_hits_from_the_outset_and_operations_on_the_resulting_list() {
 
-        OngoingFluentWebDriver ofwd = fwd.divs();
+        FluentWebElements elems = fwd.divs();
 
-        assertThat(ofwd, notNullValue());
+        assertThat(elems, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
@@ -566,76 +566,76 @@ public class FluentWebDriverTest {
         ));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd2 = ofwd.clearField();
+        OngoingFluentWebDriver ofwd2 = elems.clearField();
         assertThat(ofwd2, notNullValue());
         assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd3 = ofwd.click();
+        OngoingFluentWebDriver ofwd3 = elems.click();
         assertThat(ofwd3, notNullValue());
         assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
 
         sb.setLength(0);
-        boolean areSelected = ofwd.isSelected();
+        boolean areSelected = elems.isSelected();
         assertThat(areSelected, equalTo(false));
         assertThat(sb.toString(), equalTo("we1.isSelected() -> true\nwe2.isSelected() -> false\n"));
 
         sb.setLength(0);
-        boolean areEnabled = ofwd.isEnabled();
+        boolean areEnabled = elems.isEnabled();
         assertThat(areEnabled, equalTo(false));
         assertThat(sb.toString(), equalTo("we1.isEnabled() -> true\nwe2.isEnabled() -> false\n"));
 
         sb.setLength(0);
-        boolean areDisplayed = ofwd.isDisplayed();
+        boolean areDisplayed = elems.isDisplayed();
         assertThat(areDisplayed, equalTo(false));
         assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\nwe2.isDisplayed() -> false\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd4 = ofwd.sendKeys("aaa");
+        OngoingFluentWebDriver ofwd4 = elems.sendKeys("aaa");
         assertThat(ofwd4, notNullValue());
         assertThat(sb.toString(), equalTo("we1.sendKeys(aaa)\nwe2.sendKeys(aaa)\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd5 = ofwd.submit();
+        OngoingFluentWebDriver ofwd5 = elems.submit();
         assertThat(ofwd5, notNullValue());
         assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
 
         sb.setLength(0);
-        String text = ofwd.getText();
+        String text = elems.getText();
         assertThat(text, equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
         assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 3 little lamb(s).'\nwe2.getText() -> 'Mary had 4 little lamb(s).'\n"));
 
         sb.setLength(0);
         try {
-            ofwd.getLocation();
+            elems.getLocation();
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getLocation() has no meaning for multiple elements"));
         }
 
         sb.setLength(0);
         try {
-            ofwd.getSize();
+            elems.getSize();
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getSize() has no meaning for multiple elements"));
         }
 
         sb.setLength(0);
         try {
-            ofwd.getCssValue("x");
+            elems.getCssValue("x");
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getCssValue() has no meaning for multiple elements"));
         }
 
         sb.setLength(0);
         try {
-            ofwd.getAttribute("x");
+            elems.getAttribute("x");
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getAttribute() has no meaning for multiple elements"));
         }
 
         sb.setLength(0);
         try {
-            ofwd.getTagName();
+            elems.getTagName();
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
         }

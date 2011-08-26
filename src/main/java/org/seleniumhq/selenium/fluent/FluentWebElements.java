@@ -15,16 +15,9 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+
+import java.util.*;
 
 public final class FluentWebElements extends OngoingFluentWebDriver implements List<WebElement> {
 
@@ -44,7 +37,7 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
         throw new UnsupportedOperationException("not applicable to this impl");
     }
 
-    public OngoingFluentWebDriver click() {
+    public FluentWebElements click() {
         String ctx = context + ".click()";
         try {
             for (WebElement webElement : this) {
@@ -61,7 +54,7 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
     /**
      *  Use this instead of clear() to clear an WebElement
      */
-    public OngoingFluentWebDriver clearField() {
+    public FluentWebElements clearField() {
         String ctx = context + ".clearField()";
         try {
             for (WebElement webElement : this) {
@@ -75,7 +68,7 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
         }
     }
 
-    public OngoingFluentWebDriver submit() {
+    public FluentWebElements submit() {
         String ctx = context + ".submit()";
         try {
             for (WebElement webElement : this) {
@@ -91,7 +84,7 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
 
     // These are as they would be in the WebElement API
 
-    public OngoingFluentWebDriver sendKeys(CharSequence... keysToSend) {
+    public FluentWebElements sendKeys(CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
         try {
             for (WebElement webElement : this) {

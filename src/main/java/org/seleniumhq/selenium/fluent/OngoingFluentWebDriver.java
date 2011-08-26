@@ -50,19 +50,6 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     // All these have peer equivalents in the WebElement interface
     // ===========================================================
 
-    // These though, don't return void as they do in WebElement
-
-    public abstract OngoingFluentWebDriver click();
-
-    /**
-     *  Use this instead of clear() to clear an WebElement
-     */
-    public abstract OngoingFluentWebDriver clearField();
-
-    public abstract OngoingFluentWebDriver submit();
-
-    public abstract OngoingFluentWebDriver sendKeys(CharSequence... keysToSend);
-
     // These are as they would be in the WebElement API
 
     public abstract Point getLocation();
