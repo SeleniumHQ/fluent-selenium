@@ -19,110 +19,109 @@ import org.openqa.selenium.By;
 
 public interface FluentWebDriver {
 
-    OngoingFluentWebDriver span();
-    OngoingFluentWebDriver span(By by);
-    OngoingFluentWebDriver spans();
-    OngoingFluentWebDriver spans(By by);
+    FluentWebElement span();
+    FluentWebElement span(By by);
+    FluentWebElements spans();
+    FluentWebElements spans(By by);
 
-    OngoingFluentWebDriver div();
-    OngoingFluentWebDriver div(By by);
-    OngoingFluentWebDriver divs();
-    OngoingFluentWebDriver divs(By by);
+    FluentWebElement div();
+    FluentWebElement div(By by);
+    FluentWebElements divs();
+    FluentWebElements divs(By by);
 
-    OngoingFluentWebDriver link();
-    OngoingFluentWebDriver link(By by);
-    OngoingFluentWebDriver links();
-    OngoingFluentWebDriver links(By by);
+    FluentWebElement link();
+    FluentWebElement link(By by);
+    FluentWebElements links();
+    FluentWebElements links(By by);
 
-    OngoingFluentWebDriver input();
-    OngoingFluentWebDriver input(By by);
-    OngoingFluentWebDriver inputs();
-    OngoingFluentWebDriver inputs(By by);
+    FluentWebElement input();
+    FluentWebElement input(By by);
+    FluentWebElements inputs();
+    FluentWebElements inputs(By by);
 
-    OngoingFluentWebDriver select();
-    OngoingFluentWebDriver select(By by);
-    OngoingFluentWebDriver selects();
-    OngoingFluentWebDriver selects(By by);
+    FluentWebElement select();
+    FluentWebElement select(By by);
+    FluentWebElements selects();
+    FluentWebElements selects(By by);
 
-    OngoingFluentWebDriver li();
-    OngoingFluentWebDriver li(By by);
-    OngoingFluentWebDriver lis();
-    OngoingFluentWebDriver lis(By by);
+    FluentWebElement li();
+    FluentWebElement li(By by);
+    FluentWebElements lis();
+    FluentWebElements lis(By by);
 
-    OngoingFluentWebDriver h1();
-    OngoingFluentWebDriver h1(By by);
-    OngoingFluentWebDriver h1s();
-    OngoingFluentWebDriver h1s(By by);
+    FluentWebElement h1();
+    FluentWebElement h1(By by);
+    FluentWebElements h1s();
+    FluentWebElements h1s(By by);
 
-    OngoingFluentWebDriver h2();
-    OngoingFluentWebDriver h2(By by);
-    OngoingFluentWebDriver h2s();
-    OngoingFluentWebDriver h2s(By by);
+    FluentWebElement h2();
+    FluentWebElement h2(By by);
+    FluentWebElements h2s();
+    FluentWebElements h2s(By by);
 
-    OngoingFluentWebDriver h3();
-    OngoingFluentWebDriver h3(By by);
-    OngoingFluentWebDriver h3s();
-    OngoingFluentWebDriver h3s(By by);
+    FluentWebElement h3();
+    FluentWebElement h3(By by);
+    FluentWebElements h3s();
+    FluentWebElements h3s(By by);
 
-    OngoingFluentWebDriver h4();
-    OngoingFluentWebDriver h4(By by);
-    OngoingFluentWebDriver h4s();
-    OngoingFluentWebDriver h4s(By by);
+    FluentWebElement h4();
+    FluentWebElement h4(By by);
+    FluentWebElements h4s();
+    FluentWebElements h4s(By by);
 
-    OngoingFluentWebDriver p();
-    OngoingFluentWebDriver p(By by);
-    OngoingFluentWebDriver ps();
-    OngoingFluentWebDriver ps(By by);
+    FluentWebElement p();
+    FluentWebElement p(By by);
+    FluentWebElements ps();
+    FluentWebElements ps(By by);
 
-    OngoingFluentWebDriver img();
-    OngoingFluentWebDriver img(By by);
-    OngoingFluentWebDriver imgs();
-    OngoingFluentWebDriver imgs(By by);
+    FluentWebElement img();
+    FluentWebElement img(By by);
+    FluentWebElements imgs();
+    FluentWebElements imgs(By by);
 
-    OngoingFluentWebDriver table();
-    OngoingFluentWebDriver table(By by);
-    OngoingFluentWebDriver tables();
-    OngoingFluentWebDriver tables(By by);
+    FluentWebElement table();
+    FluentWebElement table(By by);
+    FluentWebElements tables();
+    FluentWebElements tables(By by);
 
-    OngoingFluentWebDriver tr();
-    OngoingFluentWebDriver tr(By by);
-    OngoingFluentWebDriver trs();
-    OngoingFluentWebDriver trs(By by);
+    FluentWebElement tr();
+    FluentWebElement tr(By by);
+    FluentWebElements trs();
+    FluentWebElements trs(By by);
 
-    OngoingFluentWebDriver td();
-    OngoingFluentWebDriver td(By by);
-    OngoingFluentWebDriver tds();
-    OngoingFluentWebDriver tds(By by);
+    FluentWebElement td();
+    FluentWebElement td(By by);
+    FluentWebElements tds();
+    FluentWebElements tds(By by);
 
-    OngoingFluentWebDriver th();
-    OngoingFluentWebDriver th(By by);
-    OngoingFluentWebDriver ths();
-    OngoingFluentWebDriver ths(By by);
+    FluentWebElement th();
+    FluentWebElement th(By by);
+    FluentWebElements ths();
+    FluentWebElements ths(By by);
 
-    OngoingFluentWebDriver ul();
-    OngoingFluentWebDriver ul(By by);
-    OngoingFluentWebDriver uls();
-    OngoingFluentWebDriver uls(By by);
+    FluentWebElement ul();
+    FluentWebElement ul(By by);
+    FluentWebElements uls();
+    FluentWebElements uls(By by);
 
-    OngoingFluentWebDriver ol();
-    OngoingFluentWebDriver ol(By by);
-    OngoingFluentWebDriver ols();
-    OngoingFluentWebDriver ols(By by);
+    FluentWebElement ol();
+    FluentWebElement ol(By by);
+    FluentWebElements ols();
+    FluentWebElements ols(By by);
 
-    OngoingFluentWebDriver form();
-    OngoingFluentWebDriver form(By by);
-    OngoingFluentWebDriver forms();
-    OngoingFluentWebDriver forms(By by);
+    FluentWebElement form();
+    FluentWebElement form(By by);
+    FluentWebElements forms();
+    FluentWebElements forms(By by);
 
-    OngoingFluentWebDriver textarea();
-    OngoingFluentWebDriver textarea(By by);
-    OngoingFluentWebDriver textareas();
-    OngoingFluentWebDriver textareas(By by);
+    FluentWebElement textarea();
+    FluentWebElement textarea(By by);
+    FluentWebElements textareas();
+    FluentWebElements textareas(By by);
 
-    OngoingFluentWebDriver option();
-    OngoingFluentWebDriver option(By by);
-    OngoingFluentWebDriver options();
-    OngoingFluentWebDriver options(By by);
-
+    FluentWebElement option();
+    FluentWebElement option(By by);
+    FluentWebElements options();
+    FluentWebElements options(By by);
 
 }

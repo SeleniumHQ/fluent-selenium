@@ -143,7 +143,7 @@ public class FluentWebDriverTest {
     @Test
     public void xPaths_and_non_ongoing() {
 
-        OngoingFluentWebDriver ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
+        FluentWebElement ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
 
         assertThat(ofwd, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -566,12 +566,12 @@ public class FluentWebDriverTest {
         ));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd2 = elems.clearField();
+        FluentWebElements ofwd2 = elems.clearField();
         assertThat(ofwd2, notNullValue());
         assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd3 = elems.click();
+        FluentWebElements ofwd3 = elems.click();
         assertThat(ofwd3, notNullValue());
         assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
 
@@ -591,12 +591,12 @@ public class FluentWebDriverTest {
         assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\nwe2.isDisplayed() -> false\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd4 = elems.sendKeys("aaa");
+        FluentWebElements ofwd4 = elems.sendKeys("aaa");
         assertThat(ofwd4, notNullValue());
         assertThat(sb.toString(), equalTo("we1.sendKeys(aaa)\nwe2.sendKeys(aaa)\n"));
 
         sb.setLength(0);
-        OngoingFluentWebDriver ofwd5 = elems.submit();
+        FluentWebElements ofwd5 = elems.submit();
         assertThat(ofwd5, notNullValue());
         assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
 
