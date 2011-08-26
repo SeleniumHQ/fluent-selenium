@@ -15,28 +15,18 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import static org.junit.internal.matchers.StringContains.containsString;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
 /**
@@ -216,67 +206,102 @@ public class FluentWebDriverTest {
 
     public void assertions_against_otherwise_non_ongoing() {
 
-        OngoingSingleElement ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
+        OngoingSingleElement ofwd = fwd.div();
 
         assertThat(ofwd, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(By.xpath: .//span[@foo = 'bar']) -> we2\n" +
-                        "we2.getTagName() -> 'span'\n" +
-                        "we2.sendKeys(apple)\n" +
-                        "we2.clear()\n" +
-                        "we2.submit()\n"
+                        "we1.getTagName() -> 'div'\n"
         ));
 
         sb.setLength(0);
-        Point locn = ofwd.location().should().be(equalTo(new Point(1, 1))).value();
+        Point locn = ofwd.location().shouldBe(new Point(1, 1)).value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
-        assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
+        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
-        locn = ofwd.location().should().notBe(equalTo(new Point(2, 2))).value();
+        try {
+            ofwd.location().shouldBe(new Point(2, 2)).value();
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), equalTo("?.div().location().should().be(<(2, 2)>) ~ but was <(1, 1)>"));
+        }
+        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
+
+        sb.setLength(0);
+        locn = ofwd.location().shouldNotBe(new Point(2, 2)).value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
-        assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
+        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
-        Dimension size = ofwd.size().should().be(equalTo(new Dimension(10, 10))).value();
-        assertThat(sb.toString(), equalTo("we2.getSize() -> 10,10\n"));
+        try {
+            ofwd.location().shouldNotBe(new Point(1, 1)).value();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("?.div().location().shouldNot().be(<(1, 1)>) ~ but was."));
+        }
+        assertThat(locn.toString(), equalTo("(1, 1)"));
+        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
+        {
+            sb.setLength(0);
+            Dimension size = ofwd.size().shouldBe(new Dimension(10, 10)).value();
+            assertThat(size, equalTo(new Dimension(10, 10)));
+            assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
+        }
+        {
 
-        sb.setLength(0);
-        String cssVal = ofwd.cssValue("blort").should().be(equalTo("blort_value")).value();
-        assertThat(cssVal, equalTo("blort_value"));
-        assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
-
-
-        sb.setLength(0);
-        String value = ofwd.attribute("valerie").should().be(equalTo("valerie_value")).value();
-        assertThat(value, equalTo("valerie_value"));
-
-        assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
-
-        sb.setLength(0);
-        String tagName = ofwd.tagName().should().be(equalTo("taggart")).value();
-        assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
-        assertThat(tagName, equalTo("taggart"));
-
-        sb.setLength(0);
-        boolean isSelected = ofwd.selected().should().be(equalTo(true)).value();
-        assertThat(sb.toString(), equalTo("we2.isSelected() -> true\n"));
-
-        sb.setLength(0);
-        boolean isEnabled = ofwd.enabled().should().be(equalTo(true)).value();
-        assertThat(sb.toString(), equalTo("we2.isEnabled() -> true\n"));
-
-        sb.setLength(0);
-        boolean isDisplayed = ofwd.displayed().should().be(equalTo(true)).value();
-        assertThat(sb.toString(), equalTo("we2.isDisplayed() -> true\n"));
-
-        sb.setLength(0);
-        String text = ofwd.text().should().be(equalTo("Mary had 3 little lamb(s).")).value();
-        assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
-
+            sb.setLength(0);
+            Matchable<Dimension> should = ofwd.size().shouldBe(new Dimension(10,10));
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<String> should = ofwd.cssValue("blort").shouldBe("blort_value");
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.getCssValue(blort) -> blort_value\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<String> should = ofwd.attribute("valerie").shouldBe("valerie_value");
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.getAttribute(valerie) -> valerie_value\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<String> should = ofwd.tagName().shouldBe("taggart");
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.getTagName() -> 'taggart'\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<Boolean> should = ofwd.selected().shouldBe(true);
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.isSelected() -> true\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<Boolean> should = ofwd.enabled().shouldBe(true);
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.isEnabled() -> true\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<Boolean> should = ofwd.displayed().shouldBe(true);
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\n"));
+        }
+        {
+            sb.setLength(0);
+            Matchable<String> should = ofwd.text().shouldBe("Mary had 2 little lamb(s).");
+            assertThat(should, notNullValue());
+            assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
+        }
+//        {
+//            sb.setLength(0);
+//            Matchable<String> should = ofwd.text().should().have(containsString("lamb"));
+//            assertThat(should, notNullValue());
+//            assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
+//        }
     }
 
     @Test

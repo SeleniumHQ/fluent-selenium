@@ -26,8 +26,8 @@
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
+            <artifactId>junit-dep</artifactId>
+            <version>4.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -37,14 +37,14 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.8.5</version>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.0-rc1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.4.0</version>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
     <build>

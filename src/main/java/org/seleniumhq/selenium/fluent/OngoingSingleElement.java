@@ -15,12 +15,9 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import org.openqa.selenium.*;
+
 import java.util.List;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public final class OngoingSingleElement extends OngoingFluentWebDriver {
 
@@ -39,7 +36,6 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
     protected List<WebElement> findThem(By by) {
         return currentElement.findElements(by);
     }
-
 
     public OngoingSingleElement click() {
         String ctx = context + ".click()";
@@ -198,46 +194,46 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
 
     //@Override
     public WebElementValue<Point> location() {
-        return new WebElementValue<Point>(currentElement.getLocation());
+        return new WebElementValue<Point>(currentElement.getLocation(), context + ".location()");
     }
 
     //@Override
     public WebElementValue<Dimension> size() {
-        return new WebElementValue<Dimension>(currentElement.getSize());
+        return new WebElementValue<Dimension>(currentElement.getSize(), context + ".size()");
     }
 
     //@Override
     public WebElementValue<String> cssValue(String name) {
-        return new WebElementValue<String>(currentElement.getCssValue(name));
+        return new WebElementValue<String>(currentElement.getCssValue(name), context + ".cssValue(" + name + ")");
     }
 
     //@Override
     public WebElementValue<String> attribute(String name) {
-        return new WebElementValue<String>(currentElement.getAttribute(name));
+        return new WebElementValue<String>(currentElement.getAttribute(name), context + ".attribute(" + name + ")");
     }
 
     //@Override
     public WebElementValue<String> tagName() {
-        return new WebElementValue<String>(currentElement.getTagName());
+        return new WebElementValue<String>(currentElement.getTagName(), context + ".tagName()");
     }
 
     //@Override
     public WebElementValue<Boolean> selected() {
-        return new WebElementValue<Boolean>(currentElement.isSelected());
+        return new WebElementValue<Boolean>(currentElement.isSelected(), context + ".selected()");
     }
 
     //@Override
     public WebElementValue<Boolean> enabled() {
-        return new WebElementValue<Boolean>(currentElement.isEnabled());
+        return new WebElementValue<Boolean>(currentElement.isEnabled(), context + ".enabled()");
     }
 
     //@Override
     public WebElementValue<Boolean> displayed() {
-        return new WebElementValue<Boolean>(currentElement.isDisplayed());
+        return new WebElementValue<Boolean>(currentElement.isDisplayed(), context + ".displayed()");
     }
 
     //@Override
     public WebElementValue<String> text() {
-        return new WebElementValue<String>(currentElement.getText());
+        return new WebElementValue<String>(currentElement.getText(), context + ".text()");
     }
 }
