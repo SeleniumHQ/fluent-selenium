@@ -19,11 +19,11 @@ import org.openqa.selenium.*;
 
 import java.util.List;
 
-public final class OngoingSingleElement extends OngoingFluentWebDriver {
+public final class FluentWebElement extends OngoingFluentWebDriver {
 
     private final WebElement currentElement;
 
-    public OngoingSingleElement(WebDriver delegate, WebElement currentElement, String context) {
+    public FluentWebElement(WebDriver delegate, WebElement currentElement, String context) {
         super(delegate, context);
         this.currentElement = currentElement;
     }
@@ -37,7 +37,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
         return currentElement.findElements(by);
     }
 
-    public OngoingSingleElement click() {
+    public FluentWebElement click() {
         String ctx = context + ".click()";
         try {
             currentElement.click();
@@ -53,7 +53,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
      *  Use this instead of clear() to clear an WebElement
      */
 
-    public OngoingSingleElement clearField() {
+    public FluentWebElement clearField() {
         String ctx = context + ".clearField()";
         try {
             currentElement.clear();
@@ -66,7 +66,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
     }
 
 
-    public OngoingSingleElement submit() {
+    public FluentWebElement submit() {
         String ctx = context + ".submit()";
         try {
             currentElement.submit();
@@ -80,7 +80,7 @@ public final class OngoingSingleElement extends OngoingFluentWebDriver {
 
     // These are as they would be in the WebElement API
 
-    public OngoingSingleElement sendKeys(CharSequence... keysToSend) {
+    public FluentWebElement sendKeys(CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
         try {
             currentElement.sendKeys(keysToSend);

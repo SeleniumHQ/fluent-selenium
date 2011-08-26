@@ -27,13 +27,13 @@ public final class FluentWebDriverImpl extends FluentCore implements FluentWebDr
     }
 
     @Override
-    protected OngoingSingleElement getOngoingSingleElement(WebElement result, String context) {
-        return new OngoingSingleElement(super.delegate, result, context);
+    protected FluentWebElement getOngoingSingleElement(WebElement result, String context) {
+        return new FluentWebElement(super.delegate, result, context);
     }
 
     @Override
-    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results, String context) {
-        return new OngoingMultipleElements(super.delegate, results, context);
+    protected FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context) {
+        return new FluentWebElements(super.delegate, results, context);
     }
 
     protected final WebElement findIt(By by) {

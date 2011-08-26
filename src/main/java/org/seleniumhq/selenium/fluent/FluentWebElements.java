@@ -26,11 +26,11 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public final class OngoingMultipleElements extends OngoingFluentWebDriver implements List<WebElement> {
+public final class FluentWebElements extends OngoingFluentWebDriver implements List<WebElement> {
 
     private final List<WebElement> currentElements;
 
-    public OngoingMultipleElements(WebDriver delegate, List<WebElement> currentElements, String context) {
+    public FluentWebElements(WebDriver delegate, List<WebElement> currentElements, String context) {
         super(delegate, context);
         this.currentElements = currentElements;
     }
@@ -190,7 +190,7 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
         throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
     }
 
-    public OngoingMultipleElements filter(FluentMatcher matcher) {
+    public FluentWebElements filter(FluentMatcher matcher) {
 
         String ctx = context + ".filter(" + matcher + ")";
         try {
@@ -208,7 +208,7 @@ public final class OngoingMultipleElements extends OngoingFluentWebDriver implem
         }
     }
 
-    public OngoingSingleElement first(FluentMatcher matcher) {
+    public FluentWebElement first(FluentMatcher matcher) {
 
         String ctx = context + ".filter(" + matcher + ")";
         try {

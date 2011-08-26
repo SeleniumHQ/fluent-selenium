@@ -30,362 +30,362 @@ public abstract class FluentCore {
         this.context = context;
     }
 
-    public OngoingSingleElement span() {
+    public FluentWebElement span() {
         return single(By.tagName("span"), "span");
     }
 
-    public OngoingSingleElement span(By by) {
+    public FluentWebElement span(By by) {
         return single(by, "span");
     }
 
-    public OngoingMultipleElements spans() {
+    public FluentWebElements spans() {
         return multiple(By.tagName("span"), "span");
     }
 
-    public OngoingMultipleElements spans(By by) {
+    public FluentWebElements spans(By by) {
         return multiple(by, "span");
     }
 
-    public OngoingSingleElement div() {
+    public FluentWebElement div() {
         return single(By.tagName("div"), "div");
     }
 
-    public OngoingSingleElement div(By by) {
+    public FluentWebElement div(By by) {
         return single(by, "div");
     }
 
-    public OngoingMultipleElements divs() {
+    public FluentWebElements divs() {
         return multiple(By.tagName("div"), "div");
     }
 
-    public OngoingMultipleElements divs(By by) {
+    public FluentWebElements divs(By by) {
         return multiple(by, "div");
     }
 
-    public OngoingSingleElement button() {
+    public FluentWebElement button() {
         return single(By.tagName("button"), "button");
     }
 
-    public OngoingSingleElement button(By by) {
+    public FluentWebElement button(By by) {
         return single(by, "button");
     }
 
-    public OngoingMultipleElements buttons() {
+    public FluentWebElements buttons() {
         return multiple(By.tagName("button"), "button");
     }
 
-    public OngoingMultipleElements buttons(By by) {
+    public FluentWebElements buttons(By by) {
         return multiple(by, "button");
     }
 
-    public OngoingSingleElement link() {
+    public FluentWebElement link() {
         return single(By.tagName("a"), "a");
     }
 
-    public OngoingSingleElement link(By by) {
+    public FluentWebElement link(By by) {
         return single(by, "a");
     }
 
-    public OngoingMultipleElements links() {
+    public FluentWebElements links() {
         return multiple(By.tagName("a"), "a");
     }
 
-    public OngoingMultipleElements links(By by) {
+    public FluentWebElements links(By by) {
         return multiple(by, "a");
     }
 
-    public OngoingSingleElement input() {
+    public FluentWebElement input() {
         return single(By.tagName("input"), "input");
     }
 
-    public OngoingSingleElement input(By by) {
+    public FluentWebElement input(By by) {
         return single(by, "input");
 
     }
 
-    public OngoingMultipleElements inputs() {
+    public FluentWebElements inputs() {
         return multiple(By.tagName("input"), "input");
     }
 
-    public OngoingMultipleElements inputs(By by) {
+    public FluentWebElements inputs(By by) {
         return multiple(by, "input");
     }
 
-    public OngoingSingleElement select() {
+    public FluentWebElement select() {
         return single(By.tagName("select"), "select");
     }
 
-    public OngoingSingleElement select(By by) {
+    public FluentWebElement select(By by) {
         return single(by, "select");
     }
 
-    public OngoingMultipleElements selects() {
+    public FluentWebElements selects() {
         return multiple(By.tagName("select"), "select");
     }
 
-    public OngoingMultipleElements selects(By by) {
+    public FluentWebElements selects(By by) {
         return multiple(by, "select");
     }
 
-    public OngoingSingleElement h1() {
+    public FluentWebElement h1() {
         return single(By.tagName("h1"), "h1");
     }
 
-    public OngoingSingleElement h1(By by) {
+    public FluentWebElement h1(By by) {
         return single(by, "h1");
 
     }
 
-    public OngoingMultipleElements h1s() {
+    public FluentWebElements h1s() {
         return multiple(By.tagName("h1"), "h1");
     }
 
-    public OngoingMultipleElements h1s(By by) {
+    public FluentWebElements h1s(By by) {
         return multiple(by, "h1");
     }
 
-    public OngoingSingleElement h2() {
+    public FluentWebElement h2() {
         return single(By.tagName("h2"), "h2");
     }
 
-    public OngoingSingleElement h2(By by) {
+    public FluentWebElement h2(By by) {
         return single(by, "h2");
     }
 
-    public OngoingMultipleElements h2s() {
+    public FluentWebElements h2s() {
         return multiple(By.tagName("h2"), "h2");
     }
 
-    public OngoingMultipleElements h2s(By by) {
+    public FluentWebElements h2s(By by) {
         return multiple(by, "h2");
     }
 
-    public OngoingSingleElement h3() {
+    public FluentWebElement h3() {
         return single(By.tagName("h3"), "h3");
     }
 
-    public OngoingMultipleElements h3s() {
+    public FluentWebElements h3s() {
         return multiple(By.tagName("h3"), "h3");
     }
 
-    public OngoingSingleElement h3(By by) {
+    public FluentWebElement h3(By by) {
         return single(by, "h3");
     }
 
-    public OngoingMultipleElements h3s(By by) {
+    public FluentWebElements h3s(By by) {
         return multiple(by, "h3");
     }
 
-    public OngoingSingleElement h4(){
+    public FluentWebElement h4(){
         return single(By.tagName("h4"), "h4");
     }
 
-    public OngoingMultipleElements h4s() {
+    public FluentWebElements h4s() {
         return multiple(By.tagName("h4"), "h4");
     }
 
-    public OngoingSingleElement h4(By by) {
+    public FluentWebElement h4(By by) {
         return single(by, "h4");
     }
 
-    public OngoingMultipleElements h4s(By by) {
+    public FluentWebElements h4s(By by) {
         return multiple(by, "h4");
     }
 
-    public OngoingSingleElement p() {
+    public FluentWebElement p() {
         return single(By.tagName("p"), "p");
     }
 
-    public OngoingMultipleElements ps() {
+    public FluentWebElements ps() {
         return multiple(By.tagName("p"), "p");
     }
 
-    public OngoingSingleElement p(By by) {
+    public FluentWebElement p(By by) {
         return single(by, "p");
     }
 
-    public OngoingMultipleElements ps(By by) {
+    public FluentWebElements ps(By by) {
         return multiple(by, "p");
     }
 
-    public OngoingSingleElement img() {
+    public FluentWebElement img() {
         return single(By.tagName("img"), "img");
     }
 
-    public OngoingMultipleElements imgs() {
+    public FluentWebElements imgs() {
         return multiple(By.tagName("img"), "img");
     }
 
-    public OngoingSingleElement img(By by) {
+    public FluentWebElement img(By by) {
         return single(by, "img");
     }
 
-    public OngoingMultipleElements imgs(By by) {
+    public FluentWebElements imgs(By by) {
         return multiple(by, "img");
     }
 
-    public OngoingSingleElement table() {
+    public FluentWebElement table() {
         return single(By.tagName("table"), "table");
     }
 
-    public OngoingMultipleElements tables() {
+    public FluentWebElements tables() {
         return multiple(By.tagName("table"), "table");
     }
 
-    public OngoingSingleElement table(By by) {
+    public FluentWebElement table(By by) {
         return single(by, "table");
     }
 
-    public OngoingMultipleElements tables(By by) {
+    public FluentWebElements tables(By by) {
         return multiple(by, "table");
     }
 
-    public OngoingSingleElement tr() {
+    public FluentWebElement tr() {
         return single(By.tagName("tr"), "tr");
     }
 
-    public OngoingMultipleElements trs() {
+    public FluentWebElements trs() {
         return multiple(By.tagName("tr"), "tr");
     }
 
-    public OngoingSingleElement tr(By by) {
+    public FluentWebElement tr(By by) {
         return single(by, "tr");
     }
 
-    public OngoingMultipleElements trs(By by) {
+    public FluentWebElements trs(By by) {
         return multiple(by, "tr");
     }
 
-    public OngoingSingleElement td() {
+    public FluentWebElement td() {
         return single(By.tagName("td"), "td");
     }
 
-    public OngoingMultipleElements tds() {
+    public FluentWebElements tds() {
         return multiple(By.tagName("td"), "td");
     }
 
-    public OngoingSingleElement td(By by) {
+    public FluentWebElement td(By by) {
         return single(by, "td");
     }
 
-    public OngoingMultipleElements tds(By by) {
+    public FluentWebElements tds(By by) {
         return multiple(by, "td");
     }
 
-    public OngoingSingleElement th() {
+    public FluentWebElement th() {
         return single(By.tagName("th"), "th");
     }
 
-    public OngoingMultipleElements ths() {
+    public FluentWebElements ths() {
         return multiple(By.tagName("th"), "th");
     }
 
-    public OngoingSingleElement th(By by) {
+    public FluentWebElement th(By by) {
         return single(by, "th");
     }
 
-    public OngoingMultipleElements ths(By by) {
+    public FluentWebElements ths(By by) {
         return multiple(by, "th");
     }
 
-    public OngoingSingleElement ul() {
+    public FluentWebElement ul() {
         return single(By.tagName("ul"), "ul");
     }
 
-    public OngoingMultipleElements uls() {
+    public FluentWebElements uls() {
         return multiple(By.tagName("ul"), "ul");
     }
 
-    public OngoingSingleElement ul(By by) {
+    public FluentWebElement ul(By by) {
         return single(by, "ul");
     }
 
-    public OngoingMultipleElements uls(By by) {
+    public FluentWebElements uls(By by) {
         return multiple(by, "ul");
     }
 
-    public OngoingSingleElement ol() {
+    public FluentWebElement ol() {
         return single(By.tagName("ol"), "ol");
     }
 
-    public OngoingMultipleElements ols() {
+    public FluentWebElements ols() {
         return multiple(By.tagName("ol"), "ol");
     }
 
-    public OngoingSingleElement ol(By by) {
+    public FluentWebElement ol(By by) {
         return single(by, "ol");
     }
 
-    public OngoingMultipleElements ols(By by) {
+    public FluentWebElements ols(By by) {
         return multiple(by, "ol");
     }
 
-    public OngoingSingleElement form() {
+    public FluentWebElement form() {
         return single(By.tagName("form"), "form");
     }
 
-    public OngoingMultipleElements forms() {
+    public FluentWebElements forms() {
         return multiple(By.tagName("form"), "form");
     }
 
-    public OngoingSingleElement form(By by) {
+    public FluentWebElement form(By by) {
         return single(by, "form");
     }
 
-    public OngoingMultipleElements forms(By by) {
+    public FluentWebElements forms(By by) {
         return multiple(by, "form");
     }
 
-    public OngoingSingleElement textarea() {
+    public FluentWebElement textarea() {
         return single(By.tagName("textarea"), "textarea");
     }
 
-    public OngoingMultipleElements textareas() {
+    public FluentWebElements textareas() {
         return multiple(By.tagName("textarea"), "textarea");
     }
 
-    public OngoingSingleElement textarea(By by) {
+    public FluentWebElement textarea(By by) {
         return single(by, "textarea");
     }
 
-    public OngoingMultipleElements textareas(By by) {
+    public FluentWebElements textareas(By by) {
         return multiple(by, "textarea");
     }
 
-    public OngoingSingleElement option() {
+    public FluentWebElement option() {
         return single(By.tagName("option"), "option");
     }
 
-    public OngoingMultipleElements options() {
+    public FluentWebElements options() {
         return multiple(By.tagName("option"), "option");
     }
 
-    public OngoingSingleElement option(By by) {
+    public FluentWebElement option(By by) {
         return single(by, "option");
     }
 
-    public OngoingMultipleElements options(By by) {
+    public FluentWebElements options(By by) {
         return multiple(by, "option");
     }
 
-    public OngoingSingleElement li() {
+    public FluentWebElement li() {
         return single(By.tagName("li"), "li");
     }
 
-    public OngoingSingleElement li(By by) {
+    public FluentWebElement li(By by) {
         return single(by, "li");
     }
 
-    public OngoingMultipleElements lis() {
+    public FluentWebElements lis() {
         return multiple(By.tagName("li"), "li");
     }
 
-    public OngoingMultipleElements lis(By by) {
+    public FluentWebElements lis(By by) {
         return multiple(by, "li");
     }
 
-    protected abstract OngoingSingleElement getOngoingSingleElement(WebElement result, String context);
-    protected abstract OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results, String context);
+    protected abstract FluentWebElement getOngoingSingleElement(WebElement result, String context);
+    protected abstract FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().contains("ByXPath")) {
@@ -404,7 +404,7 @@ public abstract class FluentCore {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private OngoingSingleElement single(By by, String tagName) {
+    private FluentWebElement single(By by, String tagName) {
         by = fixupBy(by, tagName);
         WebElement result = null;
         String ctx = contextualize(by.toString(), tagName);
@@ -428,7 +428,7 @@ public abstract class FluentCore {
         return context + "." + tagName + "(" + by + ")";
     }
 
-    private OngoingMultipleElements multiple(By by, String tagName) {
+    private FluentWebElements multiple(By by, String tagName) {
         by = fixupBy(by, tagName);
         List<WebElement> results;
         String ctx = context + "." + tagName + "s(" + by + ")";

@@ -15,11 +15,12 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import java.util.List;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public abstract class OngoingFluentWebDriver extends FluentCore {
 
@@ -28,13 +29,13 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected OngoingSingleElement getOngoingSingleElement(WebElement result, String context) {
-        return new OngoingSingleElement(super.delegate, result, context);
+    protected FluentWebElement getOngoingSingleElement(WebElement result, String context) {
+        return new FluentWebElement(super.delegate, result, context);
     }
 
     @Override
-    protected OngoingMultipleElements getOngoingMultipleElements(List<WebElement> results, String context) {
-        return new OngoingMultipleElements(super.delegate, results, context);
+    protected FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context) {
+        return new FluentWebElements(super.delegate, results, context);
     }
 
     protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {

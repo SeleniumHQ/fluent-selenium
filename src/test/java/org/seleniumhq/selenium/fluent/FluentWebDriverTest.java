@@ -96,7 +96,7 @@ public class FluentWebDriverTest {
 
         FluentCore fc = null;
         try {
-            OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
+            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
             FAIL_ON_NEXT.set(new RuntimeException());
 
@@ -120,7 +120,7 @@ public class FluentWebDriverTest {
 
         FluentCore fc = null;
         try {
-            OngoingSingleElement span = fwd.div(ID_A).div(ID_B).span();
+            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
             FAIL_ON_NEXT.set(new AssertionError());
 
@@ -206,7 +206,7 @@ public class FluentWebDriverTest {
 
     public void assertions_against_otherwise_non_ongoing() {
 
-        OngoingSingleElement ofwd = fwd.div();
+        FluentWebElement ofwd = fwd.div();
 
         assertThat(ofwd, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -315,7 +315,7 @@ public class FluentWebDriverTest {
     }
 
     private void wrap_exceptions_tests(Throwable throwable) {
-        OngoingSingleElement ose = fwd.div(By.id("foo"));
+        FluentWebElement ose = fwd.div(By.id("foo"));
 
         assertThat(ose, notNullValue());
 
@@ -415,7 +415,7 @@ public class FluentWebDriverTest {
     }
 
     private void filter_exception_handling(Throwable throwable) {
-        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
@@ -454,7 +454,7 @@ public class FluentWebDriverTest {
     }
 
     private void first_exception_handling(Throwable throwable) {
-        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
@@ -472,7 +472,7 @@ public class FluentWebDriverTest {
     public void further_find_element_after_multiple_is_unsupported() {
 
         try {
-            OngoingSingleElement ose = fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
+            FluentWebElement ose = fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             // expected
@@ -490,7 +490,7 @@ public class FluentWebDriverTest {
     }
 
     private void multiple_elem_exception_handling(Throwable throwable) {
-        OngoingMultipleElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
 
@@ -1742,7 +1742,7 @@ public class FluentWebDriverTest {
         elems.add(mock(WebElement.class));
         elems.add(mock(WebElement.class));
 
-        OngoingMultipleElements ogme = new OngoingMultipleElements(null, new ArrayList<WebElement>(elems), "");
+        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<WebElement>(elems), "");
 
         assertThat(ogme.size(), equalTo(4));
         assertThat(ogme.get(0), equalTo(item0));
