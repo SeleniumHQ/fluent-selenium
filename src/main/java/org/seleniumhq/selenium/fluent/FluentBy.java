@@ -20,7 +20,6 @@ import org.openqa.selenium.IllegalLocatorException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.FindsByClassName;
-import org.openqa.selenium.internal.FindsByTagName;
 import org.openqa.selenium.internal.FindsByXPath;
 
 import java.util.List;
@@ -94,13 +93,27 @@ public abstract class FluentBy {
         if (bys == null)
             throw new IllegalArgumentException("Cannot make composite with no varargs of Bys");
         if (bys.length != 2
-                || !(bys[0] instanceof ByTagName)
-                || !(bys[1] instanceof ByClassName | bys[1] instanceof ByAttribute)) {
-            throw new IllegalArgumentException("can only do this with FluentBy.tagName " +
-                    "followed one of FluentBy.className or FluentBy.attribute");
+                || !isTagName(bys[0])
+                && (!isClassName(bys[1]) || !(bys[1] instanceof ByAttribute))) {
+            throw new IllegalArgumentException("can only do this with By.tagName " +
+                    "followed one of By.className or FluentBy.attribute");
         }
 
         return new ByComposite(bys);
+    }
+
+    private static boolean isTagName(By by) {
+        String name = by.getClass().getName();
+        boolean equals = name.equals("org.openqa.selenium.By$ByTagName");
+        if (!equals) {
+            System.out.println();
+        }
+        return equals;
+    }
+
+    private static boolean isClassName(By by) {
+        String name = by.getClass().getName();
+        return name.equals("org.openqa.selenium.By$ByClassName");
     }
 
     // Until WebDriver supports a composite in browser implementations, only
@@ -118,21 +131,30 @@ public abstract class FluentBy {
             return makeByXPath().findElements(context);
         }
 
-        private ByXPath makeByXPath() {
+        private String containingWord(String attribute, String word) {
+          return "contains(concat(' ',normalize-space(@" + attribute + "),' '),' "
+              + word + " ')";
+        }
+
+        private By makeByXPath() {
             String xpathExpression = ".//"
-                    + ((ByTagName) bys[0]).name;
+                    + getTagName();
 
-            if (bys[1] instanceof ByClassName) {
-                ByClassName by = (ByClassName) bys[1];
-                xpathExpression = xpathExpression + "[" + by.classAmongstClasses() + "]";
-            }
-
-            if (bys[1] instanceof ByAttribute) {
+            if (isClassName(bys[1])) {
+                String className = bys[1].toString().substring("By.className: ".length());
+                xpathExpression = xpathExpression + "[" + containingWord("class", className) + "]";
+            } else if (bys[1] instanceof ByAttribute) {
                 ByAttribute by = (ByAttribute) bys[1];
                 xpathExpression = xpathExpression + "[" + by.nameAndValue() + "]";
+            } else {
+                System.out.println();
             }
 
-            return new ByXPath(xpathExpression);
+            return By.xpath(xpathExpression);
+        }
+
+        private String getTagName() {
+            return bys[0].toString().substring("By.tagName: ".length());
         }
 
         @Override
@@ -189,8 +211,8 @@ public abstract class FluentBy {
             return makeXPath().findElement(context);
         }
 
-        private ByXPath makeXPath() {
-            return new ByXPath(".//*[" + nameAndValue() + "]");
+        private By makeXPath() {
+            return By.xpath(".//*[" + nameAndValue() + "]");
         }
 
         private String nameAndValue() {
@@ -214,136 +236,12 @@ public abstract class FluentBy {
 
     // Copied from Selenium's By:
 
-    /**
-     * @param name The element's tagName
-     * @return a By which locates elements by their tag name
-     */
-    public static By tagName(final String name) {
-      if (name == null)
-        throw new IllegalArgumentException(
-            "Cannot find elements when name tag name is null.");
 
-      return new ByTagName(name);
-    }
+    // ByXPath.xpathExpression
 
-    /**
-     * Finds elements based on the value of the "class" attribute. If an element has many classes then
-     * this will match against each of them. For example if the value is "one two onone", then the
-     * following "className"s will match: "one" and "two"
-     *
-     * @param className The value of the "class" attribute to search for
-     * @return a By which locates elements by the value of the "class" attribute.
-     */
-    public static By className(final String className) {
-      if (className == null)
-        throw new IllegalArgumentException(
-            "Cannot find elements when the class name expression is null.");
-
-      if (className.matches(".*\\s+.*")) {
-        throw new IllegalLocatorException(
-            "Compound class names are not supported. Consider searching for one class name and filtering the results.");
-      }
-
-      return new ByClassName(className);
-    }
+    // ByClassName.className
 
 
-    private static class ByTagName extends By {
-        private final String name;
-
-        public ByTagName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public List<WebElement> findElements(SearchContext context) {
-            if (context instanceof FindsByTagName)
-                return ((FindsByTagName) context).findElementsByTagName(name);
-            return ((FindsByXPath) context).findElementsByXPath(".//" + name);
-        }
-
-        @Override
-        public WebElement findElement(SearchContext context) {
-            if (context instanceof FindsByTagName)
-                return ((FindsByTagName) context).findElementByTagName(name);
-            return ((FindsByXPath) context).findElementByXPath(".//" + name);
-        }
-
-        @Override
-        public String toString() {
-            return "By.tagName: " + name;
-        }
-    }
-
-    private static class ByXPath extends By {
-        private final String xpathExpression;
-
-        public ByXPath(String xpathExpression) {
-            this.xpathExpression = xpathExpression;
-        }
-
-        @Override
-        public List<WebElement> findElements(SearchContext context) {
-            return ((FindsByXPath) context).findElementsByXPath(xpathExpression);
-        }
-
-        @Override
-        public WebElement findElement(SearchContext context) {
-            return ((FindsByXPath) context).findElementByXPath(xpathExpression);
-        }
-
-        @Override
-        public String toString() {
-            return "By.xpath: " + xpathExpression;
-        }
-    }
-
-    private static class ByClassName extends By {
-        private final String className;
-
-        public ByClassName(String className) {
-            this.className = className;
-        }
-
-        @Override
-        public List<WebElement> findElements(SearchContext context) {
-            if (context instanceof FindsByClassName)
-                return ((FindsByClassName) context).findElementsByClassName(className);
-            return ((FindsByXPath) context).findElementsByXPath(".//*["
-                    + containingWord("class", className) + "]");
-        }
-
-        @Override
-        public WebElement findElement(SearchContext context) {
-            if (context instanceof FindsByClassName)
-                return ((FindsByClassName) context).findElementByClassName(className);
-            return ((FindsByXPath) context).findElementByXPath(".//*["
-                    + classAmongstClasses() + "]");
-        }
-
-        /**
-         * Generates a partial xpath expression that matches an element whose specified attribute
-         * contains the given CSS word. So to match &lt;div class='foo bar'&gt; you would say "//div[" +
-         * containingWord("class", "foo") + "]".
-         *
-         * @param attribute name
-         * @param word      name
-         * @return XPath fragment
-         */
-        private String containingWord(String attribute, String word) {
-            return "contains(concat(' ',normalize-space(@" + attribute + "),' '),' "
-                    + word + " ')";
-        }
-
-        @Override
-        public String toString() {
-            return "By.className: " + className;
-        }
-
-        public String classAmongstClasses() {
-            return containingWord("class", className);
-        }
-    }
 
 
 }

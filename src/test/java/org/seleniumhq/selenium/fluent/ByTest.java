@@ -143,7 +143,7 @@ public class ByTest extends MockTestBase {
       one(driver).findElementByXPath(".//foo[contains(concat(' ',normalize-space(@class),' '),' bar ')]");
     }});
 
-    By by = FluentBy.composite(FluentBy.tagName("foo"), FluentBy.className("bar"));
+    By by = FluentBy.composite(By.tagName("foo"), By.className("bar"));
 
     by.findElement(driver);
   }
@@ -156,7 +156,7 @@ public class ByTest extends MockTestBase {
       one(driver).findElementsByXPath(".//foo[contains(concat(' ',normalize-space(@class),' '),' bar ')]");
     }});
 
-    By by = FluentBy.composite(FluentBy.tagName("foo"), FluentBy.className("bar"));
+    By by = FluentBy.composite(By.tagName("foo"), By.className("bar"));
 
     by.findElements(driver);
   }
@@ -169,7 +169,7 @@ public class ByTest extends MockTestBase {
       one(driver).findElementByXPath(".//foo[@bar = 'baz']");
     }});
 
-    By by = FluentBy.composite(FluentBy.tagName("foo"), FluentBy.attribute("bar", "baz"));
+    By by = FluentBy.composite(By.tagName("foo"), FluentBy.attribute("bar", "baz"));
 
     by.findElement(driver);
   }
@@ -182,7 +182,7 @@ public class ByTest extends MockTestBase {
       one(driver).findElementsByXPath(".//foo[@bar]");
     }});
 
-    By by = FluentBy.composite(FluentBy.tagName("foo"), FluentBy.attribute("bar"));
+    By by = FluentBy.composite(By.tagName("foo"), FluentBy.attribute("bar"));
 
     by.findElements(driver);
   }
@@ -201,28 +201,28 @@ public class ByTest extends MockTestBase {
       FluentBy.composite(new By[0]);
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
-              is("can only do this with FluentBy.tagName followed one of FluentBy.className or FluentBy.attribute"));
+              is("can only do this with By.tagName followed one of By.className or FluentBy.attribute"));
     }
 
     try {
       FluentBy.composite(By.tagName("foo"), By.xpath("bar"));
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
-              is("can only do this with FluentBy.tagName followed one of FluentBy.className or FluentBy.attribute"));
+              is("can only do this with By.tagName followed one of By.className or FluentBy.attribute"));
     }
 
     try {
       FluentBy.composite(By.tagName("foo"), By.className("bar"), By.className("baz"));
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
-              is("can only do this with FluentBy.tagName followed one of FluentBy.className or FluentBy.attribute"));
+              is("can only do this with By.tagName followed one of By.className or FluentBy.attribute"));
     }
 
     try {
       FluentBy.composite(By.tagName("foo"));
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
-              is("can only do this with FluentBy.tagName followed one of FluentBy.className or FluentBy.attribute"));
+              is("can only do this with By.tagName followed one of By.className or FluentBy.attribute"));
     }
   }
 
