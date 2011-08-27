@@ -15,10 +15,15 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static org.openqa.selenium.By.tagName;
+import static org.openqa.selenium.By.xpath;
+import static org.seleniumhq.selenium.fluent.FluentBy.composite;
 
 public abstract class FluentCore {
 
@@ -31,7 +36,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement span() {
-        return single(By.tagName("span"), "span");
+        return single(tagName("span"), "span");
     }
 
     public FluentWebElement span(By by) {
@@ -39,7 +44,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements spans() {
-        return multiple(By.tagName("span"), "span");
+        return multiple(tagName("span"), "span");
     }
 
     public FluentWebElements spans(By by) {
@@ -47,7 +52,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement div() {
-        return single(By.tagName("div"), "div");
+        return single(tagName("div"), "div");
     }
 
     public FluentWebElement div(By by) {
@@ -55,7 +60,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements divs() {
-        return multiple(By.tagName("div"), "div");
+        return multiple(tagName("div"), "div");
     }
 
     public FluentWebElements divs(By by) {
@@ -63,7 +68,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement button() {
-        return single(By.tagName("button"), "button");
+        return single(tagName("button"), "button");
     }
 
     public FluentWebElement button(By by) {
@@ -71,7 +76,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements buttons() {
-        return multiple(By.tagName("button"), "button");
+        return multiple(tagName("button"), "button");
     }
 
     public FluentWebElements buttons(By by) {
@@ -79,7 +84,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement link() {
-        return single(By.tagName("a"), "a");
+        return single(tagName("a"), "a");
     }
 
     public FluentWebElement link(By by) {
@@ -87,7 +92,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements links() {
-        return multiple(By.tagName("a"), "a");
+        return multiple(tagName("a"), "a");
     }
 
     public FluentWebElements links(By by) {
@@ -95,7 +100,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement input() {
-        return single(By.tagName("input"), "input");
+        return single(tagName("input"), "input");
     }
 
     public FluentWebElement input(By by) {
@@ -104,7 +109,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements inputs() {
-        return multiple(By.tagName("input"), "input");
+        return multiple(tagName("input"), "input");
     }
 
     public FluentWebElements inputs(By by) {
@@ -112,7 +117,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement select() {
-        return single(By.tagName("select"), "select");
+        return single(tagName("select"), "select");
     }
 
     public FluentWebElement select(By by) {
@@ -120,7 +125,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements selects() {
-        return multiple(By.tagName("select"), "select");
+        return multiple(tagName("select"), "select");
     }
 
     public FluentWebElements selects(By by) {
@@ -128,7 +133,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h1() {
-        return single(By.tagName("h1"), "h1");
+        return single(tagName("h1"), "h1");
     }
 
     public FluentWebElement h1(By by) {
@@ -137,7 +142,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements h1s() {
-        return multiple(By.tagName("h1"), "h1");
+        return multiple(tagName("h1"), "h1");
     }
 
     public FluentWebElements h1s(By by) {
@@ -145,7 +150,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h2() {
-        return single(By.tagName("h2"), "h2");
+        return single(tagName("h2"), "h2");
     }
 
     public FluentWebElement h2(By by) {
@@ -153,7 +158,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements h2s() {
-        return multiple(By.tagName("h2"), "h2");
+        return multiple(tagName("h2"), "h2");
     }
 
     public FluentWebElements h2s(By by) {
@@ -161,11 +166,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h3() {
-        return single(By.tagName("h3"), "h3");
+        return single(tagName("h3"), "h3");
     }
 
     public FluentWebElements h3s() {
-        return multiple(By.tagName("h3"), "h3");
+        return multiple(tagName("h3"), "h3");
     }
 
     public FluentWebElement h3(By by) {
@@ -177,11 +182,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h4(){
-        return single(By.tagName("h4"), "h4");
+        return single(tagName("h4"), "h4");
     }
 
     public FluentWebElements h4s() {
-        return multiple(By.tagName("h4"), "h4");
+        return multiple(tagName("h4"), "h4");
     }
 
     public FluentWebElement h4(By by) {
@@ -193,11 +198,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement p() {
-        return single(By.tagName("p"), "p");
+        return single(tagName("p"), "p");
     }
 
     public FluentWebElements ps() {
-        return multiple(By.tagName("p"), "p");
+        return multiple(tagName("p"), "p");
     }
 
     public FluentWebElement p(By by) {
@@ -209,11 +214,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement img() {
-        return single(By.tagName("img"), "img");
+        return single(tagName("img"), "img");
     }
 
     public FluentWebElements imgs() {
-        return multiple(By.tagName("img"), "img");
+        return multiple(tagName("img"), "img");
     }
 
     public FluentWebElement img(By by) {
@@ -225,11 +230,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement table() {
-        return single(By.tagName("table"), "table");
+        return single(tagName("table"), "table");
     }
 
     public FluentWebElements tables() {
-        return multiple(By.tagName("table"), "table");
+        return multiple(tagName("table"), "table");
     }
 
     public FluentWebElement table(By by) {
@@ -241,11 +246,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement tr() {
-        return single(By.tagName("tr"), "tr");
+        return single(tagName("tr"), "tr");
     }
 
     public FluentWebElements trs() {
-        return multiple(By.tagName("tr"), "tr");
+        return multiple(tagName("tr"), "tr");
     }
 
     public FluentWebElement tr(By by) {
@@ -257,11 +262,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement td() {
-        return single(By.tagName("td"), "td");
+        return single(tagName("td"), "td");
     }
 
     public FluentWebElements tds() {
-        return multiple(By.tagName("td"), "td");
+        return multiple(tagName("td"), "td");
     }
 
     public FluentWebElement td(By by) {
@@ -273,11 +278,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement th() {
-        return single(By.tagName("th"), "th");
+        return single(tagName("th"), "th");
     }
 
     public FluentWebElements ths() {
-        return multiple(By.tagName("th"), "th");
+        return multiple(tagName("th"), "th");
     }
 
     public FluentWebElement th(By by) {
@@ -289,11 +294,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ul() {
-        return single(By.tagName("ul"), "ul");
+        return single(tagName("ul"), "ul");
     }
 
     public FluentWebElements uls() {
-        return multiple(By.tagName("ul"), "ul");
+        return multiple(tagName("ul"), "ul");
     }
 
     public FluentWebElement ul(By by) {
@@ -305,11 +310,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ol() {
-        return single(By.tagName("ol"), "ol");
+        return single(tagName("ol"), "ol");
     }
 
     public FluentWebElements ols() {
-        return multiple(By.tagName("ol"), "ol");
+        return multiple(tagName("ol"), "ol");
     }
 
     public FluentWebElement ol(By by) {
@@ -321,11 +326,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement form() {
-        return single(By.tagName("form"), "form");
+        return single(tagName("form"), "form");
     }
 
     public FluentWebElements forms() {
-        return multiple(By.tagName("form"), "form");
+        return multiple(tagName("form"), "form");
     }
 
     public FluentWebElement form(By by) {
@@ -337,11 +342,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement textarea() {
-        return single(By.tagName("textarea"), "textarea");
+        return single(tagName("textarea"), "textarea");
     }
 
     public FluentWebElements textareas() {
-        return multiple(By.tagName("textarea"), "textarea");
+        return multiple(tagName("textarea"), "textarea");
     }
 
     public FluentWebElement textarea(By by) {
@@ -353,11 +358,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement option() {
-        return single(By.tagName("option"), "option");
+        return single(tagName("option"), "option");
     }
 
     public FluentWebElements options() {
-        return multiple(By.tagName("option"), "option");
+        return multiple(tagName("option"), "option");
     }
 
     public FluentWebElement option(By by) {
@@ -369,7 +374,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement li() {
-        return single(By.tagName("li"), "li");
+        return single(tagName("li"), "li");
     }
 
     public FluentWebElement li(By by) {
@@ -377,7 +382,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElements lis() {
-        return multiple(By.tagName("li"), "li");
+        return multiple(tagName("li"), "li");
     }
 
     public FluentWebElements lis(By by) {
@@ -388,8 +393,11 @@ public abstract class FluentCore {
     protected abstract FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
-        if (by.getClass().getName().contains("ByXPath")) {
-            by = By.xpath(".//" + tagName + "[" + by.toString().substring(by.toString().indexOf(":") + 1).trim() + "]");
+        if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
+            by = xpath(".//" + tagName + "[" + by.toString().substring(by.toString().indexOf(":") + 1).trim() + "]");
+        }
+        if (by.getClass().getName().equals("org.openqa.selenium.By$ByClassName")) {
+            by = composite(tagName(tagName), by);
         }
         return by;
     }

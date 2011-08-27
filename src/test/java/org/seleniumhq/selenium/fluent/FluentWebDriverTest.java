@@ -36,6 +36,7 @@ public class FluentWebDriverTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
+    static final By CLASS_C = By.className("classC");
     private StringBuilder sb;
     private WebDriver wd;
     private FluentWebDriverImpl fwd;
@@ -84,6 +85,23 @@ public class FluentWebDriverTest {
                 "wd0.findElement(By.id: idA) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
                         "we1.findElement(By.id: idB) -> we2\n" +
+                        "we2.getTagName() -> 'div'\n" +
+                        "we2.findElement(By.tagName: span) -> we3\n" +
+                        "we3.getTagName() -> 'span'\n" +
+                        "we3.click()\n"
+        ));
+    }
+
+    @Test
+    public void example_of_longer_query_using_classes() {
+
+        FluentCore fc = fwd.div(ID_A).div(CLASS_C).span().click();
+
+        assertThat(fc, notNullValue());
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.id: idA) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "we1.findElement(composite([By.tagName: div, By.className: classC])) -> we2\n" +
                         "we2.getTagName() -> 'div'\n" +
                         "we2.findElement(By.tagName: span) -> we3\n" +
                         "we3.getTagName() -> 'span'\n" +
