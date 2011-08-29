@@ -68,6 +68,7 @@ public class WebElementJournal implements WebElement {
             }
             if ((className.equals(FluentCore.class.getName())
                     || className.equals(FluentWebElement.class.getName()))
+                    && !methodName.equals("execute")
                     && !methodName.equals("multiple")
                     && !methodName.equals("single")) {
                 if (methodName.equals("link")) {

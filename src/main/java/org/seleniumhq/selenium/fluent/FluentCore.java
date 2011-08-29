@@ -427,21 +427,17 @@ public abstract class FluentCore {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private <T> T single(By by, String tagName, Class<T> resultingClass) {
-        by = fixupBy(by, tagName);
-        WebElement result = null;
+    private <T> T single(final By by, String tagName, Class<T> resultingClass) {
+        final By by2 = fixupBy(by, tagName);
+        final WebElement[] result = new WebElement[1];
         String ctx = contextualize(by.toString(), tagName);
-        try {
-            result = findIt(by);
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
-        assertTagIs(result.getTagName(), tagName);
-        return getFluentWebElement(result, ctx, resultingClass);
+        execute(new Execution() {
+            public void execute() {
+                result[0] = findIt(by2);
+            }
+        }, ctx);
+        assertTagIs(result[0].getTagName(), tagName);
+        return getFluentWebElement(result[0], ctx, resultingClass);
     }
 
     private String contextualize(String by, String tagName) {
@@ -451,21 +447,21 @@ public abstract class FluentCore {
         return context + "." + tagName + "(" + by + ")";
     }
 
-    private FluentWebElements multiple(By by, String tagName) {
-        by = fixupBy(by, tagName);
-        List<WebElement> results;
+    private FluentWebElements multiple(By by, final String tagName) {
+        final By by2 = fixupBy(by, tagName);
         String ctx = context + "." + tagName + "s(" + by + ")";
-        try {
-            results = findThem(by);
-            for (WebElement webElement : results) {
-                assertTagIs(webElement.getTagName(), tagName);
+
+        final Object[] result = new Object[1];
+        execute(new Execution() {
+            public void execute() {
+                List<WebElement> results = findThem(by2);
+                for (WebElement webElement : results) {
+                    assertTagIs(webElement.getTagName(), tagName);
+                }
+                result[0] = results;
             }
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
-        return getOngoingMultipleElements(results, ctx);
+        }, ctx);
+        return getOngoingMultipleElements((List<WebElement>) result[0], ctx);
     }
 
     protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
