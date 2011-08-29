@@ -233,15 +233,19 @@ public class FluentWebDriverTest {
         ));
 
         sb.setLength(0);
-        Point locn = ofwd.location().shouldBe(new Point(1, 1)).value();
+        WebElementValue<Point> location = ofwd.location();
+        Point shouldBe = new Point(1, 1);
+        Matchable<Point> pointMatchable = location.shouldBe(shouldBe);
+        Point locn = pointMatchable.value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
         assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
         try {
             ofwd.location().shouldBe(new Point(2, 2)).value();
+            fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().should().be(<(2, 2)>) ~ but was <(1, 1)>"));
+            assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was <(1, 1)>"));
         }
         assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
@@ -253,8 +257,9 @@ public class FluentWebDriverTest {
         sb.setLength(0);
         try {
             ofwd.location().shouldNotBe(new Point(1, 1)).value();
+            fail("should have barfed");
         } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldNot().be(<(1, 1)>) ~ but was."));
+            assertThat(e.getMessage(), equalTo("?.div().location().shouldNotBe((1, 1)) ~ but was."));
         }
         assertThat(locn.toString(), equalTo("(1, 1)"));
         assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));

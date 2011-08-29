@@ -11,10 +11,14 @@ public class WebElementValue<T> {
     }
 
     public Matchable<T> shouldBe(T shouldBe) {
-        return new Matchable<T>(val, shouldBe, context + ".shouldBe(" + shouldBe + ")", true);
+        Matchable<T> tMatchable = new Matchable<T>(val, shouldBe, context + ".shouldBe(" + shouldBe + ")", true);
+        tMatchable.match();
+        return tMatchable;
     }
 
     public Matchable<T> shouldNotBe(T shouldNotBe) {
-        return new Matchable<T>(val, shouldNotBe, context + ".shouldNotBe(" + shouldNotBe + ")", false);
+        Matchable<T> tMatchable = new Matchable<T>(val, shouldNotBe, context + ".shouldNotBe(" + shouldNotBe + ")", false);
+        tMatchable.match();
+        return tMatchable;
     }
 }
