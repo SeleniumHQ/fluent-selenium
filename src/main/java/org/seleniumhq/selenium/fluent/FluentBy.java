@@ -104,11 +104,7 @@ public abstract class FluentBy {
 
     private static boolean isTagName(By by) {
         String name = by.getClass().getName();
-        boolean equals = name.equals("org.openqa.selenium.By$ByTagName");
-        if (!equals) {
-            System.out.println();
-        }
-        return equals;
+        return name.equals("org.openqa.selenium.By$ByTagName");
     }
 
     private static boolean isClassName(By by) {
@@ -233,14 +229,6 @@ public abstract class FluentBy {
             return "By.attribute: " + name + val();
         }
     }
-
-    // Copied from Selenium's By:
-
-
-    // ByXPath.xpathExpression
-
-    // ByClassName.className
-
 
 
 
