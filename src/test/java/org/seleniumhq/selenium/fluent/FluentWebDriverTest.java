@@ -808,56 +808,7 @@ public class FluentWebDriverTest {
 
     }
 
-    @Test
-    public void select_functionality() {
 
-        FluentCore fc = fwd.select()
-                .select(By.xpath("@foo = 'bar'"))
-                .select(By.cssSelector("baz"))
-                .selects();
-
-        assertThat(fc, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: select) -> we1\n" +
-                        "we1.getTagName() -> 'select'\n" +
-                        "we1.findElement(By.xpath: .//select[@foo = 'bar']) -> we2\n" +
-                        "we2.getTagName() -> 'select'\n" +
-                        "we2.findElement(By.selector: baz) -> we3\n" +
-                        "we3.getTagName() -> 'select'\n" +
-                        "we3.findElements(By.tagName: select) -> [we4, we5]\n" +
-                        "we4.getTagName() -> 'select'\n" +
-                        "we5.getTagName() -> 'select'\n"
-        ));
-    }
-
-
-    @Test
-    public void selects_functionality() {
-        FluentCore fc = fwd.select()
-                .selects(By.name("qux"));
-
-        assertThat(fc, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: select) -> we1\n" +
-                        "we1.getTagName() -> 'select'\n" +
-                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
-                        "we2.getTagName() -> 'select'\n" +
-                        "we3.getTagName() -> 'select'\n"
-        ));
-    }
-
-
-    @Test
-    public void select_mismatched() {
-        try {
-            fwd.select(By.linkText("mismatching_tag_name"))
-                    .clearField();
-            fail("should have barfed");
-        } catch (AssertionError e) { // TODO
-            assertTrue(e.getMessage().contains("tag was incorrect"));
-        }
-
-    }
 
     @Test
     public void span_functionality() {

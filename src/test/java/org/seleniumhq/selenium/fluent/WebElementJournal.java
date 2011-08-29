@@ -1,10 +1,12 @@
 package org.seleniumhq.selenium.fluent;
 
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -61,6 +63,9 @@ public class WebElementJournal implements WebElement {
                 methodName = methodName.substring(0, methodName.length() - 1);
             }
             String className = elem.getClassName();
+            if (methodName.equals("<init>") && className.equals(Select.class.getName())) {
+                return "select";
+            }
             if ((className.equals(FluentCore.class.getName())
                     || className.equals(FluentWebElement.class.getName()))
                     && !methodName.equals("multiple")

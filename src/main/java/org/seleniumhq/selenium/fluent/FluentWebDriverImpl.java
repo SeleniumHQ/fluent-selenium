@@ -15,10 +15,11 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public final class FluentWebDriverImpl extends FluentCore implements FluentWebDriver {
 
@@ -27,9 +28,10 @@ public final class FluentWebDriverImpl extends FluentCore implements FluentWebDr
     }
 
     @Override
-    protected FluentWebElement getOngoingSingleElement(WebElement result, String context) {
-        return new FluentWebElement(super.delegate, result, context);
+    protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
+        return makeFluentWebElement(super.delegate, result, context, webElementClass.getConstructors()[0]);
     }
+
 
     @Override
     protected FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context) {
@@ -37,13 +39,11 @@ public final class FluentWebDriverImpl extends FluentCore implements FluentWebDr
     }
 
     protected final WebElement findIt(By by) {
-        WebElement result = delegate.findElement(by);
-        return result;
+        return delegate.findElement(by);
     }
 
     @Override
     protected List<WebElement> findThem(By by) {
-        List<WebElement> results = delegate.findElements(by);
-        return results;
+        return delegate.findElements(by);
     }
 }

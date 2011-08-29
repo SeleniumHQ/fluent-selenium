@@ -19,9 +19,9 @@ import org.openqa.selenium.*;
 
 import java.util.List;
 
-public final class FluentWebElement extends OngoingFluentWebDriver {
+public class FluentWebElement extends OngoingFluentWebDriver {
 
-    private final WebElement currentElement;
+    protected final WebElement currentElement;
 
     public FluentWebElement(WebDriver delegate, WebElement currentElement, String context) {
         super(delegate, context);
@@ -41,7 +41,7 @@ public final class FluentWebElement extends OngoingFluentWebDriver {
         String ctx = context + ".click()";
         try {
             currentElement.click();
-            return getOngoingSingleElement(currentElement, ctx);
+            return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
@@ -57,7 +57,7 @@ public final class FluentWebElement extends OngoingFluentWebDriver {
         String ctx = context + ".clearField()";
         try {
             currentElement.clear();
-            return getOngoingSingleElement(currentElement, ctx);
+            return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
@@ -70,7 +70,7 @@ public final class FluentWebElement extends OngoingFluentWebDriver {
         String ctx = context + ".submit()";
         try {
             currentElement.submit();
-            return getOngoingSingleElement(currentElement, ctx);
+            return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
@@ -89,7 +89,7 @@ public final class FluentWebElement extends OngoingFluentWebDriver {
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
         }
-        return getOngoingSingleElement(currentElement, ctx);
+        return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
     }
 
 

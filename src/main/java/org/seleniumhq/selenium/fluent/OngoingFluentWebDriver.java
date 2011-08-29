@@ -29,8 +29,8 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected FluentWebElement getOngoingSingleElement(WebElement result, String context) {
-        return new FluentWebElement(super.delegate, result, context);
+    protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
+        return makeFluentWebElement(super.delegate, result, context, webElementClass.getConstructors()[0]);
     }
 
     @Override
@@ -43,7 +43,7 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
         for (CharSequence charSequence : keysToSend) {
             keys = keys + ", '" + charSequence + "'";
         }
-        return keys.substring(2);
+        return keys.substring(2);  // delete comma-space prefix
     }
 
 

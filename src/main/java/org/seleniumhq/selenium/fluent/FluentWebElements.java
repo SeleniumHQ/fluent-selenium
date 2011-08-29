@@ -215,7 +215,7 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
             if (result == null) {
                 throw new NothingMatches();
             }
-            return getOngoingSingleElement(result, context);
+            return getFluentWebElement(result, context, FluentWebElement.class);
         } catch (NothingMatches e) {
             throw e;
         } catch (RuntimeException e) {

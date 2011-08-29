@@ -19,6 +19,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static org.openqa.selenium.By.tagName;
@@ -35,12 +37,25 @@ public abstract class FluentCore {
         this.context = context;
     }
 
+    protected final <T> T makeFluentWebElement(WebDriver delegate, WebElement result, String context, Constructor<?> constructor) {
+        try {
+            return (T) constructor.newInstance(delegate, result, context);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public FluentWebElement span() {
-        return single(tagName("span"), "span");
+        return single(tagName("span"), "span", FluentWebElement.class);
     }
 
     public FluentWebElement span(By by) {
-        return single(by, "span");
+        return single(by, "span", FluentWebElement.class);
     }
 
     public FluentWebElements spans() {
@@ -52,11 +67,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement div() {
-        return single(tagName("div"), "div");
+        return single(tagName("div"), "div", FluentWebElement.class);
     }
 
     public FluentWebElement div(By by) {
-        return single(by, "div");
+        return single(by, "div", FluentWebElement.class);
     }
 
     public FluentWebElements divs() {
@@ -68,11 +83,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement button() {
-        return single(tagName("button"), "button");
+        return single(tagName("button"), "button", FluentWebElement.class);
     }
 
     public FluentWebElement button(By by) {
-        return single(by, "button");
+        return single(by, "button", FluentWebElement.class);
     }
 
     public FluentWebElements buttons() {
@@ -84,11 +99,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement link() {
-        return single(tagName("a"), "a");
+        return single(tagName("a"), "a", FluentWebElement.class);
     }
 
     public FluentWebElement link(By by) {
-        return single(by, "a");
+        return single(by, "a", FluentWebElement.class);
     }
 
     public FluentWebElements links() {
@@ -100,11 +115,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement input() {
-        return single(tagName("input"), "input");
+        return single(tagName("input"), "input", FluentWebElement.class);
     }
 
     public FluentWebElement input(By by) {
-        return single(by, "input");
+        return single(by, "input", FluentWebElement.class);
 
     }
 
@@ -116,12 +131,12 @@ public abstract class FluentCore {
         return multiple(by, "input");
     }
 
-    public FluentWebElement select() {
-        return single(tagName("select"), "select");
+    public FluentSelect select() {
+        return single(tagName("select"), "select", FluentSelect.class);
     }
 
-    public FluentWebElement select(By by) {
-        return single(by, "select");
+    public FluentSelect select(By by) {
+        return single(by, "select", FluentSelect.class);
     }
 
     public FluentWebElements selects() {
@@ -133,11 +148,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h1() {
-        return single(tagName("h1"), "h1");
+        return single(tagName("h1"), "h1", FluentWebElement.class);
     }
 
     public FluentWebElement h1(By by) {
-        return single(by, "h1");
+        return single(by, "h1", FluentWebElement.class);
 
     }
 
@@ -150,11 +165,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h2() {
-        return single(tagName("h2"), "h2");
+        return single(tagName("h2"), "h2", FluentWebElement.class);
     }
 
     public FluentWebElement h2(By by) {
-        return single(by, "h2");
+        return single(by, "h2", FluentWebElement.class);
     }
 
     public FluentWebElements h2s() {
@@ -166,7 +181,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h3() {
-        return single(tagName("h3"), "h3");
+        return single(tagName("h3"), "h3", FluentWebElement.class);
     }
 
     public FluentWebElements h3s() {
@@ -174,7 +189,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h3(By by) {
-        return single(by, "h3");
+        return single(by, "h3", FluentWebElement.class);
     }
 
     public FluentWebElements h3s(By by) {
@@ -182,7 +197,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h4(){
-        return single(tagName("h4"), "h4");
+        return single(tagName("h4"), "h4", FluentWebElement.class);
     }
 
     public FluentWebElements h4s() {
@@ -190,7 +205,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement h4(By by) {
-        return single(by, "h4");
+        return single(by, "h4", FluentWebElement.class);
     }
 
     public FluentWebElements h4s(By by) {
@@ -198,7 +213,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement p() {
-        return single(tagName("p"), "p");
+        return single(tagName("p"), "p", FluentWebElement.class);
     }
 
     public FluentWebElements ps() {
@@ -206,7 +221,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement p(By by) {
-        return single(by, "p");
+        return single(by, "p", FluentWebElement.class);
     }
 
     public FluentWebElements ps(By by) {
@@ -214,7 +229,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement img() {
-        return single(tagName("img"), "img");
+        return single(tagName("img"), "img", FluentWebElement.class);
     }
 
     public FluentWebElements imgs() {
@@ -222,7 +237,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement img(By by) {
-        return single(by, "img");
+        return single(by, "img", FluentWebElement.class);
     }
 
     public FluentWebElements imgs(By by) {
@@ -230,7 +245,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement table() {
-        return single(tagName("table"), "table");
+        return single(tagName("table"), "table", FluentWebElement.class);
     }
 
     public FluentWebElements tables() {
@@ -238,7 +253,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement table(By by) {
-        return single(by, "table");
+        return single(by, "table", FluentWebElement.class);
     }
 
     public FluentWebElements tables(By by) {
@@ -246,7 +261,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement tr() {
-        return single(tagName("tr"), "tr");
+        return single(tagName("tr"), "tr", FluentWebElement.class);
     }
 
     public FluentWebElements trs() {
@@ -254,7 +269,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement tr(By by) {
-        return single(by, "tr");
+        return single(by, "tr", FluentWebElement.class);
     }
 
     public FluentWebElements trs(By by) {
@@ -262,7 +277,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement td() {
-        return single(tagName("td"), "td");
+        return single(tagName("td"), "td", FluentWebElement.class);
     }
 
     public FluentWebElements tds() {
@@ -270,7 +285,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement td(By by) {
-        return single(by, "td");
+        return single(by, "td", FluentWebElement.class);
     }
 
     public FluentWebElements tds(By by) {
@@ -278,7 +293,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement th() {
-        return single(tagName("th"), "th");
+        return single(tagName("th"), "th", FluentWebElement.class);
     }
 
     public FluentWebElements ths() {
@@ -286,7 +301,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement th(By by) {
-        return single(by, "th");
+        return single(by, "th", FluentWebElement.class);
     }
 
     public FluentWebElements ths(By by) {
@@ -294,7 +309,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ul() {
-        return single(tagName("ul"), "ul");
+        return single(tagName("ul"), "ul", FluentWebElement.class);
     }
 
     public FluentWebElements uls() {
@@ -302,7 +317,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ul(By by) {
-        return single(by, "ul");
+        return single(by, "ul", FluentWebElement.class);
     }
 
     public FluentWebElements uls(By by) {
@@ -310,7 +325,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ol() {
-        return single(tagName("ol"), "ol");
+        return single(tagName("ol"), "ol", FluentWebElement.class);
     }
 
     public FluentWebElements ols() {
@@ -318,7 +333,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement ol(By by) {
-        return single(by, "ol");
+        return single(by, "ol", FluentWebElement.class);
     }
 
     public FluentWebElements ols(By by) {
@@ -326,7 +341,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement form() {
-        return single(tagName("form"), "form");
+        return single(tagName("form"), "form", FluentWebElement.class);
     }
 
     public FluentWebElements forms() {
@@ -334,7 +349,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement form(By by) {
-        return single(by, "form");
+        return single(by, "form", FluentWebElement.class);
     }
 
     public FluentWebElements forms(By by) {
@@ -342,7 +357,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement textarea() {
-        return single(tagName("textarea"), "textarea");
+        return single(tagName("textarea"), "textarea", FluentWebElement.class);
     }
 
     public FluentWebElements textareas() {
@@ -350,7 +365,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement textarea(By by) {
-        return single(by, "textarea");
+        return single(by, "textarea", FluentWebElement.class);
     }
 
     public FluentWebElements textareas(By by) {
@@ -358,7 +373,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement option() {
-        return single(tagName("option"), "option");
+        return single(tagName("option"), "option", FluentWebElement.class);
     }
 
     public FluentWebElements options() {
@@ -366,7 +381,7 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement option(By by) {
-        return single(by, "option");
+        return single(by, "option", FluentWebElement.class);
     }
 
     public FluentWebElements options(By by) {
@@ -374,11 +389,11 @@ public abstract class FluentCore {
     }
 
     public FluentWebElement li() {
-        return single(tagName("li"), "li");
+        return single(tagName("li"), "li", FluentWebElement.class);
     }
 
     public FluentWebElement li(By by) {
-        return single(by, "li");
+        return single(by, "li", FluentWebElement.class);
     }
 
     public FluentWebElements lis() {
@@ -389,7 +404,7 @@ public abstract class FluentCore {
         return multiple(by, "li");
     }
 
-    protected abstract FluentWebElement getOngoingSingleElement(WebElement result, String context);
+    protected abstract <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass);
     protected abstract FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
@@ -412,7 +427,7 @@ public abstract class FluentCore {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private FluentWebElement single(By by, String tagName) {
+    private <T> T single(By by, String tagName, Class<T> resultingClass) {
         by = fixupBy(by, tagName);
         WebElement result = null;
         String ctx = contextualize(by.toString(), tagName);
@@ -426,7 +441,7 @@ public abstract class FluentCore {
             throw decorateAssertionError(ctx, e);
         }
         assertTagIs(result.getTagName(), tagName);
-        return getOngoingSingleElement(result, ctx);
+        return getFluentWebElement(result, ctx, resultingClass);
     }
 
     private String contextualize(String by, String tagName) {
@@ -459,5 +474,22 @@ public abstract class FluentCore {
     protected RuntimeException decorateAssertionError(String ctx, AssertionError e) {
         return new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
     }
+
+    protected static interface Execution {
+        void execute();
+    }
+
+    protected void execute(Execution execution, String ctx) {
+        try {
+            execution.execute();
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
+        }
+    }
+
 
 }
