@@ -39,16 +39,14 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
 
     public FluentWebElements click() {
         String ctx = context + ".click()";
-        try {
-            for (WebElement webElement : this) {
-                webElement.click();
+        execute(new Execution() {
+            public void execute() {
+                for (WebElement webElement : FluentWebElements.this) {
+                    webElement.click();
+                }
             }
-            return getOngoingMultipleElements(this, ctx);
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return getOngoingMultipleElements(this, ctx);
     }
 
     /**
@@ -56,106 +54,100 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
      */
     public FluentWebElements clearField() {
         String ctx = context + ".clearField()";
-        try {
-            for (WebElement webElement : this) {
-                webElement.clear();
+        execute(new Execution() {
+            public void execute() {
+                for (WebElement webElement : FluentWebElements.this) {
+                    webElement.clear();
+                }
             }
-            return getOngoingMultipleElements(this, ctx);
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return getOngoingMultipleElements(this, ctx);
     }
 
     public FluentWebElements submit() {
         String ctx = context + ".submit()";
-        try {
-            for (WebElement webElement : this) {
-                webElement.submit();
+        execute(new Execution() {
+            public void execute() {
+                for (WebElement webElement : FluentWebElements.this) {
+                    webElement.submit();
+                }
             }
-            return getOngoingMultipleElements(this, ctx);
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return getOngoingMultipleElements(this, ctx);
     }
 
     // These are as they would be in the WebElement API
 
-    public FluentWebElements sendKeys(CharSequence... keysToSend) {
+    public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
-        try {
-            for (WebElement webElement : this) {
-                webElement.sendKeys(keysToSend);
+        execute(new Execution() {
+            public void execute() {
+                for (WebElement webElement : FluentWebElements.this) {
+                    webElement.sendKeys(keysToSend);
+                }
             }
-            return getOngoingMultipleElements(this, ctx);
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return getOngoingMultipleElements(this, ctx);
     }
 
     public boolean isSelected() {
         String ctx = context + ".isSelected()";
-        try {
-            boolean areSelected = true;
-            for (WebElement webElement : this) {
-                areSelected = areSelected & webElement.isSelected();
+        final boolean[] are = new boolean[1];
+        execute(new Execution() {
+            public void execute() {
+                boolean areSelected = true;
+                for (WebElement webElement : FluentWebElements.this) {
+                    areSelected = areSelected & webElement.isSelected();
+                }
+                are[0] = areSelected;
             }
-            return areSelected;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return are[0];
     }
 
     public boolean isEnabled() {
         String ctx = context + ".isEnabled()";
-        try {
-            boolean areEnabled = true;
-            for (WebElement webElement : this) {
-                areEnabled = areEnabled & webElement.isEnabled();
+        final boolean[] are = new boolean[1];
+        execute(new Execution() {
+            public void execute() {
+                boolean areSelected = true;
+                for (WebElement webElement : FluentWebElements.this) {
+                    areSelected = areSelected & webElement.isEnabled();
+                }
+                are[0] = areSelected;
             }
-            return areEnabled;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return are[0];
     }
 
     public boolean isDisplayed() {
         String ctx = context + ".isDisplayed()";
-        try {
-            boolean areDisplayed = true;
-            for (WebElement webElement : this) {
-                areDisplayed = areDisplayed & webElement.isDisplayed();
+        final boolean[] are = new boolean[1];
+        execute(new Execution() {
+            public void execute() {
+                boolean areSelected = true;
+                for (WebElement webElement : FluentWebElements.this) {
+                    areSelected = areSelected & webElement.isDisplayed();
+                }
+                are[0] = areSelected;
             }
-            return areDisplayed;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return are[0];
     }
 
     public String getText() {
         String ctx = context + ".getText()";
-        try {
-            String text = "";
-            for (WebElement webElement : this) {
-                text = text + webElement.getText();
+        final String[] val = new String[1];
+        execute(new Execution() {
+            public void execute() {
+                String text = "";
+                for (WebElement webElement : FluentWebElements.this) {
+                    text = text + webElement.getText();
+                }
+                val[0] = text;
             }
-            return text;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return val[0];
     }
 
     @Override
@@ -183,46 +175,49 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
         throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
     }
 
-    public FluentWebElements filter(FluentMatcher matcher) {
-
+    public FluentWebElements filter(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
-        try {
-            ArrayList<WebElement> results = new ArrayList<WebElement>();
-            for (WebElement webElement : this) {
-                if (matcher.matches(webElement)) {
-                    results.add(webElement);
+        final Object[] val = new Object[1];
+        execute(new Execution() {
+            public void execute() {
+                ArrayList<WebElement> results = new ArrayList<WebElement>();
+                for (WebElement webElement : FluentWebElements.this) {
+                    if (matcher.matches(webElement)) {
+                        results.add(webElement);
+                    }
                 }
+                val[0] = results;
             }
-            return getOngoingMultipleElements(results, ctx);
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+        return getOngoingMultipleElements((List<WebElement>) val[0], ctx);
     }
 
-    public FluentWebElement first(FluentMatcher matcher) {
-
+    public FluentWebElement first(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
-        try {
-            WebElement result = null;
-            for (WebElement webElement : this) {
-                if (matcher.matches(webElement)) {
-                    result = webElement;
-                    break;
+
+        final Object[] val = new Object[1];
+        execute(new Execution() {
+            public void execute() {
+                WebElement result = null;
+                for (WebElement webElement : FluentWebElements.this) {
+                    if (matcher.matches(webElement)) {
+                        result = webElement;
+                        break;
+                    }
+                }
+                if (result == null) {
+                    val[0] = new NothingMatches();
+                } else {
+                    val[0] = result;
                 }
             }
-            if (result == null) {
-                throw new NothingMatches();
-            }
-            return getFluentWebElement(result, context, FluentWebElement.class);
-        } catch (NothingMatches e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
+        }, ctx);
+        if (val[0] instanceof NothingMatches) {
+            throw (NothingMatches) val[0];
         }
+
+
+        return getFluentWebElement((WebElement) val[0], context, FluentWebElement.class);
     }
 
 
