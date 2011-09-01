@@ -34,45 +34,33 @@ public class FluentSelect extends FluentWebElement {
      *         is done by checking the value of the "multiple" attribute.
      */
     public boolean isMultiple() {
-        String ctx = context + ".isMultiple()";
-        final boolean[] retVal = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
-                retVal[0] = getSelect().isMultiple();
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
+                return getSelect().isMultiple();
             }
-        }, ctx);
-        return retVal[0];
-
+        }, context + ".isMultiple()");
     }
 
     /**
      * @return All options belonging to this select tag
      */
     public List<WebElement> getOptions() {
-        String ctx = context + ".getOptions()";
-        final Object[] retVal = new Object[1];
-        execute(new Execution() {
-            public void execute() {
-                retVal[0] = getSelect().getOptions();
+        return execute(new Execution<List<WebElement>>() {
+            public List<WebElement> execute() {
+                return getSelect().getOptions();
             }
-        }, ctx);
-        return (List<WebElement>) retVal[0];
-
+        }, context + ".getOptions()");
     }
 
     /**
      * @return All selected options belonging to this select tag
      */
     public List<WebElement> getAllSelectedOptions() {
-        String ctx = context + ".getAllSelectedOptions()";
-        final Object[] retVal = new Object[1];
-        execute(new Execution() {
-            public void execute() {
-                retVal[0] = getSelect().getAllSelectedOptions();
+        return execute(new Execution<List<WebElement>>() {
+            public List<WebElement> execute() {
+                return getSelect().getAllSelectedOptions();
             }
-        }, ctx);
-        return (List<WebElement>) retVal[0];
-
+        }, context + ".getAllSelectedOptions()");
     }
 
     /**
@@ -80,14 +68,11 @@ public class FluentSelect extends FluentWebElement {
      *         normal select)
      */
     public WebElement getFirstSelectedOption() {
-        String ctx = context + ".getFirstSelectedOption()";
-        final WebElement[] retVal = new WebElement[1];
-        execute(new Execution() {
-            public void execute() {
-                retVal[0] = getSelect().getFirstSelectedOption();
+        return execute(new Execution<WebElement>() {
+            public WebElement execute() {
+                return getSelect().getFirstSelectedOption();
             }
-        }, ctx);
-        return retVal[0];
+        }, context + ".getFirstSelectedOption()");
     }
 
     /**
@@ -99,12 +84,12 @@ public class FluentSelect extends FluentWebElement {
      * @param text The visible text to match against
      */
     public FluentSelect selectByVisibleText(final String text) {
-        String ctx = context + ".selectByVisibleText(" + text + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().selectByVisibleText(text);
+                return true;
             }
-        }, ctx);
+        }, context + ".selectByVisibleText(" + text + ")");
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
     }
 
@@ -115,12 +100,12 @@ public class FluentSelect extends FluentWebElement {
      * @param index The option at this index will be selected
      */
     public FluentSelect selectByIndex(final int index) {
-        String ctx = context + ".selectByIndex(" + index + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().selectByIndex(index);
+                return true;
             }
-        }, ctx);
+        }, context + ".selectByIndex(" + index + ")");
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
     }
 
@@ -133,15 +118,14 @@ public class FluentSelect extends FluentWebElement {
      * @param value The value to match against
      */
     public FluentSelect selectByValue(final String value) {
-        String ctx = context + ".selectByValue(" + value + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().selectByValue(value);
+                return true;
             }
-        }, ctx);
+        }, context + ".selectByValue(" + value + ")");
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
     }
-
 
     /**
      * Clear all selected entries. This is only valid when the SELECT supports multiple selections.
@@ -149,12 +133,12 @@ public class FluentSelect extends FluentWebElement {
      * @throws UnsupportedOperationException If the SELECT does not support multiple selections
      */
     public FluentSelect deselectAll() {
-        String ctx = context + ".deselectAll()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().deselectAll();
+                return true;
             }
-        }, ctx);
+        }, context + ".deselectAll()");
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
     }
 
@@ -168,9 +152,10 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByValue(final String value) {
         String ctx = context + ".deselectByValue(" + value + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().deselectByValue(value);
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
@@ -184,9 +169,10 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByIndex(final int index) {
         String ctx = context + ".deselectByIndex(" + index + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().deselectByIndex(index);
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
@@ -202,14 +188,14 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByVisibleText(final String text) {
         String ctx = context + ".deselectByVisibleText(" + text + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 getSelect().deselectByVisibleText(text);
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, this.context, FluentSelect.class);
     }
-
 
     protected synchronized Select getSelect() {
         if (select == null) {

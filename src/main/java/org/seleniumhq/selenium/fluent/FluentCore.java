@@ -405,7 +405,7 @@ public abstract class FluentCore {
     }
 
     protected abstract <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass);
-    protected abstract FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context);
+    protected abstract FluentWebElements getFluentWebElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
@@ -429,15 +429,14 @@ public abstract class FluentCore {
 
     private <T> T single(final By by, String tagName, Class<T> resultingClass) {
         final By by2 = fixupBy(by, tagName);
-        final WebElement[] result = new WebElement[1];
         String ctx = contextualize(by.toString(), tagName);
-        execute(new Execution() {
-            public void execute() {
-                result[0] = findIt(by2);
+        final WebElement result = execute(new Execution<WebElement>() {
+            public WebElement execute() {
+                return findIt(by2);
             }
         }, ctx);
-        assertTagIs(result[0].getTagName(), tagName);
-        return getFluentWebElement(result[0], ctx, resultingClass);
+        assertTagIs(result.getTagName(), tagName);
+        return getFluentWebElement(result, ctx, resultingClass);
     }
 
     private String contextualize(String by, String tagName) {
@@ -451,17 +450,16 @@ public abstract class FluentCore {
         final By by2 = fixupBy(by, tagName);
         String ctx = context + "." + tagName + "s(" + by + ")";
 
-        final Object[] result = new Object[1];
-        execute(new Execution() {
-            public void execute() {
+        final List<WebElement> result = execute(new Execution<List<WebElement>>() {
+            public List<WebElement> execute() {
                 List<WebElement> results = findThem(by2);
                 for (WebElement webElement : results) {
                     assertTagIs(webElement.getTagName(), tagName);
                 }
-                result[0] = results;
+                return results;
             }
         }, ctx);
-        return getOngoingMultipleElements((List<WebElement>) result[0], ctx);
+        return getFluentWebElements(result, ctx);
     }
 
     protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
@@ -471,13 +469,13 @@ public abstract class FluentCore {
         return new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
     }
 
-    protected static interface Execution {
-        void execute();
+    protected static interface Execution<T> {
+        T execute();
     }
 
-    protected void execute(Execution execution, String ctx) {
+    protected <T> T execute(Execution<T> execution, String ctx) {
         try {
-            execution.execute();
+            return execution.execute();
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {

@@ -1822,12 +1822,13 @@ public class FluentWebDriverTest {
     @Test
     public void first_finds_nothing() {
 
-        FluentCore fc = null;
         try {
-            fc = fwd.divs().first(new TextContainsWord("mutton")).click();
+            fwd.divs().first(new TextContainsWord("mutton")).click();
             fail("should have barfed");
-        } catch (NothingMatches e) {
-            // expected;
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.divs(By.tagName: div)" +
+                    ".filter(TextContainsWord{word='mutton'})"));
+            assertTrue(e.getCause() instanceof NothingMatches);
         }
 
         assertThat(sb.toString(),
@@ -1847,6 +1848,13 @@ public class FluentWebDriverTest {
 
         public boolean matches(WebElement webElement) {
             return webElement.getText().contains(word);
+        }
+
+        @Override
+        public String toString() {
+            return "TextContainsWord{" +
+                    "word='" + word + '\'' +
+                    '}';
         }
     }
 

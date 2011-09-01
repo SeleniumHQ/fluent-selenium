@@ -19,7 +19,7 @@ import org.openqa.selenium.*;
 
 import java.util.*;
 
-public final class FluentWebElements extends OngoingFluentWebDriver implements List<WebElement> {
+public final class FluentWebElements extends BaseFluentWebElement implements List<WebElement> {
 
     private final List<WebElement> currentElements;
 
@@ -39,14 +39,15 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
 
     public FluentWebElements click() {
         String ctx = context + ".click()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.click();
                 }
+                return true;
             }
         }, ctx);
-        return getOngoingMultipleElements(this, ctx);
+        return getFluentWebElements(this, ctx);
     }
 
     /**
@@ -54,100 +55,96 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
      */
     public FluentWebElements clearField() {
         String ctx = context + ".clearField()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.clear();
                 }
+                return true;
             }
         }, ctx);
-        return getOngoingMultipleElements(this, ctx);
+        return getFluentWebElements(this, ctx);
     }
 
     public FluentWebElements submit() {
         String ctx = context + ".submit()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.submit();
                 }
+                return true;
             }
         }, ctx);
-        return getOngoingMultipleElements(this, ctx);
+        return getFluentWebElements(this, ctx);
     }
 
     // These are as they would be in the WebElement API
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.sendKeys(keysToSend);
                 }
+                return true;
             }
         }, ctx);
-        return getOngoingMultipleElements(this, ctx);
+        return getFluentWebElements(this, ctx);
     }
 
     public boolean isSelected() {
         String ctx = context + ".isSelected()";
-        final boolean[] are = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
+        boolean areSelected = execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isSelected();
                 }
-                are[0] = areSelected;
+                return areSelected;
             }
         }, ctx);
-        return are[0];
+        return areSelected;
     }
 
     public boolean isEnabled() {
         String ctx = context + ".isEnabled()";
-        final boolean[] are = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isEnabled();
                 }
-                are[0] = areSelected;
+                return areSelected;
             }
         }, ctx);
-        return are[0];
     }
 
     public boolean isDisplayed() {
         String ctx = context + ".isDisplayed()";
-        final boolean[] are = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isDisplayed();
                 }
-                are[0] = areSelected;
+                return areSelected;
             }
         }, ctx);
-        return are[0];
     }
 
     public String getText() {
         String ctx = context + ".getText()";
-        final String[] val = new String[1];
-        execute(new Execution() {
-            public void execute() {
+        return execute(new Execution<String>() {
+            public String execute() {
                 String text = "";
                 for (WebElement webElement : FluentWebElements.this) {
                     text = text + webElement.getText();
                 }
-                val[0] = text;
+                return text;
             }
         }, ctx);
-        return val[0];
     }
 
     @Override
@@ -177,27 +174,25 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
-        final Object[] val = new Object[1];
-        execute(new Execution() {
-            public void execute() {
+        final List<WebElement> subset = execute(new Execution<List<WebElement>>() {
+            public List<WebElement> execute() {
                 ArrayList<WebElement> results = new ArrayList<WebElement>();
                 for (WebElement webElement : FluentWebElements.this) {
                     if (matcher.matches(webElement)) {
                         results.add(webElement);
                     }
                 }
-                val[0] = results;
+                return results;
             }
         }, ctx);
-        return getOngoingMultipleElements((List<WebElement>) val[0], ctx);
+        return getFluentWebElements(subset, ctx);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
 
-        final Object[] val = new Object[1];
-        execute(new Execution() {
-            public void execute() {
+        WebElement first = execute(new Execution<WebElement>() {
+            public WebElement execute() {
                 WebElement result = null;
                 for (WebElement webElement : FluentWebElements.this) {
                     if (matcher.matches(webElement)) {
@@ -206,18 +201,14 @@ public final class FluentWebElements extends OngoingFluentWebDriver implements L
                     }
                 }
                 if (result == null) {
-                    val[0] = new NothingMatches();
+                    throw new NothingMatches();
                 } else {
-                    val[0] = result;
+                    return result;
                 }
             }
         }, ctx);
-        if (val[0] instanceof NothingMatches) {
-            throw (NothingMatches) val[0];
-        }
 
-
-        return getFluentWebElement((WebElement) val[0], context, FluentWebElement.class);
+        return getFluentWebElement(first, context, FluentWebElement.class);
     }
 
 

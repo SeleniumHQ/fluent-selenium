@@ -226,28 +226,8 @@ public class ByTest extends MockTestBase {
     }
   }
 
-  @Test
-  @org.junit.Ignore
-  public void xtestShouldUseXPathToFindByNameIfDriverDoesNotImplementFindsByName() {
-    final OnlyXPath driver = mock(OnlyXPath.class);
-
-    checking(new Expectations() {
-      {
-        one(driver).findElementByXPath("//*[@name='cheese']");
-      }
-    });
-
-    By by = By.name("cheese");
-
-    by.findElement(driver);
-  }
-
   private interface AllDriver
       extends FindsById, FindsByLinkText, FindsByName, FindsByXPath, SearchContext {
     // Place holder
-  }
-
-  private interface OnlyXPath extends FindsByXPath, SearchContext {
-
   }
 }

@@ -19,7 +19,7 @@ import org.openqa.selenium.*;
 
 import java.util.List;
 
-public class FluentWebElement extends OngoingFluentWebDriver {
+public class FluentWebElement extends BaseFluentWebElement {
 
     protected final WebElement currentElement;
 
@@ -39,9 +39,10 @@ public class FluentWebElement extends OngoingFluentWebDriver {
 
     public FluentWebElement click() {
         String ctx = context + ".click()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 currentElement.click();
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
@@ -53,9 +54,10 @@ public class FluentWebElement extends OngoingFluentWebDriver {
 
     public FluentWebElement clearField() {
         String ctx = context + ".clearField()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 currentElement.clear();
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
@@ -64,9 +66,10 @@ public class FluentWebElement extends OngoingFluentWebDriver {
 
     public FluentWebElement submit() {
         String ctx = context + ".submit()";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 currentElement.submit();
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
@@ -76,9 +79,10 @@ public class FluentWebElement extends OngoingFluentWebDriver {
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
-        execute(new Execution() {
-            public void execute() {
+        execute(new Execution<Boolean>() {
+            public Boolean execute() {
                 currentElement.sendKeys(keysToSend);
+                return true;
             }
         }, ctx);
         return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
@@ -86,102 +90,76 @@ public class FluentWebElement extends OngoingFluentWebDriver {
 
 
     public String getTagName() {
-        String ctx = context + ".getTagName()";
-        final String[] tn = new String[1];
-        execute(new Execution() {
-            public void execute() {
-                tn[0] = currentElement.getTagName();
+        String tagName = execute(new Execution<String>() {
+            public String execute() {
+                return currentElement.getTagName();
             }
-        }, ctx);
-        return tn[0];
+        }, context + ".getTagName()");
+        return tagName;
     }
 
     public boolean isSelected() {
-        String ctx = context + ".isSelected()";
-        final boolean[] is = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
-                is[0] = currentElement.isSelected();
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
+                return currentElement.isSelected();
             }
-        }, ctx);
-        return is[0];
+        }, context + ".isSelected()");
     }
 
     public boolean isEnabled() {
-        String ctx = context + ".isEnabled()";
-        final boolean[] is = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
-                is[0] = currentElement.isEnabled();
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
+                return currentElement.isEnabled();
             }
-        }, ctx);
-        return is[0];
+        }, context + ".isEnabled()");
     }
 
     public boolean isDisplayed() {
-        String ctx = context + ".isDisplayed()";
-        final boolean[] is = new boolean[1];
-        execute(new Execution() {
-            public void execute() {
-                is[0] = currentElement.isDisplayed();
+        return execute(new Execution<Boolean>() {
+            public Boolean execute() {
+                return currentElement.isDisplayed();
             }
-        }, ctx);
-        return is[0];
+        }, context + ".isDisplayed()");
     }
 
     public Point getLocation() {
-        String ctx = context + ".getLocation()";
-        final Point[] locn = new Point[1];
-        execute(new Execution() {
-            public void execute() {
-                locn[0] = currentElement.getLocation();
+        return execute(new Execution<Point>() {
+            public Point execute() {
+                return currentElement.getLocation();
             }
-        }, ctx);
-        return locn[0];
+        }, context + ".getLocation()");
     }
 
     public Dimension getSize() {
-        String ctx = context + ".getSize()";
-        final Dimension[] dim = new Dimension[1];
-        execute(new Execution() {
-            public void execute() {
-                dim[0] = currentElement.getSize();
+        return execute(new Execution<Dimension>() {
+            public Dimension execute() {
+                return currentElement.getSize();
             }
-        }, ctx);
-        return dim[0];
+        }, context + ".getSize()");
     }
 
     public String getCssValue(final String cssName) {
-        String ctx = context + ".getCssValue("+cssName+")";
-        final String[] val = new String[1];
-        execute(new Execution() {
-            public void execute() {
-                val[0] = currentElement.getCssValue(cssName);
+        return execute(new Execution<String>() {
+            public String execute() {
+                return currentElement.getCssValue(cssName);
             }
-        }, ctx);
-        return val[0];
+        }, context + ".getCssValue("+cssName+")");
     }
 
     public String getAttribute(final String attr) {
-        String ctx = context + ".getAttribute("+attr+")";
-        final String[] val = new String[1];
-        execute(new Execution() {
-            public void execute() {
-                val[0] = currentElement.getAttribute(attr);
+        return execute(new Execution<String>() {
+            public String execute() {
+                return currentElement.getAttribute(attr);
             }
-        }, ctx);
-        return val[0];
+        }, context + ".getAttribute("+attr+")");
     }
 
     public String getText() {
-        String ctx = context + ".getText()";
-        final String[] val = new String[1];
-        execute(new Execution() {
-            public void execute() {
-                val[0] = currentElement.getText();
+        return execute(new Execution<String>() {
+            public String execute() {
+                return currentElement.getText();
             }
-        }, ctx);
-        return val[0];
+        }, context + ".getText()");
     }
 
     //@Override

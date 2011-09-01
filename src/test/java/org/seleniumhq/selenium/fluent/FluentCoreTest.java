@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 public class FluentCoreTest {
@@ -27,7 +28,7 @@ public class FluentCoreTest {
             }
 
             @Override
-            protected FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context) {
+            protected FluentWebElements getFluentWebElements(List<WebElement> results, String context) {
                 return null;
             }
 
@@ -49,10 +50,11 @@ public class FluentCoreTest {
 
         try {
             fc.execute(new FluentCore.Execution() {
-                public void execute() {
+                public Void execute() {
                     throw new AssertionError("Oops");
                 }
             }, "DUMMY_CONTEXT");
+            fail("should have barfed");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: DUMMY_CONTEXT"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
@@ -65,10 +67,11 @@ public class FluentCoreTest {
 
         try {
             fc.execute(new FluentCore.Execution() {
-                public void execute() {
+                public Void execute() {
                     throw new RuntimeException("Oops");
                 }
             }, "DUMMY_CONTEXT");
+            fail("should have barfed");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: DUMMY_CONTEXT"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
@@ -81,10 +84,11 @@ public class FluentCoreTest {
 
         try {
             fc.execute(new FluentCore.Execution() {
-                public void execute() {
+                public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
             }, "DUMMY_CONTEXT");
+            fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Oops"));
         }

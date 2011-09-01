@@ -22,9 +22,9 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public abstract class OngoingFluentWebDriver extends FluentCore {
+public abstract class BaseFluentWebElement extends FluentCore {
 
-    public OngoingFluentWebDriver(WebDriver delegate, String context) {
+    public BaseFluentWebElement(WebDriver delegate, String context) {
         super(delegate, context);
     }
 
@@ -34,7 +34,7 @@ public abstract class OngoingFluentWebDriver extends FluentCore {
     }
 
     @Override
-    protected FluentWebElements getOngoingMultipleElements(List<WebElement> results, String context) {
+    protected FluentWebElements getFluentWebElements(List<WebElement> results, String context) {
         return new FluentWebElements(super.delegate, results, context);
     }
 

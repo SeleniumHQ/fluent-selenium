@@ -29,9 +29,7 @@ public class select_element_tests {
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
         FAIL_ON_NEXT.set(null);
-
     }
-
 
     @Test
     public void select_functionality() {
@@ -78,7 +76,6 @@ public class select_element_tests {
         ));
     }
 
-
     @Test
     public void selects_functionality() {
         FluentCore fc = fwd.select()
@@ -94,7 +91,6 @@ public class select_element_tests {
         ));
     }
 
-
     @Test
     public void select_mismatched() {
         try {
@@ -104,7 +100,6 @@ public class select_element_tests {
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("tag was incorrect"));
         }
-
     }
 
     @Test
@@ -124,9 +119,7 @@ public class select_element_tests {
         select.selectByValue("humphrey");
 
         verify(wdSelect, times(1)).selectByValue("humphrey");
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -147,9 +140,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -165,7 +161,6 @@ public class select_element_tests {
 
         verify(wdSelect).selectByValue("humphrey");
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -187,7 +182,6 @@ public class select_element_tests {
         verify(wdSelect, times(1)).selectByIndex(444);
 
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -208,9 +202,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -226,7 +223,6 @@ public class select_element_tests {
 
         verify(wdSelect).selectByIndex(444);
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -248,7 +244,6 @@ public class select_element_tests {
         verify(wdSelect, times(1)).selectByVisibleText("humphrey");
 
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -269,9 +264,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -287,7 +285,6 @@ public class select_element_tests {
 
         verify(wdSelect).selectByVisibleText("humphrey");
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -307,9 +304,7 @@ public class select_element_tests {
         select.deselectAll();
 
         verify(wdSelect, times(1)).deselectAll();
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -330,9 +325,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -348,7 +346,6 @@ public class select_element_tests {
 
         verify(wdSelect).deselectAll();
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -368,9 +365,7 @@ public class select_element_tests {
         select.deselectByValue("humphrey");
 
         verify(wdSelect, times(1)).deselectByValue("humphrey");
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -391,9 +386,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -409,7 +407,6 @@ public class select_element_tests {
 
         verify(wdSelect).deselectByValue("humphrey");
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -429,9 +426,7 @@ public class select_element_tests {
         select.deselectByVisibleText("humphrey");
 
         verify(wdSelect, times(1)).deselectByVisibleText("humphrey");
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -452,9 +447,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -470,7 +468,6 @@ public class select_element_tests {
 
         verify(wdSelect).deselectByVisibleText("humphrey");
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -490,9 +487,7 @@ public class select_element_tests {
         select.deselectByIndex(444);
 
         verify(wdSelect, times(1)).deselectByIndex(444);
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -513,9 +508,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -531,7 +529,6 @@ public class select_element_tests {
 
         verify(wdSelect).deselectByIndex(444);
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -551,9 +548,7 @@ public class select_element_tests {
         select.getFirstSelectedOption();
 
         verify(wdSelect, times(1)).getFirstSelectedOption();
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -574,9 +569,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -592,7 +590,6 @@ public class select_element_tests {
 
         verify(wdSelect).getFirstSelectedOption();
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -612,9 +609,7 @@ public class select_element_tests {
         select.isMultiple();
 
         verify(wdSelect, times(1)).isMultiple();
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -635,9 +630,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -653,7 +651,6 @@ public class select_element_tests {
 
         verify(wdSelect).isMultiple();
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -673,9 +670,7 @@ public class select_element_tests {
         select.getOptions();
 
         verify(wdSelect, times(1)).getOptions();
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -696,9 +691,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -714,7 +712,6 @@ public class select_element_tests {
 
         verify(wdSelect).getOptions();
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -734,9 +731,7 @@ public class select_element_tests {
         select.getAllSelectedOptions();
 
         verify(wdSelect, times(1)).getAllSelectedOptions();
-
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
     @Test
@@ -757,9 +752,12 @@ public class select_element_tests {
             }
 
             @Override
-            protected void execute(Execution execution, String ctx) {
+            protected Void execute(Execution execution, String ctx) {
                 try {
                     execution.execute();
+                    fail("should have barfed");
+                } catch (AssertionError e) {
+                    throw e;
                 } catch (Throwable e) {
                     assertTrue(e == fooE);
                 }
@@ -775,7 +773,6 @@ public class select_element_tests {
 
         verify(wdSelect).getAllSelectedOptions();
         verifyNoMoreInteractions(wd, we, wdSelect);
-
     }
 
 }
