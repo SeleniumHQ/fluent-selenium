@@ -66,7 +66,7 @@ public class WebElementJournal implements WebElement {
             if (methodName.equals("<init>") && className.equals(Select.class.getName())) {
                 return "select";
             }
-            if ((className.equals(FluentCore.class.getName())
+            if ((className.equals(BaseFluentWebDriver.class.getName())
                     || className.equals(FluentWebElement.class.getName()))
                     && !methodName.equals("execute")
                     && !methodName.equals("multiple")

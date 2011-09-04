@@ -34,7 +34,7 @@ public class select_element_tests {
     @Test
     public void select_functionality() {
 
-        FluentCore fc = fwd.select()
+        BaseFluentWebDriver fc = fwd.select()
                 .select(By.xpath("@foo = 'bar'"))
                 .select(By.cssSelector("baz"))
                 .deselectAll()
@@ -62,7 +62,7 @@ public class select_element_tests {
     @Test
     public void method_on_select_is_invoked() {
 
-        FluentCore fc = fwd.select().selectByValue("bar");
+        BaseFluentWebDriver fc = fwd.select().selectByValue("bar");
 
         assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -78,7 +78,7 @@ public class select_element_tests {
 
     @Test
     public void selects_functionality() {
-        FluentCore fc = fwd.select()
+        BaseFluentWebDriver fc = fwd.select()
                 .selects(By.name("qux"));
 
         assertThat(fc, notNullValue());

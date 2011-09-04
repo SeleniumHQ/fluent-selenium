@@ -63,7 +63,7 @@ public class FluentWebDriverTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        FluentCore fc = fwd.div(ID_A).div(ID_B);
+        BaseFluentWebDriver fc = fwd.div(ID_A).div(ID_B);
 
         assertThat(fc, notNullValue());
 
@@ -78,7 +78,7 @@ public class FluentWebDriverTest {
     @Test
     public void example_of_longer_query_using_IDs() {
 
-        FluentCore fc = fwd.div(ID_A).div(ID_B).span().click();
+        BaseFluentWebDriver fc = fwd.div(ID_A).div(ID_B).span().click();
 
         assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -95,7 +95,7 @@ public class FluentWebDriverTest {
     @Test
     public void example_of_longer_query_using_classes() {
 
-        FluentCore fc = fwd.div(ID_A).div(CLASS_C).span().click();
+        BaseFluentWebDriver fc = fwd.div(ID_A).div(CLASS_C).span().click();
 
         assertThat(fc, notNullValue());
         assertThat(sb.toString(), equalTo(
@@ -112,7 +112,7 @@ public class FluentWebDriverTest {
     @Test
     public void lengthier_expression_with_late_runtime_exception() {
 
-        FluentCore fc = null;
+        BaseFluentWebDriver fc = null;
         try {
             FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
@@ -136,7 +136,7 @@ public class FluentWebDriverTest {
     @Test
     public void lengthier_expression_with_late_assertion_error() {
 
-        FluentCore fc = null;
+        BaseFluentWebDriver fc = null;
         try {
             FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
@@ -667,7 +667,7 @@ public class FluentWebDriverTest {
     @Test
     public void div_functionality() {
 
-        FluentCore fc = fwd.div()
+        BaseFluentWebDriver fc = fwd.div()
                 .div(By.xpath("@foo = 'bar'"))
                 .div(By.cssSelector("baz"))
                 .divs();
@@ -688,7 +688,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void divs_functionality() {
-        FluentCore fc = fwd.div()
+        BaseFluentWebDriver fc = fwd.div()
                 .divs(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -716,7 +716,7 @@ public class FluentWebDriverTest {
     @Test
     public void button_functionality() {
 
-        FluentCore fc = fwd.button()
+        BaseFluentWebDriver fc = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
                 .button(By.cssSelector("baz"))
                 .buttons();
@@ -737,7 +737,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void buttons_functionality() {
-        FluentCore fc = fwd.button()
+        BaseFluentWebDriver fc = fwd.button()
                 .buttons(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -765,7 +765,7 @@ public class FluentWebDriverTest {
     @Test
     public void option_functionality() {
 
-        FluentCore fc = fwd.option()
+        BaseFluentWebDriver fc = fwd.option()
                 .option(By.xpath("@foo = 'bar'"))
                 .option(By.cssSelector("baz"))
                 .options();
@@ -787,7 +787,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void options_functionality() {
-        FluentCore fc = fwd.option()
+        BaseFluentWebDriver fc = fwd.option()
                 .options(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -818,7 +818,7 @@ public class FluentWebDriverTest {
     @Test
     public void span_functionality() {
 
-        FluentCore fc = fwd.span()
+        BaseFluentWebDriver fc = fwd.span()
                 .span(By.xpath("@foo = 'bar'"))
                 .span(By.cssSelector("baz"))
                 .spans();
@@ -840,7 +840,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void spans_functionality() {
-        FluentCore fc = fwd.span()
+        BaseFluentWebDriver fc = fwd.span()
                 .spans(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -869,7 +869,7 @@ public class FluentWebDriverTest {
     @Test
     public void tr_functionality() {
 
-        FluentCore fc = fwd.tr()
+        BaseFluentWebDriver fc = fwd.tr()
                 .tr(By.xpath("@foo = 'bar'"))
                 .tr(By.cssSelector("baz"))
                 .trs();
@@ -891,7 +891,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void trs_functionality() {
-        FluentCore fc = fwd.tr()
+        BaseFluentWebDriver fc = fwd.tr()
                 .trs(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -920,7 +920,7 @@ public class FluentWebDriverTest {
     @Test
     public void td_functionality() {
 
-        FluentCore fc = fwd.td()
+        BaseFluentWebDriver fc = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
@@ -942,7 +942,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void tds_functionality() {
-        FluentCore fc = fwd.td()
+        BaseFluentWebDriver fc = fwd.td()
                 .tds(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -971,7 +971,7 @@ public class FluentWebDriverTest {
     @Test
     public void table_functionality() {
 
-        FluentCore fc = fwd.table()
+        BaseFluentWebDriver fc = fwd.table()
                 .table(By.xpath("@foo = 'bar'"))
                 .table(By.cssSelector("baz"))
                 .tables();
@@ -993,7 +993,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void tables_functionality() {
-        FluentCore fc = fwd.table()
+        BaseFluentWebDriver fc = fwd.table()
                 .tables(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1022,7 +1022,7 @@ public class FluentWebDriverTest {
     @Test
     public void h1_functionality() {
 
-        FluentCore fc = fwd.h1()
+        BaseFluentWebDriver fc = fwd.h1()
                 .h1(By.xpath("@foo = 'bar'"))
                 .h1(By.cssSelector("baz"))
                 .h1s();
@@ -1043,7 +1043,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void h1s_functionality() {
-        FluentCore fc = fwd.h1()
+        BaseFluentWebDriver fc = fwd.h1()
                 .h1s(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1071,7 +1071,7 @@ public class FluentWebDriverTest {
     @Test
     public void h2_functionality() {
 
-        FluentCore fc = fwd.h2()
+        BaseFluentWebDriver fc = fwd.h2()
                 .h2(By.xpath("@foo = 'bar'"))
                 .h2(By.cssSelector("baz"))
                 .h2s();
@@ -1092,7 +1092,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void h2s_functionality() {
-        FluentCore fc = fwd.h2()
+        BaseFluentWebDriver fc = fwd.h2()
                 .h2s(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1120,7 +1120,7 @@ public class FluentWebDriverTest {
     @Test
     public void h3_functionality() {
 
-        FluentCore fc = fwd.h3()
+        BaseFluentWebDriver fc = fwd.h3()
                 .h3(By.xpath("@foo = 'bar'"))
                 .h3(By.cssSelector("baz"))
                 .h3s();
@@ -1141,7 +1141,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void h3s_functionality() {
-        FluentCore fc = fwd.h3()
+        BaseFluentWebDriver fc = fwd.h3()
                 .h3s(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1169,7 +1169,7 @@ public class FluentWebDriverTest {
     @Test
     public void h4_functionality() {
 
-        FluentCore fc = fwd.h4()
+        BaseFluentWebDriver fc = fwd.h4()
                 .h4(By.xpath("@foo = 'bar'"))
                 .h4(By.cssSelector("baz"))
                 .h4s();
@@ -1190,7 +1190,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void h4s_functionality() {
-        FluentCore fc = fwd.h4()
+        BaseFluentWebDriver fc = fwd.h4()
                 .h4s(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1218,7 +1218,7 @@ public class FluentWebDriverTest {
     @Test
     public void img_functionality() {
 
-        FluentCore fc = fwd.img()
+        BaseFluentWebDriver fc = fwd.img()
                 .img(By.xpath("@foo = 'bar'"))
                 .img(By.cssSelector("baz"))
                 .imgs();
@@ -1239,7 +1239,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void imgs_functionality() {
-        FluentCore fc = fwd.img()
+        BaseFluentWebDriver fc = fwd.img()
                 .imgs(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1267,7 +1267,7 @@ public class FluentWebDriverTest {
     @Test
     public void form_functionality() {
 
-        FluentCore fc = fwd.form()
+        BaseFluentWebDriver fc = fwd.form()
                 .form(By.xpath("@foo = 'bar'"))
                 .form(By.cssSelector("baz"))
                 .forms();
@@ -1288,7 +1288,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void forms_functionality() {
-        FluentCore fc = fwd.form()
+        BaseFluentWebDriver fc = fwd.form()
                 .forms(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1316,7 +1316,7 @@ public class FluentWebDriverTest {
     @Test
     public void textarea_functionality() {
 
-        FluentCore fc = fwd.textarea()
+        BaseFluentWebDriver fc = fwd.textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
                 .textarea(By.cssSelector("baz"))
                 .textareas();
@@ -1337,7 +1337,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void textareas_functionality() {
-        FluentCore fc = fwd.textarea()
+        BaseFluentWebDriver fc = fwd.textarea()
                 .textareas(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1365,7 +1365,7 @@ public class FluentWebDriverTest {
     @Test
     public void input_functionality() {
 
-        FluentCore fc = fwd.input()
+        BaseFluentWebDriver fc = fwd.input()
                 .input(By.xpath("@foo = 'bar'"))
                 .input(By.cssSelector("baz"))
                 .inputs();
@@ -1386,7 +1386,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void inputs_functionality() {
-        FluentCore fc = fwd.input()
+        BaseFluentWebDriver fc = fwd.input()
                 .inputs(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1415,7 +1415,7 @@ public class FluentWebDriverTest {
     @Test
     public void link_functionality() {
 
-        FluentCore fc = fwd.link()
+        BaseFluentWebDriver fc = fwd.link()
                 .link(By.xpath("@foo = 'bar'"))
                 .link(By.cssSelector("baz"))
                 .links();
@@ -1436,7 +1436,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void links_functionality() {
-        FluentCore fc = fwd.link()
+        BaseFluentWebDriver fc = fwd.link()
                 .links(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1464,7 +1464,7 @@ public class FluentWebDriverTest {
     @Test
     public void p_functionality() {
 
-        FluentCore fc = fwd.p()
+        BaseFluentWebDriver fc = fwd.p()
                 .p(By.xpath("@foo = 'bar'"))
                 .p(By.cssSelector("baz"))
                 .ps();
@@ -1485,7 +1485,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void ps_functionality() {
-        FluentCore fc = fwd.p()
+        BaseFluentWebDriver fc = fwd.p()
                 .ps(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1513,7 +1513,7 @@ public class FluentWebDriverTest {
     @Test
     public void th_functionality() {
 
-        FluentCore fc = fwd.th()
+        BaseFluentWebDriver fc = fwd.th()
                 .th(By.xpath("@foo = 'bar'"))
                 .th(By.cssSelector("baz"))
                 .ths();
@@ -1534,7 +1534,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void ths_functionality() {
-        FluentCore fc = fwd.th()
+        BaseFluentWebDriver fc = fwd.th()
                 .ths(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1562,7 +1562,7 @@ public class FluentWebDriverTest {
     @Test
     public void ul_functionality() {
 
-        FluentCore fc = fwd.ul()
+        BaseFluentWebDriver fc = fwd.ul()
                 .ul(By.xpath("@foo = 'bar'"))
                 .ul(By.cssSelector("baz"))
                 .uls();
@@ -1583,7 +1583,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void uls_functionality() {
-        FluentCore fc = fwd.ul()
+        BaseFluentWebDriver fc = fwd.ul()
                 .uls(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1611,7 +1611,7 @@ public class FluentWebDriverTest {
     @Test
     public void ol_functionality() {
 
-        FluentCore fc = fwd.ol()
+        BaseFluentWebDriver fc = fwd.ol()
                 .ol(By.xpath("@foo = 'bar'"))
                 .ol(By.cssSelector("baz"))
                 .ols();
@@ -1632,7 +1632,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void ols_functionality() {
-        FluentCore fc = fwd.ol()
+        BaseFluentWebDriver fc = fwd.ol()
                 .ols(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1660,7 +1660,7 @@ public class FluentWebDriverTest {
     @Test
     public void li_functionality() {
 
-        FluentCore fc = fwd.li()
+        BaseFluentWebDriver fc = fwd.li()
                 .li(By.xpath("@foo = 'bar'"))
                 .li(By.cssSelector("baz"))
                 .lis();
@@ -1681,7 +1681,7 @@ public class FluentWebDriverTest {
 
     @Test
     public void lis_functionality() {
-        FluentCore fc = fwd.li()
+        BaseFluentWebDriver fc = fwd.li()
                 .lis(By.name("qux"));
 
         assertThat(fc, notNullValue());
@@ -1787,7 +1787,7 @@ public class FluentWebDriverTest {
     @Test
     public void filtering() {
 
-        FluentCore fc = fwd.divs().filter(new FourLambFilter()).click();
+        BaseFluentWebDriver fc = fwd.divs().filter(new FourLambFilter()).click();
 
         assertThat(fc, notNullValue());
         assertThat(sb.toString(),
@@ -1808,7 +1808,7 @@ public class FluentWebDriverTest {
     @Test
     public void first_element_matched_from_larger_list() {
 
-        FluentCore fc = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
+        BaseFluentWebDriver fc = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
         assertThat(fc, notNullValue());
         assertThat(sb.toString(),

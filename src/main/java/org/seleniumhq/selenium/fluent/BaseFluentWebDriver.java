@@ -27,12 +27,12 @@ import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 import static org.seleniumhq.selenium.fluent.FluentBy.composite;
 
-public abstract class FluentCore {
+public abstract class BaseFluentWebDriver {
 
     protected final WebDriver delegate;
     protected final String context;
 
-    public FluentCore(WebDriver delegate, String context) {
+    public BaseFluentWebDriver(WebDriver delegate, String context) {
         this.delegate = delegate;
         this.context = context;
     }

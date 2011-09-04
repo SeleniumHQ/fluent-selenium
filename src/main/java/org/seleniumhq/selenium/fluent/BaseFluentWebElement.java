@@ -22,7 +22,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public abstract class BaseFluentWebElement extends FluentCore {
+public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
 
     public BaseFluentWebElement(WebDriver delegate, String context) {
         super(delegate, context);

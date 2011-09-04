@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public final class FluentWebDriverImpl extends FluentCore implements FluentWebDriver {
+public final class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
         super(delegate, "?");

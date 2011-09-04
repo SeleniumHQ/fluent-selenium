@@ -13,14 +13,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
-public class FluentCoreTest {
+public class BaseFluentWebDriverTest {
 
     private WebDriver wd = mock(WebDriver.class);
-    private FluentCore fc;
+    private BaseFluentWebDriver fc;
 
     @Before
     public void setup() {
-        fc = new FluentCore(wd, "DUMMY_CONTEXT") {
+        fc = new BaseFluentWebDriver(wd, "DUMMY_CONTEXT") {
 
             @Override
             protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
@@ -49,7 +49,7 @@ public class FluentCoreTest {
     public void assertionError_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.execute(new FluentCore.Execution() {
+            fc.execute(new BaseFluentWebDriver.Execution() {
                 public Void execute() {
                     throw new AssertionError("Oops");
                 }
@@ -66,7 +66,7 @@ public class FluentCoreTest {
     public void runtimeException_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.execute(new FluentCore.Execution() {
+            fc.execute(new BaseFluentWebDriver.Execution() {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
@@ -83,7 +83,7 @@ public class FluentCoreTest {
     public void unsupportedOperationException_should_not_be_wrapped() {
 
         try {
-            fc.execute(new FluentCore.Execution() {
+            fc.execute(new BaseFluentWebDriver.Execution() {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
