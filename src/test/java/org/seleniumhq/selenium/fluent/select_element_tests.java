@@ -789,7 +789,6 @@ public class select_element_tests {
                         "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
     }
 
-
     @Test
     public void wait_should_reset_even_if_exceptions_are_thrown() {
 
@@ -807,7 +806,7 @@ public class select_element_tests {
                 equalTo("wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +
                         "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
-                        // throws here
+                        "we1.findElement(By.tagName: div) -> ✘\n" + // ✘ means caused the exception
                         "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
     }
 

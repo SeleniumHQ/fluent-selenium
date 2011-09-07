@@ -23,22 +23,22 @@ public class WebElementJournal implements WebElement {
     }
 
     public void click() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".click()\n");
     }
 
     public void submit() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".submit()\n");
     }
 
     public void sendKeys(CharSequence... charSequences) {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".sendKeys("+charSequences[0]+")\n");
     }
 
     public void clear() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".clear()\n");
     }
 
@@ -54,7 +54,8 @@ public class WebElementJournal implements WebElement {
     }
 
     public String getTagName() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+
+        String rv = null;
 
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         for (StackTraceElement elem : stackTraceElements) {
@@ -64,7 +65,8 @@ public class WebElementJournal implements WebElement {
             }
             String className = elem.getClassName();
             if (methodName.equals("<init>") && className.equals(Select.class.getName())) {
-                return "select";
+                rv = "select";
+                break;
             }
             if ((className.equals(BaseFluentWebDriver.class.getName())
                     || className.equals(FluentWebElement.class.getName()))
@@ -78,78 +80,89 @@ public class WebElementJournal implements WebElement {
                     methodName = "taggart";
                 }
                 sb.append(this + ".getTagName() -> '" + methodName + "'\n");
-                return methodName;
+                rv = methodName;
+                break;
             }
+        }
+
+        throwExceptionMaybe(failOnNext());
+
+        if (rv != null) {
+            return rv;
         }
 
         throw new UnsupportedOperationException("FluentBase not in stack, can't work out method name");
     }
 
     public String getAttribute(String s) {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".getAttribute("+s+") -> " + s + "_value\n");
         return s + "_value";
     }
 
 
     public String getText() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         String msg = "Mary had " + webDriverJournal.CTR++ + " little lamb(s).";
         sb.append(this + ".getText() -> '" + msg + "'\n");
         return msg;
     }
 
     public List<WebElement> findElements(By by) {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
         WebElement we = new WebElementJournal(sb, webDriverJournal);
         WebElement we2 = new WebElementJournal(sb, webDriverJournal);
         List<WebElement> elems = asList(we, we2);
-        sb.append(this + ".findElements(" + by + ") -> " + elems + "\n");
+        sb.append(this + ".findElements(" + by + ") -> " + (failOnNext() == null ? elems : "✘") + "\n");
+        throwExceptionMaybe(failOnNext());
         return elems;
     }
 
     public WebElement findElement(By by) {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
         WebElementJournal rv = new WebElementJournal(sb, webDriverJournal);
-        sb.append(this + ".findElement(" + by + ") -> " + rv + "\n");
+        sb.append(this + ".findElement(" + by + ") -> " + (failOnNext() == null ? rv : "✘") + "\n");
+        throwExceptionMaybe(failOnNext());
         return rv;
     }
 
+    private Class<? extends Throwable> failOnNext() {
+        return FluentWebDriverImplTest.FAIL_ON_NEXT.get();
+    }
+
     public boolean isDisplayed() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         webDriverJournal.lastDisplayed = !webDriverJournal.lastDisplayed;
         sb.append(this + ".isDisplayed() -> "+webDriverJournal.lastDisplayed+"\n");
         return webDriverJournal.lastDisplayed;
     }
 
     public boolean isSelected() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         webDriverJournal.lastSelected = !webDriverJournal.lastSelected;
         sb.append(this + ".isSelected() -> "+webDriverJournal.lastSelected+"\n");
         return webDriverJournal.lastSelected;
     }
 
     public boolean isEnabled() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         webDriverJournal.lastEnabled = !webDriverJournal.lastEnabled;
         sb.append(this + ".isEnabled() -> "+webDriverJournal.lastEnabled+"\n");
         return webDriverJournal.lastEnabled;
     }
 
     public Point getLocation() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".getLocation() -> 1,1\n");
         return new Point(1,1);
     }
 
     public Dimension getSize() {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".getSize() -> 10,10\n");
         return new Dimension(10,10);
     }
 
     public String getCssValue(String s) {
-        throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+        throwExceptionMaybe(failOnNext());
         sb.append(this + ".getCssValue("+s+") -> "+s+"_value\n");
         return s + "_value";
     }

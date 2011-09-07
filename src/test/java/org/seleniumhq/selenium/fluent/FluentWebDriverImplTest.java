@@ -1910,6 +1910,7 @@ public class FluentWebDriverImplTest {
                 equalTo("wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
                         "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "we1.findElement(By.tagName: div) -> ✘\n" + // ✘ means caused the exception
                         "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
     }
 
@@ -1942,6 +1943,7 @@ public class FluentWebDriverImplTest {
                 equalTo("wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
                         "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "we1.findElement(By.tagName: div) -> ✘\n" + // ✘ means caused the exception
                         "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
     }
 
