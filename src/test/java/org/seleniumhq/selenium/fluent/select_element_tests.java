@@ -21,14 +21,13 @@ public class select_element_tests {
     private StringBuilder sb;
     private WebDriver wd;
     private FluentWebDriverImpl fwd;
-    static ThreadLocal<Throwable> FAIL_ON_NEXT = new ThreadLocal<Throwable>();
 
     @Before
     public void setup() {
         sb = new StringBuilder();
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
-        FAIL_ON_NEXT.set(null);
+        FluentWebDriverImplTest.FAIL_ON_NEXT.set(null);
     }
 
     @Test
@@ -97,8 +96,9 @@ public class select_element_tests {
             fwd.select(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.select(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
     }
 
@@ -774,5 +774,42 @@ public class select_element_tests {
         verify(wdSelect).getAllSelectedOptions();
         verifyNoMoreInteractions(wd, we, wdSelect);
     }
+
+    @Test
+    public void wait_should_wait() {
+
+        fwd.select().within(Period.secs(10)).div();
+
+        assertThat(sb.toString(),
+                equalTo("wd0.findElement(By.tagName: select) -> we1\n" +
+                        "we1.getTagName() -> 'select'\n" +
+                        "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "we1.findElement(By.tagName: div) -> we2\n" +
+                        "we2.getTagName() -> 'div'\n" +
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
+
+    @Test
+    public void wait_should_reset_even_if_exceptions_are_thrown() {
+
+        try {
+            FluentSelect within = fwd.select().within(Period.secs(10));
+            FluentWebDriverImplTest.FAIL_ON_NEXT.set(AssertionError.class);
+            within.div(); // consequential stub getTagName() with throw
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.select().div()"));
+            assertTrue(e.getCause() instanceof AssertionError);
+        }
+
+        assertThat(sb.toString(),
+                equalTo("wd0.findElement(By.tagName: select) -> we1\n" +
+                        "we1.getTagName() -> 'select'\n" +
+                        "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        // throws here
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
 
 }

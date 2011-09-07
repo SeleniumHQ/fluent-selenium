@@ -306,4 +306,8 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.subList(i, i1);
     }
 
+    @Override
+    public FluentWebElements within(Period p) {
+        throw new UnsupportedOperationException("within() is meaningless for multiple webElements");
+    }
 }

@@ -427,15 +427,22 @@ public abstract class BaseFluentWebDriver {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private <T> T single(final By by, String tagName, Class<T> resultingClass) {
+    private <T> T single(final By by, final String tagName, Class<T> resultingClass) {
         final By by2 = fixupBy(by, tagName);
         String ctx = contextualize(by.toString(), tagName);
-        final WebElement result = execute(new Execution<WebElement>() {
-            public WebElement execute() {
-                return findIt(by2);
-            }
-        }, ctx);
-        assertTagIs(result.getTagName(), tagName);
+        final WebElement result;
+        try {
+            changeTimeout();
+            result = execute(new Execution<WebElement>() {
+                public WebElement execute() {
+                    WebElement it = findIt(by2);
+                    assertTagIs(it.getTagName(), tagName);
+                    return it;
+                }
+            }, ctx);
+        } finally {
+            resetTimeout();
+        }
         return getFluentWebElement(result, ctx, resultingClass);
     }
 
@@ -484,6 +491,14 @@ public abstract class BaseFluentWebDriver {
             throw decorateAssertionError(ctx, e);
         }
     }
+
+    protected void changeTimeout() {
+    }
+
+    protected void resetTimeout() {
+    }
+
+    public abstract BaseFluentWebDriver within(Period p);
 
 
 }

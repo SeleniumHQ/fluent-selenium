@@ -20,13 +20,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FluentSelect extends FluentWebElement {
 
-    private Select select;
+    private Select currentSelect;
 
     public FluentSelect(WebDriver delegate, WebElement currentElement, String context) {
         super(delegate, currentElement, context);
+    }
+
+    private FluentSelect(WebDriver delegate, Select currentSelect, WebElement currentElement, String context) {
+        super(delegate, currentElement, context);
+        this.currentSelect = currentSelect;
     }
 
     /**
@@ -198,9 +204,37 @@ public class FluentSelect extends FluentWebElement {
     }
 
     protected synchronized Select getSelect() {
-        if (select == null) {
-            select = new Select(currentElement);
+        if (currentSelect == null) {
+            currentSelect = new Select(currentElement);
         }
-        return select;
+        return currentSelect;
     }
+
+    public FluentSelect within(Period period) {
+        return new MorePatientFluentSelect(delegate, context, currentSelect, currentElement, period);
+    }
+
+    private class MorePatientFluentSelect extends FluentSelect {
+
+        private final Period period;
+
+        public MorePatientFluentSelect(WebDriver webDriver, String context, Select currentSelect, WebElement currentElement, Period period) {
+            super(webDriver, currentSelect, currentElement, context);
+            this.period = period;
+        }
+
+        @Override
+        protected void changeTimeout() {
+            delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
+        }
+
+        @Override
+        protected void resetTimeout() {
+            delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        }
+
+    }
+
+
+
 }

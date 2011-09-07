@@ -1,10 +1,13 @@
 package org.seleniumhq.selenium.fluent;
 
-import java.util.List;
-import java.util.Set;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
@@ -90,7 +93,49 @@ public class WebDriverJournal implements WebDriver {
     }
 
     public Options manage() {
-        return null;
+        return new Options() {
+            public void addCookie(Cookie cookie) {
+
+            }
+
+            public void deleteCookieNamed(String name) {
+
+            }
+
+            public void deleteCookie(Cookie cookie) {
+
+            }
+
+            public void deleteAllCookies() {
+
+            }
+
+            public Set<Cookie> getCookies() {
+                return null;
+            }
+
+            public Cookie getCookieNamed(String name) {
+                return null;
+            }
+
+            public Timeouts timeouts() {
+                return new Timeouts() {
+                    public Timeouts implicitlyWait(long time, TimeUnit unit) {
+                        sb.append(WebDriverJournal.this + ".manage().timeouts().implictlyWait("
+                                + time + "," + unit + ")\n");
+                        return this;
+                    }
+
+                    public Timeouts setScriptTimeout(long time, TimeUnit unit) {
+                        return null;
+                    }
+                };
+            }
+
+            public ImeHandler ime() {
+                return null;
+            }
+        };
     }
 
     @Override

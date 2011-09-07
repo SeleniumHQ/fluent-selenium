@@ -41,6 +41,11 @@ public class BaseFluentWebDriverTest {
             protected List<WebElement> findThem(By by) {
                 return null;
             }
+
+            @Override
+            public BaseFluentWebDriver within(Period p) {
+                return null;
+            }
         };
 
     }

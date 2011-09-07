@@ -18,6 +18,7 @@ package org.seleniumhq.selenium.fluent;
 import org.openqa.selenium.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FluentWebElement extends BaseFluentWebElement {
 
@@ -206,4 +207,31 @@ public class FluentWebElement extends BaseFluentWebElement {
     public WebElementValue<String> text() {
         return new WebElementValue<String>(currentElement.getText(), context + ".text()");
     }
+
+    public FluentWebElement within(Period period) {
+        return new MorePatientFluentWebElement(delegate, currentElement, context, period);
+    }
+
+    private class MorePatientFluentWebElement extends FluentWebElement {
+
+        private final Period period;
+
+        public MorePatientFluentWebElement(WebDriver webDriver, WebElement currentElement, String context, Period period) {
+            super(webDriver, currentElement, context);
+            this.period = period;
+        }
+
+        @Override
+        protected void changeTimeout() {
+            delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
+        }
+
+        @Override
+        protected void resetTimeout() {
+            delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        }
+
+    }
+
+
 }

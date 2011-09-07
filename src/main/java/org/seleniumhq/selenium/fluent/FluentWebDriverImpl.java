@@ -20,8 +20,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public final class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWebDriver {
+public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
         super(delegate, "?");
@@ -31,7 +32,6 @@ public final class FluentWebDriverImpl extends BaseFluentWebDriver implements Fl
     protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
         return makeFluentWebElement(super.delegate, result, context, webElementClass.getConstructors()[0]);
     }
-
 
     @Override
     protected FluentWebElements getFluentWebElements(List<WebElement> results, String context) {
@@ -45,5 +45,30 @@ public final class FluentWebDriverImpl extends BaseFluentWebDriver implements Fl
     @Override
     protected List<WebElement> findThem(By by) {
         return delegate.findElements(by);
+    }
+
+    public FluentWebDriverImpl within(final Period period) {
+        return new MorePatientFluentWebDriver(delegate, period);
+    }
+
+    private class MorePatientFluentWebDriver extends FluentWebDriverImpl {
+
+        private final Period period;
+
+        public MorePatientFluentWebDriver(WebDriver webDriver, Period period) {
+            super(webDriver);
+            this.period = period;
+        }
+
+        @Override
+        protected void changeTimeout() {
+            delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
+        }
+
+        @Override
+        protected void resetTimeout() {
+            delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        }
+
     }
 }

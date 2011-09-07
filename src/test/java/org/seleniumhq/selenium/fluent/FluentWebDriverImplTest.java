@@ -32,7 +32,7 @@ import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMay
 /**
  * Unit test for simple App.
  */
-public class FluentWebDriverTest {
+public class FluentWebDriverImplTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
@@ -40,6 +40,8 @@ public class FluentWebDriverTest {
     private StringBuilder sb;
     private WebDriver wd;
     private FluentWebDriverImpl fwd;
+    static ThreadLocal<Class<? extends Throwable>> FAIL_ON_NEXT = new ThreadLocal<Class<? extends Throwable>>();
+
 
     @Before
     public void setup() {
@@ -116,7 +118,7 @@ public class FluentWebDriverTest {
         try {
             FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
-            FAIL_ON_NEXT.set(new RuntimeException());
+            FAIL_ON_NEXT.set(RuntimeException.class);
 
             fc = span.sendKeys("RAIN_IN_SPAIN");
         } catch (FluentExecutionStopped e) {
@@ -140,7 +142,7 @@ public class FluentWebDriverTest {
         try {
             FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
-            FAIL_ON_NEXT.set(new AssertionError());
+            FAIL_ON_NEXT.set(AssertionError.class);
 
             fc = span.sendKeys("RAIN_IN_SPAIN");
         } catch (FluentExecutionStopped e) {
@@ -329,15 +331,15 @@ public class FluentWebDriverTest {
 
     @Test
     public void runtime_exceptions_decorated_for_single_element() {
-        wrap_exceptions_tests(new RuntimeException());
+        wrap_exceptions_tests(RuntimeException.class);
     }
 
     @Test
     public void assertion_errors_decorated_for_single_element() {
-        wrap_exceptions_tests(new AssertionError());
+        wrap_exceptions_tests(AssertionError.class);
     }
 
-    private void wrap_exceptions_tests(Throwable throwable) {
+    private void wrap_exceptions_tests(Class<? extends Throwable> throwable) {
         FluentWebElement ose = fwd.div(By.id("foo"));
 
         assertThat(ose, notNullValue());
@@ -429,15 +431,15 @@ public class FluentWebDriverTest {
 
     @Test
     public void exceptions_decorated_for_filter() {
-        filter_exception_handling(new RuntimeException());
+        filter_exception_handling(RuntimeException.class);
     }
 
     @Test
     public void assertion_errors_decorated_for_filter() {
-        filter_exception_handling(new AssertionError());
+        filter_exception_handling(AssertionError.class);
     }
 
-    private void filter_exception_handling(Throwable throwable) {
+    private void filter_exception_handling(Class<? extends Throwable> throwable) {
         FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
@@ -449,14 +451,14 @@ public class FluentWebDriverTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Hello)"));
-            assertThat(e.getCause(), sameInstance(throwable));
+            assertThat(e.getCause(), instanceOf(throwable));
         }
     }
 
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
             public boolean matches(WebElement webElement) {
-                throwExceptionMaybe(FluentWebDriverTest.FAIL_ON_NEXT.get());
+                throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
                 return webElement.getText().equals("it does not matter, as an exception will be thrown");
             }
             @Override
@@ -468,15 +470,15 @@ public class FluentWebDriverTest {
 
     @Test
     public void runtime_exceptions_decorated_for_first() {
-        first_exception_handling(new RuntimeException());
+        first_exception_handling(RuntimeException.class);
     }
 
     @Test
     public void assertion_error_decorated_for_first() {
-        first_exception_handling(new AssertionError());
+        first_exception_handling(AssertionError.class);
     }
 
-    private void first_exception_handling(Throwable throwable) {
+    private void first_exception_handling(Class<? extends Throwable> throwable) {
         FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
@@ -504,15 +506,15 @@ public class FluentWebDriverTest {
 
     @Test
     public void rumtime_exceptions_decorated_for_multiple_element() {
-        multiple_elem_exception_handling(new RuntimeException());
+        multiple_elem_exception_handling(RuntimeException.class);
     }
 
     @Test
     public void assertion_error_decorated_for_multiple_element() {
-        multiple_elem_exception_handling(new AssertionError());
+        multiple_elem_exception_handling(AssertionError.class);
     }
 
-    private void multiple_elem_exception_handling(Throwable throwable) {
+    private void multiple_elem_exception_handling(Class<? extends Throwable> throwable) {
         FluentWebElements ome = fwd.divs(By.id("foo"));
 
         assertThat(ome, notNullValue());
@@ -707,8 +709,9 @@ public class FluentWebDriverTest {
             fwd.div(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {        // TODO
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -756,8 +759,9 @@ public class FluentWebDriverTest {
         fwd.button(By.linkText("mismatching_tag_name"))
                 .clearField();
         fail("should have barfed");
-    } catch (AssertionError e) { // TODO
-        assertTrue(e.getMessage().contains("tag was incorrect"));
+    } catch (FluentExecutionStopped e) {
+        assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.button(By.linkText: mismatching_tag_name)"));
+        assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
     }
 
 }
@@ -807,8 +811,9 @@ public class FluentWebDriverTest {
             fwd.option(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) { // TODO
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.option(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -860,8 +865,9 @@ public class FluentWebDriverTest {
             fwd.span(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.span(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -911,8 +917,9 @@ public class FluentWebDriverTest {
             fwd.tr(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.tr(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -962,8 +969,9 @@ public class FluentWebDriverTest {
             fwd.td(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.td(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1013,8 +1021,9 @@ public class FluentWebDriverTest {
             fwd.table(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.table(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1062,8 +1071,9 @@ public class FluentWebDriverTest {
             fwd.h1(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.h1(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1111,8 +1121,9 @@ public class FluentWebDriverTest {
             fwd.h2(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.h2(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1160,8 +1171,9 @@ public class FluentWebDriverTest {
             fwd.h3(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.h3(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1209,8 +1221,9 @@ public class FluentWebDriverTest {
             fwd.h4(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.h4(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1258,8 +1271,9 @@ public class FluentWebDriverTest {
             fwd.img(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.img(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1307,8 +1321,9 @@ public class FluentWebDriverTest {
             fwd.form(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.form(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1356,8 +1371,9 @@ public class FluentWebDriverTest {
             fwd.textarea(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.textarea(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1405,8 +1421,9 @@ public class FluentWebDriverTest {
             fwd.input(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.input(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1455,8 +1472,9 @@ public class FluentWebDriverTest {
             fwd.link(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.a(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1504,8 +1522,9 @@ public class FluentWebDriverTest {
             fwd.p(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.p(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1553,8 +1572,9 @@ public class FluentWebDriverTest {
             fwd.th(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.th(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1602,8 +1622,9 @@ public class FluentWebDriverTest {
             fwd.ul(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.ul(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1651,8 +1672,8 @@ public class FluentWebDriverTest {
             fwd.ol(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1700,8 +1721,8 @@ public class FluentWebDriverTest {
             fwd.li(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("tag was incorrect"));
+        } catch (FluentExecutionStopped e) {
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
         }
 
     }
@@ -1838,6 +1859,7 @@ public class FluentWebDriverTest {
                 "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
                 "we2.getText() -> 'Mary had 4 little lamb(s).'\n"));
     }
+
     public static class TextContainsWord implements FluentMatcher {
 
         private String word;
@@ -1858,6 +1880,70 @@ public class FluentWebDriverTest {
         }
     }
 
-    static ThreadLocal<Throwable> FAIL_ON_NEXT = new ThreadLocal<Throwable>();
+
+    @Test
+    public void wait_should_wait() {
+
+        fwd.within(Period.secs(10)).div();
+
+        assertThat(sb.toString(),
+                equalTo("wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "wd0.findElement(By.tagName: div) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
+    @Test
+    public void wait_should_reset_even_if_exceptions_are_thrown() {
+
+        try {
+            FluentWebElement within = fwd.div().within(Period.secs(10));
+            FAIL_ON_NEXT.set(AssertionError.class);
+            within.div(); // consequential stub getTagName() with throw
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().div()"));
+            assertTrue(e.getCause() instanceof AssertionError);
+        }
+
+        assertThat(sb.toString(),
+                equalTo("wd0.findElement(By.tagName: div) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
+  @Test
+    public void wait_should_wait_on_element() {
+
+        fwd.within(Period.secs(10)).div();
+
+        assertThat(sb.toString(),
+                equalTo("wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "wd0.findElement(By.tagName: div) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
+    @Test
+    public void wait_should_reset_even_if_exceptions_are_thrown_on_element() {
+
+        try {
+            FluentWebElement within = fwd.div().within(Period.secs(10));
+            FAIL_ON_NEXT.set(AssertionError.class);
+            within.div(); // consequential stub getTagName() with throw
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().div()"));
+            assertTrue(e.getCause() instanceof AssertionError);
+        }
+
+        assertThat(sb.toString(),
+                equalTo("wd0.findElement(By.tagName: div) -> we1\n" +
+                        "we1.getTagName() -> 'div'\n" +
+                        "wd0.manage().timeouts().implictlyWait(10,SECONDS)\n" +
+                        "wd0.manage().timeouts().implictlyWait(0,SECONDS)\n"));
+    }
+
 
 }
