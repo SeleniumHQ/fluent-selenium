@@ -93,23 +93,12 @@ public abstract class FluentBy {
         if (bys == null)
             throw new IllegalArgumentException("Cannot make composite with no varargs of Bys");
         if (bys.length != 2
-                || !isTagName(bys[0])
-                && (!isClassName(bys[1]) || !(bys[1] instanceof ByAttribute))) {
+                || !(bys[0] instanceof By.ByTagName)
+                && (!(bys[1] instanceof By.ByClassName) || !(bys[1] instanceof ByAttribute))) {
             throw new IllegalArgumentException("can only do this with By.tagName " +
                     "followed one of By.className or FluentBy.attribute");
         }
-
         return new ByComposite(bys);
-    }
-
-    private static boolean isTagName(By by) {
-        String name = by.getClass().getName();
-        return name.equals("org.openqa.selenium.By$ByTagName");
-    }
-
-    private static boolean isClassName(By by) {
-        String name = by.getClass().getName();
-        return name.equals("org.openqa.selenium.By$ByClassName");
     }
 
     // Until WebDriver supports a composite in browser implementations, only
@@ -136,7 +125,7 @@ public abstract class FluentBy {
             String xpathExpression = ".//"
                     + getTagName();
 
-            if (isClassName(bys[1])) {
+            if (bys[1] instanceof By.ByClassName) {
                 String className = bys[1].toString().substring("By.className: ".length());
                 xpathExpression = xpathExpression + "[" + containingWord("class", className) + "]";
             } else if (bys[1] instanceof ByAttribute) {
