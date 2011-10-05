@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class select_element_tests {
+public class Select_Test {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
