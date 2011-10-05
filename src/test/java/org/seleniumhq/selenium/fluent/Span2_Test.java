@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class Span_Test {
+public class Span2_Test {
 
     private StringBuilder sb;
     private FluentWebDriverImpl fwd;
