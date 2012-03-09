@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.Logs;
 
 import java.util.List;
 import java.util.Set;
@@ -114,6 +115,14 @@ public class WebDriverJournal implements WebDriver {
                 return null;
             }
 
+            public Window window() {
+                return null;
+            }
+
+            public Logs logs() {
+                return null;
+            }
+
             public Cookie getCookieNamed(String name) {
                 return null;
             }
@@ -124,6 +133,10 @@ public class WebDriverJournal implements WebDriver {
                         sb.append(WebDriverJournal.this + ".manage().timeouts().implictlyWait("
                                 + time + "," + unit + ")\n");
                         return this;
+                    }
+
+                    public Timeouts pageLoadTimeout(long l, TimeUnit timeUnit) {
+                        return null;
                     }
 
                     public Timeouts setScriptTimeout(long time, TimeUnit unit) {
