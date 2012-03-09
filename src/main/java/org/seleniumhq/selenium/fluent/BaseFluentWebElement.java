@@ -54,11 +54,11 @@ public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
 
     public abstract Point getLocation();
 
-    public abstract String getCssValue(String cssName);
+    public abstract TestableString getCssValue(String cssName);
 
-    public abstract String getAttribute(String attrName);
+    public abstract TestableString getAttribute(String attrName);
 
-    public abstract String getTagName();
+    public abstract TestableString getTagName();
 
     public abstract Dimension getSize();
 
@@ -68,6 +68,6 @@ public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
 
     public abstract boolean isDisplayed();
 
-    public abstract String getText();
+    public abstract TestableString getText();
 
 }

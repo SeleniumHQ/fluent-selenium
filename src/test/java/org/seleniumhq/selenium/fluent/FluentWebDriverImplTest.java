@@ -187,18 +187,18 @@ public class FluentWebDriverImplTest {
         assertThat(sb.toString(), equalTo("we2.getSize() -> 10,10\n"));
 
         sb.setLength(0);
-        String cssVal = ofwd.getCssValue("blort");
-        assertThat(cssVal, equalTo("blort_value"));
+        TestableString cssVal = ofwd.getCssValue("blort");
+        assertThat(cssVal, equalTo(cs("blort_value")));
         assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
 
         sb.setLength(0);
-        String value = ofwd.getAttribute("valerie");
-        assertThat(value, equalTo("valerie_value"));
+        TestableString value = ofwd.getAttribute("valerie");
+        assertThat(value, equalTo(cs("valerie_value")));
         assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
 
         sb.setLength(0);
-        String tagName = ofwd.getTagName();
-        assertThat(tagName, equalTo("taggart"));
+        TestableString tagName = ofwd.getTagName();
+        assertThat(tagName, equalTo(cs("taggart")));
         assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
 
         sb.setLength(0);
@@ -217,8 +217,8 @@ public class FluentWebDriverImplTest {
         assertThat(sb.toString(), equalTo("we2.isDisplayed() -> true\n"));
 
         sb.setLength(0);
-        String text = ofwd.getText();
-        assertThat(text, equalTo("Mary had 3 little lamb(s)."));
+        TestableString text = ofwd.getText();
+        assertThat(text, equalTo(cs("Mary had 3 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
@@ -626,8 +626,8 @@ public class FluentWebDriverImplTest {
         assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
 
         sb.setLength(0);
-        String text = elems.getText();
-        assertThat(text, equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+        CharSequence text = elems.getText();
+        assertThat(text, equalTo(cs("Mary had 3 little lamb(s).Mary had 4 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 3 little lamb(s).'\nwe2.getText() -> 'Mary had 4 little lamb(s).'\n"));
 
         sb.setLength(0);
@@ -664,6 +664,10 @@ public class FluentWebDriverImplTest {
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
         }
+    }
+
+    private CharSequence cs(String string) {
+        return string;
     }
 
     @Test

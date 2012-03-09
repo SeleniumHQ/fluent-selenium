@@ -90,13 +90,13 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
 
-    public String getTagName() {
+    public TestableString getTagName() {
         String tagName = execute(new Execution<String>() {
             public String execute() {
                 return currentElement.getTagName();
             }
         }, context + ".getTagName()");
-        return tagName;
+        return new TestableString(tagName);
     }
 
     public boolean isSelected() {
@@ -139,28 +139,28 @@ public class FluentWebElement extends BaseFluentWebElement {
         }, context + ".getSize()");
     }
 
-    public String getCssValue(final String cssName) {
-        return execute(new Execution<String>() {
+    public TestableString getCssValue(final String cssName) {
+        return new TestableString(execute(new Execution<String>() {
             public String execute() {
                 return currentElement.getCssValue(cssName);
             }
-        }, context + ".getCssValue("+cssName+")");
+        }, context + ".getCssValue("+cssName+")"));
     }
 
-    public String getAttribute(final String attr) {
-        return execute(new Execution<String>() {
+    public TestableString getAttribute(final String attr) {
+        return new TestableString(execute(new Execution<String>() {
             public String execute() {
                 return currentElement.getAttribute(attr);
             }
-        }, context + ".getAttribute("+attr+")");
+        }, context + ".getAttribute("+attr+")"));
     }
 
-    public String getText() {
-        return execute(new Execution<String>() {
+    public TestableString getText() {
+        return new TestableString(execute(new Execution<String>() {
             public String execute() {
                 return currentElement.getText();
             }
-        }, context + ".getText()");
+        }, context + ".getText()"));
     }
 
     //@Override

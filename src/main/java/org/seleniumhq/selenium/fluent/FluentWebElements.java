@@ -134,9 +134,9 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         }, ctx);
     }
 
-    public String getText() {
+    public TestableString getText() {
         String ctx = context + ".getText()";
-        return execute(new Execution<String>() {
+        return new TestableString(execute(new Execution<String>() {
             public String execute() {
                 String text = "";
                 for (WebElement webElement : FluentWebElements.this) {
@@ -144,7 +144,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
                 }
                 return text;
             }
-        }, ctx);
+        }, ctx));
     }
 
     @Override
@@ -153,17 +153,17 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
     }
 
     @Override
-    public String getCssValue(String cssName) {
+    public TestableString getCssValue(String cssName) {
         throw new UnsupportedOperationException("getCssValue() has no meaning for multiple elements");
     }
 
     @Override
-    public String getAttribute(String attrName) {
+    public TestableString getAttribute(String attrName) {
         throw new UnsupportedOperationException("getAttribute() has no meaning for multiple elements");
     }
 
     @Override
-    public String getTagName() {
+    public TestableString getTagName() {
         throw new UnsupportedOperationException("getTagName() has no meaning for multiple elements");
     }
 

@@ -404,6 +404,14 @@ public abstract class BaseFluentWebDriver {
         return multiple(by, "li");
     }
 
+    public TestableString url() {
+        return new TestableString(delegate.getCurrentUrl());
+    }
+
+    public TestableString title() {
+        return new TestableString(delegate.getTitle());
+    }
+
     protected abstract <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass);
     protected abstract FluentWebElements getFluentWebElements(List<WebElement> results, String context);
 
