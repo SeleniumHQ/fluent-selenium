@@ -126,4 +126,8 @@ public interface FluentWebDriver {
 
     FluentWebDriver within(Period p);
 
+    TestableString url();
+    TestableString title();
+
+
 }

@@ -191,14 +191,14 @@ public class ByTest extends MockTestBase {
   public void shouldBarfIfNotCompositeOfTagNameAndClassName() {
 
     try {
-      FluentBy.composite(null);
+      FluentBy.composite((By[])null);
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
               is("Cannot make composite with no varargs of Bys"));
     }
 
     try {
-      FluentBy.composite(new By[0]);
+      FluentBy.composite((By[]) new By[0]);
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(),
               is("can only do this with By.tagName followed one of By.className or FluentBy.attribute"));

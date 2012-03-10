@@ -37,6 +37,7 @@ public abstract class BaseFluentWebDriver {
         this.context = context;
     }
 
+    @SuppressWarnings("unchecked")
     protected final <T> T makeFluentWebElement(WebDriver delegate, WebElement result, String context, Constructor<?> constructor) {
         try {
             return (T) constructor.newInstance(delegate, result, context);
