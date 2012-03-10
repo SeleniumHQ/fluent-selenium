@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
+import org.seleniumhq.selenium.fluent.Period;
 
 import java.util.concurrent.TimeUnit;
 

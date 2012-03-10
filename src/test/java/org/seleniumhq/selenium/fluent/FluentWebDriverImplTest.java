@@ -15,6 +15,7 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import junit.runner.BaseTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -32,7 +33,7 @@ import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMay
 /**
  * Unit test for simple App.
  */
-public class FluentWebDriverImplTest {
+public class FluentWebDriverImplTest extends BaseTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
@@ -40,7 +41,6 @@ public class FluentWebDriverImplTest {
     private StringBuilder sb;
     private WebDriver wd;
     private FluentWebDriverImpl fwd;
-    static ThreadLocal<Class<? extends Throwable>> FAIL_ON_NEXT = new ThreadLocal<Class<? extends Throwable>>();
 
 
     @Before

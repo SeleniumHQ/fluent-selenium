@@ -1,4 +1,4 @@
-package org.seleniumhq.selenium.fluent;
+package org.seleniumhq.selenium.fluent.elems;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,17 +7,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
+import org.seleniumhq.selenium.fluent.BaseTest;
+import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
+import org.seleniumhq.selenium.fluent.FluentSelect;
+import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
+import org.seleniumhq.selenium.fluent.FluentWebDriverImplTest;
+import org.seleniumhq.selenium.fluent.Period;
+import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class Select_Test {
+public class select extends BaseTest {
 
-    static final By ID_A = By.id("idA");
-    static final By ID_B = By.id("idB");
-    static final By CLASS_C = By.className("classC");
     private StringBuilder sb;
     private WebDriver wd;
     private FluentWebDriverImpl fwd;
@@ -27,7 +32,7 @@ public class Select_Test {
         sb = new StringBuilder();
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
-        FluentWebDriverImplTest.FAIL_ON_NEXT.set(null);
+        FAIL_ON_NEXT.set(null);
     }
 
     @Test

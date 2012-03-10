@@ -1,9 +1,15 @@
-package org.seleniumhq.selenium.fluent;
+package org.seleniumhq.selenium.fluent.elems;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
+import org.seleniumhq.selenium.fluent.BaseTest;
+import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
+import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
+import org.seleniumhq.selenium.fluent.FluentWebDriverImplTest;
+import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -11,7 +17,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class Tr_Test {
+public class tr extends BaseTest {
 
     private StringBuilder sb;
     private FluentWebDriverImpl fwd;
@@ -20,7 +26,7 @@ public class Tr_Test {
     public void setup() {
         sb = new StringBuilder();
         fwd = new FluentWebDriverImpl(new WebDriverJournal(sb));
-        FluentWebDriverImplTest.FAIL_ON_NEXT.set(null);
+        FAIL_ON_NEXT.set(null);
     }
 
     @Test
