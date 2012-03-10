@@ -48,14 +48,14 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
     }
 
     public FluentWebDriverImpl within(final Period period) {
-        return new MorePatientFluentWebDriver(delegate, period);
+        return new RetryingFluentWebDriver(delegate, period);
     }
 
-    private class MorePatientFluentWebDriver extends FluentWebDriverImpl {
+    private class RetryingFluentWebDriver extends FluentWebDriverImpl {
 
         private final Period period;
 
-        public MorePatientFluentWebDriver(WebDriver webDriver, Period period) {
+        public RetryingFluentWebDriver(WebDriver webDriver, Period period) {
             super(webDriver);
             this.period = period;
         }

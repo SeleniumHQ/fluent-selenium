@@ -124,4 +124,6 @@ public interface FluentWebDriver {
     FluentWebElements options();
     FluentWebElements options(By by);
 
+    FluentWebDriver within(Period p);
+
 }

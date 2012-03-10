@@ -28,15 +28,6 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         this.currentElements = currentElements;
     }
 
-    protected WebElement findIt(By by) {
-        throw new UnsupportedOperationException("not applicable to this impl");
-    }
-
-    @Override
-    protected List<WebElement> findThem(By by) {
-        throw new UnsupportedOperationException("not applicable to this impl");
-    }
-
     public FluentWebElements click() {
         String ctx = context + ".click()";
         execute(new Execution<Boolean>() {
@@ -148,28 +139,47 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
     }
 
     @Override
+    protected WebElement findIt(By by) {
+        throw meaningless("findIt('" + by + "')");
+    }
+
+    @Override
+    protected List<WebElement> findThem(By by) {
+        throw meaningless("findThem('" + by + "')");
+    }
+
+    @Override
     public Point getLocation() {
-        throw new UnsupportedOperationException("getLocation() has no meaning for multiple elements");
+        throw meaningless("getLocation()");
+    }
+
+    private UnsupportedOperationException meaningless(final String invocation) {
+        return new UnsupportedOperationException(invocation + " has no meaning for multiple elements");
     }
 
     @Override
     public TestableString getCssValue(String cssName) {
-        throw new UnsupportedOperationException("getCssValue() has no meaning for multiple elements");
+        throw meaningless("getCssValue('"+cssName+"')");
     }
 
     @Override
     public TestableString getAttribute(String attrName) {
-        throw new UnsupportedOperationException("getAttribute() has no meaning for multiple elements");
+        throw meaningless("getAttribute('"+attrName+"')");
     }
 
     @Override
     public TestableString getTagName() {
-        throw new UnsupportedOperationException("getTagName() has no meaning for multiple elements");
+        throw meaningless("getTagName()");
     }
 
     @Override
     public Dimension getSize() {
-        throw new UnsupportedOperationException("getSize() has no meaning for multiple elements");
+        throw meaningless("getSize()");
+    }
+
+    @Override
+    public FluentWebElements within(Period p) {
+        throw new UnsupportedOperationException("within() has no meaning for multiple elements");
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {
@@ -306,8 +316,5 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.subList(i, i1);
     }
 
-    @Override
-    public FluentWebElements within(Period p) {
-        throw new UnsupportedOperationException("within() is meaningless for multiple webElements");
-    }
+
 }

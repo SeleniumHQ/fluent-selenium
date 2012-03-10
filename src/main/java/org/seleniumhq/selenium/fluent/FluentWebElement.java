@@ -89,7 +89,6 @@ public class FluentWebElement extends BaseFluentWebElement {
         return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
     }
 
-
     public TestableString getTagName() {
         String tagName = execute(new Execution<String>() {
             public String execute() {
@@ -209,14 +208,14 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public FluentWebElement within(Period period) {
-        return new MorePatientFluentWebElement(delegate, currentElement, context, period);
+        return new RetryingFluentWebElement(delegate, currentElement, context, period);
     }
 
-    private class MorePatientFluentWebElement extends FluentWebElement {
+    private class RetryingFluentWebElement extends FluentWebElement {
 
         private final Period period;
 
-        public MorePatientFluentWebElement(WebDriver webDriver, WebElement currentElement, String context, Period period) {
+        public RetryingFluentWebElement(WebDriver webDriver, WebElement currentElement, String context, Period period) {
             super(webDriver, currentElement, context);
             this.period = period;
         }

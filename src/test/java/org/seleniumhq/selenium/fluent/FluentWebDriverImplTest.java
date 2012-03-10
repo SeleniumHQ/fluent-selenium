@@ -647,14 +647,14 @@ public class FluentWebDriverImplTest extends BaseTest {
         try {
             elems.getCssValue("x");
         } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getCssValue() has no meaning for multiple elements"));
+            assertThat(e.getMessage(), equalTo("getCssValue('x') has no meaning for multiple elements"));
         }
 
         sb.setLength(0);
         try {
             elems.getAttribute("x");
         } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getAttribute() has no meaning for multiple elements"));
+            assertThat(e.getMessage(), equalTo("getAttribute('x') has no meaning for multiple elements"));
         }
 
         sb.setLength(0);

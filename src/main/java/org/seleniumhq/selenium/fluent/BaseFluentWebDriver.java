@@ -120,7 +120,6 @@ public abstract class BaseFluentWebDriver {
 
     public FluentWebElement input(By by) {
         return single(by, "input", FluentWebElement.class);
-
     }
 
     public FluentWebElements inputs() {
