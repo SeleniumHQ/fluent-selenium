@@ -32,6 +32,16 @@ public abstract class BaseFluentWebDriver {
     protected final WebDriver delegate;
     protected final String context;
 
+
+    static ThreadLocal<WaitContext> waiting = new ThreadLocal<WaitContext>();
+
+    static class WaitContext {
+        private final Period period;
+        public WaitContext(Period period) {
+            this.period = period;
+        }
+    }
+
     public BaseFluentWebDriver(WebDriver delegate, String context) {
         this.delegate = delegate;
         this.context = context;
@@ -405,14 +415,31 @@ public abstract class BaseFluentWebDriver {
     }
 
     public TestableString url() {
-        return new TestableString(delegate.getCurrentUrl());
+        Execution<String> execution = new Execution<String>() {
+            public String execute() {
+                return delegate.getCurrentUrl();
+            }
+        };
+        String ctx = context + ".url()";
+        return new TestableString(getPeriod(), execution, ctx);
+    }
+
+    protected Period getPeriod() {
+        return null;
     }
 
     public TestableString title() {
-        return new TestableString(delegate.getTitle());
+        Execution<String> execution = new Execution<String>() {
+            public String execute() {
+                return delegate.getTitle();
+            }
+        };
+        String ctx = context + ".title()";
+        return new TestableString(getPeriod(), execution, ctx);
     }
 
     protected abstract <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass);
+
     protected abstract FluentWebElements getFluentWebElements(List<WebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
@@ -441,7 +468,7 @@ public abstract class BaseFluentWebDriver {
         final WebElement result;
         try {
             changeTimeout();
-            result = execute(new Execution<WebElement>() {
+            result = decorateExecution(new Execution<WebElement>() {
                 public WebElement execute() {
                     WebElement it = findIt(by2);
                     assertTagIs(it.getTagName(), tagName);
@@ -465,7 +492,7 @@ public abstract class BaseFluentWebDriver {
         final By by2 = fixupBy(by, tagName);
         String ctx = context + "." + tagName + "s(" + by + ")";
 
-        final List<WebElement> result = execute(new Execution<List<WebElement>>() {
+        final List<WebElement> result = decorateExecution(new Execution<List<WebElement>>() {
             public List<WebElement> execute() {
                 List<WebElement> results = findThem(by2);
                 for (WebElement webElement : results) {
@@ -477,18 +504,14 @@ public abstract class BaseFluentWebDriver {
         return getFluentWebElements(result, ctx);
     }
 
-    protected RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
+    protected static RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
         return new FluentExecutionStopped("RuntimeException during invocation of: " + ctx, e);
     }
-    protected RuntimeException decorateAssertionError(String ctx, AssertionError e) {
-        return new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
+    protected static RuntimeException decorateAssertionError(String ctx, AssertionError e) {
+        return  new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
     }
 
-    protected static interface Execution<T> {
-        T execute();
-    }
-
-    protected <T> T execute(Execution<T> execution, String ctx) {
+    protected <T> T decorateExecution(Execution<T> execution, String ctx) {
         try {
             return execution.execute();
         } catch (UnsupportedOperationException e) {

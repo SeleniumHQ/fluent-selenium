@@ -40,7 +40,7 @@ public class FluentSelect extends FluentWebElement {
      *         is done by checking the value of the "multiple" attribute.
      */
     public boolean isMultiple() {
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 return getSelect().isMultiple();
             }
@@ -51,7 +51,7 @@ public class FluentSelect extends FluentWebElement {
      * @return All options belonging to this select tag
      */
     public List<WebElement> getOptions() {
-        return execute(new Execution<List<WebElement>>() {
+        return decorateExecution(new Execution<List<WebElement>>() {
             public List<WebElement> execute() {
                 return getSelect().getOptions();
             }
@@ -62,7 +62,7 @@ public class FluentSelect extends FluentWebElement {
      * @return All selected options belonging to this select tag
      */
     public List<WebElement> getAllSelectedOptions() {
-        return execute(new Execution<List<WebElement>>() {
+        return decorateExecution(new Execution<List<WebElement>>() {
             public List<WebElement> execute() {
                 return getSelect().getAllSelectedOptions();
             }
@@ -74,7 +74,7 @@ public class FluentSelect extends FluentWebElement {
      *         normal select)
      */
     public WebElement getFirstSelectedOption() {
-        return execute(new Execution<WebElement>() {
+        return decorateExecution(new Execution<WebElement>() {
             public WebElement execute() {
                 return getSelect().getFirstSelectedOption();
             }
@@ -90,7 +90,7 @@ public class FluentSelect extends FluentWebElement {
      * @param text The visible text to match against
      */
     public FluentSelect selectByVisibleText(final String text) {
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().selectByVisibleText(text);
                 return true;
@@ -106,7 +106,7 @@ public class FluentSelect extends FluentWebElement {
      * @param index The option at this index will be selected
      */
     public FluentSelect selectByIndex(final int index) {
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().selectByIndex(index);
                 return true;
@@ -124,7 +124,7 @@ public class FluentSelect extends FluentWebElement {
      * @param value The value to match against
      */
     public FluentSelect selectByValue(final String value) {
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().selectByValue(value);
                 return true;
@@ -139,7 +139,7 @@ public class FluentSelect extends FluentWebElement {
      * @throws UnsupportedOperationException If the SELECT does not support multiple selections
      */
     public FluentSelect deselectAll() {
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectAll();
                 return true;
@@ -158,7 +158,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByValue(final String value) {
         String ctx = context + ".deselectByValue(" + value + ")";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByValue(value);
                 return true;
@@ -175,7 +175,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByIndex(final int index) {
         String ctx = context + ".deselectByIndex(" + index + ")";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByIndex(index);
                 return true;
@@ -194,7 +194,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByVisibleText(final String text) {
         String ctx = context + ".deselectByVisibleText(" + text + ")";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByVisibleText(text);
                 return true;
@@ -211,7 +211,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     public FluentSelect within(Period period) {
-        return new MorePatientFluentSelect(delegate, context, currentSelect, currentElement, period);
+        return new MorePatientFluentSelect(delegate, context + ".within(" + period + ")", currentSelect, currentElement, period);
     }
 
     private class MorePatientFluentSelect extends FluentSelect {
@@ -221,6 +221,11 @@ public class FluentSelect extends FluentWebElement {
         public MorePatientFluentSelect(WebDriver webDriver, String context, Select currentSelect, WebElement currentElement, Period period) {
             super(webDriver, currentSelect, currentElement, context);
             this.period = period;
+        }
+
+        @Override
+        protected Period getPeriod() {
+            return period;
         }
 
         @Override

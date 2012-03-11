@@ -30,7 +30,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public FluentWebElements click() {
         String ctx = context + ".click()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.click();
@@ -46,7 +46,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
      */
     public FluentWebElements clearField() {
         String ctx = context + ".clearField()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.clear();
@@ -59,7 +59,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public FluentWebElements submit() {
         String ctx = context + ".submit()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.submit();
@@ -74,7 +74,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (WebElement webElement : FluentWebElements.this) {
                     webElement.sendKeys(keysToSend);
@@ -87,7 +87,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public boolean isSelected() {
         String ctx = context + ".isSelected()";
-        boolean areSelected = execute(new Execution<Boolean>() {
+        boolean areSelected = decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
@@ -101,7 +101,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public boolean isEnabled() {
         String ctx = context + ".isEnabled()";
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
@@ -114,7 +114,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public boolean isDisplayed() {
         String ctx = context + ".isDisplayed()";
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
                 for (WebElement webElement : FluentWebElements.this) {
@@ -127,7 +127,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public TestableString getText() {
         String ctx = context + ".getText()";
-        return new TestableString(execute(new Execution<String>() {
+        Execution<String> execution = new Execution<String>() {
             public String execute() {
                 String text = "";
                 for (WebElement webElement : FluentWebElements.this) {
@@ -135,7 +135,8 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
                 }
                 return text;
             }
-        }, ctx));
+        };
+        return new TestableString(getPeriod(), execution, ctx);
     }
 
     @Override
@@ -184,7 +185,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
-        final List<WebElement> subset = execute(new Execution<List<WebElement>>() {
+        final List<WebElement> subset = decorateExecution(new Execution<List<WebElement>>() {
             public List<WebElement> execute() {
                 ArrayList<WebElement> results = new ArrayList<WebElement>();
                 for (WebElement webElement : FluentWebElements.this) {
@@ -201,7 +202,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
     public FluentWebElement first(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
 
-        WebElement first = execute(new Execution<WebElement>() {
+        WebElement first = decorateExecution(new Execution<WebElement>() {
             public WebElement execute() {
                 WebElement result = null;
                 for (WebElement webElement : FluentWebElements.this) {

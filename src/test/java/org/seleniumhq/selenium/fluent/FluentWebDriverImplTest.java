@@ -504,7 +504,7 @@ public class FluentWebDriverImplTest extends BaseTest {
     }
 
     @Test
-    public void rumtime_exceptions_decorated_for_multiple_element() {
+    public void runtime_exceptions_decorated_for_multiple_element() {
         multiple_elem_exception_handling(RuntimeException.class);
     }
 
@@ -514,63 +514,63 @@ public class FluentWebDriverImplTest extends BaseTest {
     }
 
     private void multiple_elem_exception_handling(Class<? extends Throwable> throwable) {
-        FluentWebElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
-        assertThat(ome, notNullValue());
+        assertThat(fwe, notNullValue());
 
         FAIL_ON_NEXT.set(throwable);
 
         try {
-            ome.sendKeys("a");
+            fwe.sendKeys("a");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).sendKeys('a')"));
         }
 
         try {
-            ome.click();
+            fwe.click();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).click()"));
         }
 
         try {
-            ome.submit();
+            fwe.submit();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).submit()"));
         }
 
         try {
-            ome.clearField();
+            fwe.clearField();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).clearField()"));
         }
 
         try {
-            ome.isSelected();
+            fwe.isSelected();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isSelected()"));
         }
 
         try {
-            ome.isEnabled();
+            fwe.isEnabled();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isEnabled()"));
         }
 
         try {
-            ome.isDisplayed();
+            fwe.isDisplayed();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isDisplayed()"));
         }
 
         try {
-            ome.getText();
+            fwe.getText();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).getText()"));
@@ -841,7 +841,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             within.div(); // consequential stub getTagName() with throw
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().div()"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().within(secs(10)).div()"));
             assertTrue(e.getCause() instanceof AssertionError);
         }
 
@@ -874,7 +874,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             within.div(); // consequential stub getTagName() with throw
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().div()"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().within(secs(10)).div()"));
             assertTrue(e.getCause() instanceof AssertionError);
         }
 

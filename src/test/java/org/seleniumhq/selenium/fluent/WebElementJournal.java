@@ -70,7 +70,7 @@ public class WebElementJournal implements WebElement {
             }
             if ((className.equals(BaseFluentWebDriver.class.getName())
                     || className.equals(FluentWebElement.class.getName()))
-                    && !methodName.equals("execute")
+                    && !methodName.equals("decorateExecution")
                     && !methodName.equals("multiple")
                     && !methodName.equals("single")) {
                 if (methodName.equals("link")) {

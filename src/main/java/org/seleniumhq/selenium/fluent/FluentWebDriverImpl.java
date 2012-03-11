@@ -28,6 +28,10 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
         super(delegate, "?");
     }
 
+    protected FluentWebDriverImpl(WebDriver delegate, String context) {
+        super(delegate, context);
+    }
+
     @Override
     protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
         return makeFluentWebElement(super.delegate, result, context, webElementClass.getConstructors()[0]);
@@ -48,25 +52,33 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
     }
 
     public FluentWebDriverImpl within(final Period period) {
-        return new RetryingFluentWebDriver(delegate, period);
+        return new RetryingFluentWebDriver(delegate, period, context + ".within(" + period + ")");
     }
 
     private class RetryingFluentWebDriver extends FluentWebDriverImpl {
 
         private final Period period;
 
-        public RetryingFluentWebDriver(WebDriver webDriver, Period period) {
-            super(webDriver);
+        public RetryingFluentWebDriver(WebDriver webDriver, Period period, String context) {
+            super(webDriver, context);
             this.period = period;
+        }
+
+        @Override
+        protected Period getPeriod() {
+            return period;
         }
 
         @Override
         protected void changeTimeout() {
             delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
+            waiting.set(new WaitContext(period));
+
         }
 
         @Override
         protected void resetTimeout() {
+            waiting.set(null);
             delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         }
 

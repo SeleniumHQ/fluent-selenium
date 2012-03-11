@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
+import org.seleniumhq.selenium.fluent.Execution;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentSelect;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
@@ -145,7 +146,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -207,7 +208,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -269,7 +270,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -330,7 +331,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -391,7 +392,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -452,7 +453,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -513,7 +514,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -574,7 +575,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -635,7 +636,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -696,7 +697,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -757,7 +758,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void execute(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, String ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -803,7 +804,7 @@ public class select extends BaseTest {
             within.div(); // consequential stub getTagName() with throw
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.select().div()"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.select().within(secs(10)).div()"));
             assertTrue(e.getCause() instanceof AssertionError);
         }
 

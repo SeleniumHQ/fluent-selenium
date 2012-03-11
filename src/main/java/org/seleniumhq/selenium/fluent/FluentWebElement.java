@@ -40,7 +40,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement click() {
         String ctx = context + ".click()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.click();
                 return true;
@@ -55,7 +55,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement clearField() {
         String ctx = context + ".clearField()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.clear();
                 return true;
@@ -67,7 +67,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement submit() {
         String ctx = context + ".submit()";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.submit();
                 return true;
@@ -80,7 +80,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
-        execute(new Execution<Boolean>() {
+        decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.sendKeys(keysToSend);
                 return true;
@@ -90,16 +90,15 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public TestableString getTagName() {
-        String tagName = execute(new Execution<String>() {
+        return new TestableString(getPeriod(), new Execution<String>() {
             public String execute() {
                 return currentElement.getTagName();
             }
         }, context + ".getTagName()");
-        return new TestableString(tagName);
     }
 
     public boolean isSelected() {
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 return currentElement.isSelected();
             }
@@ -107,7 +106,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public boolean isEnabled() {
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 return currentElement.isEnabled();
             }
@@ -115,7 +114,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public boolean isDisplayed() {
-        return execute(new Execution<Boolean>() {
+        return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 return currentElement.isDisplayed();
             }
@@ -123,7 +122,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public Point getLocation() {
-        return execute(new Execution<Point>() {
+        return decorateExecution(new Execution<Point>() {
             public Point execute() {
                 return currentElement.getLocation();
             }
@@ -131,7 +130,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public Dimension getSize() {
-        return execute(new Execution<Dimension>() {
+        return decorateExecution(new Execution<Dimension>() {
             public Dimension execute() {
                 return currentElement.getSize();
             }
@@ -139,27 +138,27 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public TestableString getCssValue(final String cssName) {
-        return new TestableString(execute(new Execution<String>() {
+        return new TestableString(getPeriod(), new Execution<String>() {
             public String execute() {
                 return currentElement.getCssValue(cssName);
             }
-        }, context + ".getCssValue("+cssName+")"));
+        }, context + ".getCssValue(" + cssName + ")");
     }
 
     public TestableString getAttribute(final String attr) {
-        return new TestableString(execute(new Execution<String>() {
+        return new TestableString(getPeriod(), new Execution<String>() {
             public String execute() {
                 return currentElement.getAttribute(attr);
             }
-        }, context + ".getAttribute("+attr+")"));
+        }, context + ".getAttribute(" + attr + ")");
     }
 
     public TestableString getText() {
-        return new TestableString(execute(new Execution<String>() {
+        return new TestableString(getPeriod(), new Execution<String>() {
             public String execute() {
                 return currentElement.getText();
             }
-        }, context + ".getText()"));
+        }, context + ".getText()");
     }
 
     //@Override
@@ -208,7 +207,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public FluentWebElement within(Period period) {
-        return new RetryingFluentWebElement(delegate, currentElement, context, period);
+        return new RetryingFluentWebElement(delegate, currentElement, context + ".within(" + period + ")", period);
     }
 
     private class RetryingFluentWebElement extends FluentWebElement {
@@ -218,6 +217,11 @@ public class FluentWebElement extends BaseFluentWebElement {
         public RetryingFluentWebElement(WebDriver webDriver, WebElement currentElement, String context, Period period) {
             super(webDriver, currentElement, context);
             this.period = period;
+        }
+
+        @Override
+        protected Period getPeriod() {
+            return period;
         }
 
         @Override
