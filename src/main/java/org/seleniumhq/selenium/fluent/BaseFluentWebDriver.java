@@ -505,10 +505,10 @@ public abstract class BaseFluentWebDriver {
     }
 
     protected static RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
-        return new FluentExecutionStopped("RuntimeException during invocation of: " + ctx, e);
+        return new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
     }
     protected static RuntimeException decorateAssertionError(String ctx, AssertionError e) {
-        return  new FluentExecutionStopped("AssertionError during invocation of: " + ctx, e);
+        return  new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
     }
 
     protected <T> T decorateExecution(Execution<T> execution, String ctx) {

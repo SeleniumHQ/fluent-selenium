@@ -16,9 +16,12 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
+import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +45,7 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
         return new FluentWebElements(super.delegate, results, context);
     }
 
-    protected final WebElement findIt(By by) {
+    protected WebElement findIt(By by) {
         return delegate.findElement(by);
     }
 
@@ -62,6 +65,46 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
         public RetryingFluentWebDriver(WebDriver webDriver, Period period, String context) {
             super(webDriver, context);
             this.period = period;
+        }
+
+        @Override
+        protected WebElement findIt(By by) {
+            long endMillis = period.getEndMillis();
+            RuntimeException exceptionToRetry = new RuntimeException();
+            WebElement it = null;
+            while (exceptionToRetry != null && endMillis - System.currentTimeMillis() > 0) {
+                try {
+                    it = super.findIt(by);
+                    exceptionToRetry = null;
+                    return it;
+                } catch (WebDriverException e) {
+                    exceptionToRetry = e;
+                }
+            }
+            if (exceptionToRetry != null) {
+                throw exceptionToRetry;
+            }
+            return it;
+        }
+
+        @Override
+        protected List<WebElement> findThem(By by) {
+            long endMillis = period.getEndMillis();
+            RuntimeException exceptionToRetry = new RuntimeException();
+            List<WebElement> them = null;
+            while (exceptionToRetry != null && endMillis - System.currentTimeMillis() > 0) {
+                try {
+                    them = super.findThem(by);
+                    exceptionToRetry = null;
+                    return them;
+                } catch (WebDriverException e) {
+                    exceptionToRetry = e;
+                }
+            }
+            if (exceptionToRetry != null) {
+                throw exceptionToRetry;
+            }
+            return them;
         }
 
         @Override
