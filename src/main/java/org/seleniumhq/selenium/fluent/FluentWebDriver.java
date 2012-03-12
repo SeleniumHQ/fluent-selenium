@@ -39,8 +39,8 @@ public interface FluentWebDriver {
     FluentWebElements inputs();
     FluentWebElements inputs(By by);
 
-    FluentWebElement select();
-    FluentWebElement select(By by);
+    FluentSelect select();
+    FluentSelect select(By by);
     FluentWebElements selects();
     FluentWebElements selects(By by);
 
