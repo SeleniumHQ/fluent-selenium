@@ -180,7 +180,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     @Override
     public FluentWebElements within(Period p) {
-        throw new UnsupportedOperationException("within() has no meaning for multiple elements");
+        throw meaningless("within("+p+")");
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {

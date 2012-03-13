@@ -468,18 +468,30 @@ public abstract class BaseFluentWebDriver {
         final WebElement result;
         try {
             changeTimeout();
-            result = decorateExecution(new Execution<WebElement>() {
-                public WebElement execute() {
-                    WebElement it = findIt(by2);
-                    assertTagIs(it.getTagName(), tagName);
-                    return it;
-                }
-            }, ctx);
+            FindIt execution = new FindIt(by2, tagName);
+            result = decorateExecution(execution, ctx);
         } finally {
             resetTimeout();
         }
         return getFluentWebElement(result, ctx, resultingClass);
     }
+
+    private class FindIt implements Execution<WebElement> {
+        private final By by2;
+        private final String tagName;
+
+        public FindIt(By by2, String tagName) {
+            this.by2 = by2;
+            this.tagName = tagName;
+        }
+
+        public WebElement execute() {
+            WebElement it = findIt(by2);
+            assertTagIs(it.getTagName(), tagName);
+            return it;
+        }
+    }
+
 
     private String contextualize(String by, String tagName) {
         if (by.equals("By.tagName: " + tagName)) {
@@ -490,19 +502,36 @@ public abstract class BaseFluentWebDriver {
 
     private FluentWebElements multiple(By by, final String tagName) {
         final By by2 = fixupBy(by, tagName);
+        final List<WebElement> result;
         String ctx = context + "." + tagName + "s(" + by + ")";
-
-        final List<WebElement> result = decorateExecution(new Execution<List<WebElement>>() {
-            public List<WebElement> execute() {
-                List<WebElement> results = findThem(by2);
-                for (WebElement webElement : results) {
-                    assertTagIs(webElement.getTagName(), tagName);
-                }
-                return results;
-            }
-        }, ctx);
+        try {
+            changeTimeout();
+            FindThem execution = new FindThem(by2, tagName);
+            result = decorateExecution(execution, ctx);
+        } finally {
+            resetTimeout();
+        }
         return getFluentWebElements(result, ctx);
     }
+
+    private class FindThem implements Execution<List<WebElement>> {
+        private final By by2;
+        private final String tagName;
+
+        public FindThem(By by2, String tagName) {
+            this.by2 = by2;
+            this.tagName = tagName;
+        }
+
+        public List<WebElement> execute() {
+            List<WebElement> results = findThem(by2);
+            for (WebElement webElement : results) {
+                assertTagIs(webElement.getTagName(), tagName);
+            }
+            return results;
+        }
+    }
+
 
     protected static RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
         return new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
@@ -530,6 +559,5 @@ public abstract class BaseFluentWebDriver {
     }
 
     public abstract BaseFluentWebDriver within(Period p);
-
 
 }
