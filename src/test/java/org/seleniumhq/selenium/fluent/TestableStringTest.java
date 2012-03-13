@@ -23,7 +23,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldBe('bar')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     but: was \"foo\""));
+            assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     got: \"foo\"\n"));
         }
     }
 
@@ -35,7 +35,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldBe('bar')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     but: was \"foo\""));
+            assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     got: \"foo\"\n"));
         }
     }
 
@@ -47,7 +47,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldNotBe('foo')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: not \"foo\"\n     but: was \"foo\""));
+            assertThat(e.getCause().getMessage(), equalTo("\nExpected: not \"foo\"\n     got: \"foo\"\n"));
         }
     }
     
@@ -59,7 +59,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldContain('a')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: a string containing \"a\"\n     but: was \"foo\""));
+            assertThat(e.getCause().getMessage(), equalTo("\nExpected: a string containing \"a\"\n     got: \"foo\"\n"));
         }
     }
 
@@ -71,7 +71,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldNotContain('o')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: not a string containing \"o\"\n     but: was \"foo\""));
+            assertThat(e.getCause().getMessage(), equalTo("\nExpected: not a string containing \"o\"\n     got: \"foo\"\n"));
         }
     }
 

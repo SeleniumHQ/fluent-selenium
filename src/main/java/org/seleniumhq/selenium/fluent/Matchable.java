@@ -15,10 +15,18 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.SelfDescribing;
 import org.hamcrest.StringDescription;
 import org.hamcrest.core.IsEqual;
+import org.hamcrest.internal.ArrayIterator;
+import org.hamcrest.internal.SelfDescribingValueIterator;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
+import static java.lang.String.valueOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class Matchable<T> {
@@ -38,9 +46,10 @@ public class Matchable<T> {
         Matcher<T> matcher = equalTo(shouldOrShouldNotBe);
         boolean passed = matcher.matches(val);
         StringDescription desc = new StringDescription();
-        matcher.describeMismatch(val, desc);
+        matcher.describeTo(desc);
         if (shouldOrShouldNot & !passed || !shouldOrShouldNot & passed) {
-            throw new RuntimeException(context + " ~ but " + was(matcher, desc));
+            String s = context + " ~ but " + was(matcher, desc);
+            throw new RuntimeException(s);
         }
         return this;
     }
@@ -49,7 +58,107 @@ public class Matchable<T> {
         if (matcher instanceof IsEqual && !shouldOrShouldNot) {
           return "was.";
         }
-        return desc.toString();
+        return "was " + appendValue(val);
+    }
+
+    public String appendValue(Object value) {
+        String retVal = "";
+        if (value == null) {
+            retVal = retVal + append("null");
+        } else if (value instanceof String) {
+            retVal = retVal + toJavaSyntax((String) value);
+        } else if (value instanceof Character) {
+            retVal = retVal + append('"');
+            retVal = retVal + toJavaSyntax((Character) value);
+            retVal = retVal + append('"');
+        } else if (value instanceof Short) {
+            retVal = retVal + append('<');
+            retVal = retVal + append(valueOf(value));
+            retVal = retVal + append("s>");
+        } else if (value instanceof Long) {
+            retVal = retVal + append('<');
+            retVal = retVal + append(valueOf(value));
+            retVal = retVal + append("L>");
+        } else if (value instanceof Float) {
+            retVal = retVal + append('<');
+            retVal = retVal + append(valueOf(value));
+            retVal = retVal + append("F>");
+        } else if (value.getClass().isArray()) {
+            retVal = retVal + appendValueList("[",", ","]", (T[]) value);
+        } else {
+            retVal = retVal + append('<');
+            retVal = retVal + append(valueOf(value));
+            retVal = retVal + append('>');
+        }
+        return retVal;
+    }
+
+    public String appendValueList(String start, String separator, String end, T... values) {
+        return appendValueList(start, separator, end, Arrays.asList(values));
+    }
+
+    public String appendValueList(String start, String separator, String end, Iterable<T> values) {
+        return appendValueList(start, separator, end, values.iterator());
+    }
+
+    private String appendValueList(String start, String separator, String end, Iterator<T> values) {
+        return appendList(start, separator, end, new SelfDescribingValueIterator<T>(values));
+    }
+
+    private String appendList(String start, String separator, String end, Iterator<? extends SelfDescribing> i) {
+        String retVal = "";
+        boolean separate = false;
+
+        retVal = retVal + append(start);
+        while (i.hasNext()) {
+            if (separate) append(separator);
+            retVal = retVal + appendDescriptionOf(i.next());
+            separate = true;
+        }
+        retVal = retVal + append(end);
+
+        return retVal;
+    }
+
+    public String appendDescriptionOf(SelfDescribing value) {
+        return value.toString();
+    }
+    protected String
+    append(char chr) {
+        return "" + chr;
+    }
+
+    protected String append(String str) {
+        String retVal = "";
+        for (int i = 0; i < str.length(); i++) {
+            retVal = retVal + append(str.charAt(i));
+        }
+        return retVal;
+    }
+
+    private String toJavaSyntax(String unformatted) {
+        String retVal  = "";
+        retVal = retVal + append('"');
+        for (int i = 0; i < unformatted.length(); i++) {
+            retVal = retVal + toJavaSyntax(unformatted.charAt(i));
+        }
+        retVal = retVal + append('"');
+        return retVal;
+    }
+
+    private String toJavaSyntax(char ch) {
+        switch (ch) {
+            case '"':
+                return append("\\\"");
+            case '\n':
+                return append("\\n");
+            case '\r':
+                return append("\\r");
+            case '\t':
+                return append("\\t");
+            default:
+                return append(ch);
+        }
     }
 
   public T value() {

@@ -1,9 +1,10 @@
 package org.seleniumhq.selenium.fluent;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateAssertionError;
 import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateRuntimeException;
 

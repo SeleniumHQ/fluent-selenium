@@ -187,17 +187,17 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         sb.setLength(0);
         TestableString cssVal = ofwd.getCssValue("blort");
-        assertThat(cssVal, equalTo(cs("blort_value")));
+        assertThat(cssVal.toString(), equalTo(cs("blort_value")));
         assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
 
         sb.setLength(0);
         TestableString value = ofwd.getAttribute("valerie");
-        assertThat(value, equalTo(cs("valerie_value")));
+        assertThat(value.toString(), equalTo(cs("valerie_value")));
         assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
 
         sb.setLength(0);
         TestableString tagName = ofwd.getTagName();
-        assertThat(tagName, equalTo(cs("taggart")));
+        assertThat(tagName.toString(), equalTo(cs("taggart")));
         assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
 
         sb.setLength(0);
@@ -217,7 +217,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         sb.setLength(0);
         TestableString text = ofwd.getText();
-        assertThat(text, equalTo(cs("Mary had 3 little lamb(s).")));
+        assertThat(text.toString(), equalTo(cs("Mary had 3 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
@@ -243,7 +243,8 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         sb.setLength(0);
         try {
-            ofwd.location().shouldBe(new Point(2, 2)).value();
+            WebElementValue<Point> location1 = ofwd.location();
+            location1.shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was <(1, 1)>"));
@@ -626,7 +627,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         sb.setLength(0);
         CharSequence text = elems.getText();
-        assertThat(text, equalTo(cs("Mary had 3 little lamb(s).Mary had 4 little lamb(s).")));
+        assertThat(text.toString(), equalTo(cs("Mary had 3 little lamb(s).Mary had 4 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 3 little lamb(s).'\nwe2.getText() -> 'Mary had 4 little lamb(s).'\n"));
 
         sb.setLength(0);
