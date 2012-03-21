@@ -19,8 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.openqa.selenium.By.tagName;
@@ -47,371 +46,452 @@ public abstract class BaseFluentWebDriver {
         this.context = context;
     }
 
-    @SuppressWarnings("unchecked")
-    protected final <T> T makeFluentWebElement(WebDriver delegate, WebElement result, String context, Constructor<?> constructor) {
-        try {
-            return (T) constructor.newInstance(delegate, result, context);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
     public FluentWebElement span() {
-        return single(tagName("span"), "span", FluentWebElement.class);
+        SingleResult single = single(tagName("span"), "span");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement span(By by) {
-        return single(by, "span", FluentWebElement.class);
+        SingleResult single = single(by, "span");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements spans() {
-        return multiple(tagName("span"), "span");
+        MultipleResult multiple = multiple(tagName("span"), "span");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
+    private FluentWebElements newFluentWebElements(List<WebElement> result, String ctx) {
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        for (WebElement aResult : result) {
+            elems.add(new FluentWebElement(delegate, aResult, ctx));
+        }
+        return new FluentWebElements(delegate, elems, ctx);
     }
 
     public FluentWebElements spans(By by) {
-        return multiple(by, "span");
+        MultipleResult multiple = multiple(by, "span");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement div() {
-        return single(tagName("div"), "div", FluentWebElement.class);
+        SingleResult single = single(tagName("div"), "div");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement div(By by) {
-        return single(by, "div", FluentWebElement.class);
+        SingleResult single = single(by, "div");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements divs() {
-        return multiple(tagName("div"), "div");
+        MultipleResult multiple = multiple(tagName("div"), "div");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements divs(By by) {
-        return multiple(by, "div");
+        MultipleResult multiple = multiple(by, "div");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement button() {
-        return single(tagName("button"), "button", FluentWebElement.class);
+        SingleResult single = single(tagName("button"), "button");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement button(By by) {
-        return single(by, "button", FluentWebElement.class);
+        SingleResult single = single(by, "button");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements buttons() {
-        return multiple(tagName("button"), "button");
+        MultipleResult multiple = multiple(tagName("button"), "button");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements buttons(By by) {
-        return multiple(by, "button");
+        MultipleResult multiple = multiple(by, "button");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement link() {
-        return single(tagName("a"), "a", FluentWebElement.class);
+        SingleResult single = single(tagName("a"), "a");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement link(By by) {
-        return single(by, "a", FluentWebElement.class);
+        SingleResult single = single(by, "a");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements links() {
-        return multiple(tagName("a"), "a");
+        MultipleResult multiple = multiple(tagName("a"), "a");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements links(By by) {
-        return multiple(by, "a");
+        MultipleResult multiple = multiple(by, "a");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement input() {
-        return single(tagName("input"), "input", FluentWebElement.class);
+        SingleResult single = single(tagName("input"), "input");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement input(By by) {
-        return single(by, "input", FluentWebElement.class);
+        SingleResult single = single(by, "input");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements inputs() {
-        return multiple(tagName("input"), "input");
+        MultipleResult multiple = multiple(tagName("input"), "input");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements inputs(By by) {
-        return multiple(by, "input");
+        MultipleResult multiple = multiple(by, "input");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentSelect select() {
-        return single(tagName("select"), "select", FluentSelect.class);
+        SingleResult single = single(tagName("select"), "select");
+        return new FluentSelect(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentSelect select(By by) {
-        return single(by, "select", FluentSelect.class);
+        SingleResult single = single(by, "select");
+        return new FluentSelect(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements selects() {
-        return multiple(tagName("select"), "select");
+        MultipleResult multiple = multiple(tagName("select"), "select");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements selects(By by) {
-        return multiple(by, "select");
+        MultipleResult multiple = multiple(by, "select");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h1() {
-        return single(tagName("h1"), "h1", FluentWebElement.class);
+        SingleResult single = single(tagName("h1"), "h1");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement h1(By by) {
-        return single(by, "h1", FluentWebElement.class);
-
+        SingleResult single = single(by, "h1");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h1s() {
-        return multiple(tagName("h1"), "h1");
+        MultipleResult multiple = multiple(tagName("h1"), "h1");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements h1s(By by) {
-        return multiple(by, "h1");
+        MultipleResult multiple = multiple(by, "h1");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h2() {
-        return single(tagName("h2"), "h2", FluentWebElement.class);
+        SingleResult single = single(tagName("h2"), "h2");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement h2(By by) {
-        return single(by, "h2", FluentWebElement.class);
+        SingleResult single = single(by, "h2");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h2s() {
-        return multiple(tagName("h2"), "h2");
+        MultipleResult multiple = multiple(tagName("h2"), "h2");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements h2s(By by) {
-        return multiple(by, "h2");
+        MultipleResult multiple = multiple(by, "h2");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h3() {
-        return single(tagName("h3"), "h3", FluentWebElement.class);
+        SingleResult single = single(tagName("h3"), "h3");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h3s() {
-        return multiple(tagName("h3"), "h3");
+        MultipleResult multiple = multiple(tagName("h3"), "h3");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h3(By by) {
-        return single(by, "h3", FluentWebElement.class);
+        SingleResult single = single(by, "h3");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h3s(By by) {
-        return multiple(by, "h3");
+        MultipleResult multiple = multiple(by, "h3");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h4(){
-        return single(tagName("h4"), "h4", FluentWebElement.class);
+        SingleResult single = single(tagName("h4"), "h4");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h4s() {
-        return multiple(tagName("h4"), "h4");
+        MultipleResult multiple = multiple(tagName("h4"), "h4");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h4(By by) {
-        return single(by, "h4", FluentWebElement.class);
+        SingleResult single = single(by, "h4");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h4s(By by) {
-        return multiple(by, "h4");
+        MultipleResult multiple = multiple(by, "h4");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement p() {
-        return single(tagName("p"), "p", FluentWebElement.class);
+        SingleResult single = single(tagName("p"), "p");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ps() {
-        return multiple(tagName("p"), "p");
+        MultipleResult multiple = multiple(tagName("p"), "p");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement p(By by) {
-        return single(by, "p", FluentWebElement.class);
+        SingleResult single = single(by, "p");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ps(By by) {
-        return multiple(by, "p");
+        MultipleResult multiple = multiple(by, "p");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement img() {
-        return single(tagName("img"), "img", FluentWebElement.class);
+        SingleResult single = single(tagName("img"), "img");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements imgs() {
-        return multiple(tagName("img"), "img");
+        MultipleResult multiple = multiple(tagName("img"), "img");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement img(By by) {
-        return single(by, "img", FluentWebElement.class);
+        SingleResult single = single(by, "img");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements imgs(By by) {
-        return multiple(by, "img");
+        MultipleResult multiple = multiple(by, "img");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement table() {
-        return single(tagName("table"), "table", FluentWebElement.class);
+        SingleResult single = single(tagName("table"), "table");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tables() {
-        return multiple(tagName("table"), "table");
+        MultipleResult multiple = multiple(tagName("table"), "table");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement table(By by) {
-        return single(by, "table", FluentWebElement.class);
+        SingleResult single = single(by, "table");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tables(By by) {
-        return multiple(by, "table");
+        MultipleResult multiple = multiple(by, "table");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement tr() {
-        return single(tagName("tr"), "tr", FluentWebElement.class);
+        SingleResult single = single(tagName("tr"), "tr");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements trs() {
-        return multiple(tagName("tr"), "tr");
+        MultipleResult multiple = multiple(tagName("tr"), "tr");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement tr(By by) {
-        return single(by, "tr", FluentWebElement.class);
+        SingleResult single = single(by, "tr");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements trs(By by) {
-        return multiple(by, "tr");
+        MultipleResult multiple = multiple(by, "tr");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement td() {
-        return single(tagName("td"), "td", FluentWebElement.class);
+        SingleResult single = single(tagName("td"), "td");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tds() {
-        return multiple(tagName("td"), "td");
+        MultipleResult multiple = multiple(tagName("td"), "td");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement td(By by) {
-        return single(by, "td", FluentWebElement.class);
+        SingleResult single = single(by, "td");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tds(By by) {
-        return multiple(by, "td");
+        MultipleResult multiple = multiple(by, "td");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement th() {
-        return single(tagName("th"), "th", FluentWebElement.class);
+        SingleResult single = single(tagName("th"), "th");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ths() {
-        return multiple(tagName("th"), "th");
+        MultipleResult multiple = multiple(tagName("th"), "th");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement th(By by) {
-        return single(by, "th", FluentWebElement.class);
+        SingleResult single = single(by, "th");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ths(By by) {
-        return multiple(by, "th");
+        MultipleResult multiple = multiple(by, "th");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement ul() {
-        return single(tagName("ul"), "ul", FluentWebElement.class);
+        SingleResult single = single(tagName("ul"), "ul");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements uls() {
-        return multiple(tagName("ul"), "ul");
+        MultipleResult multiple = multiple(tagName("ul"), "ul");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement ul(By by) {
-        return single(by, "ul", FluentWebElement.class);
+        SingleResult single = single(by, "ul");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements uls(By by) {
-        return multiple(by, "ul");
+        MultipleResult multiple = multiple(by, "ul");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement ol() {
-        return single(tagName("ol"), "ol", FluentWebElement.class);
+        SingleResult single = single(tagName("ol"), "ol");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ols() {
-        return multiple(tagName("ol"), "ol");
+        MultipleResult multiple = multiple(tagName("ol"), "ol");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement ol(By by) {
-        return single(by, "ol", FluentWebElement.class);
+        SingleResult single = single(by, "ol");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ols(By by) {
-        return multiple(by, "ol");
+        MultipleResult multiple = multiple(by, "ol");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement form() {
-        return single(tagName("form"), "form", FluentWebElement.class);
+        SingleResult single = single(tagName("form"), "form");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements forms() {
-        return multiple(tagName("form"), "form");
+        MultipleResult multiple = multiple(tagName("form"), "form");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement form(By by) {
-        return single(by, "form", FluentWebElement.class);
+        SingleResult single = single(by, "form");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements forms(By by) {
-        return multiple(by, "form");
+        MultipleResult multiple = multiple(by, "form");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement textarea() {
-        return single(tagName("textarea"), "textarea", FluentWebElement.class);
+        SingleResult single = single(tagName("textarea"), "textarea");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements textareas() {
-        return multiple(tagName("textarea"), "textarea");
+        MultipleResult multiple = multiple(tagName("textarea"), "textarea");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement textarea(By by) {
-        return single(by, "textarea", FluentWebElement.class);
+        SingleResult single = single(by, "textarea");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements textareas(By by) {
-        return multiple(by, "textarea");
+        MultipleResult multiple = multiple(by, "textarea");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement option() {
-        return single(tagName("option"), "option", FluentWebElement.class);
+        SingleResult single = single(tagName("option"), "option");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements options() {
-        return multiple(tagName("option"), "option");
+        MultipleResult multiple = multiple(tagName("option"), "option");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement option(By by) {
-        return single(by, "option", FluentWebElement.class);
+        SingleResult single = single(by, "option");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements options(By by) {
-        return multiple(by, "option");
+        MultipleResult multiple = multiple(by, "option");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement li() {
-        return single(tagName("li"), "li", FluentWebElement.class);
+        SingleResult single = single(tagName("li"), "li");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement li(By by) {
-        return single(by, "li", FluentWebElement.class);
+        SingleResult single = single(by, "li");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements lis() {
-        return multiple(tagName("li"), "li");
+        MultipleResult multiple = multiple(tagName("li"), "li");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElements lis(By by) {
-        return multiple(by, "li");
+        MultipleResult multiple = multiple(by, "li");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
     public TestableString url() {
@@ -438,9 +518,7 @@ public abstract class BaseFluentWebDriver {
         return new TestableString(getPeriod(), execution, ctx);
     }
 
-    protected abstract <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass);
-
-    protected abstract FluentWebElements getFluentWebElements(List<WebElement> results, String context);
+    protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
@@ -462,7 +540,7 @@ public abstract class BaseFluentWebDriver {
 
     protected abstract List<WebElement> findThem(By by);
 
-    private <T> T single(final By by, final String tagName, Class<T> resultingClass) {
+    private SingleResult single(final By by, final String tagName) {
         final By by2 = fixupBy(by, tagName);
         String ctx = contextualize(by.toString(), tagName);
         final WebElement result;
@@ -473,7 +551,24 @@ public abstract class BaseFluentWebDriver {
         } finally {
             resetTimeout();
         }
-        return getFluentWebElement(result, ctx, resultingClass);
+        return new SingleResult(result, ctx);
+    }
+    
+    public static class SingleResult {
+        private final WebElement result;
+        private final String ctx;
+        public SingleResult(WebElement result, String ctx) {
+            this.result = result;
+            this.ctx = ctx;
+        }
+
+        public WebElement getResult() {
+            return result;
+        }
+
+        public String getCtx() {
+            return ctx;
+        }
     }
 
     private class FindIt implements Execution<WebElement> {
@@ -492,7 +587,6 @@ public abstract class BaseFluentWebDriver {
         }
     }
 
-
     private String contextualize(String by, String tagName) {
         if (by.equals("By.tagName: " + tagName)) {
             by = "";
@@ -500,7 +594,7 @@ public abstract class BaseFluentWebDriver {
         return context + "." + tagName + "(" + by + ")";
     }
 
-    private FluentWebElements multiple(By by, final String tagName) {
+    private MultipleResult multiple(By by, final String tagName) {
         final By by2 = fixupBy(by, tagName);
         final List<WebElement> result;
         String ctx = context + "." + tagName + "s(" + by + ")";
@@ -511,7 +605,33 @@ public abstract class BaseFluentWebDriver {
         } finally {
             resetTimeout();
         }
-        return getFluentWebElements(result, ctx);
+        return new MultipleResult(result, ctx);
+    }
+
+    public static class MultipleResult {
+        private final List<WebElement> result;
+        private final String ctx;
+        public MultipleResult(List<WebElement> result, String ctx) {
+            this.result = result;
+            this.ctx = ctx;
+        }
+
+        public List<WebElement> getResult() {
+            return result;
+        }
+
+        public String getCtx() {
+            return ctx;
+        }
+    }
+
+
+    protected List<SingleResult> listOfSingleResults(List<WebElement> result, String context) {
+        List<SingleResult> fluents = new ArrayList<SingleResult>();
+        for (WebElement aResult : result) {
+            fluents.add(new SingleResult(aResult, context));
+        }
+        return fluents;
     }
 
     private class FindThem implements Execution<List<WebElement>> {

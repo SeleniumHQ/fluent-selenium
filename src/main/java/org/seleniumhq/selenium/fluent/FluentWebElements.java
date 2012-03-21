@@ -19,11 +19,11 @@ import org.openqa.selenium.*;
 
 import java.util.*;
 
-public final class FluentWebElements extends BaseFluentWebElement implements List<WebElement> {
+public class FluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
 
-    private final List<WebElement> currentElements;
+    private final List<FluentWebElement> currentElements;
 
-    public FluentWebElements(WebDriver delegate, List<WebElement> currentElements, String context) {
+    public FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, String context) {
         super(delegate, context);
         this.currentElements = currentElements;
     }
@@ -32,13 +32,13 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         String ctx = context + ".click()";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     webElement.click();
                 }
                 return true;
             }
         }, ctx);
-        return getFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx);
     }
 
     /**
@@ -48,26 +48,26 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         String ctx = context + ".clearField()";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
-                for (WebElement webElement : FluentWebElements.this) {
-                    webElement.clear();
+                for (FluentWebElement webElement : FluentWebElements.this) {
+                    webElement.getWebElement().clear();
                 }
                 return true;
             }
         }, ctx);
-        return getFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx);
     }
 
     public FluentWebElements submit() {
         String ctx = context + ".submit()";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     webElement.submit();
                 }
                 return true;
             }
         }, ctx);
-        return getFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx);
     }
 
     // These are as they would be in the WebElement API
@@ -76,13 +76,13 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     webElement.sendKeys(keysToSend);
                 }
                 return true;
             }
         }, ctx);
-        return getFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx);
     }
 
     public boolean isSelected() {
@@ -90,7 +90,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         boolean areSelected = decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isSelected();
                 }
                 return areSelected;
@@ -104,7 +104,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isEnabled();
                 }
                 return areSelected;
@@ -117,7 +117,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     areSelected = areSelected & webElement.isDisplayed();
                 }
                 return areSelected;
@@ -130,7 +130,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         Execution<String> execution = new Execution<String>() {
             public String execute() {
                 String text = "";
-                for (WebElement webElement : FluentWebElements.this) {
+                for (FluentWebElement webElement : FluentWebElements.this) {
                     text = text + webElement.getText();
                 }
                 return text;
@@ -185,28 +185,28 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
-        final List<WebElement> subset = decorateExecution(new Execution<List<WebElement>>() {
-            public List<WebElement> execute() {
-                ArrayList<WebElement> results = new ArrayList<WebElement>();
-                for (WebElement webElement : FluentWebElements.this) {
-                    if (matcher.matches(webElement)) {
+        final List<FluentWebElement> subset = decorateExecution(new Execution<List<FluentWebElement>>() {
+            public List<FluentWebElement> execute() {
+                List<FluentWebElement> results = new ArrayList<FluentWebElement>();
+                for (FluentWebElement webElement : FluentWebElements.this) {
+                    if (matcher.matches(webElement.getWebElement())) {
                         results.add(webElement);
                     }
                 }
                 return results;
             }
         }, ctx);
-        return getFluentWebElements(subset, ctx);
+        return makeFluentWebElements(subset, ctx);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
         String ctx = context + ".filter(" + matcher + ")";
 
-        WebElement first = decorateExecution(new Execution<WebElement>() {
-            public WebElement execute() {
-                WebElement result = null;
-                for (WebElement webElement : FluentWebElements.this) {
-                    if (matcher.matches(webElement)) {
+        FluentWebElement first = decorateExecution(new Execution<FluentWebElement>() {
+            public FluentWebElement execute() {
+                FluentWebElement result = null;
+                for (FluentWebElement webElement : FluentWebElements.this) {
+                    if (matcher.matches(webElement.getWebElement())) {
                         result = webElement;
                         break;
                     }
@@ -219,7 +219,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
             }
         }, ctx);
 
-        return getFluentWebElement(first, context, FluentWebElement.class);
+        return first;
     }
 
 
@@ -241,7 +241,7 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.contains(o);
     }
 
-    public Iterator<WebElement> iterator() {
+    public Iterator<FluentWebElement> iterator() {
         return currentElements.iterator();
     }
 
@@ -249,11 +249,11 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.toArray();
     }
 
-    public <WebElement> WebElement[] toArray(WebElement[] ts) {
+    public <FluentWebElement> FluentWebElement[] toArray(FluentWebElement[] ts) {
         return currentElements.toArray(ts);
     }
 
-    public boolean add(WebElement webElement) {
+    public boolean add(FluentWebElement webElement) {
         return currentElements.add(webElement);
     }
 
@@ -265,11 +265,11 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.containsAll(objects);
     }
 
-    public boolean addAll(Collection<? extends WebElement> webElements) {
+    public boolean addAll(Collection<? extends FluentWebElement> webElements) {
         return currentElements.addAll(webElements);
     }
 
-    public boolean addAll(int i, Collection<? extends WebElement> webElements) {
+    public boolean addAll(int i, Collection<? extends FluentWebElement> webElements) {
         return currentElements.addAll(webElements);
     }
 
@@ -281,19 +281,19 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.retainAll(objects);
     }
 
-    public WebElement get(int i) {
+    public FluentWebElement get(int i) {
         return currentElements.get(i);
     }
 
-    public WebElement set(int i, WebElement webElement) {
+    public FluentWebElement set(int i, FluentWebElement webElement) {
         return currentElements.set(i, webElement);
     }
 
-    public void add(int i, WebElement webElement) {
+    public void add(int i, FluentWebElement webElement) {
         currentElements.add(i,webElement);
     }
 
-    public WebElement remove(int i) {
+    public FluentWebElement remove(int i) {
         return currentElements.remove(i);
     }
 
@@ -305,15 +305,15 @@ public final class FluentWebElements extends BaseFluentWebElement implements Lis
         return currentElements.lastIndexOf(o);
     }
 
-    public ListIterator<WebElement> listIterator() {
+    public ListIterator<FluentWebElement> listIterator() {
         return currentElements.listIterator();
     }
 
-    public ListIterator<WebElement> listIterator(int i) {
+    public ListIterator<FluentWebElement> listIterator(int i) {
         return currentElements.listIterator(i);
     }
 
-    public List<WebElement> subList(int i, int i1) {
+    public List<FluentWebElement> subList(int i, int i1) {
         return currentElements.subList(i, i1);
     }
 

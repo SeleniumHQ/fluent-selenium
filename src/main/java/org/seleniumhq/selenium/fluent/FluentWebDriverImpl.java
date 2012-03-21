@@ -36,12 +36,7 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
     }
 
     @Override
-    protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
-        return makeFluentWebElement(super.delegate, result, context, webElementClass.getConstructors()[0]);
-    }
-
-    @Override
-    protected FluentWebElements getFluentWebElements(List<WebElement> results, String context) {
+    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context) {
         return new FluentWebElements(super.delegate, results, context);
     }
 

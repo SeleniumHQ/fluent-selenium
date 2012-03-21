@@ -29,6 +29,10 @@ public class FluentWebElement extends BaseFluentWebElement {
         this.currentElement = currentElement;
     }
 
+    protected WebElement getWebElement() {
+        return currentElement;
+    }
+
     protected WebElement findIt(By by) {
         return currentElement.findElement(by);
     }
@@ -46,7 +50,7 @@ public class FluentWebElement extends BaseFluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
+        return new FluentWebElement(delegate, currentElement, ctx);
     }
 
     /**
@@ -61,7 +65,7 @@ public class FluentWebElement extends BaseFluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
+        return new FluentWebElement(delegate, currentElement, ctx);
     }
 
 
@@ -73,7 +77,7 @@ public class FluentWebElement extends BaseFluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
+        return new FluentWebElement(delegate, currentElement, ctx);
     }
 
     // These are as they would be in the WebElement API
@@ -86,7 +90,7 @@ public class FluentWebElement extends BaseFluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, ctx, FluentWebElement.class);
+        return new FluentWebElement(delegate, currentElement, ctx);
     }
 
     public TestableString getTagName() {

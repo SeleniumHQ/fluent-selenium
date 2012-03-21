@@ -670,22 +670,22 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void is_a_list() {
 
-        List<WebElement> elems = new ArrayList<WebElement>();
-        WebElement item0 = mock(WebElement.class);
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        FluentWebElement item0 = mock(FluentWebElement.class);
         elems.add(item0);
-        elems.add(mock(WebElement.class));
-        elems.add(mock(WebElement.class));
-        elems.add(mock(WebElement.class));
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
 
-        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<WebElement>(elems), "");
+        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), "");
 
         assertThat(ogme.size(), equalTo(4));
         assertThat(ogme.get(0), equalTo(item0));
 
         {
-            List<WebElement> elems2 = new ArrayList<WebElement>();
-            elems2.add(mock(WebElement.class));
-            elems2.add(mock(WebElement.class));
+            List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
+            elems2.add(mock(FluentWebElement.class));
+            elems2.add(mock(FluentWebElement.class));
 
             ogme.addAll(elems2);
         }
@@ -729,7 +729,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(ogme.size(), equalTo(4));
 
         assertThat(ogme.toArray().length, equalTo(4));
-        WebElement[] wes = new WebElement[0] ;
+        FluentWebElement[] wes = new FluentWebElement[0] ;
         assertThat(ogme.toArray(wes).length, equalTo(4));
 
         assertThat(ogme.subList(1, 2).size(), equalTo(1));
@@ -743,7 +743,6 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(ogme.size(), equalTo(0));
 
     }
-
 
     @Test
     public void filtering() {

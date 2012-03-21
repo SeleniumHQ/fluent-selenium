@@ -96,7 +96,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, context + ".selectByVisibleText(" + text + ")");
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, context + ".selectByIndex(" + index + ")");
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -130,7 +130,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, context + ".selectByValue(" + value + ")");
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -145,7 +145,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, context + ".deselectAll()");
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -164,7 +164,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -181,7 +181,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     /**
@@ -200,7 +200,7 @@ public class FluentSelect extends FluentWebElement {
                 return true;
             }
         }, ctx);
-        return getFluentWebElement(currentElement, this.context, FluentSelect.class);
+        return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
     protected synchronized Select getSelect() {

@@ -23,12 +23,7 @@ public class BaseFluentWebDriverTest {
         fc = new BaseFluentWebDriver(wd, "DUMMY_CONTEXT") {
 
             @Override
-            protected <T> T getFluentWebElement(WebElement result, String context, Class<T> webElementClass) {
-                return null;
-            }
-
-            @Override
-            protected FluentWebElements getFluentWebElements(List<WebElement> results, String context) {
+            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context) {
                 return null;
             }
 
