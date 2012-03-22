@@ -314,6 +314,26 @@ public abstract class BaseFluentWebDriver {
         return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
+    public FluentWebElement fieldset() {
+        SingleResult single = single(tagName("fieldset"), "fieldset");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+    }
+
+    public FluentWebElements fieldsets() {
+        MultipleResult multiple = multiple(tagName("fieldset"), "fieldset");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
+    public FluentWebElement fieldset(By by) {
+        SingleResult single = single(by, "fieldset");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+    }
+
+    public FluentWebElements fieldsets(By by) {
+        MultipleResult multiple = multiple(by, "fieldset");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
     public FluentWebElement tr() {
         SingleResult single = single(tagName("tr"), "tr");
         return new FluentWebElement(delegate, single.getResult(), single.getCtx());
