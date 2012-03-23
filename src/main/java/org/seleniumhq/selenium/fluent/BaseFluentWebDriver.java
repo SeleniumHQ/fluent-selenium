@@ -32,15 +32,6 @@ public abstract class BaseFluentWebDriver {
     protected final String context;
 
 
-    static ThreadLocal<WaitContext> waiting = new ThreadLocal<WaitContext>();
-
-    static class WaitContext {
-        private final Period period;
-        public WaitContext(Period period) {
-            this.period = period;
-        }
-    }
-
     public BaseFluentWebDriver(WebDriver delegate, String context) {
         this.delegate = delegate;
         this.context = context;

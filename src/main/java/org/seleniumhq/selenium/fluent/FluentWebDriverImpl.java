@@ -110,13 +110,11 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
         @Override
         protected void changeTimeout() {
             delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
-            waiting.set(new WaitContext(period));
 
         }
 
         @Override
         protected void resetTimeout() {
-            waiting.set(null);
             delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         }
 
