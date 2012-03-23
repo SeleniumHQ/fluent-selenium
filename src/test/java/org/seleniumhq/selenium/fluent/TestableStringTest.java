@@ -17,60 +17,65 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldBeSomething() {
-        new TestableString(secs(1), fooExecution, "ha!").shouldBe("foo");
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(secs(1), fooExecution, ctx).shouldBe("foo");
         try {
-            new TestableString(secs(1), fooExecution, "ha!").shouldBe("bar");
+            new TestableString(secs(1), fooExecution, ctx).shouldBe("bar");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldBe('bar')"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldBe('bar')"));
             assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     got: \"foo\"\n"));
         }
     }
 
     @Test
     public void stringShouldBeSomethingInNoTime() {
-        new TestableString(secs(1), fooExecution, "ha!").shouldBe("foo");
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(secs(1), fooExecution, ctx).shouldBe("foo");
         try {
-            new TestableString(null, fooExecution, "ha!").shouldBe("bar");
+            new TestableString(null, fooExecution, ctx).shouldBe("bar");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldBe('bar')"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldBe('bar')"));
             assertThat(e.getCause().getMessage(), equalTo("\nExpected: \"bar\"\n     got: \"foo\"\n"));
         }
     }
 
     @Test
     public void stringShouldNotBeSomething() {
-        new TestableString(secs(1), fooExecution, "ha!").shouldNotBe("bar");
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(secs(1), fooExecution, ctx).shouldNotBe("bar");
         try {
-            new TestableString(secs(1), fooExecution, "ha!").shouldNotBe("foo");
+            new TestableString(secs(1), fooExecution, ctx).shouldNotBe("foo");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldNotBe('foo')"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotBe('foo')"));
             assertThat(e.getCause().getMessage(), equalTo("\nExpected: not \"foo\"\n     got: \"foo\"\n"));
         }
     }
     
     @Test
     public void stringShouldContainSomething() {
-        new TestableString(secs(1), fooExecution, "ha!").shouldContain("o");
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(secs(1), fooExecution, ctx).shouldContain("o");
         try {
-            new TestableString(secs(1), fooExecution, "ha!").shouldContain("a");
+            new TestableString(secs(1), fooExecution, ctx).shouldContain("a");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldContain('a')"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldContain('a')"));
             assertThat(e.getCause().getMessage(), equalTo("\nExpected: a string containing \"a\"\n     got: \"foo\"\n"));
         }
     }
 
     @Test
     public void stringShouldNotContainSomething() {
-        new TestableString(secs(1), fooExecution, "ha!").shouldNotContain("a");
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(secs(1), fooExecution, ctx).shouldNotContain("a");
         try {
-            new TestableString(secs(1), fooExecution, "ha!").shouldNotContain("o");
+            new TestableString(secs(1), fooExecution, ctx).shouldNotContain("o");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ha!.shouldNotContain('o')"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotContain('o')"));
             assertThat(e.getCause().getMessage(), equalTo("\nExpected: not a string containing \"o\"\n     got: \"foo\"\n"));
         }
     }

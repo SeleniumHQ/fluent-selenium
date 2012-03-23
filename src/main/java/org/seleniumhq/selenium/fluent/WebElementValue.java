@@ -18,9 +18,9 @@ package org.seleniumhq.selenium.fluent;
 public class WebElementValue<T> {
 
     private T val;
-    private final String context;
+    private final BaseFluentWebDriver.Context context;
 
-    public WebElementValue(T val, String context) {
+    public WebElementValue(T val, BaseFluentWebDriver.Context context) {
         this.val = val;
         this.context = context;
     }

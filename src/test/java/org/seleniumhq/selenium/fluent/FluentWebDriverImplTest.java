@@ -385,13 +385,13 @@ public class FluentWebDriverImplTest extends BaseTest {
             ose.getAttribute("valerie");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getAttribute(valerie)"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getAttribute('valerie')"));
         }
         try {
             ose.getCssValue("blort");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue(blort)"));
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue('blort')"));
         }
 
         try {
@@ -450,7 +450,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             ome.filter(makeMatcherThatUsesWebDriver("Hello"));
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Hello)"));
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
             assertThat(e.getCause(), instanceOf(throwable));
         }
     }
@@ -463,7 +463,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             }
             @Override
             public String toString() {
-                return toString;
+                return "myMatcher('" + toString + "')";
             }
         };
     }
@@ -489,7 +489,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(Goodbye)"));
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Goodbye'))"));
         }
     }
 
@@ -677,7 +677,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         elems.add(mock(FluentWebElement.class));
         elems.add(mock(FluentWebElement.class));
 
-        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), "");
+        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
 
         assertThat(ogme.size(), equalTo(4));
         assertThat(ogme.get(0), equalTo(item0));
@@ -787,7 +787,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("org.seleniumhq.selenium.fluent.NothingMatches during invocation of: ?.divs(By.tagName: div)" +
-                    ".filter(TextContainsWord{word='mutton'})"));
+                    ".first(TextContainsWord{word='mutton'})"));
             assertTrue(e.getCause() instanceof NothingMatches);
         }
 

@@ -24,19 +24,19 @@ import java.util.List;
 
 public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
 
-    public BaseFluentWebElement(WebDriver delegate, String context) {
+    public BaseFluentWebElement(WebDriver delegate, Context context) {
         super(delegate, context);
     }
 
     @Override
-    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context) {
+    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
         return new FluentWebElements(super.delegate, results, context);
     }
 
     protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
         String keys = "";
         for (CharSequence charSequence : keysToSend) {
-            keys = keys + ", '" + charSequence + "'";
+            keys = keys + ", " + charSequence;
         }
         return keys.substring(2);  // delete comma-space prefix
     }

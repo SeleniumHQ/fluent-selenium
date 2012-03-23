@@ -28,15 +28,15 @@ import java.util.concurrent.TimeUnit;
 public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
-        super(delegate, "?");
+        super(delegate, null);
     }
 
-    protected FluentWebDriverImpl(WebDriver delegate, String context) {
+    protected FluentWebDriverImpl(WebDriver delegate, Context context) {
         super(delegate, context);
     }
 
     @Override
-    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context) {
+    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
         return new FluentWebElements(super.delegate, results, context);
     }
 
@@ -50,14 +50,14 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWe
     }
 
     public FluentWebDriverImpl within(final Period period) {
-        return new RetryingFluentWebDriver(delegate, period, context + ".within(" + period + ")");
+        return new RetryingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period));
     }
 
     private class RetryingFluentWebDriver extends FluentWebDriverImpl {
 
         private final Period period;
 
-        public RetryingFluentWebDriver(WebDriver webDriver, Period period, String context) {
+        public RetryingFluentWebDriver(WebDriver webDriver, Period period, Context context) {
             super(webDriver, context);
             this.period = period;
         }

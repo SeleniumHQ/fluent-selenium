@@ -24,7 +24,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     protected final WebElement currentElement;
 
-    public FluentWebElement(WebDriver delegate, WebElement currentElement, String context) {
+    public FluentWebElement(WebDriver delegate, WebElement currentElement, Context context) {
         super(delegate, context);
         this.currentElement = currentElement;
     }
@@ -43,7 +43,7 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public FluentWebElement click() {
-        String ctx = context + ".click()";
+        Context ctx = Context.singular(context, "click");
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.click();
@@ -58,7 +58,7 @@ public class FluentWebElement extends BaseFluentWebElement {
      */
 
     public FluentWebElement clearField() {
-        String ctx = context + ".clearField()";
+        Context ctx = Context.singular(context, "clearField");
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.clear();
@@ -70,27 +70,26 @@ public class FluentWebElement extends BaseFluentWebElement {
 
 
     public FluentWebElement submit() {
-        String ctx = context + ".submit()";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.submit();
                 return true;
             }
-        }, ctx);
-        return new FluentWebElement(delegate, currentElement, ctx);
+        }, Context.singular(context, "submit"));
+        return new FluentWebElement(delegate, currentElement, context);
     }
 
     // These are as they would be in the WebElement API
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
-        String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
+
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 currentElement.sendKeys(keysToSend);
                 return true;
             }
-        }, ctx);
-        return new FluentWebElement(delegate, currentElement, ctx);
+        }, Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)));
+        return new FluentWebElement(delegate, currentElement, context);
     }
 
     public TestableString getTagName() {
@@ -98,7 +97,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public String execute() {
                 return currentElement.getTagName();
             }
-        }, context + ".getTagName()");
+        }, Context.singular(context, "getTagName"));
     }
 
     public boolean isSelected() {
@@ -106,7 +105,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public Boolean execute() {
                 return currentElement.isSelected();
             }
-        }, context + ".isSelected()");
+        }, Context.singular(context, "isSelected"));
     }
 
     public boolean isEnabled() {
@@ -114,7 +113,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public Boolean execute() {
                 return currentElement.isEnabled();
             }
-        }, context + ".isEnabled()");
+        }, Context.singular(context, "isEnabled"));
     }
 
     public boolean isDisplayed() {
@@ -122,7 +121,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public Boolean execute() {
                 return currentElement.isDisplayed();
             }
-        }, context + ".isDisplayed()");
+        }, Context.singular(context, "isDisplayed"));
     }
 
     public Point getLocation() {
@@ -130,7 +129,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public Point execute() {
                 return currentElement.getLocation();
             }
-        }, context + ".getLocation()");
+        }, Context.singular(context, "getLocation"));
     }
 
     public Dimension getSize() {
@@ -138,7 +137,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public Dimension execute() {
                 return currentElement.getSize();
             }
-        }, context + ".getSize()");
+        }, Context.singular(context, "getSize"));
     }
 
     public TestableString getCssValue(final String cssName) {
@@ -146,7 +145,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public String execute() {
                 return currentElement.getCssValue(cssName);
             }
-        }, context + ".getCssValue(" + cssName + ")");
+        }, Context.singular(context, "getCssValue", null, cssName));
     }
 
     public TestableString getAttribute(final String attr) {
@@ -154,7 +153,7 @@ public class FluentWebElement extends BaseFluentWebElement {
             public String execute() {
                 return currentElement.getAttribute(attr);
             }
-        }, context + ".getAttribute(" + attr + ")");
+        }, Context.singular(context, "getAttribute", null, attr));
     }
 
     public TestableString getText() {
@@ -162,63 +161,63 @@ public class FluentWebElement extends BaseFluentWebElement {
             public String execute() {
                 return currentElement.getText();
             }
-        }, context + ".getText()");
+        }, Context.singular(context, "getText"));
     }
 
     //@Override
     public WebElementValue<Point> location() {
-        return new WebElementValue<Point>(currentElement.getLocation(), context + ".location()");
+        return new WebElementValue<Point>(currentElement.getLocation(), Context.singular(context, "location"));
     }
 
     //@Override
     public WebElementValue<Dimension> size() {
-        return new WebElementValue<Dimension>(currentElement.getSize(), context + ".size()");
+        return new WebElementValue<Dimension>(currentElement.getSize(), Context.singular(context, "size"));
     }
 
     //@Override
     public WebElementValue<String> cssValue(String name) {
-        return new WebElementValue<String>(currentElement.getCssValue(name), context + ".cssValue(" + name + ")");
+        return new WebElementValue<String>(currentElement.getCssValue(name), Context.singular(context, "cssValue"));
     }
 
     //@Override
     public WebElementValue<String> attribute(String name) {
-        return new WebElementValue<String>(currentElement.getAttribute(name), context + ".attribute(" + name + ")");
+        return new WebElementValue<String>(currentElement.getAttribute(name), Context.singular(context, "attribute"));
     }
 
     //@Override
     public WebElementValue<String> tagName() {
-        return new WebElementValue<String>(currentElement.getTagName(), context + ".tagName()");
+        return new WebElementValue<String>(currentElement.getTagName(), Context.singular(context, "tagName"));
     }
 
     //@Override
     public WebElementValue<Boolean> selected() {
-        return new WebElementValue<Boolean>(currentElement.isSelected(), context + ".selected()");
+        return new WebElementValue<Boolean>(currentElement.isSelected(), Context.singular(context, "selected"));
     }
 
     //@Override
     public WebElementValue<Boolean> enabled() {
-        return new WebElementValue<Boolean>(currentElement.isEnabled(), context + ".enabled()");
+        return new WebElementValue<Boolean>(currentElement.isEnabled(), Context.singular(context, "enabled"));
     }
 
     //@Override
     public WebElementValue<Boolean> displayed() {
-        return new WebElementValue<Boolean>(currentElement.isDisplayed(), context + ".displayed()");
+        return new WebElementValue<Boolean>(currentElement.isDisplayed(), Context.singular(context, "isDisplayed"));
     }
 
     //@Override
     public WebElementValue<String> text() {
-        return new WebElementValue<String>(currentElement.getText(), context + ".text()");
+        return new WebElementValue<String>(currentElement.getText(), Context.singular(context, "text()"));
     }
 
     public FluentWebElement within(Period period) {
-        return new RetryingFluentWebElement(delegate, currentElement, context + ".within(" + period + ")", period);
+        return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period);
     }
 
     private class RetryingFluentWebElement extends FluentWebElement {
 
         private final Period period;
 
-        public RetryingFluentWebElement(WebDriver webDriver, WebElement currentElement, String context, Period period) {
+        public RetryingFluentWebElement(WebDriver webDriver, WebElement currentElement, Context context, Period period) {
             super(webDriver, currentElement, context);
             this.period = period;
         }

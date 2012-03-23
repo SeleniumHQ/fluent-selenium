@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class FluentSelects extends FluentWebElements {
-    public FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, String context) {
+    public FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {
         super(delegate, currentElements, context);
     }
 
@@ -69,7 +69,7 @@ public class FluentSelects extends FluentWebElements {
     }
 
     @Override
-    protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, String context) {
+    protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context) {
         return new FluentSelects(super.delegate, results, context);
     }
 }

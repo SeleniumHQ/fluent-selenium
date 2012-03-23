@@ -20,10 +20,10 @@ public class BaseFluentWebDriverTest {
 
     @Before
     public void setup() {
-        fc = new BaseFluentWebDriver(wd, "DUMMY_CONTEXT") {
+        fc = new BaseFluentWebDriver(wd, BaseFluentWebDriver.Context.singular(null, "dummy")) {
 
             @Override
-            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context) {
+            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
                 return null;
             }
 
@@ -49,14 +49,15 @@ public class BaseFluentWebDriverTest {
     public void assertionError_should_be_wrapped_in_context_exception() {
 
         try {
+            BaseFluentWebDriver.Context dummy_context = BaseFluentWebDriver.Context.singular(null, "dummy");
             fc.decorateExecution(new Execution() {
                 public Void execute() {
                     throw new AssertionError("Oops");
                 }
-            }, "DUMMY_CONTEXT");
+            }, dummy_context);
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: DUMMY_CONTEXT"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy()"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
         }
 
@@ -70,10 +71,10 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
-            }, "DUMMY_CONTEXT");
+            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: DUMMY_CONTEXT"));
+            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy()"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
         }
 
@@ -87,7 +88,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
-            }, "DUMMY_CONTEXT");
+            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Oops"));

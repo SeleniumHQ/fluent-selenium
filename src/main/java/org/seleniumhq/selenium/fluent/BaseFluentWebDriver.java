@@ -20,6 +20,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.openqa.selenium.By.tagName;
@@ -29,10 +31,10 @@ import static org.seleniumhq.selenium.fluent.FluentBy.composite;
 public abstract class BaseFluentWebDriver {
 
     protected final WebDriver delegate;
-    protected final String context;
+    protected final Context context;
 
 
-    public BaseFluentWebDriver(WebDriver delegate, String context) {
+    public BaseFluentWebDriver(WebDriver delegate, Context context) {
         this.delegate = delegate;
         this.context = context;
     }
@@ -52,7 +54,7 @@ public abstract class BaseFluentWebDriver {
         return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
-    private FluentWebElements newFluentWebElements(List<WebElement> result, String ctx) {
+    private FluentWebElements newFluentWebElements(List<WebElement> result, Context ctx) {
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
             elems.add(new FluentWebElement(delegate, aResult, ctx));
@@ -531,7 +533,7 @@ public abstract class BaseFluentWebDriver {
                 return delegate.getCurrentUrl();
             }
         };
-        String ctx = context + ".url()";
+        Context ctx = Context.singular(context, "url");
         return new TestableString(getPeriod(), execution, ctx);
     }
 
@@ -545,11 +547,11 @@ public abstract class BaseFluentWebDriver {
                 return delegate.getTitle();
             }
         };
-        String ctx = context + ".title()";
+        Context ctx = Context.singular(context, "title");
         return new TestableString(getPeriod(), execution, ctx);
     }
 
-    protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, String context);
+    protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context);
 
     protected final By fixupBy(By by, String tagName) {
         if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
@@ -573,7 +575,7 @@ public abstract class BaseFluentWebDriver {
 
     private SingleResult single(final By by, final String tagName) {
         final By by2 = fixupBy(by, tagName);
-        String ctx = contextualize(by.toString(), tagName);
+        Context ctx = contextualize(by, tagName);
         final WebElement result;
         try {
             changeTimeout();
@@ -585,10 +587,88 @@ public abstract class BaseFluentWebDriver {
         return new SingleResult(result, ctx);
     }
     
+    public static class Context implements Iterable<ContextElem> {
+        
+        private List<ContextElem> elems = new ArrayList<ContextElem>();
+
+        public Iterator<ContextElem> iterator() {
+            return Collections.unmodifiableList(elems).iterator();
+        }
+
+        public static Context singular(Context previous, String tagName, By by) {
+            return make(previous, tagName, by, null);
+        }
+
+        private static Context make(Context previous, String tagName, By by, Object arg) {
+            Context ctx = new Context();
+            if (previous != null) {
+                ctx.elems.addAll(previous.elems);
+            }
+            ctx.elems.add(new ContextElem(tagName, by, arg));
+            return ctx;
+        }
+        
+        public static Context plural(Context previous, String tagName, By by) {
+            return make(previous, tagName + "s", by, null);
+        }
+
+        public static Context singular(Context previous, String tagName) {
+            return make(previous, tagName, null, null);
+        }
+
+        public static Context singular(Context context, String tagName, Object arg) {
+            return make(context, tagName, null, arg);
+        }
+
+        public static Context singular(Context previous, String tagName, By by, Object arg) {
+            return make(previous, tagName, by, arg);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder("?");
+            for (ContextElem elem : elems) {
+                sb.append(elem.toString());
+            }
+            return sb.toString();
+        }
+    }
+    
+    public static class ContextElem {
+        private final String tagName;
+        private final By by;
+        private final Object arg;
+
+        public ContextElem(String tagName, By by, Object arg) {
+            this.tagName = tagName;
+            this.by = by;
+            this.arg = arg;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb =
+                    new StringBuilder(".")
+                            .append(tagName);
+            if (by == null && arg == null) {
+                return sb.append("()").toString();
+            }
+            if (by != null) {
+                return sb.append("(").append(by).append(")").toString();
+
+            }
+            String quote = "'";
+            if (arg instanceof Number || arg instanceof Period || arg instanceof FluentMatcher) {
+                quote = "";
+            }
+            return sb.append("(").append(quote).append(arg).append(quote).append(")").toString();
+        }
+    }
+    
     public static class SingleResult {
         private final WebElement result;
-        private final String ctx;
-        public SingleResult(WebElement result, String ctx) {
+        private final Context ctx;
+        public SingleResult(WebElement result, Context ctx) {
             this.result = result;
             this.ctx = ctx;
         }
@@ -597,7 +677,7 @@ public abstract class BaseFluentWebDriver {
             return result;
         }
 
-        public String getCtx() {
+        public Context getCtx() {
             return ctx;
         }
     }
@@ -618,17 +698,17 @@ public abstract class BaseFluentWebDriver {
         }
     }
 
-    private String contextualize(String by, String tagName) {
-        if (by.equals("By.tagName: " + tagName)) {
-            by = "";
+    private Context contextualize(By by, String tagName) {
+        if (by.toString().equals("By.tagName: " + tagName)) {
+            by = null;
         }
-        return context + "." + tagName + "(" + by + ")";
+        return Context.singular(context, tagName, by);
     }
 
     private MultipleResult multiple(By by, final String tagName) {
         final By by2 = fixupBy(by, tagName);
         final List<WebElement> result;
-        String ctx = context + "." + tagName + "s(" + by + ")";
+        Context ctx = Context.plural(context, tagName, by);
         try {
             changeTimeout();
             FindThem execution = new FindThem(by2, tagName);
@@ -641,8 +721,8 @@ public abstract class BaseFluentWebDriver {
 
     public static class MultipleResult {
         private final List<WebElement> result;
-        private final String ctx;
-        public MultipleResult(List<WebElement> result, String ctx) {
+        private final Context ctx;
+        public MultipleResult(List<WebElement> result, Context ctx) {
             this.result = result;
             this.ctx = ctx;
         }
@@ -651,13 +731,13 @@ public abstract class BaseFluentWebDriver {
             return result;
         }
 
-        public String getCtx() {
+        public Context getCtx() {
             return ctx;
         }
     }
 
 
-    protected List<SingleResult> listOfSingleResults(List<WebElement> result, String context) {
+    protected List<SingleResult> listOfSingleResults(List<WebElement> result, Context context) {
         List<SingleResult> fluents = new ArrayList<SingleResult>();
         for (WebElement aResult : result) {
             fluents.add(new SingleResult(aResult, context));
@@ -684,14 +764,14 @@ public abstract class BaseFluentWebDriver {
     }
 
 
-    protected static RuntimeException decorateRuntimeException(String ctx, RuntimeException e) {
+    protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
         return new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
     }
-    protected static RuntimeException decorateAssertionError(String ctx, AssertionError e) {
+    protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
         return  new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
     }
 
-    protected <T> T decorateExecution(Execution<T> execution, String ctx) {
+    protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
         try {
             return execution.execute();
         } catch (UnsupportedOperationException e) {

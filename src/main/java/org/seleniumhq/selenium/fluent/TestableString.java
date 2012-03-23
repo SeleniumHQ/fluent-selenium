@@ -12,9 +12,9 @@ public class TestableString implements CharSequence {
     private String is;
     private final Period within;
     private final Execution<String> execution;
-    private final String context;
+    private final BaseFluentWebDriver.Context context;
 
-    public TestableString(Period within, Execution<String> execution, String ctx) {
+    public TestableString(Period within, Execution<String> execution, BaseFluentWebDriver.Context ctx) {
         this.within = within;
         this.execution = execution;
         this.context = ctx;
@@ -32,7 +32,7 @@ public class TestableString implements CharSequence {
     }
 
     public void shouldBe(String shouldBe) {
-        String ctx = context + ".shouldBe('" + shouldBe + "')";
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
         try {
             if (within != null && (is == null || !is.equals(shouldBe))) {
                 boolean passed;
@@ -60,7 +60,7 @@ public class TestableString implements CharSequence {
     }
 
     public void shouldNotBe(String shouldNotBe) {
-        String ctx = context + ".shouldNotBe('" + shouldNotBe + "')";
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
         try {
             if (within != null && (is == null || is.equals(shouldNotBe))) {
                 boolean passed;
@@ -81,7 +81,7 @@ public class TestableString implements CharSequence {
     }
 
     public void shouldContain(String shouldContain) {
-        String ctx = context + ".shouldContain('" + shouldContain + "')";
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
         try {
             if (within != null && (is == null || is.indexOf(shouldContain) == -1)) {
                 boolean passed;
@@ -102,7 +102,7 @@ public class TestableString implements CharSequence {
     }
 
     public void shouldNotContain(String shouldNotContain) {
-        String ctx = context + ".shouldNotContain('" + shouldNotContain + "')";
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
         try {
             if (within != null && (is == null || is.indexOf(shouldNotContain) > -1)) {
                 boolean passed;

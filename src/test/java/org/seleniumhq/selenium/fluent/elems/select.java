@@ -116,7 +116,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -139,14 +139,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).selectByValue("humphrey");
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -177,7 +177,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -201,14 +201,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).selectByIndex(444);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -239,7 +239,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -263,14 +263,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).selectByVisibleText("humphrey");
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -301,7 +301,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -324,14 +324,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).deselectAll();
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -362,7 +362,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -385,14 +385,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).deselectByValue("humphrey");
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -423,7 +423,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -446,14 +446,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).deselectByVisibleText("humphrey");
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -484,7 +484,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -507,14 +507,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).deselectByIndex(444);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -545,7 +545,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -568,14 +568,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).getFirstSelectedOption();
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -606,7 +606,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -629,14 +629,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).isMultiple();
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -667,7 +667,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -690,14 +690,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).getOptions();
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -728,7 +728,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -751,14 +751,14 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).getAllSelectedOptions();
 
         sb.setLength(0);
-        FluentSelect select = new FluentSelect(wd, we, "DUMMY_CONTEXT") {
+        FluentSelect select = new FluentSelect(wd, we, BaseFluentWebDriver.Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, String ctx) {
+            protected Void decorateExecution(Execution execution, BaseFluentWebDriver.Context ctx) {
                 try {
                     execution.execute();
                     fail("should have barfed");

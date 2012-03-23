@@ -26,11 +26,11 @@ public class FluentSelect extends FluentWebElement {
 
     private Select currentSelect;
 
-    public FluentSelect(WebDriver delegate, WebElement currentElement, String context) {
+    public FluentSelect(WebDriver delegate, WebElement currentElement, Context context) {
         super(delegate, currentElement, context);
     }
 
-    private FluentSelect(WebDriver delegate, Select currentSelect, WebElement currentElement, String context) {
+    private FluentSelect(WebDriver delegate, Select currentSelect, WebElement currentElement, Context context) {
         super(delegate, currentElement, context);
         this.currentSelect = currentSelect;
     }
@@ -44,7 +44,7 @@ public class FluentSelect extends FluentWebElement {
             public Boolean execute() {
                 return getSelect().isMultiple();
             }
-        }, context + ".isMultiple()");
+        }, Context.singular(context, "isMultiple"));
     }
 
     /**
@@ -55,7 +55,7 @@ public class FluentSelect extends FluentWebElement {
             public List<WebElement> execute() {
                 return getSelect().getOptions();
             }
-        }, context + ".getOptions()");
+        }, Context.singular(context, "getOptions"));
     }
 
     /**
@@ -66,7 +66,7 @@ public class FluentSelect extends FluentWebElement {
             public List<WebElement> execute() {
                 return getSelect().getAllSelectedOptions();
             }
-        }, context + ".getAllSelectedOptions()");
+        }, Context.singular(context, "getAllSelectedOptions"));
     }
 
     /**
@@ -78,7 +78,7 @@ public class FluentSelect extends FluentWebElement {
             public WebElement execute() {
                 return getSelect().getFirstSelectedOption();
             }
-        }, context + ".getFirstSelectedOption()");
+        }, Context.singular(context, "getFirstSelectedOption"));
     }
 
     /**
@@ -95,7 +95,7 @@ public class FluentSelect extends FluentWebElement {
                 getSelect().selectByVisibleText(text);
                 return true;
             }
-        }, context + ".selectByVisibleText(" + text + ")");
+        }, Context.singular(context, "selectByVisibleText", null, text));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -111,7 +111,7 @@ public class FluentSelect extends FluentWebElement {
                 getSelect().selectByIndex(index);
                 return true;
             }
-        }, context + ".selectByIndex(" + index + ")");
+        }, Context.singular(context, "selectByIndex", null, index));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -129,7 +129,7 @@ public class FluentSelect extends FluentWebElement {
                 getSelect().selectByValue(value);
                 return true;
             }
-        }, context + ".selectByValue(" + value + ")");
+        }, Context.singular(context, "selectByValue", null, value));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -144,7 +144,7 @@ public class FluentSelect extends FluentWebElement {
                 getSelect().deselectAll();
                 return true;
             }
-        }, context + ".deselectAll()");
+        }, Context.singular(context, "deselectAll"));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -157,13 +157,12 @@ public class FluentSelect extends FluentWebElement {
      * @param value The value to match against
      */
     public FluentSelect deselectByValue(final String value) {
-        String ctx = context + ".deselectByValue(" + value + ")";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByValue(value);
                 return true;
             }
-        }, ctx);
+        }, Context.singular(context, "deselectByValue", null, value));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -174,13 +173,12 @@ public class FluentSelect extends FluentWebElement {
      * @param index The option at this index will be deselected
      */
     public FluentSelect deselectByIndex(final int index) {
-        String ctx = context + ".deselectByIndex(" + index + ")";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByIndex(index);
                 return true;
             }
-        }, ctx);
+        }, Context.singular(context, "deselectByIndex", null, index));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -193,13 +191,12 @@ public class FluentSelect extends FluentWebElement {
      * @param text The visible text to match against
      */
     public FluentSelect deselectByVisibleText(final String text) {
-        String ctx = context + ".deselectByVisibleText(" + text + ")";
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 getSelect().deselectByVisibleText(text);
                 return true;
             }
-        }, ctx);
+        }, Context.singular(context, "deselectByVisibleText", null, text));
         return new FluentSelect(super.delegate, currentElement, this.context);
     }
 
@@ -211,14 +208,14 @@ public class FluentSelect extends FluentWebElement {
     }
 
     public FluentSelect within(Period period) {
-        return new MorePatientFluentSelect(delegate, context + ".within(" + period + ")", currentSelect, currentElement, period);
+        return new MorePatientFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement, period);
     }
 
     private class MorePatientFluentSelect extends FluentSelect {
 
         private final Period period;
 
-        public MorePatientFluentSelect(WebDriver webDriver, String context, Select currentSelect, WebElement currentElement, Period period) {
+        public MorePatientFluentSelect(WebDriver webDriver, Context context, Select currentSelect, WebElement currentElement, Period period) {
             super(webDriver, currentSelect, currentElement, context);
             this.period = period;
         }

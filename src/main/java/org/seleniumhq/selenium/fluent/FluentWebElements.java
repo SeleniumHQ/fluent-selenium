@@ -23,13 +23,13 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     private final List<FluentWebElement> currentElements;
 
-    public FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, String context) {
+    public FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {
         super(delegate, context);
         this.currentElements = currentElements;
     }
 
     public FluentWebElements click() {
-        String ctx = context + ".click()";
+        Context ctx = Context.singular(context, "click");
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (FluentWebElement webElement : FluentWebElements.this) {
@@ -45,7 +45,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
      *  Use this instead of clear() to clear an WebElement
      */
     public FluentWebElements clearField() {
-        String ctx = context + ".clearField()";
+        Context ctx = Context.singular(context, "clearField");
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (FluentWebElement webElement : FluentWebElements.this) {
@@ -58,7 +58,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public FluentWebElements submit() {
-        String ctx = context + ".submit()";
+        Context ctx = Context.singular(context, "submit");
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (FluentWebElement webElement : FluentWebElements.this) {
@@ -73,7 +73,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     // These are as they would be in the WebElement API
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
-        String ctx = context + ".sendKeys(" + charSeqArrayAsHumanString(keysToSend) + ")";
+        Context ctx = Context.singular(context, "sendKeys", charSeqArrayAsHumanString(keysToSend));
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 for (FluentWebElement webElement : FluentWebElements.this) {
@@ -86,7 +86,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public boolean isSelected() {
-        String ctx = context + ".isSelected()";
+        Context ctx = Context.singular(context, "isSelected");
         boolean areSelected = decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
@@ -100,7 +100,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public boolean isEnabled() {
-        String ctx = context + ".isEnabled()";
+        Context ctx = Context.singular(context, "isEnabled");
         return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
@@ -113,7 +113,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public boolean isDisplayed() {
-        String ctx = context + ".isDisplayed()";
+        Context ctx = Context.singular(context, "isDisplayed");
         return decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
                 boolean areSelected = true;
@@ -126,7 +126,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public TestableString getText() {
-        String ctx = context + ".getText()";
+        Context ctx = Context.singular(context, "getText");
         Execution<String> execution = new Execution<String>() {
             public String execute() {
                 String text = "";
@@ -184,7 +184,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {
-        String ctx = context + ".filter(" + matcher + ")";
+        Context ctx = Context.singular(context, "filter", null, matcher);
         final List<FluentWebElement> subset = decorateExecution(new Execution<List<FluentWebElement>>() {
             public List<FluentWebElement> execute() {
                 List<FluentWebElement> results = new ArrayList<FluentWebElement>();
@@ -200,8 +200,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
-        String ctx = context + ".filter(" + matcher + ")";
-
+        Context ctx = Context.singular(context, "first", null, matcher);
         FluentWebElement first = decorateExecution(new Execution<FluentWebElement>() {
             public FluentWebElement execute() {
                 FluentWebElement result = null;
