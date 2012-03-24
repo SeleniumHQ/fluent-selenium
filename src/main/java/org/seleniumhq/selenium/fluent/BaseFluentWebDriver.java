@@ -31,9 +31,10 @@ import static org.seleniumhq.selenium.fluent.FluentBy.composite;
 
 public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
+    private static final RuntimeException AN_EXCEPTION = new RuntimeException();
+
     protected final WebDriver delegate;
     protected final Context context;
-
 
     public BaseFluentWebDriver(WebDriver delegate, Context context) {
         this.delegate = delegate;
@@ -841,7 +842,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     protected final List<WebElement> retryingFindThem(By by) {
         long endMillis = getPeriod().getEndMillis();
-        RuntimeException exceptionCausingRetry = new RuntimeException();
+        RuntimeException exceptionCausingRetry = AN_EXCEPTION;
         List<WebElement> them = null;
         while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
             try {
