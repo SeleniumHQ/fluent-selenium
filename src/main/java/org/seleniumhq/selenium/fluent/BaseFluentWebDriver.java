@@ -820,7 +820,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public abstract BaseFluentWebDriver within(Period p);
 
-    protected WebElement retryingFindIt(By by) {
+    protected final WebElement retryingFindIt(By by) {
         long endMillis = getPeriod().getEndMillis();
         RuntimeException exceptionCausingRetry = new RuntimeException();
         WebElement it = null;
@@ -839,7 +839,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
         return it;
     }
 
-    protected List<WebElement> retryingFindThem(By by) {
+    protected final List<WebElement> retryingFindThem(By by) {
         long endMillis = getPeriod().getEndMillis();
         RuntimeException exceptionCausingRetry = new RuntimeException();
         List<WebElement> them = null;
