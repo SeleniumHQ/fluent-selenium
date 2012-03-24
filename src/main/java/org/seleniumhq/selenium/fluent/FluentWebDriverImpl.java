@@ -16,12 +16,10 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -65,19 +63,19 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
         @Override
         protected WebElement findIt(By by) {
             long endMillis = period.getEndMillis();
-            RuntimeException exceptionToRetry = new RuntimeException();
+            RuntimeException exceptionCausingRetry = new RuntimeException();
             WebElement it = null;
-            while (exceptionToRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
                 try {
                     it = super.findIt(by);
-                    exceptionToRetry = null;
+                    exceptionCausingRetry = null;
                     return it;
                 } catch (WebDriverException e) {
-                    exceptionToRetry = e;
+                    exceptionCausingRetry = e;
                 }
             }
-            if (exceptionToRetry != null) {
-                throw exceptionToRetry;
+            if (exceptionCausingRetry != null) {
+                throw exceptionCausingRetry;
             }
             return it;
         }
@@ -85,19 +83,19 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
         @Override
         protected List<WebElement> findThem(By by) {
             long endMillis = period.getEndMillis();
-            RuntimeException exceptionToRetry = new RuntimeException();
+            RuntimeException exceptionCausingRetry = new RuntimeException();
             List<WebElement> them = null;
-            while (exceptionToRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
                 try {
                     them = super.findThem(by);
-                    exceptionToRetry = null;
+                    exceptionCausingRetry = null;
                     return them;
                 } catch (WebDriverException e) {
-                    exceptionToRetry = e;
+                    exceptionCausingRetry = e;
                 }
             }
-            if (exceptionToRetry != null) {
-                throw exceptionToRetry;
+            if (exceptionCausingRetry != null) {
+                throw exceptionCausingRetry;
             }
             return them;
         }
@@ -119,4 +117,6 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
         }
 
     }
+
+
 }
