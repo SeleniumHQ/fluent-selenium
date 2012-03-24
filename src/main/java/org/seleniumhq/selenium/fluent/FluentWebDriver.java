@@ -17,6 +17,8 @@ package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
 
+import static org.openqa.selenium.By.tagName;
+
 public interface FluentWebDriver {
 
     FluentWebElement span();
@@ -28,6 +30,11 @@ public interface FluentWebDriver {
     FluentWebElement div(By by);
     FluentWebElements divs();
     FluentWebElements divs(By by);
+
+    FluentWebElement button();
+    FluentWebElement button(By by);
+    FluentWebElements buttons();
+    FluentWebElements buttons(By by);
 
     FluentWebElement link();
     FluentWebElement link(By by);
@@ -41,8 +48,8 @@ public interface FluentWebDriver {
 
     FluentSelect select();
     FluentSelect select(By by);
-    FluentWebElements selects();
-    FluentWebElements selects(By by);
+    FluentSelects selects();
+    FluentSelects selects(By by);
 
     FluentWebElement li();
     FluentWebElement li(By by);
@@ -84,6 +91,16 @@ public interface FluentWebDriver {
     FluentWebElements tables();
     FluentWebElements tables(By by);
 
+    FluentWebElement fieldset();
+    FluentWebElements fieldsets();
+    FluentWebElement fieldset(By by);
+    FluentWebElements fieldsets(By by);
+
+    FluentWebElement legend();
+    FluentWebElements legends();
+    FluentWebElement legend(By by);
+    FluentWebElements legends(By by);
+
     FluentWebElement tr();
     FluentWebElement tr(By by);
     FluentWebElements trs();
@@ -123,6 +140,11 @@ public interface FluentWebDriver {
     FluentWebElement option(By by);
     FluentWebElements options();
     FluentWebElements options(By by);
+
+    FluentWebElement map();
+    FluentWebElements maps();
+    FluentWebElement map(By by);
+    FluentWebElements maps(By by);
 
     FluentWebDriver within(Period p);
 

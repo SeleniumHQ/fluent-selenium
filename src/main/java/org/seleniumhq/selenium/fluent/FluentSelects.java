@@ -1,15 +1,8 @@
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class FluentSelects extends FluentWebElements {
     public FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {

@@ -62,6 +62,14 @@ public abstract class BaseFluentWebDriver {
         return new FluentWebElements(delegate, elems, ctx);
     }
 
+    private FluentSelects newFluentSelects(List<WebElement> result, Context ctx) {
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        for (WebElement aResult : result) {
+            elems.add(new FluentSelect(delegate, aResult, ctx));
+        }
+        return new FluentSelects(delegate, elems, ctx);
+    }
+
     public FluentWebElements spans(By by) {
         MultipleResult multiple = multiple(by, "span");
         return newFluentWebElements(multiple.getResult(), multiple.getCtx());
@@ -157,14 +165,14 @@ public abstract class BaseFluentWebDriver {
         return new FluentSelect(delegate, single.getResult(), single.getCtx());
     }
 
-    public FluentWebElements selects() {
+    public FluentSelects selects() {
         MultipleResult multiple = multiple(tagName("select"), "select");
-        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+        return newFluentSelects(multiple.getResult(), multiple.getCtx());
     }
 
-    public FluentWebElements selects(By by) {
+    public FluentSelects selects(By by) {
         MultipleResult multiple = multiple(by, "select");
-        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+        return newFluentSelects(multiple.getResult(), multiple.getCtx());
     }
 
     public FluentWebElement h1() {
@@ -524,6 +532,26 @@ public abstract class BaseFluentWebDriver {
 
     public FluentWebElements lis(By by) {
         MultipleResult multiple = multiple(by, "li");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
+    public FluentWebElement map() {
+        SingleResult single = single(tagName("map"), "map");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+    }
+
+    public FluentWebElements maps() {
+        MultipleResult multiple = multiple(tagName("map"), "map");
+        return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
+    public FluentWebElement map(By by) {
+        SingleResult single = single(by, "map");
+        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+    }
+
+    public FluentWebElements maps(By by) {
+        MultipleResult multiple = multiple(by, "map");
         return newFluentWebElements(multiple.getResult(), multiple.getCtx());
     }
 
