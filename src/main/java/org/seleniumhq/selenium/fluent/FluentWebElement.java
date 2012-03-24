@@ -33,12 +33,23 @@ public class FluentWebElement extends BaseFluentWebElement {
         return currentElement;
     }
 
+    @Override
     protected WebElement findIt(By by) {
-        return currentElement.findElement(by);
+        return actualFindIt(by);
     }
 
     @Override
     protected List<WebElement> findThem(By by) {
+        return actualFindThem(by);
+    }
+
+    @Override
+    protected WebElement actualFindIt(By by) {
+        return currentElement.findElement(by);
+    }
+
+    @Override
+    protected List<WebElement> actualFindThem(By by) {
         return currentElement.findElements(by);
     }
 
@@ -225,6 +236,16 @@ public class FluentWebElement extends BaseFluentWebElement {
         @Override
         protected Period getPeriod() {
             return period;
+        }
+
+        @Override
+        protected WebElement findIt(By by) {
+            return retryingFindIt(by);
+        }
+
+        @Override
+        protected List<WebElement> findThem(By by) {
+            return retryingFindThem(by);
         }
 
         @Override

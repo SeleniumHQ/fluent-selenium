@@ -150,6 +150,16 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     @Override
+    protected WebElement actualFindIt(By by) {
+        throw meaningless("findIt('" + by + "')");
+    }
+
+    @Override
+    protected List<WebElement> actualFindThem(By by) {
+        throw meaningless("findThem('" + by + "')");
+    }
+
+    @Override
     public Point getLocation() {
         throw meaningless("getLocation()");
     }

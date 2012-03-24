@@ -17,7 +17,6 @@ package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -39,11 +38,19 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
     }
 
     protected WebElement findIt(By by) {
-        return delegate.findElement(by);
+        return actualFindIt(by);
     }
 
     @Override
     protected List<WebElement> findThem(By by) {
+        return actualFindThem(by);
+    }
+
+    protected final WebElement actualFindIt(By by) {
+        return delegate.findElement(by);
+    }
+
+    protected final List<WebElement> actualFindThem(By by) {
         return delegate.findElements(by);
     }
 
@@ -62,43 +69,14 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
 
         @Override
         protected WebElement findIt(By by) {
-            long endMillis = period.getEndMillis();
-            RuntimeException exceptionCausingRetry = new RuntimeException();
-            WebElement it = null;
-            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
-                try {
-                    it = super.findIt(by);
-                    exceptionCausingRetry = null;
-                    return it;
-                } catch (WebDriverException e) {
-                    exceptionCausingRetry = e;
-                }
-            }
-            if (exceptionCausingRetry != null) {
-                throw exceptionCausingRetry;
-            }
-            return it;
+            return retryingFindIt(by);
         }
 
         @Override
         protected List<WebElement> findThem(By by) {
-            long endMillis = period.getEndMillis();
-            RuntimeException exceptionCausingRetry = new RuntimeException();
-            List<WebElement> them = null;
-            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
-                try {
-                    them = super.findThem(by);
-                    exceptionCausingRetry = null;
-                    return them;
-                } catch (WebDriverException e) {
-                    exceptionCausingRetry = e;
-                }
-            }
-            if (exceptionCausingRetry != null) {
-                throw exceptionCausingRetry;
-            }
-            return them;
+            return retryingFindThem(by);
         }
+
 
         @Override
         protected Period getPeriod() {

@@ -17,6 +17,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -818,5 +819,47 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     public abstract BaseFluentWebDriver within(Period p);
+
+    protected WebElement retryingFindIt(By by) {
+        long endMillis = getPeriod().getEndMillis();
+        RuntimeException exceptionCausingRetry = new RuntimeException();
+        WebElement it = null;
+        while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            try {
+                it = actualFindIt(by);
+                exceptionCausingRetry = null;
+                return it;
+            } catch (WebDriverException e) {
+                exceptionCausingRetry = e;
+            }
+        }
+        if (exceptionCausingRetry != null) {
+            throw exceptionCausingRetry;
+        }
+        return it;
+    }
+
+    protected List<WebElement> retryingFindThem(By by) {
+        long endMillis = getPeriod().getEndMillis();
+        RuntimeException exceptionCausingRetry = new RuntimeException();
+        List<WebElement> them = null;
+        while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            try {
+                them = actualFindThem(by);
+                exceptionCausingRetry = null;
+                return them;
+            } catch (WebDriverException e) {
+                exceptionCausingRetry = e;
+            }
+        }
+        if (exceptionCausingRetry != null) {
+            throw exceptionCausingRetry;
+        }
+        return them;
+    }
+
+    protected abstract WebElement actualFindIt(By by);
+
+    protected abstract List<WebElement> actualFindThem(By by);
 
 }

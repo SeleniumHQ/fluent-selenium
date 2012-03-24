@@ -15,6 +15,7 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -218,6 +219,16 @@ public class FluentSelect extends FluentWebElement {
         public MorePatientFluentSelect(WebDriver webDriver, Context context, Select currentSelect, WebElement currentElement, Period period) {
             super(webDriver, currentSelect, currentElement, context);
             this.period = period;
+        }
+
+        @Override
+        protected WebElement findIt(By by) {
+            return retryingFindIt(by);
+        }
+
+        @Override
+        protected List<WebElement> findThem(By by) {
+            return retryingFindThem(by);
         }
 
         @Override
