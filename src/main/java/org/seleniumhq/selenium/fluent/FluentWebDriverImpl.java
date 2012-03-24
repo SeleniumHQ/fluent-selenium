@@ -25,7 +25,7 @@ import javax.swing.text.rtf.RTFEditorKit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class FluentWebDriverImpl extends BaseFluentWebDriver implements FluentWebDriver {
+public class FluentWebDriverImpl extends BaseFluentWebDriver {
 
     public FluentWebDriverImpl(WebDriver delegate) {
         super(delegate, null);

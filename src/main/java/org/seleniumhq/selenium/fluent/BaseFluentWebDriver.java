@@ -28,7 +28,7 @@ import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 import static org.seleniumhq.selenium.fluent.FluentBy.composite;
 
-public abstract class BaseFluentWebDriver {
+public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     protected final WebDriver delegate;
     protected final Context context;
