@@ -224,6 +224,11 @@ public class FluentWebElement extends BaseFluentWebElement {
         return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period);
     }
 
+
+    public final FluentWebDriver recordTo(FluentRecording fluentRecording) {
+        throw new UnsupportedOperationException("don't set fluentRecording on FluentWebElement");
+    }
+
     private class RetryingFluentWebElement extends FluentWebElement {
 
         private final Period period;

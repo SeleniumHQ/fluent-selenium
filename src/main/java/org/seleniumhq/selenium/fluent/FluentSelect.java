@@ -212,6 +212,7 @@ public class FluentSelect extends FluentWebElement {
         return new MorePatientFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement, period);
     }
 
+    // TODO rename
     private class MorePatientFluentSelect extends FluentSelect {
 
         private final Period period;

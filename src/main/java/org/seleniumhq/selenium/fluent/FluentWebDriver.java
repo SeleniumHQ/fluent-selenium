@@ -17,8 +17,6 @@ package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
 
-import static org.openqa.selenium.By.tagName;
-
 public interface FluentWebDriver {
 
     FluentWebElement span();
@@ -147,6 +145,7 @@ public interface FluentWebDriver {
     FluentWebElements maps(By by);
 
     FluentWebDriver within(Period p);
+    FluentWebDriver recordTo(FluentRecording fluentRecording);
 
     TestableString url();
     TestableString title();

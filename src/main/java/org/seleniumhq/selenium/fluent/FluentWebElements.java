@@ -188,7 +188,6 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
         throw meaningless("getSize()");
     }
 
-    @Override
     public FluentWebElements within(Period p) {
         throw meaningless("within("+p+")");
     }
@@ -324,6 +323,10 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public List<FluentWebElement> subList(int i, int i1) {
         return currentElements.subList(i, i1);
+    }
+
+    public final FluentWebDriver recordTo(FluentRecording fluentRecording) {
+        throw new UnsupportedOperationException("don't set fluentRecording on FluentWebElement");
     }
 
 

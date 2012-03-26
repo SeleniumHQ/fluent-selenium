@@ -37,7 +37,6 @@ public class BaseFluentWebDriverTest {
                 return null;
             }
 
-            @Override
             public BaseFluentWebDriver within(Period p) {
                 return null;
             }
@@ -49,6 +48,10 @@ public class BaseFluentWebDriverTest {
 
             @Override
             protected List<WebElement> actualFindThem(By by) {
+                return null;
+            }
+
+            public FluentWebDriver recordTo(FluentRecording fluentRecording) {
                 return null;
             }
         };

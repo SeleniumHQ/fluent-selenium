@@ -819,8 +819,6 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     protected void resetTimeout() {
     }
 
-    public abstract BaseFluentWebDriver within(Period p);
-
     protected final WebElement retryingFindIt(By by) {
         long endMillis = getPeriod().getEndMillis();
         RuntimeException exceptionCausingRetry = new RuntimeException();
