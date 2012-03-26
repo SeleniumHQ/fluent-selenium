@@ -106,10 +106,8 @@ public class BaseFluentWebDriverTest {
             }, BaseFluentWebDriver.Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseOfStaleElement e) {
-            assertThat(e.getMessage(), equalTo("org.openqa.selenium.StaleElementReferenceException during invocation of: ?.dummy()"));
+            assertThat(e.getMessage(), equalTo("StaleElementReferenceException during invocation of: ?.dummy()"));
             assertThat(e.getCause().getMessage(), startsWith("Oops\nFor documentation"));
-        } catch (RuntimeException e) {
-            System.out.println();
         }
 
     }
