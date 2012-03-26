@@ -16,6 +16,7 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -793,8 +794,10 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
         }
     }
 
-
     protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
+        if (e instanceof StaleElementReferenceException) {
+            return new FluentExecutionStopped.BecauseOfStaleElement(StaleElementReferenceException.class.getName() + " during invocation of: " + ctx, e);
+        }
         return new FluentExecutionStopped(e.getClass().getName().replace("java.lang.", "") + " during invocation of: " + ctx, e);
     }
     protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {

@@ -3,12 +3,14 @@ package org.seleniumhq.selenium.fluent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -69,7 +71,7 @@ public class BaseFluentWebDriverTest {
                 }
             }, dummy_context);
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy()"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
         }
@@ -86,9 +88,28 @@ public class BaseFluentWebDriverTest {
                 }
             }, BaseFluentWebDriver.Context.singular(null, "dummy"));
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy()"));
             assertThat(e.getCause().getMessage(), equalTo("Oops"));
+        }
+
+    }
+
+    @Test
+    public void staleElementException_should_be_wrapped_in_context_exception() {
+
+        try {
+            fc.decorateExecution(new Execution() {
+                public Void execute() {
+                    throw new StaleElementReferenceException("Oops");
+                }
+            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseOfStaleElement e) {
+            assertThat(e.getMessage(), equalTo("org.openqa.selenium.StaleElementReferenceException during invocation of: ?.dummy()"));
+            assertThat(e.getCause().getMessage(), startsWith("Oops\nFor documentation"));
+        } catch (RuntimeException e) {
+            System.out.println();
         }
 
     }

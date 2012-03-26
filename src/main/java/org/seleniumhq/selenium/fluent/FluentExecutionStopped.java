@@ -19,4 +19,11 @@ public class FluentExecutionStopped extends RuntimeException {
     public FluentExecutionStopped(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public static class BecauseOfStaleElement extends FluentExecutionStopped {
+        public BecauseOfStaleElement(String message, RuntimeException cause) {
+            super(message, cause);
+        }
+    }
+
 }

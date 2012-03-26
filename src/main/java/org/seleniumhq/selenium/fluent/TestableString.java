@@ -1,5 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
+import org.openqa.selenium.StaleElementReferenceException;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -73,7 +75,7 @@ public class TestableString implements CharSequence {
             assertThat(is, not(equalTo(shouldNotBe)));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (RuntimeException e) {
+        } catch (StaleElementReferenceException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
@@ -94,7 +96,7 @@ public class TestableString implements CharSequence {
             assertThat(is, containsString(shouldContain));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (RuntimeException e) {
+        } catch (StaleElementReferenceException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
@@ -115,7 +117,7 @@ public class TestableString implements CharSequence {
             assertThat(is, not(containsString(shouldNotContain)));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (RuntimeException e) {
+        } catch (StaleElementReferenceException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
