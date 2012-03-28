@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
+import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
+import org.seleniumhq.selenium.fluent.StartRecordingImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -19,11 +21,13 @@ public class fieldset extends BaseTest {
 
     private StringBuilder sb;
     private FluentWebDriverImpl fwd;
+    private WebDriverJournal wd;
 
     @Before
     public void setup() {
         sb = new StringBuilder();
-        fwd = new FluentWebDriverImpl(new WebDriverJournal(sb));
+        wd = new WebDriverJournal(sb);
+        fwd = new FluentWebDriverImpl(wd);
         FAIL_ON_NEXT.set(null);
     }
 
@@ -76,4 +80,75 @@ public class fieldset extends BaseTest {
         }
     }
 
+
+    @Test
+    public void recording_fieldset_functionality() {
+
+        FluentRecorder recording = new FluentRecorder();
+
+        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+                .fieldset()
+                .fieldset(By.xpath("@foo = 'bar'"))
+                .fieldset(By.cssSelector("baz"))
+                .fieldsets();
+
+        assertThat(fc, notNullValue());
+        assertThat(sb.toString(), equalTo(""));
+
+        recording.recording().playback(fwd);
+
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.tagName: fieldset) -> we1\n" +
+                        "we1.getTagName() -> 'fieldset'\n" +
+                        "we1.findElement(By.xpath: .//fieldset[@foo = 'bar']) -> we2\n" +
+                        "we2.getTagName() -> 'fieldset'\n" +
+                        "we2.findElement(By.selector: baz) -> we3\n" +
+                        "we3.getTagName() -> 'fieldset'\n" +
+                        "we3.findElements(By.tagName: fieldset) -> [we4, we5]\n" +
+                        "we4.getTagName() -> 'fieldset'\n" +
+                        "we5.getTagName() -> 'fieldset'\n"
+        ));
+    }
+
+    @Test
+    public void recording_fieldsets_functionality() {
+
+        FluentRecorder recording = new FluentRecorder();
+
+        BaseFluentWebDriver fc = new StartRecordingImpl()
+               .recordTo(recording)
+                .fieldset()
+                .fieldsets(By.name("qux"));
+
+        assertThat(fc, notNullValue());
+        assertThat(sb.toString(), equalTo(""));
+
+        recording.recording().playback(fwd);
+
+        assertThat(sb.toString(), equalTo(
+                "wd0.findElement(By.tagName: fieldset) -> we1\n" +
+                        "we1.getTagName() -> 'fieldset'\n" +
+                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
+                        "we2.getTagName() -> 'fieldset'\n" +
+                        "we3.getTagName() -> 'fieldset'\n"
+        ));
+    }
+
+    @Test
+    public void recording_fieldset_mismatched() {
+
+        FluentRecorder recording = new FluentRecorder();
+
+        new StartRecordingImpl().recordTo(recording).fieldset(By.linkText("mismatching_tag_name"))
+                .clearField();
+
+        try {
+            recording.recording().playback(fwd);
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.fieldset(By.linkText: mismatching_tag_name)"));
+            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
+        }
+
+    }
 }

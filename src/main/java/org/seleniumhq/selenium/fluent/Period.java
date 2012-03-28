@@ -6,7 +6,7 @@ public abstract class Period {
 
     public abstract int howLong();
     public abstract TimeUnit timeUnit();
-    public abstract long getEndMillis();    
+    public abstract long getEndMillis(long from);
 
     public static class Seconds extends Period {
         private final int secs;
@@ -26,8 +26,8 @@ public abstract class Period {
         }
 
         @Override
-        public long getEndMillis() {
-            return System.currentTimeMillis() + (secs * 1000);
+        public long getEndMillis(long from) {
+            return from + (secs * 1000);
         }
 
         @Override
@@ -53,8 +53,8 @@ public abstract class Period {
         }
 
         @Override
-        public long getEndMillis() {
-            return System.currentTimeMillis() + (mins * 1000 * 60);
+        public long getEndMillis(long from) {
+            return from + (mins * 1000 * 60);
         }
 
         @Override
@@ -81,8 +81,8 @@ public abstract class Period {
         }
 
         @Override
-        public long getEndMillis() {
-            return System.currentTimeMillis() + millis;
+        public long getEndMillis(long from) {
+            return from + millis;
         }
 
         @Override

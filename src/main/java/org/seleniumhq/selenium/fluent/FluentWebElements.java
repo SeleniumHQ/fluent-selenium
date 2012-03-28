@@ -15,9 +15,17 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class FluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
 
@@ -140,27 +148,27 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     @Override
-    protected WebElement findIt(By by) {
+    protected final WebElement findIt(By by) {
         throw meaningless("findIt('" + by + "')");
     }
 
     @Override
-    protected List<WebElement> findThem(By by) {
+    protected final List<WebElement> findThem(By by) {
         throw meaningless("findThem('" + by + "')");
     }
 
     @Override
-    protected WebElement actualFindIt(By by) {
+    protected final WebElement actualFindIt(By by) {
         throw meaningless("findIt('" + by + "')");
     }
 
     @Override
-    protected List<WebElement> actualFindThem(By by) {
+    protected final List<WebElement> actualFindThem(By by) {
         throw meaningless("findThem('" + by + "')");
     }
 
     @Override
-    public Point getLocation() {
+    public final Point getLocation() {
         throw meaningless("getLocation()");
     }
 
@@ -169,22 +177,22 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     @Override
-    public TestableString getCssValue(String cssName) {
+    public final TestableString getCssValue(String cssName) {
         throw meaningless("getCssValue('"+cssName+"')");
     }
 
     @Override
-    public TestableString getAttribute(String attrName) {
+    public final TestableString getAttribute(String attrName) {
         throw meaningless("getAttribute('"+attrName+"')");
     }
 
     @Override
-    public TestableString getTagName() {
+    public final TestableString getTagName() {
         throw meaningless("getTagName()");
     }
 
     @Override
-    public Dimension getSize() {
+    public final Dimension getSize() {
         throw meaningless("getSize()");
     }
 
@@ -325,9 +333,522 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
         return currentElements.subList(i, i1);
     }
 
-    public final FluentWebDriver recordTo(FluentRecording fluentRecording) {
-        throw new UnsupportedOperationException("don't set fluentRecording on FluentWebElement");
+
+
+    // From BaseWebDriver
+
+
+    private UnsupportedOperationException notSupported() {
+        return new UnsupportedOperationException("not supported for FluentWebElements");
     }
 
+    @Override
+    public final TestableString title() {
+        throw notSupported();
+    }
 
+    @Override
+    public final FluentWebElement span() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement span(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements spans() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements spans(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement div() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement div(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements divs() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements divs(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement button() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement button(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements buttons() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements buttons(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement link() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement link(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements links() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements links(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement input() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement input(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements inputs() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements inputs(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentSelect select() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentSelect select(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentSelects selects() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentSelects selects(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h1() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h1(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h1s() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h1s(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h2() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h2(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h2s() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h2s(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h3() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h3s() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h3(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h3s(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h4() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h4s() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement h4(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements h4s(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement p() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ps() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement p(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ps(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement img() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements imgs() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement img(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements imgs(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement table() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements tables() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement table(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements tables(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement fieldset() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements fieldsets() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement fieldset(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements fieldsets(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement legend() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements legends() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement legend(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements legends(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement tr() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements trs() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement tr(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements trs(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement td() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements tds() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement td(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements tds(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement th() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ths() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement th(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ths(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement ul() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements uls() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement ul(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements uls(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement ol() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ols() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement ol(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements ols(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement form() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements forms() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement form(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements forms(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement textarea() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements textareas() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement textarea(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements textareas(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement option() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements options() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement option(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements options(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement li() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement li(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements lis() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements lis(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement map() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements maps() {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElement map(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final FluentWebElements maps(By by) {
+        throw notSupported();
+    }
+
+    @Override
+    public final TestableString url() {
+        throw notSupported();
+    }
 }

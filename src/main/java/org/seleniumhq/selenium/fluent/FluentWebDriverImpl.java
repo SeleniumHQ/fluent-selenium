@@ -18,13 +18,12 @@ package org.seleniumhq.selenium.fluent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.recording.RecordingFluentWebDriver;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class FluentWebDriverImpl extends BaseFluentWebDriver {
-
-    private FluentRecording fluentRecording;
 
     public FluentWebDriverImpl(WebDriver delegate) {
         super(delegate, null);
@@ -58,14 +57,6 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
 
     public FluentWebDriverImpl within(final Period period) {
         return new RetryingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period));
-    }
-
-    public FluentWebDriver recordTo(FluentRecording fluentRecording) {
-        if (this.fluentRecording != null) {
-            throw new UnsupportedOperationException("Fluent recording already registered");
-        }
-        this.fluentRecording = fluentRecording;
-        return this;
     }
 
     private class RetryingFluentWebDriver extends FluentWebDriverImpl {

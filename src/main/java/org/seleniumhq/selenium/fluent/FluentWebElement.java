@@ -225,10 +225,6 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
 
-    public final FluentWebDriver recordTo(FluentRecording fluentRecording) {
-        throw new UnsupportedOperationException("don't set fluentRecording on FluentWebElement");
-    }
-
     private class RetryingFluentWebElement extends FluentWebElement {
 
         private final Period period;

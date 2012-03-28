@@ -767,15 +767,6 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
         }
     }
 
-
-    protected List<SingleResult> listOfSingleResults(List<WebElement> result, Context context) {
-        List<SingleResult> fluents = new ArrayList<SingleResult>();
-        for (WebElement aResult : result) {
-            fluents.add(new SingleResult(aResult, context));
-        }
-        return fluents;
-    }
-
     private class FindThem implements Execution<List<WebElement>> {
         private final By by2;
         private final String tagName;
@@ -828,7 +819,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     protected final WebElement retryingFindIt(By by) {
-        long endMillis = getPeriod().getEndMillis();
+        long endMillis = getPeriod().getEndMillis(System.currentTimeMillis());
         RuntimeException exceptionCausingRetry = new RuntimeException();
         WebElement it = null;
         while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
@@ -847,7 +838,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     protected final List<WebElement> retryingFindThem(By by) {
-        long endMillis = getPeriod().getEndMillis();
+        long endMillis = getPeriod().getEndMillis(System.currentTimeMillis());
         RuntimeException exceptionCausingRetry = AN_EXCEPTION;
         List<WebElement> them = null;
         while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {

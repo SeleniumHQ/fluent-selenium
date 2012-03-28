@@ -20,6 +20,9 @@ public class TestableString implements CharSequence {
         this.within = within;
         this.execution = execution;
         this.context = ctx;
+        if (within == null && execution == null && ctx == null) {
+            return;
+        }
         if (within == null) {
             try {
                 is = execution.execute();
@@ -38,7 +41,7 @@ public class TestableString implements CharSequence {
         try {
             if (within != null && (is == null || !is.equals(shouldBe))) {
                 boolean passed;
-                long endMillis = within.getEndMillis();
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
                     assignValueIfNeeded();
                     passed = is != null && is.equals(shouldBe);
@@ -66,7 +69,7 @@ public class TestableString implements CharSequence {
         try {
             if (within != null && (is == null || is.equals(shouldNotBe))) {
                 boolean passed;
-                long endMillis = within.getEndMillis();
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
                     assignValueIfNeeded();
                     passed = is != null && !is.equals(shouldNotBe);
@@ -87,7 +90,7 @@ public class TestableString implements CharSequence {
         try {
             if (within != null && (is == null || is.indexOf(shouldContain) == -1)) {
                 boolean passed;
-                long endMillis = within.getEndMillis();
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
                     assignValueIfNeeded();
                     passed = is != null && is.indexOf(shouldContain) > -1;
@@ -108,7 +111,7 @@ public class TestableString implements CharSequence {
         try {
             if (within != null && (is == null || is.indexOf(shouldNotContain) > -1)) {
                 boolean passed;
-                long endMillis = within.getEndMillis();
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
                     assignValueIfNeeded();
                     passed = is != null && is.indexOf(shouldNotContain) == -1;
