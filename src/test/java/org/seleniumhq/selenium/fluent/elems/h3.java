@@ -9,7 +9,7 @@ import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
-import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
+import org.seleniumhq.selenium.fluent.RecordingFluentWebDriverFactoryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -89,7 +89,7 @@ public class h3 extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
+        FluentWebElements fe = new RecordingFluentWebDriverFactoryImpl().recordTo(recording)
                 .h3()
                 .h3(By.xpath("@foo = 'bar'"))
                 .h3(By.cssSelector("baz"))
@@ -118,7 +118,7 @@ public class h3 extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        FluentWebElements fe = new RecorderFacotryImpl()
+        FluentWebElements fe = new RecordingFluentWebDriverFactoryImpl()
                .recordTo(recording)
                 .h3()
                 .h3s(By.name("qux"));
@@ -142,7 +142,7 @@ public class h3 extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new RecorderFacotryImpl().recordTo(recording).h3(By.linkText("mismatching_tag_name"))
+        new RecordingFluentWebDriverFactoryImpl().recordTo(recording).h3(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

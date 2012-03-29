@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
+import org.seleniumhq.selenium.fluent.RecordingFluentWebDriverFactoryImpl;
 import org.seleniumhq.selenium.fluent.TestableString;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
@@ -53,7 +53,7 @@ public class title extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        TestableString title = new RecorderFacotryImpl().recordTo(recording).title();
+        TestableString title = new RecordingFluentWebDriverFactoryImpl().recordTo(recording).title();
 
         assertThat(title, notNullValue());
         assertThat(sb.toString(), equalTo(""));
