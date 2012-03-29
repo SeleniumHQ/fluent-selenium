@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,12 +35,12 @@ public class ol extends BaseTest {
     @Test
     public void ol_functionality() {
 
-        BaseFluentWebDriver fc = fwd.ol()
+        FluentWebElements fe = fwd.ol()
                 .ol(By.xpath("@foo = 'bar'"))
                 .ol(By.cssSelector("baz"))
                 .ols();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ol) -> we1\n" +
                         "we1.getTagName() -> 'ol'\n" +
@@ -56,10 +56,10 @@ public class ol extends BaseTest {
 
     @Test
     public void ols_functionality() {
-        BaseFluentWebDriver fc = fwd.ol()
+        FluentWebElements fe = fwd.ol()
                 .ols(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: ol) -> we1\n" +
                         "we1.getTagName() -> 'ol'\n" +
@@ -87,13 +87,13 @@ public class ol extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .ol()
                 .ol(By.xpath("@foo = 'bar'"))
                 .ol(By.cssSelector("baz"))
                 .ols();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -116,12 +116,12 @@ public class ol extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .ol()
                 .ols(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -140,7 +140,7 @@ public class ol extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).ol(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).ol(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

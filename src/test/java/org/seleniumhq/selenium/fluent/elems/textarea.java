@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,12 +35,12 @@ public class textarea extends BaseTest {
     @Test
     public void textarea_functionality() {
 
-        BaseFluentWebDriver fc = fwd.textarea()
+        FluentWebElements fe = fwd.textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
                 .textarea(By.cssSelector("baz"))
                 .textareas();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: textarea) -> we1\n" +
                         "we1.getTagName() -> 'textarea'\n" +
@@ -56,10 +56,10 @@ public class textarea extends BaseTest {
 
     @Test
     public void textareas_functionality() {
-        BaseFluentWebDriver fc = fwd.textarea()
+        FluentWebElements fe = fwd.textarea()
                 .textareas(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: textarea) -> we1\n" +
                         "we1.getTagName() -> 'textarea'\n" +
@@ -88,13 +88,13 @@ public class textarea extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
                 .textarea(By.cssSelector("baz"))
                 .textareas();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -117,12 +117,12 @@ public class textarea extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .textarea()
                 .textareas(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -141,7 +141,7 @@ public class textarea extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).textarea(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).textarea(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

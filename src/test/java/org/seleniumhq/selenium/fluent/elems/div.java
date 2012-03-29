@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,12 +35,12 @@ public class div extends BaseTest {
     @Test
     public void div_functionality() {
 
-        BaseFluentWebDriver fc = fwd.div()
+        FluentWebElements fe = fwd.div()
                 .div(By.xpath("@foo = 'bar'"))
                 .div(By.cssSelector("baz"))
                 .divs();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -56,10 +56,10 @@ public class div extends BaseTest {
 
     @Test
     public void divs_functionality() {
-        BaseFluentWebDriver fc = fwd.div()
+        FluentWebElements fe = fwd.div()
                 .divs(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -87,13 +87,13 @@ public class div extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .div()
                 .div(By.xpath("@foo = 'bar'"))
                 .div(By.cssSelector("baz"))
                 .divs();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -116,12 +116,12 @@ public class div extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .div()
                 .divs(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -140,7 +140,7 @@ public class div extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).div(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).div(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

@@ -8,7 +8,8 @@ import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -33,12 +34,12 @@ public class legend extends BaseTest {
 
     @Test
     public void legend_functionality() {
-        BaseFluentWebDriver fc = fwd.legend()
+        FluentWebElements fe = fwd.legend()
                 .legend(By.xpath("@foo = 'bar'"))
                 .legend(By.cssSelector("baz"))
                 .legends();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: legend) -> we1\n" +
                         "we1.getTagName() -> 'legend'\n" +
@@ -55,10 +56,10 @@ public class legend extends BaseTest {
 
     @Test
     public void legends_functionality() {
-        BaseFluentWebDriver fc = fwd.legend()
+        FluentWebElements fe = fwd.legend()
                 .legends(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: legend) -> we1\n" +
                         "we1.getTagName() -> 'legend'\n" +
@@ -86,13 +87,13 @@ public class legend extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .legend()
                 .legend(By.xpath("@foo = 'bar'"))
                 .legend(By.cssSelector("baz"))
                 .legends();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -115,12 +116,12 @@ public class legend extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .legend()
                 .legends(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -139,7 +140,7 @@ public class legend extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).legend(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).legend(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

@@ -64,9 +64,9 @@ public class FluentWebDriverImplTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        BaseFluentWebDriver fc = fwd.div(ID_A).div(ID_B);
+        FluentWebElement fe = fwd.div(ID_A).div(ID_B);
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
 
         InOrder io = inOrder(we, wd, we2);
         io.verify(wd).findElement(ID_A);
@@ -79,9 +79,9 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void example_of_longer_query_using_IDs() {
 
-        BaseFluentWebDriver fc = fwd.div(ID_A).div(ID_B).span().click();
+        FluentWebElement fe = fwd.div(ID_A).div(ID_B).span().click();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.id: idA) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -96,9 +96,9 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void example_of_longer_query_using_classes() {
 
-        BaseFluentWebDriver fc = fwd.div(ID_A).div(CLASS_C).span().click();
+        FluentWebElement fe = fwd.div(ID_A).div(CLASS_C).span().click();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.id: idA) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
@@ -747,9 +747,9 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void filtering() {
 
-        BaseFluentWebDriver fc = fwd.divs().filter(new FourLambFilter()).click();
+        FluentWebElements fe = fwd.divs().filter(new FourLambFilter()).click();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(),
                 equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +
@@ -768,9 +768,9 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void first_element_matched_from_larger_list() {
 
-        BaseFluentWebDriver fc = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
+        FluentWebElement fe = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(),
                 equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
                 "we1.getTagName() -> 'div'\n" +

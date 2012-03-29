@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,12 +35,12 @@ public class button extends BaseTest {
     @Test
     public void button_functionality() {
 
-        BaseFluentWebDriver fc = fwd.button()
+        FluentWebElements fe = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
                 .button(By.cssSelector("baz"))
                 .buttons();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: button) -> we1\n" +
                         "we1.getTagName() -> 'button'\n" +
@@ -56,10 +56,10 @@ public class button extends BaseTest {
 
     @Test
     public void buttons_functionality() {
-        BaseFluentWebDriver fc = fwd.button()
+        FluentWebElements fe = fwd.button()
                 .buttons(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: button) -> we1\n" +
                         "we1.getTagName() -> 'button'\n" +
@@ -87,13 +87,13 @@ public class button extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .button()
                 .button(By.xpath("@foo = 'bar'"))
                 .button(By.cssSelector("baz"))
                 .buttons();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -116,9 +116,9 @@ public class button extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording).button().buttons(By.name("qux"));
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording).button().buttons(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -137,7 +137,7 @@ public class button extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).button(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).button(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

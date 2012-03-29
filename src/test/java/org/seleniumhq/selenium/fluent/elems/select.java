@@ -14,13 +14,20 @@ import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentSelect;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImplTest;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
 import org.seleniumhq.selenium.fluent.Period;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class select extends BaseTest {
 
@@ -39,13 +46,13 @@ public class select extends BaseTest {
     @Test
     public void select_functionality() {
 
-        BaseFluentWebDriver fc = fwd.select()
+        FluentWebElements fe = fwd.select()
                 .select(By.xpath("@foo = 'bar'"))
                 .select(By.cssSelector("baz"))
                 .deselectAll()
                 .selects();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +
@@ -67,9 +74,9 @@ public class select extends BaseTest {
     @Test
     public void method_on_select_is_invoked() {
 
-        BaseFluentWebDriver fc = fwd.select().selectByValue("bar");
+        FluentSelect fs = fwd.select().selectByValue("bar");
 
-        assertThat(fc, notNullValue());
+        assertThat(fs, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +
@@ -83,10 +90,10 @@ public class select extends BaseTest {
 
     @Test
     public void selects_functionality() {
-        BaseFluentWebDriver fc = fwd.select()
+        FluentWebElements fe = fwd.select()
                 .selects(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: select) -> we1\n" +
                         "we1.getTagName() -> 'select'\n" +

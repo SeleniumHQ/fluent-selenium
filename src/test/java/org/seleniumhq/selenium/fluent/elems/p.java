@@ -9,7 +9,8 @@ import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,12 +36,12 @@ public class p extends BaseTest {
     @Test
     public void p_functionality() {
 
-        BaseFluentWebDriver fc = fwd.p()
+        FluentWebElements fe = fwd.p()
                 .p(By.xpath("@foo = 'bar'"))
                 .p(By.cssSelector("baz"))
                 .ps();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: p) -> we1\n" +
                         "we1.getTagName() -> 'p'\n" +
@@ -56,10 +57,10 @@ public class p extends BaseTest {
 
     @Test
     public void ps_functionality() {
-        BaseFluentWebDriver fc = fwd.p()
+        FluentWebElements fe = fwd.p()
                 .ps(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: p) -> we1\n" +
                         "we1.getTagName() -> 'p'\n" +
@@ -88,13 +89,13 @@ public class p extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .p()
                 .p(By.xpath("@foo = 'bar'"))
                 .p(By.cssSelector("baz"))
                 .ps();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -117,12 +118,12 @@ public class p extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .p()
                 .ps(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -141,7 +142,7 @@ public class p extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).p(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).p(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {

@@ -3,12 +3,12 @@ package org.seleniumhq.selenium.fluent.elems;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
-import org.seleniumhq.selenium.fluent.StartRecordingImpl;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.RecorderFacotryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -34,12 +34,12 @@ public class td extends BaseTest {
     @Test
     public void td_functionality() {
 
-        BaseFluentWebDriver fc = fwd.td()
+        FluentWebElements fe = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: td) -> we1\n" +
                         "we1.getTagName() -> 'td'\n" +
@@ -55,10 +55,10 @@ public class td extends BaseTest {
 
     @Test
     public void tds_functionality() {
-        BaseFluentWebDriver fc = fwd.td()
+        FluentWebElements fe = fwd.td()
                 .tds(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: td) -> we1\n" +
                         "we1.getTagName() -> 'td'\n" +
@@ -86,13 +86,13 @@ public class td extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl().recordTo(recording)
+        FluentWebElements fe = new RecorderFacotryImpl().recordTo(recording)
                 .td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -115,12 +115,12 @@ public class td extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        BaseFluentWebDriver fc = new StartRecordingImpl()
+        FluentWebElements fe = new RecorderFacotryImpl()
                .recordTo(recording)
                 .td()
                 .tds(By.name("qux"));
 
-        assertThat(fc, notNullValue());
+        assertThat(fe, notNullValue());
         assertThat(sb.toString(), equalTo(""));
 
         recording.recording().playback(fwd);
@@ -139,7 +139,7 @@ public class td extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new StartRecordingImpl().recordTo(recording).td(By.linkText("mismatching_tag_name"))
+        new RecorderFacotryImpl().recordTo(recording).td(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {
