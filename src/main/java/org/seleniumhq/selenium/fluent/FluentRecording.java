@@ -21,8 +21,11 @@ public class FluentRecording {
         long start = System.currentTimeMillis();
         int retries = 0;
         RuntimeException lastRE = null;
+        AssertionError lastAE = null;
         boolean goAgain = true;
         while (goAgain) {
+            lastAE = null;
+            lastRE = null;
             goAgain = false;
             try {
                 Object last = driver;
@@ -36,6 +39,9 @@ public class FluentRecording {
             } catch (RuntimeException e) {
                 lastRE = e;
                 goAgain = retry(e, start, retries);
+            } catch (AssertionError e) {
+                lastAE = e;
+                goAgain = retry(e, start, retries);
             }
             if (goAgain) {
                 try {
@@ -45,10 +51,14 @@ public class FluentRecording {
                 retries++;
             }
         }
-        if (lastRE instanceof FluentExecutionStopped && retries > 0) {
-            ((FluentExecutionStopped) lastRE).setRetries(retries).setDuration(System.currentTimeMillis() - start);
+        if (lastRE != null) {
+            if (lastRE instanceof FluentExecutionStopped && retries > 0) {
+                ((FluentExecutionStopped) lastRE).setRetries(retries).setDuration(System.currentTimeMillis() - start);
+            }
+            throw lastRE;
+        } else {
+            throw lastAE;
         }
-        throw lastRE;
     }
 
     private boolean retry(Throwable e, long start, int retries) {

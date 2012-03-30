@@ -10,13 +10,15 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class FluentRecordingTest {
     
     @Test
-    public void foo() {
+    public void fluent_exception_should_be_decorated_with_retries_and_duration_information() {
 
         List<OnFluentSomething> onFluentSomethings = new ArrayList<OnFluentSomething>();
         onFluentSomethings.add(new OnFluentWebDriver() {
@@ -34,8 +36,37 @@ public class FluentRecordingTest {
             fr.playback(fwd);
         } catch (FluentExecutionStopped e) {
             String message = e.getMessage();
+            String[] parts = message.split(" ");
             message = message.replaceAll("\\d", "N");
             assertThat(message, equalTo("N retries over NNN millis; ha ha"));
+            assertThat(Integer.parseInt(parts[0]), greaterThan(5)); // in lieu of 'between' matcher
+            assertThat(Integer.parseInt(parts[0]), lessThan(8));
+            assertThat(Integer.parseInt(parts[3]), greaterThan(300));
+            assertThat(Integer.parseInt(parts[3]), lessThan(400));
+        }
+
+    }
+
+    @Test
+    public void assertion_errors_too_can_be_subject_to_retries() {
+
+        List<OnFluentSomething> onFluentSomethings = new ArrayList<OnFluentSomething>();
+        onFluentSomethings.add(new OnFluentWebDriver() {
+            @Override
+            public Object doItForReal(FluentWebDriver fwd) {
+                throw new AssertionError("ha ha");
+            }
+        });
+
+        FluentRecording fr = new FluentRecording(onFluentSomethings, 51, new ShouldTimeOut(Period.millis(300)));
+        FluentWebDriver fwd = mock(FluentWebDriver.class);
+        verifyNoMoreInteractions(fwd);
+
+        long start = System.currentTimeMillis();
+        try {
+            fr.playback(fwd);
+        } catch (AssertionError e) {            
+            assertThat(System.currentTimeMillis() - start, greaterThan(300L));
         }
 
     }
