@@ -42,7 +42,11 @@ public class FluentRecording {
                     Thread.sleep(millisToSleep);
                 } catch (InterruptedException e) {
                 }
+                retries++;
             }
+        }
+        if (lastRE instanceof FluentExecutionStopped && retries > 0) {
+            ((FluentExecutionStopped) lastRE).setRetries(retries).setDuration(System.currentTimeMillis() - start);
         }
         throw lastRE;
     }

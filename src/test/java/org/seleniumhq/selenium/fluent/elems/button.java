@@ -137,11 +137,12 @@ public class button extends BaseTest {
 
         FluentRecorder recording = new FluentRecorder();
 
-        new RecordingFluentWebDriverFactoryImpl().recordTo(recording).button(By.linkText("mismatching_tag_name"))
+        new RecordingFluentWebDriverFactoryImpl()
+                .recordTo(recording).button(By.linkText("mismatching_tag_name"))
                 .clearField();
 
         try {
-            recording.recording().playback(fwd);
+            recording.recording(0).playback(fwd);
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.button(By.linkText: mismatching_tag_name)"));
