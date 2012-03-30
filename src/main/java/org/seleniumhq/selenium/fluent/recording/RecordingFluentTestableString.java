@@ -19,6 +19,32 @@ public class RecordingFluentTestableString extends TestableString {
                 ts.shouldBe(shouldBe);
             }
         });
+    }
 
+    @Override
+    public void shouldContain(final String shouldContain) {
+        recording.returnsNothing(new OnTestableString() {
+            public void doItForReal(TestableString ts) {
+                ts.shouldContain(shouldContain);
+            }
+        });
+    }
+
+    @Override
+    public void shouldNotBe(final String shouldNotBe) {
+        recording.returnsNothing(new OnTestableString() {
+            public void doItForReal(TestableString ts) {
+                ts.shouldNotBe(shouldNotBe);
+            }
+        });
+    }
+
+    @Override
+    public void shouldNotContain(final String shouldNotContain) {
+        recording.returnsNothing(new OnTestableString() {
+            public void doItForReal(TestableString ts) {
+                ts.shouldNotContain(shouldNotContain);
+            }
+        });
     }
 }
