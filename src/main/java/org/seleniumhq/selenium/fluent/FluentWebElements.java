@@ -210,6 +210,9 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
                         results.add(webElement);
                     }
                 }
+                if (results.size() == 0) {
+                    throw new NothingMatches();
+                }
                 return results;
             }
         }, ctx);

@@ -788,12 +788,17 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
         if (e instanceof StaleElementReferenceException) {
             return new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
+        } else if (e instanceof NothingMatches) {
+            return new FluentExecutionStopped.BecauseNothingMatchesInFilter(replacePkgNames(e) + ctx);
         }
         return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
     }
 
     private static String replacePkgNames(Throwable e) {
-        return e.getClass().getName().replace("java.lang.", "").replace("org.openqa.selenium.", "") + " during invocation of: ";
+        return e.getClass().getName()
+                .replace("java.lang.", "")
+                .replace("org.openqa.selenium.", "")
+                + " during invocation of: ";
     }
 
     protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {

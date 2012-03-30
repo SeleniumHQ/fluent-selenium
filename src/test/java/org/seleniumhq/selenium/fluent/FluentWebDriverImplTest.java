@@ -454,6 +454,40 @@ public class FluentWebDriverImplTest extends BaseTest {
             assertThat(e.getCause(), instanceOf(throwable));
         }
     }
+    
+    @Test
+    public void nothing_matching_in_filter_exception_handling() {
+        FluentWebElements ome = fwd.divs(By.id("foo"));
+
+        assertThat(ome, notNullValue());
+
+        FAIL_ON_NEXT.set(NothingMatches.class);
+
+        try {
+            ome.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
+            assertNull(e.getCause());
+        }
+    }
+
+    @Test
+    public void nothing_matching_in_first_exception_handling() {
+        FluentWebElements ome = fwd.divs(By.id("foo"));
+
+        assertThat(ome, notNullValue());
+
+        FAIL_ON_NEXT.set(NothingMatches.class);
+
+        try {
+            ome.first(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Hello'))"));
+            assertNull(e.getCause());
+        }
+    }
 
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
@@ -785,10 +819,10 @@ public class FluentWebDriverImplTest extends BaseTest {
         try {
             fwd.divs().first(new TextContainsWord("mutton")).click();
             fail("should have barfed");
-        } catch (FluentExecutionStopped e) {
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
             assertThat(e.getMessage(), equalTo("org.seleniumhq.selenium.fluent.NothingMatches during invocation of: ?.divs(By.tagName: div)" +
                     ".first(TextContainsWord{word='mutton'})"));
-            assertTrue(e.getCause() instanceof NothingMatches);
+            assertNull(e.getCause());
         }
 
         assertThat(sb.toString(),
