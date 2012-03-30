@@ -440,14 +440,14 @@ public class FluentWebDriverImplTest extends BaseTest {
     }
 
     private void filter_exception_handling(Class<? extends Throwable> throwable) {
-        FluentWebElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
-        assertThat(ome, notNullValue());
+        assertThat(fwe, notNullValue());
 
         FAIL_ON_NEXT.set(throwable);
 
         try {
-            ome.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fwe.filter(makeMatcherThatUsesWebDriver("Hello"));
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
@@ -457,14 +457,14 @@ public class FluentWebDriverImplTest extends BaseTest {
     
     @Test
     public void nothing_matching_in_filter_exception_handling() {
-        FluentWebElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
-        assertThat(ome, notNullValue());
+        assertThat(fwe, notNullValue());
 
         FAIL_ON_NEXT.set(NothingMatches.class);
 
         try {
-            ome.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fwe.filter(makeMatcherThatUsesWebDriver("Hello"));
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
@@ -474,14 +474,14 @@ public class FluentWebDriverImplTest extends BaseTest {
 
     @Test
     public void nothing_matching_in_first_exception_handling() {
-        FluentWebElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
-        assertThat(ome, notNullValue());
+        assertThat(fwe, notNullValue());
 
         FAIL_ON_NEXT.set(NothingMatches.class);
 
         try {
-            ome.first(makeMatcherThatUsesWebDriver("Hello"));
+            fwe.first(makeMatcherThatUsesWebDriver("Hello"));
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Hello'))"));
@@ -513,14 +513,14 @@ public class FluentWebDriverImplTest extends BaseTest {
     }
 
     private void first_exception_handling(Class<? extends Throwable> throwable) {
-        FluentWebElements ome = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
-        assertThat(ome, notNullValue());
+        assertThat(fwe, notNullValue());
 
         FAIL_ON_NEXT.set(throwable);
 
         try {
-            ome.first(makeMatcherThatUsesWebDriver("Goodbye"));
+            fwe.first(makeMatcherThatUsesWebDriver("Goodbye"));
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Goodbye'))"));
@@ -531,7 +531,7 @@ public class FluentWebDriverImplTest extends BaseTest {
     public void further_find_element_after_multiple_is_unsupported() {
 
         try {
-            FluentWebElement ose = fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
+            fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             // expected

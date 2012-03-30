@@ -88,6 +88,10 @@ public class FluentRecorder {
     }
 
     public FluentRecording recording() {
-        return new FluentRecording(unmodifiableList(list), retryStrategies);
+        return recording(50);
+    }
+
+    public FluentRecording recording(int millisToSleepBetweenRetries) {
+        return new FluentRecording(unmodifiableList(list), millisToSleepBetweenRetries, retryStrategies);
     }
 }

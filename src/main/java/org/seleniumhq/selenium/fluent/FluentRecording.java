@@ -9,10 +9,12 @@ public class FluentRecording {
 
     private final List<OnFluentSomething> onFluentSomethings;
     private final RetryStrategy[] retryStrategies;
+    private final int millisToSleep;
 
-    public FluentRecording(List<OnFluentSomething> onFluentSomethings, RetryStrategy... retryStrategies) {
+    public FluentRecording(List<OnFluentSomething> onFluentSomethings, int millisToSleep, RetryStrategy... retryStrategies) {
         this.onFluentSomethings = onFluentSomethings;
         this.retryStrategies = retryStrategies;
+        this.millisToSleep = millisToSleep;
     }
 
     public Object playback(FluentWebDriver driver) {
@@ -35,6 +37,12 @@ public class FluentRecording {
                 lastRE = e;
                 goAgain = retry(e, start, retries);
             }
+            if (goAgain) {
+                try {
+                    Thread.sleep(millisToSleep);
+                } catch (InterruptedException e) {
+                }
+            }
         }
         throw lastRE;
     }
@@ -46,5 +54,4 @@ public class FluentRecording {
         }
         return shouldRetry;
     }
-
 }
