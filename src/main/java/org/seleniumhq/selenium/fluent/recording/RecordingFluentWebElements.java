@@ -175,8 +175,12 @@ public class RecordingFluentWebElements extends FluentWebElements {
         throw notRecordableYet();
     }
 
-    public FluentWebElement get(int i) {
-        throw notRecordableYet();
+    public FluentWebElement get(final int i) {
+        return recording.fluentWebElement(new OnFluentWebElements() {
+            public FluentWebElement doItForReal(FluentWebElements fwe) {
+                return fwe.get(i);
+            }
+        });
     }
 
     public FluentWebElement set(int i, FluentWebElement webElement) {
