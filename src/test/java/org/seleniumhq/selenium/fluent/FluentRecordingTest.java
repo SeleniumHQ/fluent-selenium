@@ -28,7 +28,9 @@ public class FluentRecordingTest {
             }
         });
 
-        FluentRecording fr = new FluentRecording(onFluentSomethings, 51, new ShouldTimeOut(Period.millis(300)));
+        FluentWebDriverExecutor fluentWebDriverExecutor = new RetryingFluentWebDriverExecutor(51, new ShouldTimeOut(Period.millis(300)));
+
+        FluentRecording fr = new FluentRecording(onFluentSomethings, fluentWebDriverExecutor);
         FluentWebDriver fwd = mock(FluentWebDriver.class);
         verifyNoMoreInteractions(fwd);
 
@@ -58,7 +60,9 @@ public class FluentRecordingTest {
             }
         });
 
-        FluentRecording fr = new FluentRecording(onFluentSomethings, 51, new ShouldTimeOut(Period.millis(300)));
+        FluentWebDriverExecutor fluentWebDriverExecutor = new RetryingFluentWebDriverExecutor(51, new ShouldTimeOut(Period.millis(300)));
+
+        FluentRecording fr = new FluentRecording(onFluentSomethings, fluentWebDriverExecutor);
         FluentWebDriver fwd = mock(FluentWebDriver.class);
         verifyNoMoreInteractions(fwd);
 
@@ -67,6 +71,33 @@ public class FluentRecordingTest {
             fr.playback(fwd);
         } catch (AssertionError e) {            
             assertThat(System.currentTimeMillis() - start, greaterThan(300L));
+        }
+
+    }
+
+    @Test
+    public void default_is_not_to_retry() {
+
+        List<OnFluentSomething> onFluentSomethings = new ArrayList<OnFluentSomething>();
+        onFluentSomethings.add(new OnFluentWebDriver() {
+            @Override
+            public Object doItForReal(FluentWebDriver fwd) {
+                throw new FluentExecutionStopped("ha ha");
+            }
+        });
+
+        FluentWebDriverExecutor fluentWebDriverExecutor = new FluentWebDriverExecutor.Default();
+
+        FluentRecording fr = new FluentRecording(onFluentSomethings, fluentWebDriverExecutor);
+        FluentWebDriver fwd = mock(FluentWebDriver.class);
+        verifyNoMoreInteractions(fwd);
+
+        long start = System.currentTimeMillis();
+        try {
+            fr.playback(fwd);
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("ha ha"));
+            assertThat(System.currentTimeMillis() - start, lessThan(2L));
         }
 
     }

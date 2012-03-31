@@ -92,6 +92,7 @@ public class FluentRecorder {
     }
 
     public FluentRecording recording(int millisToSleepBetweenRetries) {
-        return new FluentRecording(unmodifiableList(list), millisToSleepBetweenRetries, retryStrategies);
+        RetryingFluentWebDriverExecutor fwde = new RetryingFluentWebDriverExecutor(millisToSleepBetweenRetries, retryStrategies);
+        return new FluentRecording(unmodifiableList(list), fwde);
     }
 }
