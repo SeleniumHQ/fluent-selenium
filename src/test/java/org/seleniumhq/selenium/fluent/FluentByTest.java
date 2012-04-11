@@ -30,7 +30,7 @@ public class FluentByTest {
         FluentBy.ByLast lastFooBar = FluentBy.last(fooBar);
 
         assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.attribute: foo = 'bar')"));
-        assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[@foo = 'bar'] and position() = last()"));
+        assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[@foo = 'bar' and position() = last()]"));
 
     }
     

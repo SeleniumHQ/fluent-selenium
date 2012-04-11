@@ -121,7 +121,9 @@ public abstract class FluentBy {
         }
 
         By makeXPath() {
-            return By.xpath(by.makeXPath() + " and position() = last()");
+            String orig = by.makeXPath(); // we need to lose the last "]".
+            return By.xpath(orig.substring(0, orig.length()-1)
+                    + " and position() = last()]"); // as we add it back here
         }
 
         @Override
