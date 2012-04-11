@@ -89,7 +89,7 @@ public abstract class FluentBy {
     /**
      * Finds elements a composite of other By strategies
      */
-    public static By composite(final By... bys) {
+    public static ByComposite composite(final By... bys) {
         if (bys == null)
             throw new IllegalArgumentException("Cannot make composite with no varargs of Bys");
         if (bys.length != 2
@@ -150,7 +150,7 @@ public abstract class FluentBy {
 
     // Until WebDriver supports a composite in browser implementations, only
     // TagName + ClassName is allowed as it can easily map to XPath.
-    private static class ByComposite extends By {
+    static class ByComposite extends By {
 
         private final By[] bys;
 
@@ -168,23 +168,26 @@ public abstract class FluentBy {
               + word + " ')";
         }
 
-        private By makeByXPath() {
-            String xpathExpression = ".//"
-                    + getTagName();
+        By makeByXPath() {
+            String xpathExpression = makeXPath();
+            return By.xpath(xpathExpression);
+        }
 
-            if (bys[1] instanceof By.ByClassName) {
+        String makeXPath() {
+            String xpathExpression = ".//" + getTagName();
+
+            if (bys[1] instanceof ByClassName) {
                 String className = bys[1].toString().substring("By.className: ".length());
                 xpathExpression = xpathExpression + "[" + containingWord("class", className) + "]";
             } else if (bys[1] instanceof ByAttribute) {
                 ByAttribute by = (ByAttribute) bys[1];
                 xpathExpression = xpathExpression + "[" + by.nameAndValue() + "]";
             }
-
-            return By.xpath(xpathExpression);
+            return xpathExpression;
         }
 
         private String getTagName() {
-            return bys[0].toString().substring("FluentBy.tagName: ".length());
+            return bys[0].toString().substring("By.tagName: ".length());
         }
 
         @Override

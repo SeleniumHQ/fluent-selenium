@@ -21,26 +21,27 @@ public class FluentByTest {
 
     @Test
     public void last_xpath_directive_should_be_addable_to_xpath_expression() throws IllegalAccessException {
-
         FluentBy.ByAttribute fooBar = (FluentBy.ByAttribute) FluentBy.attribute("foo", "bar");
-        
         assertThat(fooBar.toString(), is("FluentBy.attribute: foo = 'bar'"));
         assertThat(fooBar.makeByXPath().toString(), is("By.xpath: .//*[@foo = 'bar']"));
-
         FluentBy.ByLast lastFooBar = FluentBy.last(fooBar);
-
         assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.attribute: foo = 'bar')"));
         assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[@foo = 'bar' and position() = last()]"));
-
     }
 
     @Test
     public void last_xpath_directive_should_be_specifiable() throws IllegalAccessException {
-
         FluentBy.ByLast lastFooBar = FluentBy.last();
-
         assertThat(lastFooBar.toString(), is("FluentBy.last()"));
         assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[position() = last()]"));
+
+    }
+
+    @Test
+    public void composite() throws IllegalAccessException {
+        FluentBy.ByComposite aB = FluentBy.composite(new By.ByTagName("a"), new By.ByClassName("b"));
+        assertThat(aB.toString(), is("FluentBy.composite([By.tagName: a, By.className: b])"));
+        assertThat(aB.makeXPath().toString(), is(".//a[contains(concat(' ',normalize-space(@class),' '),' b ')]"));
 
     }
 
