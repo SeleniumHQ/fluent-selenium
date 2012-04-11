@@ -108,11 +108,22 @@ public abstract class FluentBy {
         throw new UnsupportedOperationException("last() not allowed for " + by.getClass().getName() + " type");
     }
 
+    public static ByLast last() {
+        return new ByLast();
+    }
+
     static class ByLast extends By {
+        
+        private final String orig;
         private final ByAttribute by;
 
         public ByLast(ByAttribute by) {
             this.by = by;
+            this.orig = by.makeXPath();
+        }
+        public ByLast() {
+            this.orig = ".//*[]";
+            by = null;
         }
 
         @Override
@@ -121,9 +132,8 @@ public abstract class FluentBy {
         }
 
         By makeXPath() {
-            String orig = by.makeXPath(); // we need to lose the last "]".
-            return By.xpath(orig.substring(0, orig.length()-1)
-                    + " and position() = last()]"); // as we add it back here
+            return By.xpath((orig.substring(0, orig.length() - 1)
+                    + " and position() = last()]").replace("[ and ", "["));
         }
 
         @Override
@@ -133,7 +143,7 @@ public abstract class FluentBy {
 
         @Override
         public String toString() {
-            return "FluentBy.last(" + by + ")";
+            return "FluentBy.last(" + (by == null ? "" : by)  + ")";
         }
 
     }

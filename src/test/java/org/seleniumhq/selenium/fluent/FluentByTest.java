@@ -33,5 +33,15 @@ public class FluentByTest {
         assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[@foo = 'bar' and position() = last()]"));
 
     }
-    
+
+    @Test
+    public void last_xpath_directive_should_be_specifiable() throws IllegalAccessException {
+
+        FluentBy.ByLast lastFooBar = FluentBy.last();
+
+        assertThat(lastFooBar.toString(), is("FluentBy.last()"));
+        assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[position() = last()]"));
+
+    }
+
 }
