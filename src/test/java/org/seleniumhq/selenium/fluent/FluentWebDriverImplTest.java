@@ -102,7 +102,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.id: idA) -> we1\n" +
                         "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(composite([By.tagName: div, By.className: classC])) -> we2\n" +
+                        "we1.findElement(FluentBy.composite([By.tagName: div, By.className: classC])) -> we2\n" +
                         "we2.getTagName() -> 'div'\n" +
                         "we2.findElement(By.tagName: span) -> we3\n" +
                         "we3.getTagName() -> 'span'\n" +

@@ -24,12 +24,12 @@ public class FluentByTest {
 
         FluentBy.ByAttribute fooBar = (FluentBy.ByAttribute) FluentBy.attribute("foo", "bar");
         
-        assertThat(fooBar.toString(), is("By.attribute: foo = 'bar'"));
+        assertThat(fooBar.toString(), is("FluentBy.attribute: foo = 'bar'"));
         assertThat(fooBar.makeByXPath().toString(), is("By.xpath: .//*[@foo = 'bar']"));
 
         FluentBy.ByLast lastFooBar = FluentBy.last(fooBar);
 
-        assertThat(lastFooBar.toString(), is("FluentBy.last(By.attribute: foo = 'bar')"));
+        assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.attribute: foo = 'bar')"));
         assertThat(lastFooBar.makeXPath().toString(), is("By.xpath: .//*[@foo = 'bar'] and position() = last()"));
 
     }

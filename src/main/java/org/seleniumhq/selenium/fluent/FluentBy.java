@@ -172,7 +172,7 @@ public abstract class FluentBy {
         }
 
         private String getTagName() {
-            return bys[0].toString().substring("By.tagName: ".length());
+            return bys[0].toString().substring("FluentBy.tagName: ".length());
         }
 
         @Override
@@ -182,7 +182,7 @@ public abstract class FluentBy {
 
         @Override
         public String toString() {
-            return "composite(" + asList(bys) + ")";
+            return "FluentBy.composite(" + asList(bys) + ")";
         }
     }
 
@@ -211,7 +211,7 @@ public abstract class FluentBy {
 
         @Override
         public String toString() {
-            return "By.strictClassName: " + className;
+            return "FluentBy.strictClassName: " + className;
         }
     }
 
@@ -252,7 +252,7 @@ public abstract class FluentBy {
 
         @Override
         public String toString() {
-            return "By.attribute: " + name + val();
+            return "FluentBy.attribute: " + name + val();
         }
     }
 
