@@ -101,6 +101,41 @@ public abstract class FluentBy {
         return new ByComposite(bys);
     }
 
+    public static ByLast last(By by) {
+        if (by instanceof ByAttribute) {
+            return new ByLast((ByAttribute) by);
+        }
+        throw new UnsupportedOperationException("last() not allowed for " + by.getClass().getName() + " type");
+    }
+
+    static class ByLast extends By {
+        private final ByAttribute by;
+
+        public ByLast(ByAttribute by) {
+            this.by = by;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            return makeXPath().findElements(context);
+        }
+
+        By makeXPath() {
+            return By.xpath(by.makeXPath() + " and position() = last()");
+        }
+
+        @Override
+        public WebElement findElement(SearchContext context) {
+            return makeXPath().findElement(context);
+        }
+
+        @Override
+        public String toString() {
+            return "FluentBy.last(" + by + ")";
+        }
+
+    }
+
     // Until WebDriver supports a composite in browser implementations, only
     // TagName + ClassName is allowed as it can easily map to XPath.
     private static class ByComposite extends By {
@@ -131,8 +166,6 @@ public abstract class FluentBy {
             } else if (bys[1] instanceof ByAttribute) {
                 ByAttribute by = (ByAttribute) bys[1];
                 xpathExpression = xpathExpression + "[" + by.nameAndValue() + "]";
-            } else {
-                System.out.println();
             }
 
             return By.xpath(xpathExpression);
@@ -182,7 +215,7 @@ public abstract class FluentBy {
         }
     }
 
-    private static class ByAttribute extends By {
+    static class ByAttribute extends By {
         private final String name;
         private final String value;
 
@@ -193,11 +226,15 @@ public abstract class FluentBy {
 
         @Override
         public WebElement findElement(SearchContext context) {
-            return makeXPath().findElement(context);
+            return makeByXPath().findElement(context);
         }
 
-        private By makeXPath() {
-            return By.xpath(".//*[" + nameAndValue() + "]");
+        By makeByXPath() {
+            return By.xpath(makeXPath());
+        }
+
+        String makeXPath() {
+            return ".//*[" + nameAndValue() + "]";
         }
 
         private String nameAndValue() {
@@ -210,7 +247,7 @@ public abstract class FluentBy {
 
         @Override
         public List<WebElement> findElements(SearchContext context) {
-            return makeXPath().findElements(context);
+            return makeByXPath().findElements(context);
         }
 
         @Override
