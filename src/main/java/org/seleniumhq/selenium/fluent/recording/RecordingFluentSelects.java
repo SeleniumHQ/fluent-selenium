@@ -1,6 +1,5 @@
 package org.seleniumhq.selenium.fluent.recording;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentSelect;
@@ -86,8 +85,8 @@ public class RecordingFluentSelects extends FluentSelects {
         throw notRecordableYet();
     }
 
-    private NotImplementedException notRecordableYet() {
-        return new NotImplementedException("Not recordable yet");
+    private UnsupportedOperationException notRecordableYet() {
+        return new UnsupportedOperationException("Not recordable yet");
     }
 
     @Override

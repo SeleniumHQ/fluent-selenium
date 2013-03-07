@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.IllegalLocatorException;
+import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.FindsByClassName;
@@ -58,7 +58,7 @@ public abstract class FluentBy {
                     "Cannot find elements when the class name expression is null.");
 
         if (className.matches(".*\\s+.*")) {
-            throw new IllegalLocatorException(
+            throw new InvalidSelectorException(
                     "Compound class names are not supported. Consider searching for one class name and filtering the results.");
         }
 
