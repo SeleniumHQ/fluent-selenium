@@ -25,7 +25,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.junit.internal.matchers.StringContains.containsString;
 import static org.mockito.Mockito.*;
 import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
