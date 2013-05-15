@@ -91,7 +91,7 @@ public class WebElementJournal implements WebElement {
             return rv;
         }
 
-        throw new UnsupportedOperationException("FluentBase not in stack, can't work out method name");
+        throw new UnsupportedOperationException("BaseFluentWebDriver not in stack, can't work out method name");
     }
 
     public String getAttribute(String s) {

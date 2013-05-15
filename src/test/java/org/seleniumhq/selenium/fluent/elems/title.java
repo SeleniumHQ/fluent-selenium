@@ -36,8 +36,9 @@ public class title extends BaseTest {
         TestableString title = fwd.title();
 
         assertThat(title, notNullValue());
-        assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
+        assertThat(sb.length(), equalTo(0));
         assertThat("" + title, equalTo("STR#1"));
+        assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
         assertThat(title.length(), equalTo(5));
         assertThat(title.charAt(2), equalTo('R'));
         assertTrue(title.equals("STR#1"));
@@ -56,12 +57,11 @@ public class title extends BaseTest {
         TestableString title = new RecordingFluentWebDriverFactoryImpl().recordTo(recording).title();
 
         assertThat(title, notNullValue());
-        assertThat(sb.toString(), equalTo(""));
-
+        assertThat(sb.length(), equalTo(0));
         title = (TestableString) recording.recording().playback(fwd);
-
-        assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
+        assertThat(sb.toString(), equalTo(""));
         assertThat("" + title, equalTo("STR#1"));
+        assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
         assertThat(title.length(), equalTo(5));
         assertThat(title.charAt(2), equalTo('R'));
         assertTrue(title.equals("STR#1"));

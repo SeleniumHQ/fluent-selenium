@@ -1,10 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.StaleElementReferenceException;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateAssertionError;
@@ -16,36 +13,30 @@ public class TestableString implements CharSequence {
     private final Execution<String> execution;
     private final BaseFluentWebDriver.Context context;
 
+    public TestableString(Execution<String> execution, BaseFluentWebDriver.Context ctx) {
+        this(null, execution, ctx);
+    }
+
     public TestableString(Period within, Execution<String> execution, BaseFluentWebDriver.Context ctx) {
         this.within = within;
         this.execution = execution;
         this.context = ctx;
-        if (within == null && execution == null && ctx == null) {
-            return;
-        }
-        if (within == null) {
-            try {
-                is = execution.execute();
-            } catch (UnsupportedOperationException e) {
-                throw e;
-            } catch (RuntimeException e) {
-                throw decorateRuntimeException(ctx, e);
-            } catch (AssertionError e) {
-                throw decorateAssertionError(ctx, e);
-            }
-        }
     }
 
     public void shouldBe(String shouldBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
         try {
-            if (within != null && (is == null || !is.equals(shouldBe))) {
-                boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
-                do {
+            if (!shouldBe.equals(is)) {
+                if (within != null) {
+                    boolean passed;
+                    long endMillis = within.getEndMillis(System.currentTimeMillis());
+                    do {
+                        assignValueIfNeeded();
+                        passed = is != null && is.equals(shouldBe);
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                } else {
                     assignValueIfNeeded();
-                    passed = is != null && is.equals(shouldBe);
-                } while (System.currentTimeMillis() < endMillis && !passed);
+                }
             }
             assertThat(is, equalTo(shouldBe));
         } catch (UnsupportedOperationException e) {
@@ -55,6 +46,11 @@ public class TestableString implements CharSequence {
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
         }
+    }
+
+    public TestableString within(Period period) {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "within", null, period);
+        return new TestableString(period, execution, ctx);
     }
 
     private void assignValueIfNeeded() {
@@ -67,7 +63,8 @@ public class TestableString implements CharSequence {
     public void shouldNotBe(String shouldNotBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
         try {
-            if (within != null && (is == null || is.equals(shouldNotBe))) {
+            assignValueIfNeeded();
+            if (shouldNotBe.equals(is) && within != null) {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
@@ -78,7 +75,7 @@ public class TestableString implements CharSequence {
             assertThat(is, not(equalTo(shouldNotBe)));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (StaleElementReferenceException e) {
+        } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
@@ -88,7 +85,8 @@ public class TestableString implements CharSequence {
     public void shouldContain(String shouldContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
         try {
-            if (within != null && (is == null || is.indexOf(shouldContain) == -1)) {
+            assignValueIfNeeded();
+            if (is.indexOf(shouldContain) == -1 && within != null) {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
@@ -99,7 +97,7 @@ public class TestableString implements CharSequence {
             assertThat(is, containsString(shouldContain));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (StaleElementReferenceException e) {
+        } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
@@ -109,7 +107,8 @@ public class TestableString implements CharSequence {
     public void shouldNotContain(String shouldNotContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
         try {
-            if (within != null && (is == null || is.indexOf(shouldNotContain) > -1)) {
+            assignValueIfNeeded();
+            if (is.indexOf(shouldNotContain) > -1 && within != null) {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
@@ -120,7 +119,7 @@ public class TestableString implements CharSequence {
             assertThat(is, not(containsString(shouldNotContain)));
         } catch (UnsupportedOperationException e) {
             throw e;
-        } catch (StaleElementReferenceException e) {
+        } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
@@ -128,40 +127,107 @@ public class TestableString implements CharSequence {
     }
 
     public int length() {
-        assignValueIfNeeded();
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "length", null, "");
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is.length();
     }
 
     public char charAt(int i) {
-        assignValueIfNeeded();
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "charAt", null, i);
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is.charAt(i);
     }
 
     public CharSequence subSequence(int i, int i1) {
-        assignValueIfNeeded();
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "subSequence", null, i + ", " + i1);
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is.subSequence(i, i1);
     }
 
     @Override
     public boolean equals(Object o) {
-        assignValueIfNeeded();
         if (this == o) return true;
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "equals", null, o);
+        assignValueAndWrapExceptionsIfNeeded(ctx);
+
         return o.equals(is);
     }
 
     @Override
     public int hashCode() {
-        assignValueIfNeeded();
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "hashCode", null, "");
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is.hashCode();
     }
 
     @Override
     public String toString() {
-        assignValueIfNeeded();
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "toString", null, "");
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is;
     }
-    
+
+    protected String assignValueAndWrapExceptionsIfNeeded(BaseFluentWebDriver.Context ctx) {
+        try {
+            assignValueIfNeeded();
+            return is;
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
+        }
+    }
+
     public String replace(CharSequence from, CharSequence to) {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "replace", null, from + ", " + to);
+        assignValueAndWrapExceptionsIfNeeded(ctx);
         return is.replace(from, to);
+    }
+
+    public void shouldMatch(String regex) {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
+        try {
+            assignValueIfNeeded();
+            if ((is != null && !is.matches(regex)) && within != null) {
+                boolean passed;
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                do {
+                    assignValueIfNeeded();
+                    passed = is != null && !is.matches(regex);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(is.matches(regex), equalTo(true));
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
+        }
+    }
+
+    public void shouldNotMatch(String regex) {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
+        try {
+            assignValueIfNeeded();
+            if ((is != null && is.matches(regex)) && within != null) {
+                boolean passed;
+                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                do {
+                    assignValueIfNeeded();
+                    passed = is != null && is.matches(regex);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(is.matches(regex), not(equalTo(true)));
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw decorateRuntimeException(ctx, e);
+        } catch (AssertionError e) {
+            throw decorateAssertionError(ctx, e);
+        }
+
     }
 }

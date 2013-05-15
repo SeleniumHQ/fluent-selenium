@@ -104,11 +104,18 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public TestableString getTagName() {
-        return new TestableString(getPeriod(), new Execution<String>() {
+        return new TagNameTestableString(new Execution<String>() {
             public String execute() {
                 return currentElement.getTagName();
             }
         }, Context.singular(context, "getTagName"));
+    }
+
+    private static class TagNameTestableString extends TestableString {
+        private TagNameTestableString(Execution<String> execution, Context ctx) {
+            super(execution, ctx);
+            assignValueAndWrapExceptionsIfNeeded(ctx);
+        }
     }
 
     public boolean isSelected() {
