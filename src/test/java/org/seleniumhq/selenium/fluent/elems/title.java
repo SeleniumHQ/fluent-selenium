@@ -31,7 +31,7 @@ public class title extends BaseTest {
     }
 
     @Test
-    public void button_functionality() {
+    public void title_functionality() {
 
         TestableString title = fwd.title();
 
@@ -39,18 +39,11 @@ public class title extends BaseTest {
         assertThat(sb.length(), equalTo(0));
         assertThat("" + title, equalTo("STR#1"));
         assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
-        assertThat(title.length(), equalTo(5));
-        assertThat(title.charAt(2), equalTo('R'));
-        assertTrue(title.equals("STR#1"));
-        assertFalse(title.equals("sdkfjhsdkjfh"));
-        assertThat(title.hashCode(), equalTo("STR#1".hashCode()));
-        assertThat(title.subSequence(1,3), equalTo(cs("TR")));
         assertThat(title.toString(), equalTo("STR#1"));
-        assertThat(title.replace("S", "s"), equalTo("sTR#1"));
     }
 
     @Test
-    public void recording_button_functionality() {
+    public void recording_title_functionality() {
 
         FluentRecorder recording = new FluentRecorder();
 
@@ -62,14 +55,8 @@ public class title extends BaseTest {
         assertThat(sb.toString(), equalTo(""));
         assertThat("" + title, equalTo("STR#1"));
         assertThat(sb.toString(), equalTo("getTitle():STR#1\n"));
-        assertThat(title.length(), equalTo(5));
-        assertThat(title.charAt(2), equalTo('R'));
-        assertTrue(title.equals("STR#1"));
         assertFalse(title.equals("sdkfjhsdkjfh"));
-        assertThat(title.hashCode(), equalTo("STR#1".hashCode()));
-        assertThat(title.subSequence(1,3), equalTo(cs("TR")));
         assertThat(title.toString(), equalTo("STR#1"));
-        assertThat(title.replace("S", "s"), equalTo("sTR#1"));
     }
 
 }

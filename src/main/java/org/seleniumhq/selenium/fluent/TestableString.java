@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateAssertionError;
 import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateRuntimeException;
 
-public class TestableString implements CharSequence {
+public class TestableString {
     private String is;
     private final Period within;
     private final Execution<String> execution;
@@ -31,7 +31,7 @@ public class TestableString implements CharSequence {
                     boolean passed;
                     long endMillis = within.getEndMillis(System.currentTimeMillis());
                     do {
-                        assignValueIfNeeded();
+                        is = execution.execute();
                         passed = is != null && is.equals(shouldBe);
                     } while (System.currentTimeMillis() < endMillis && !passed);
                 } else {
@@ -68,7 +68,7 @@ public class TestableString implements CharSequence {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
-                    assignValueIfNeeded();
+                    is = execution.execute();
                     passed = is != null && !is.equals(shouldNotBe);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
@@ -90,7 +90,7 @@ public class TestableString implements CharSequence {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
-                    assignValueIfNeeded();
+                    is = execution.execute();
                     passed = is != null && is.indexOf(shouldContain) > -1;
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
@@ -112,7 +112,7 @@ public class TestableString implements CharSequence {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
-                    assignValueIfNeeded();
+                    is = execution.execute();
                     passed = is != null && is.indexOf(shouldNotContain) == -1;
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
@@ -124,40 +124,6 @@ public class TestableString implements CharSequence {
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
         }
-    }
-
-    public int length() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "length", null, "");
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-        return is.length();
-    }
-
-    public char charAt(int i) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "charAt", null, i);
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-        return is.charAt(i);
-    }
-
-    public CharSequence subSequence(int i, int i1) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "subSequence", null, i + ", " + i1);
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-        return is.subSequence(i, i1);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "equals", null, o);
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-
-        return o.equals(is);
-    }
-
-    @Override
-    public int hashCode() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "hashCode", null, "");
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-        return is.hashCode();
     }
 
     @Override
@@ -180,12 +146,6 @@ public class TestableString implements CharSequence {
         }
     }
 
-    public String replace(CharSequence from, CharSequence to) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "replace", null, from + ", " + to);
-        assignValueAndWrapExceptionsIfNeeded(ctx);
-        return is.replace(from, to);
-    }
-
     public void shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
         try {
@@ -194,11 +154,13 @@ public class TestableString implements CharSequence {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
-                    assignValueIfNeeded();
+                    is = execution.execute();
                     passed = is != null && !is.matches(regex);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(is.matches(regex), equalTo(true));
+            if (!is.matches(regex)) {
+                throw new AssertionError("'" + is + "' should, but did not, match regex: /" + regex + "/");
+            }
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -216,11 +178,13 @@ public class TestableString implements CharSequence {
                 boolean passed;
                 long endMillis = within.getEndMillis(System.currentTimeMillis());
                 do {
-                    assignValueIfNeeded();
-                    passed = is != null && is.matches(regex);
+                    is = execution.execute();
+                    passed = is != null && !is.matches(regex);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(is.matches(regex), not(equalTo(true)));
+            if (is.matches(regex)) {
+                throw new AssertionError("'" + is + "' did, but should not, match regex: /" + regex + "/");
+            }
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {

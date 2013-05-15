@@ -10,9 +10,7 @@ import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class url extends BaseTest {
 
@@ -36,14 +34,7 @@ public class url extends BaseTest {
         assertThat(url, notNullValue());
         assertThat(sb.toString(), equalTo("getCurrentUrl():STR#1\n"));
         assertThat("" + url, equalTo("STR#1"));
-        assertThat(url.length(), equalTo(5));
-        assertThat(url.charAt(2), equalTo('R'));
-        assertTrue(url.equals("STR#1"));
-        assertFalse(url.equals("sdkfjhsdkjfh"));
-        assertThat(url.hashCode(), equalTo("STR#1".hashCode()));
-        assertThat(url.subSequence(1, 3), equalTo(cs("TR")));
         assertThat(url.toString(), equalTo("STR#1"));
-        assertThat(url.replace("S", "s"), equalTo("sTR#1"));
     }
 
 }

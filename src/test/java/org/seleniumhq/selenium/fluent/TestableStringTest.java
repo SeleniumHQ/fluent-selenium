@@ -134,7 +134,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldMatch('.* blort \\d\\d.*')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: <true>\n     but: was <false>"));
+            assertThat(e.getCause().getMessage(), equalTo("'Mary Has 12 Little Lambs' should, but did not, match regex: /.* blort \\d\\d.*/"));
         }
     }
 
@@ -147,7 +147,7 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotMatch('.* Has \\d\\d.*')"));
-            assertThat(e.getCause().getMessage(), equalTo("\nExpected: not <true>\n     but: was <true>"));
+            assertThat(e.getCause().getMessage(), equalTo("'Mary Has 12 Little Lambs' did, but should not, match regex: /.* Has \\d\\d.*/"));
         }
     }
 

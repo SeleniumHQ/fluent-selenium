@@ -802,7 +802,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
-        return  new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
+        return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
     }
 
     protected <T> T decorateExecution(Execution<T> execution, Context ctx) {

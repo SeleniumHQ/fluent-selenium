@@ -673,7 +673,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
 
         sb.setLength(0);
-        CharSequence text = elems.getText();
+        CharSequence text = elems.getText().toString();
         assertThat(text.toString(), equalTo(cs("Mary had 3 little lamb(s).Mary had 4 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 3 little lamb(s).'\nwe2.getText() -> 'Mary had 4 little lamb(s).'\n"));
 
