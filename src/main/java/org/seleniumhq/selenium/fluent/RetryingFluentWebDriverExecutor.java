@@ -49,8 +49,6 @@ public class RetryingFluentWebDriverExecutor implements FluentWebDriverExecutor 
         } else {
             throw lastAE;
         }
-        
-        
     }
 
     private boolean retry(Throwable e, long start, int retries) {
@@ -60,6 +58,4 @@ public class RetryingFluentWebDriverExecutor implements FluentWebDriverExecutor 
         }
         return shouldRetry;
     }
-
-
 }
