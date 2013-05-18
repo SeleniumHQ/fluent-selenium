@@ -39,12 +39,12 @@ public class FluentExecutionStopped extends RuntimeException {
     public String getMessage() {
         String message = "";
         if (retries > 0) {
-            message = message + retries
-                    + " retries over "
-                    + durationInMillis
-                    + " millis; ";
+            message = message + "; " + retries + " retries";
         }
-        return message + super.getMessage();
+        if (durationInMillis > 0) {
+            message = message + "; " + durationInMillis + " ms duration";
+        }
+        return super.getMessage() + message;
     }
 
     public static class BecauseOfStaleElement extends FluentExecutionStopped {

@@ -114,7 +114,8 @@ public class FluentWebElement extends BaseFluentWebElement {
     private static class TagNameTestableString extends TestableString {
         private TagNameTestableString(Execution<String> execution, Context ctx) {
             super(execution, ctx);
-            assignValueAndWrapExceptionsIfNeeded(ctx);
+            long start = System.currentTimeMillis();
+            assignValueAndWrapExceptionsIfNeeded(ctx, start);
         }
     }
 
@@ -159,27 +160,27 @@ public class FluentWebElement extends BaseFluentWebElement {
     }
 
     public TestableString getCssValue(final String cssName) {
-        return new TestableString(getPeriod(), new Execution<String>() {
+        return new TestableString(new Execution<String>() {
             public String execute() {
                 return currentElement.getCssValue(cssName);
             }
-        }, Context.singular(context, "getCssValue", null, cssName));
+        }, Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
     }
 
     public TestableString getAttribute(final String attr) {
-        return new TestableString(getPeriod(), new Execution<String>() {
+        return new TestableString(new Execution<String>() {
             public String execute() {
                 return currentElement.getAttribute(attr);
             }
-        }, Context.singular(context, "getAttribute", null, attr));
+        }, Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
     }
 
     public TestableString getText() {
-        return new TestableString(getPeriod(), new Execution<String>() {
+        return new TestableString(new Execution<String>() {
             public String execute() {
                 return currentElement.getText();
             }
-        }, Context.singular(context, "getText"));
+        }, Context.singular(context, "getText")).within(getPeriod());
     }
 
     //@Override

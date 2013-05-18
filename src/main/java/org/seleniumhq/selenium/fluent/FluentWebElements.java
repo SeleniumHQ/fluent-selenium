@@ -144,7 +144,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
                 return text;
             }
         };
-        return new TestableString(getPeriod(), execution, ctx);
+        return new TestableString(execution, ctx).within(getPeriod());
     }
 
     @Override

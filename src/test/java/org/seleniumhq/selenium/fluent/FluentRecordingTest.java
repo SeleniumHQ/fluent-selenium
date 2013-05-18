@@ -40,11 +40,11 @@ public class FluentRecordingTest {
             String message = e.getMessage();
             String[] parts = message.split(" ");
             message = message.replaceAll("\\d", "N");
-            assertThat(message, equalTo("N retries over NNN millis; ha ha"));
-            assertThat(Integer.parseInt(parts[0]), greaterThan(5)); // in lieu of 'between' matcher
-            assertThat(Integer.parseInt(parts[0]), lessThan(8));
-            assertThat(Integer.parseInt(parts[3]), greaterThan(300));
-            assertThat(Integer.parseInt(parts[3]), lessThan(400));
+            assertThat(message, equalTo("ha ha; N retries; NNN ms duration"));
+            assertThat(Integer.parseInt(parts[2]), greaterThan(5)); // in lieu of 'between' matcher
+            assertThat(Integer.parseInt(parts[2]), lessThan(8));
+            assertThat(Integer.parseInt(parts[4]), greaterThan(300));
+            assertThat(Integer.parseInt(parts[4]), lessThan(400));
         }
 
     }

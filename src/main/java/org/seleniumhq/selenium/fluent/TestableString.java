@@ -1,5 +1,9 @@
 package org.seleniumhq.selenium.fluent;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,7 +21,7 @@ public class TestableString {
         this(null, execution, ctx);
     }
 
-    public TestableString(Period within, Execution<String> execution, BaseFluentWebDriver.Context ctx) {
+    private TestableString(Period within, Execution<String> execution, BaseFluentWebDriver.Context ctx) {
         this.within = within;
         this.execution = execution;
         this.context = ctx;
@@ -25,11 +29,12 @@ public class TestableString {
 
     public void shouldBe(String shouldBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
+        long start = System.currentTimeMillis();
         try {
             if (!shouldBe.equals(is)) {
                 if (within != null) {
                     boolean passed;
-                    long endMillis = within.getEndMillis(System.currentTimeMillis());
+                    long endMillis = calcEndMillis();
                     do {
                         is = execution.execute();
                         passed = is != null && is.equals(shouldBe);
@@ -38,7 +43,7 @@ public class TestableString {
                     assignValueIfNeeded();
                 }
             }
-            assertThat(is, equalTo(shouldBe));
+            assertThat(durationIfNotZero(start), is, equalTo(shouldBe));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -62,17 +67,18 @@ public class TestableString {
 
     public void shouldNotBe(String shouldNotBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
+        long start = System.currentTimeMillis();
         try {
             assignValueIfNeeded();
             if (shouldNotBe.equals(is) && within != null) {
                 boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
                     passed = is != null && !is.equals(shouldNotBe);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(is, not(equalTo(shouldNotBe)));
+            assertThat(durationIfNotZero(start), is, not(equalTo(shouldNotBe)));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -84,17 +90,18 @@ public class TestableString {
 
     public void shouldContain(String shouldContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
+        long start = System.currentTimeMillis();
         try {
             assignValueIfNeeded();
             if (is.indexOf(shouldContain) == -1 && within != null) {
                 boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
                     passed = is != null && is.indexOf(shouldContain) > -1;
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(is, containsString(shouldContain));
+            assertThat(durationIfNotZero(start), is, containsString(shouldContain));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -104,19 +111,34 @@ public class TestableString {
         }
     }
 
+    private String durationIfNotZero(long start) {
+        long duration = System.currentTimeMillis() - start;
+        if (duration > 0 ) {
+            return "(after " + duration + " ms)";
+        } else {
+            return "";
+        }
+
+    }
+
+    private long calcEndMillis() {
+        return within.getEndMillis(System.currentTimeMillis());
+    }
+
     public void shouldNotContain(String shouldNotContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
+        long start = System.currentTimeMillis();
         try {
             assignValueIfNeeded();
             if (is.indexOf(shouldNotContain) > -1 && within != null) {
                 boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
                     passed = is != null && is.indexOf(shouldNotContain) == -1;
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(is, not(containsString(shouldNotContain)));
+            assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -129,11 +151,12 @@ public class TestableString {
     @Override
     public String toString() {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "toString", null, "");
-        assignValueAndWrapExceptionsIfNeeded(ctx);
+        long start = System.currentTimeMillis();
+        assignValueAndWrapExceptionsIfNeeded(ctx, start);
         return is;
     }
 
-    protected String assignValueAndWrapExceptionsIfNeeded(BaseFluentWebDriver.Context ctx) {
+    protected String assignValueAndWrapExceptionsIfNeeded(BaseFluentWebDriver.Context ctx, long start) {
         try {
             assignValueIfNeeded();
             return is;
@@ -148,19 +171,18 @@ public class TestableString {
 
     public void shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
+        long start = System.currentTimeMillis();
         try {
             assignValueIfNeeded();
             if ((is != null && !is.matches(regex)) && within != null) {
                 boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
-                    passed = is != null && !is.matches(regex);
+                    passed = is != null && is.matches(regex);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            if (!is.matches(regex)) {
-                throw new AssertionError("'" + is + "' should, but did not, match regex: /" + regex + "/");
-            }
+            assertThat(durationIfNotZero(start), is, matchesRegex(regex));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -172,25 +194,48 @@ public class TestableString {
 
     public void shouldNotMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
+        long start = System.currentTimeMillis();
         try {
             assignValueIfNeeded();
             if ((is != null && is.matches(regex)) && within != null) {
                 boolean passed;
-                long endMillis = within.getEndMillis(System.currentTimeMillis());
+                long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
                     passed = is != null && !is.matches(regex);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            if (is.matches(regex)) {
-                throw new AssertionError("'" + is + "' did, but should not, match regex: /" + regex + "/");
-            }
+            assertThat(durationIfNotZero(start), is, not(matchesRegex(regex)));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
             throw decorateRuntimeException(ctx, e);
         } catch (AssertionError e) {
             throw decorateAssertionError(ctx, e);
+        }
+    }
+
+    public static Matcher<String> matchesRegex(String substring) {
+        return new MatchesRegex(substring);
+    }
+
+    private static class MatchesRegex extends BaseMatcher<String> {
+        private final String regex;
+
+        public MatchesRegex(String regex) {
+            this.regex = regex;
+        }
+
+        public void describeTo(Description description) {
+            description.appendText("a string matching /" + regex + "/");
+        }
+
+        final public void describeMismatch(Object item, Description description) {
+            description.appendText("was ").appendValue(item);
+        }
+
+        public final boolean matches(Object item) {
+            return ((String) item).matches(regex);
         }
 
     }

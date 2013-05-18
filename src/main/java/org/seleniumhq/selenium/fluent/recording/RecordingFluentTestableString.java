@@ -8,7 +8,7 @@ public class RecordingFluentTestableString extends TestableString {
     private final FluentRecorder recording;
 
     public RecordingFluentTestableString(FluentRecorder recording) {
-        super(null, null, null);
+        super(null, null);
         this.recording = recording;
     }
 

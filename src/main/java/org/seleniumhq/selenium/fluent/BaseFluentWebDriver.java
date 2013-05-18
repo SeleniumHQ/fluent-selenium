@@ -565,7 +565,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
             }
         };
         Context ctx = Context.singular(context, "url");
-        return new TestableString(getPeriod(), execution, ctx);
+        return new TestableString(execution, ctx).within(getPeriod());
     }
 
     protected Period getPeriod() {
@@ -579,7 +579,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
             }
         };
         Context ctx = Context.singular(context, "title");
-        return new TestableString(getPeriod(), execution, ctx);
+        return new TestableString(execution, ctx).within(getPeriod());
     }
 
     protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context);
@@ -786,12 +786,15 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
+        FluentExecutionStopped rv = null;
         if (e instanceof StaleElementReferenceException) {
-            return new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
+            rv =  new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
         } else if (e instanceof NothingMatches) {
-            return new FluentExecutionStopped.BecauseNothingMatchesInFilter(replacePkgNames(e) + ctx);
+            rv = new FluentExecutionStopped.BecauseNothingMatchesInFilter(replacePkgNames(e) + ctx);
+        } else {
+            rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
         }
-        return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
+        return rv;
     }
 
     private static String replacePkgNames(Throwable e) {
@@ -802,10 +805,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
-        return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
+        FluentExecutionStopped rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
+        return rv;
     }
 
     protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
+        long start = System.currentTimeMillis();
         try {
             return execution.execute();
         } catch (UnsupportedOperationException e) {
