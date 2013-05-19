@@ -27,7 +27,7 @@ public class url extends BaseTest {
     }
 
     @Test
-    public void button_functionality() {
+    public void url_functionality() {
 
         TestableString url = fwd.url();
 
