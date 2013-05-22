@@ -2,7 +2,8 @@ package org.seleniumhq.selenium.fluent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
+
+import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -172,17 +173,19 @@ public class TestableString {
     public void shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
         long start = System.currentTimeMillis();
+        MatchesRegex matcher = new MatchesRegex(regex);
         try {
             assignValueIfNeeded();
-            if ((is != null && !is.matches(regex)) && within != null) {
+
+            if ((is != null && !matcher.matches(is)) && within != null) {
                 boolean passed;
                 long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
-                    passed = is != null && is.matches(regex);
+                    passed = is != null && matcher.matches(is);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(durationIfNotZero(start), is, matchesRegex(regex));
+            assertThat(durationIfNotZero(start), is, matcher);
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -195,17 +198,19 @@ public class TestableString {
     public void shouldNotMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
         long start = System.currentTimeMillis();
+        MatchesRegex matcher = new MatchesRegex(regex);
+
         try {
             assignValueIfNeeded();
-            if ((is != null && is.matches(regex)) && within != null) {
+            if ((is != null && matcher.matches(is)) && within != null) {
                 boolean passed;
                 long endMillis = calcEndMillis();
                 do {
                     is = execution.execute();
-                    passed = is != null && !is.matches(regex);
+                    passed = is != null && !matcher.matches(is);
                 } while (System.currentTimeMillis() < endMillis && !passed);
             }
-            assertThat(durationIfNotZero(start), is, not(matchesRegex(regex)));
+            assertThat(durationIfNotZero(start), is, not(matcher));
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -215,15 +220,13 @@ public class TestableString {
         }
     }
 
-    public static Matcher<String> matchesRegex(String substring) {
-        return new MatchesRegex(substring);
-    }
-
     private static class MatchesRegex extends BaseMatcher<String> {
         private final String regex;
+        private final Pattern pattern;
 
         public MatchesRegex(String regex) {
             this.regex = regex;
+            pattern = Pattern.compile(regex, Pattern.MULTILINE);
         }
 
         public void describeTo(Description description) {
@@ -235,7 +238,8 @@ public class TestableString {
         }
 
         public final boolean matches(Object item) {
-            return ((String) item).matches(regex);
+
+            return pattern.matcher((String) item).find();
         }
 
     }

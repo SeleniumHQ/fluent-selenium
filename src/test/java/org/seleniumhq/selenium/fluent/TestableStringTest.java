@@ -21,6 +21,12 @@ public class TestableStringTest {
         }
     };
 
+    private static final Execution<String> MARY_EXECUTION_WITH_NEWLINES = new Execution<String>() {
+        public String execute() {
+            return "Mary Has \n12\n Little Lambs";
+        }
+    };
+
     @Test
     public void stringShouldBeSomething() {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
@@ -139,6 +145,12 @@ public class TestableStringTest {
     }
 
     @Test
+    public void stringShouldRegexMatchSomethingEvenIfThereAreNewlines() {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldMatch("(.*)12(.*)");
+    }
+
+    @Test
     public void stringShouldNotRegexMatchSomething() {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION, ctx).shouldNotMatch(".* blort \\d\\d.*");
@@ -152,6 +164,20 @@ public class TestableStringTest {
                     "     but: was \"Mary Has 12 Little Lambs\""));
         }
     }
+
+    @Test
+    public void stringShouldNotRegexMatchSomethingEvenIfThereAreNewlines() {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        try {
+            new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldNotMatch("(.*)12(.*)");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotMatch('(.*)12(.*)')"));
+            assertThat(getCauseMessage(e), equalTo("\n" +
+                    "Expected: not a string matching /(.*)12(.*)/\n" +
+                    "     but: was \"Mary Has\n12\nLittle Lambs\""));
+        }
+    }
+
 
     @Test
     public void stringShouldRegexMatchSomethingWithinSomeTime() {
