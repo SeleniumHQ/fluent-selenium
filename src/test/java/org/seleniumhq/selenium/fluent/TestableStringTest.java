@@ -3,6 +3,7 @@ package org.seleniumhq.selenium.fluent;
 import org.junit.Test;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.seleniumhq.selenium.fluent.Period.secs;
@@ -172,9 +173,9 @@ public class TestableStringTest {
             new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldNotMatch("(.*)12(.*)");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotMatch('(.*)12(.*)')"));
-            assertThat(getCauseMessage(e), equalTo("\n" +
-                    "Expected: not a string matching /(.*)12(.*)/\n" +
-                    "     but: was \"Mary Has\n12\nLittle Lambs\""));
+            String causeMessage = getCauseMessage(e);
+            assertEquals("\nExpected: not a string matching /(.*)12(.*)/\n" +
+                    "     but: was \"Mary Has \\n12\\n Little Lambs\"", causeMessage);
         }
     }
 
@@ -208,7 +209,11 @@ public class TestableStringTest {
     }
 
     private String getCauseMessage(FluentExecutionStopped e) {
-        return e.getCause().getMessage().replace("1001", "1000").replace("1002", "1000");
+        return e.getCause().getMessage()
+                .replace("1001", "1000")
+                .replace("1002", "1000")
+                .replace("(after 1 ms)", "")
+                .replace("(after 2 ms)", "");
     }
 
 }
