@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentRecorder;
@@ -17,6 +18,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class div extends BaseTest {
 
@@ -35,42 +39,57 @@ public class div extends BaseTest {
     @Test
     public void div_functionality() {
 
+        wd = mock(WebDriver.class);
+        WebElement we = mock(WebElement.class);
+        WebElement we2 = mock(WebElement.class);
+        WebElement we3 = mock(WebElement.class);
+        WebElement we4 = mock(WebElement.class);
+        WebElement we5 = mock(WebElement.class);
+        fwd = new FluentWebDriverImpl(wd);
+        setupExpecations(wd, we, we2, we3, we4, we5, "div");
+
         FluentWebElements fe = fwd.div()
                 .div(By.xpath("@foo = 'bar'"))
                 .div(By.cssSelector("baz"))
                 .divs();
 
         assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: div) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(By.xpath: .//div[@foo = 'bar']) -> we2\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we2.findElement(By.selector: baz) -> we3\n" +
-                        "we3.getTagName() -> 'div'\n" +
-                        "we3.findElements(By.tagName: div) -> [we4, we5]\n" +
-                        "we4.getTagName() -> 'div'\n" +
-                        "we5.getTagName() -> 'div'\n"
-        ));
+        verifications(wd, we, we2, we3, we4, we5, "div");
+        verifyNoMoreInteractions(wd, we, we2, we3, we4, we5);
     }
 
     @Test
     public void divs_functionality() {
+
+        wd = mock(WebDriver.class);
+        WebElement we = mock(WebElement.class);
+        WebElement we2 = mock(WebElement.class);
+        WebElement we3 = mock(WebElement.class);
+        fwd = new FluentWebDriverImpl(wd);
+
+        setupExpecations(wd, we, we2, we3, "div");
+
+
         FluentWebElements fe = fwd.div()
                 .divs(By.name("qux"));
 
         assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: div) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we3.getTagName() -> 'div'\n"
-        ));
+
+        verifications(wd, we, we2, we3, "div");
+
+        verifyNoMoreInteractions(wd, we, we2, we3);
+
     }
 
     @Test
     public void div_mismatched() {
+
+        wd = mock(WebDriver.class);
+        WebElement we = mock(WebElement.class);
+        fwd = new FluentWebDriverImpl(wd);
+        when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
+        when(we.getTagName()).thenReturn("boo");
+
         try {
             fwd.div(By.linkText("mismatching_tag_name"))
                     .clearField();

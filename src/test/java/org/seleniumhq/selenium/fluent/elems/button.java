@@ -13,16 +13,13 @@ import org.seleniumhq.selenium.fluent.FluentWebElements;
 import org.seleniumhq.selenium.fluent.RecordingFluentWebDriverFactoryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 public class button extends BaseTest {
 
@@ -48,15 +45,7 @@ public class button extends BaseTest {
         WebElement we4 = mock(WebElement.class);
         WebElement we5 = mock(WebElement.class);
         fwd = new FluentWebDriverImpl(wd);
-        when(wd.findElement(By.tagName("button"))).thenReturn(we);
-        when(we.getTagName()).thenReturn("button");
-        when(we.findElement(By.xpath(".//button[@foo = 'bar']"))).thenReturn(we2);
-        when(we2.getTagName()).thenReturn("button");
-        when(we2.findElement(By.cssSelector("baz"))).thenReturn(we3);
-        when(we3.getTagName()).thenReturn("button");
-        when(we3.findElements(By.tagName("button"))).thenReturn(newArrayList(we4, we5));
-        when(we4.getTagName()).thenReturn("button");
-        when(we5.getTagName()).thenReturn("button");
+        setupExpecations(wd, we, we2, we3, we4, we5, "button");
 
         FluentWebElements fe = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
@@ -64,34 +53,29 @@ public class button extends BaseTest {
                 .buttons(); // very artificial, sure.
 
         assertThat(fe, notNullValue());
-
-        verify(wd).findElement(By.tagName("button"));
-        verify(we).getTagName();
-        verify(we).findElement(By.xpath(".//button[@foo = 'bar']"));
-        verify(we2).getTagName();
-        verify(we2).findElement(By.cssSelector("baz"));
-        verify(we3).getTagName();
-        verify(we3).findElements(By.tagName("button"));
-        verify(we4).getTagName();
-        verify(we5).getTagName();
-
+        verifications(wd, we, we2, we3, we4, we5, "button");
         verifyNoMoreInteractions(wd, we, we2, we3, we4, we5);
 
     }
 
     @Test
     public void buttons_functionality() {
-        FluentWebElements fe = fwd.button()
-                .buttons(By.name("qux"));
+
+        wd = mock(WebDriver.class);
+        WebElement we = mock(WebElement.class);
+        WebElement we2 = mock(WebElement.class);
+        WebElement we3 = mock(WebElement.class);
+        fwd = new FluentWebDriverImpl(wd);
+        setupExpecations(wd, we, we2, we3, "button");
+
+        FluentWebElements fe = fwd.button().buttons(By.name("qux"));
 
         assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: button) -> we1\n" +
-                        "we1.getTagName() -> 'button'\n" +
-                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
-                        "we2.getTagName() -> 'button'\n" +
-                        "we3.getTagName() -> 'button'\n"
-        ));
+
+        verifications(wd, we, we2, we3, "button");
+
+        verifyNoMoreInteractions(wd, we, we2, we3);
+
     }
 
     @Test
