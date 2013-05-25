@@ -48,7 +48,6 @@ public class select extends BaseTest2 {
 
         assertThat(fs, notNullValue());
 
-
         verify(wd).findElement(By.tagName("select"));
         verify(we, times(2)).getTagName();
         verify(we).getAttribute("multiple");
