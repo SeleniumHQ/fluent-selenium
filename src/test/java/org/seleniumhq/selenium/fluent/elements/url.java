@@ -14,15 +14,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class currentUrl extends BaseTest2 {
+public class url extends BaseTest2 {
 
     @Test
-    public void currentUrl_functionality() {
+    public void url_functionality() {
 
         wd = mock(WebDriver.class);
         fwd = new FluentWebDriverImpl(wd);
 
-        TestableString ts = fwd.currentUrl();
+        TestableString ts = fwd.url();
 
         assertThat(ts, notNullValue());
         verifyNoMoreInteractions(wd);

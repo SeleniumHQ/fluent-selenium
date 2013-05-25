@@ -582,16 +582,6 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
         return new TestableString(execution, ctx).within(getPeriod());
     }
 
-    public TestableString currentUrl() {
-        Execution<String> execution = new Execution<String>() {
-            public String execute() {
-                return delegate.getCurrentUrl();
-            }
-        };
-        Context ctx = Context.singular(context, "currentUrl");
-        return new TestableString(execution, ctx).within(getPeriod());
-    }
-
     protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context);
 
     protected final By fixupBy(By by, String tagName) {
