@@ -5,10 +5,8 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentRecorder;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
-import org.seleniumhq.selenium.fluent.RecordingFluentWebDriverFactoryImpl;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -80,76 +78,5 @@ public class table extends BaseTest {
         }
     }
 
-
-    @Test
-    public void recording_table_functionality() {
-
-        FluentRecorder recording = new FluentRecorder();
-
-        FluentWebElements fe = new RecordingFluentWebDriverFactoryImpl().recordTo(recording)
-                .table()
-                .table(By.xpath("@foo = 'bar'"))
-                .table(By.cssSelector("baz"))
-                .tables();
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(""));
-
-        recording.recording().playback(fwd);
-
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: table) -> we1\n" +
-                        "we1.getTagName() -> 'table'\n" +
-                        "we1.findElement(By.xpath: .//table[@foo = 'bar']) -> we2\n" +
-                        "we2.getTagName() -> 'table'\n" +
-                        "we2.findElement(By.selector: baz) -> we3\n" +
-                        "we3.getTagName() -> 'table'\n" +
-                        "we3.findElements(By.tagName: table) -> [we4, we5]\n" +
-                        "we4.getTagName() -> 'table'\n" +
-                        "we5.getTagName() -> 'table'\n"
-        ));
-    }
-
-    @Test
-    public void recording_tables_functionality() {
-
-        FluentRecorder recording = new FluentRecorder();
-
-        FluentWebElements fe = new RecordingFluentWebDriverFactoryImpl()
-               .recordTo(recording)
-                .table()
-                .tables(By.name("qux"));
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(""));
-
-        recording.recording().playback(fwd);
-
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: table) -> we1\n" +
-                        "we1.getTagName() -> 'table'\n" +
-                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
-                        "we2.getTagName() -> 'table'\n" +
-                        "we3.getTagName() -> 'table'\n"
-        ));
-    }
-
-    @Test
-    public void recording_table_mismatched() {
-
-        FluentRecorder recording = new FluentRecorder();
-
-        new RecordingFluentWebDriverFactoryImpl().recordTo(recording).table(By.linkText("mismatching_tag_name"))
-                .clearField();
-
-        try {
-            recording.recording().playback(fwd);
-            fail("should have barfed");
-        } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.table(By.linkText: mismatching_tag_name)"));
-            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
-        }
-
-    }
 
 }

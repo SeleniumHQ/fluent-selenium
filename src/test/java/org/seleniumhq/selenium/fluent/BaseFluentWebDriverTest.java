@@ -53,9 +53,6 @@ public class BaseFluentWebDriverTest {
                 return null;
             }
 
-            public FluentWebDriver recordTo(FluentRecorder fluentRecording) {
-                return null;
-            }
         };
 
     }
