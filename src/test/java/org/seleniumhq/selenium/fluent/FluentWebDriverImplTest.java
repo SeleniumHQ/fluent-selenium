@@ -33,7 +33,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -89,40 +88,6 @@ public class FluentWebDriverImplTest extends BaseTest {
     }
 
     @Test
-    public void example_of_longer_query_using_IDs() {
-
-        FluentWebElement fe = fwd.div(ID_A).div(ID_B).span().click();
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.id: idA) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(By.id: idB) -> we2\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we2.findElement(By.tagName: span) -> we3\n" +
-                        "we3.getTagName() -> 'span'\n" +
-                        "we3.click()\n"
-        ));
-    }
-
-    @Test
-    public void example_of_longer_query_using_classes() {
-
-        FluentWebElement fe = fwd.div(ID_A).div(CLASS_C).span().click();
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.id: idA) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(FluentBy.composite([By.tagName: div, By.className: classC])) -> we2\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we2.findElement(By.tagName: span) -> we3\n" +
-                        "we3.getTagName() -> 'span'\n" +
-                        "we3.click()\n"
-        ));
-    }
-
-    @Test
     public void lengthier_expression_with_late_runtime_exception() {
 
         BaseFluentWebDriver fc = null;
@@ -146,6 +111,7 @@ public class FluentWebDriverImplTest extends BaseTest {
                         "we3.getTagName() -> 'span'\n"
         ));
     }
+
     @Test
     public void lengthier_expression_with_late_assertion_error() {
 
@@ -174,9 +140,9 @@ public class FluentWebDriverImplTest extends BaseTest {
     @Test
     public void xPaths_and_non_ongoing() {
 
-        FluentWebElement ofwd = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
+        FluentWebElement fwe = fwd.div().span(By.xpath("@foo = 'bar'")).sendKeys("apple").clearField().submit();
 
-//        assertThat(ofwd, notNullValue());
+//        assertThat(fwe, notNullValue());
 //        assertThat(sb.toString(), equalTo(
 //                "wd0.findElement(By.tagName: div) -> we1\n" +
 //                        "we1.getTagName() -> 'div'\n" +
@@ -188,47 +154,47 @@ public class FluentWebDriverImplTest extends BaseTest {
 //        ));
 //
 //        sb.setLength(0);
-//        Point locn = ofwd.getLocation();
+//        Point locn = fwe.getLocation();
 //        assertThat(locn.toString(), equalTo("(1, 1)"));
 //        assertThat(sb.toString(), equalTo("we2.getLocation() -> 1,1\n"));
 //
 //        sb.setLength(0);
-//        Dimension size = ofwd.getSize();
+//        Dimension size = fwe.getSize();
 //        assertThat(size.toString(), equalTo("(10, 10)"));
 //        assertThat(sb.toString(), equalTo("we2.getSize() -> 10,10\n"));
 //
 //        sb.setLength(0);
-//        TestableString cssVal = ofwd.getCssValue("blort");
+//        TestableString cssVal = fwe.getCssValue("blort");
 //        assertThat(cssVal.toString(), equalTo(cs("blort_value")));
 //        assertThat(sb.toString(), equalTo("we2.getCssValue(blort) -> blort_value\n"));
 //
 //        sb.setLength(0);
-//        TestableString value = ofwd.getAttribute("valerie");
+//        TestableString value = fwe.getAttribute("valerie");
 //        assertThat(value.toString(), equalTo(cs("valerie_value")));
 //        assertThat(sb.toString(), equalTo("we2.getAttribute(valerie) -> valerie_value\n"));
 
         sb.setLength(0);
-        TestableString tagName = ofwd.getTagName();
+        TestableString tagName = fwe.getTagName();
         assertThat(tagName.toString(), equalTo(cs("taggart")));
         assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
 
         sb.setLength(0);
-        boolean isSelected = ofwd.isSelected();
+        boolean isSelected = fwe.isSelected();
         assertThat(isSelected, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isSelected() -> true\n"));
 
         sb.setLength(0);
-        boolean isEnabled = ofwd.isEnabled();
+        boolean isEnabled = fwe.isEnabled();
         assertThat(isEnabled, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isEnabled() -> true\n"));
 
         sb.setLength(0);
-        boolean isDisplayed = ofwd.isDisplayed();
+        boolean isDisplayed = fwe.isDisplayed();
         assertThat(isDisplayed, equalTo(true));
         assertThat(sb.toString(), equalTo("we2.isDisplayed() -> true\n"));
 
         sb.setLength(0);
-        TestableString text = ofwd.getText();
+        TestableString text = fwe.getText();
         assertThat(text.toString(), equalTo(cs("Mary had 3 little lamb(s).")));
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
@@ -237,16 +203,16 @@ public class FluentWebDriverImplTest extends BaseTest {
 
     public void assertions_against_otherwise_non_ongoing() {
 
-        FluentWebElement ofwd = fwd.div();
+        FluentWebElement fwe = fwd.div();
 
-        assertThat(ofwd, notNullValue());
+        assertThat(fwe, notNullValue());
         assertThat(sb.toString(), equalTo(
                 "wd0.findElement(By.tagName: div) -> we1\n" +
                         "we1.getTagName() -> 'div'\n"
         ));
 
         sb.setLength(0);
-        WebElementValue<Point> location = ofwd.location();
+        WebElementValue<Point> location = fwe.location();
         Point shouldBe = new Point(1, 1);
         Matchable<Point> pointMatchable = location.shouldBe(shouldBe);
         Point locn = pointMatchable.value();
@@ -255,7 +221,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         sb.setLength(0);
         try {
-            WebElementValue<Point> location1 = ofwd.location();
+            WebElementValue<Point> location1 = fwe.location();
             location1.shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
         } catch (RuntimeException e) {
@@ -264,13 +230,13 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
-        locn = ofwd.location().shouldNotBe(new Point(2, 2)).value();
+        locn = fwe.location().shouldNotBe(new Point(2, 2)).value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
         assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
 
         sb.setLength(0);
         try {
-            ofwd.location().shouldNotBe(new Point(1, 1)).value();
+            fwe.location().shouldNotBe(new Point(1, 1)).value();
             fail("should have barfed");
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("?.div().location().shouldNotBe((1, 1)) ~ but was."));
@@ -280,62 +246,62 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         {
             sb.setLength(0);
-            Dimension size = ofwd.size().shouldBe(new Dimension(10, 10)).value();
+            Dimension size = fwe.size().shouldBe(new Dimension(10, 10)).value();
             assertThat(size, equalTo(new Dimension(10, 10)));
             assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
         }
         {
 
             sb.setLength(0);
-            Matchable<Dimension> should = ofwd.size().shouldBe(new Dimension(10,10));
+            Matchable<Dimension> should = fwe.size().shouldBe(new Dimension(10,10));
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
         }
         {
             sb.setLength(0);
-            Matchable<String> should = ofwd.cssValue("blort").shouldBe("blort_value");
+            Matchable<String> should = fwe.cssValue("blort").shouldBe("blort_value");
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.getCssValue(blort) -> blort_value\n"));
         }
         {
             sb.setLength(0);
-            Matchable<String> should = ofwd.attribute("valerie").shouldBe("valerie_value");
+            Matchable<String> should = fwe.attribute("valerie").shouldBe("valerie_value");
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.getAttribute(valerie) -> valerie_value\n"));
         }
         {
             sb.setLength(0);
-            Matchable<String> should = ofwd.tagName().shouldBe("taggart");
+            Matchable<String> should = fwe.tagName().shouldBe("taggart");
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.getTagName() -> 'taggart'\n"));
         }
         {
             sb.setLength(0);
-            Matchable<Boolean> should = ofwd.selected().shouldBe(true);
+            Matchable<Boolean> should = fwe.selected().shouldBe(true);
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.isSelected() -> true\n"));
         }
         {
             sb.setLength(0);
-            Matchable<Boolean> should = ofwd.enabled().shouldBe(true);
+            Matchable<Boolean> should = fwe.enabled().shouldBe(true);
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.isEnabled() -> true\n"));
         }
         {
             sb.setLength(0);
-            Matchable<Boolean> should = ofwd.displayed().shouldBe(true);
+            Matchable<Boolean> should = fwe.displayed().shouldBe(true);
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\n"));
         }
         {
             sb.setLength(0);
-            Matchable<String> should = ofwd.text().shouldBe("Mary had 2 little lamb(s).");
+            Matchable<String> should = fwe.text().shouldBe("Mary had 2 little lamb(s).");
             assertThat(should, notNullValue());
             assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
         }
 //        {
 //            sb.setLength(0);
-//            Matchable<String> should = ofwd.text().should().have(containsString("lamb"));
+//            Matchable<String> should = fwe.text().should().have(containsString("lamb"));
 //            assertThat(should, notNullValue());
 //            assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
 //        }
@@ -638,13 +604,13 @@ public class FluentWebDriverImplTest extends BaseTest {
         ));
 
         sb.setLength(0);
-        FluentWebElements ofwd2 = elems.clearField();
-        assertThat(ofwd2, notNullValue());
+        FluentWebElements fwes = elems.clearField();
+        assertThat(fwes, notNullValue());
         assertThat(sb.toString(), equalTo("we1.clear()\nwe2.clear()\n"));
 
         sb.setLength(0);
-        FluentWebElements ofwd3 = elems.click();
-        assertThat(ofwd3, notNullValue());
+        FluentWebElements fwe3 = elems.click();
+        assertThat(fwe3, notNullValue());
         assertThat(sb.toString(), equalTo("we1.click()\nwe2.click()\n"));
 
         sb.setLength(0);
@@ -663,13 +629,13 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\nwe2.isDisplayed() -> false\n"));
 
         sb.setLength(0);
-        FluentWebElements ofwd4 = elems.sendKeys("aaa");
-        assertThat(ofwd4, notNullValue());
+        FluentWebElements fwe4 = elems.sendKeys("aaa");
+        assertThat(fwe4, notNullValue());
         assertThat(sb.toString(), equalTo("we1.sendKeys(aaa)\nwe2.sendKeys(aaa)\n"));
 
         sb.setLength(0);
-        FluentWebElements ofwd5 = elems.submit();
-        assertThat(ofwd5, notNullValue());
+        FluentWebElements fwe5 = elems.submit();
+        assertThat(fwe5, notNullValue());
         assertThat(sb.toString(), equalTo("we1.submit()\nwe2.submit()\n"));
 
         sb.setLength(0);
@@ -724,70 +690,70 @@ public class FluentWebDriverImplTest extends BaseTest {
         elems.add(mock(FluentWebElement.class));
         elems.add(mock(FluentWebElement.class));
 
-        FluentWebElements ogme = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
+        FluentWebElements fwes = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
 
-        assertThat(ogme.size(), equalTo(4));
-        assertThat(ogme.get(0), equalTo(item0));
+        assertThat(fwes.size(), equalTo(4));
+        assertThat(fwes.get(0), equalTo(item0));
 
         {
             List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
             elems2.add(mock(FluentWebElement.class));
             elems2.add(mock(FluentWebElement.class));
 
-            ogme.addAll(elems2);
+            fwes.addAll(elems2);
         }
 
-        assertThat(ogme.size(), equalTo(6));
+        assertThat(fwes.size(), equalTo(6));
 
-        ogme.remove(item0);
+        fwes.remove(item0);
 
-        assertThat(ogme.size(), equalTo(5));
+        assertThat(fwes.size(), equalTo(5));
 
-        ogme.removeAll(elems);
+        fwes.removeAll(elems);
 
-        assertThat(ogme.size(), equalTo(2));
+        assertThat(fwes.size(), equalTo(2));
 
-        ogme.remove(0);
+        fwes.remove(0);
 
-        assertThat(ogme.size(), equalTo(1));
+        assertThat(fwes.size(), equalTo(1));
 
-        assertThat(ogme.contains("foo"), equalTo(false));
+        assertThat(fwes.contains("foo"), equalTo(false));
 
-        ogme.add(item0);
+        fwes.add(item0);
 
-        assertThat(ogme.indexOf(item0), equalTo(1));
-        assertThat(ogme.indexOf("foo"), equalTo(-1));
+        assertThat(fwes.indexOf(item0), equalTo(1));
+        assertThat(fwes.indexOf("foo"), equalTo(-1));
 
-        ogme.remove(item0);
+        fwes.remove(item0);
 
-        ogme.add(0, item0);
+        fwes.add(0, item0);
 
-        assertThat(ogme.indexOf(item0), equalTo(0));
-        assertThat(ogme.lastIndexOf(item0), equalTo(0));
+        assertThat(fwes.indexOf(item0), equalTo(0));
+        assertThat(fwes.lastIndexOf(item0), equalTo(0));
 
-        ogme.remove(0);
-        assertThat(ogme.size(), equalTo(1));
-        assertThat(ogme.isEmpty(), equalTo(false));
-        ogme.remove(0);
-        assertThat(ogme.size(), equalTo(0));
-        assertThat(ogme.isEmpty(), equalTo(true));
+        fwes.remove(0);
+        assertThat(fwes.size(), equalTo(1));
+        assertThat(fwes.isEmpty(), equalTo(false));
+        fwes.remove(0);
+        assertThat(fwes.size(), equalTo(0));
+        assertThat(fwes.isEmpty(), equalTo(true));
 
-        ogme.addAll(0, elems);
-        assertThat(ogme.size(), equalTo(4));
+        fwes.addAll(0, elems);
+        assertThat(fwes.size(), equalTo(4));
 
-        assertThat(ogme.toArray().length, equalTo(4));
+        assertThat(fwes.toArray().length, equalTo(4));
         FluentWebElement[] wes = new FluentWebElement[0] ;
-        assertThat(ogme.toArray(wes).length, equalTo(4));
+        assertThat(fwes.toArray(wes).length, equalTo(4));
 
-        assertThat(ogme.subList(1, 2).size(), equalTo(1));
+        assertThat(fwes.subList(1, 2).size(), equalTo(1));
 
-        assertThat(ogme.listIterator(), notNullValue());
+        assertThat(fwes.listIterator(), notNullValue());
 
-        assertThat(ogme.listIterator(0), notNullValue());
+        assertThat(fwes.listIterator(0), notNullValue());
 
-        ogme.clear();
+        fwes.clear();
 
-        assertThat(ogme.size(), equalTo(0));
+        assertThat(fwes.size(), equalTo(0));
 
     }
 
