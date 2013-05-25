@@ -127,7 +127,8 @@ public class FluentSelect extends FluentWebElement {
     public FluentSelect selectByValue(final String value) {
         decorateExecution(new Execution<Boolean>() {
             public Boolean execute() {
-                getSelect().selectByValue(value);
+                Select select = getSelect();
+                select.selectByValue(value);
                 return true;
             }
         }, Context.singular(context, "selectByValue", null, value));

@@ -2,7 +2,6 @@ package org.seleniumhq.selenium.fluent.elems;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -14,12 +13,10 @@ import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentSelect;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImplTest;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
 import org.seleniumhq.selenium.fluent.Period;
 import org.seleniumhq.selenium.fluent.WebDriverJournal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -43,77 +40,6 @@ public class select extends BaseTest {
         FAIL_ON_NEXT.set(null);
     }
 
-    @Test
-    public void select_functionality() {
-
-        FluentWebElements fe = fwd.select()
-                .select(By.xpath("@foo = 'bar'"))
-                .select(By.cssSelector("baz"))
-                .deselectAll()
-                .selects();
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: select) -> we1\n" +
-                        "we1.getTagName() -> 'select'\n" +
-                        "we1.findElement(By.xpath: .//select[@foo = 'bar']) -> we2\n" +
-                        "we2.getTagName() -> 'select'\n" +
-                        "we2.findElement(By.selector: baz) -> we3\n" +
-                        "we3.getTagName() -> 'select'\n" +
-                        "we3.getAttribute(multiple) -> multiple_value\n" +
-                        "we3.findElements(By.tagName: option) -> [we4, we5]\n" +
-                        "we4.isSelected() -> true\n" +
-                        "we4.click()\n" +
-                        "we5.isSelected() -> false\n" +
-                        "we3.findElements(By.tagName: select) -> [we6, we7]\n" +
-                        "we6.getTagName() -> 'select'\n" +
-                        "we7.getTagName() -> 'select'\n"
-        ));
-    }
-
-    @Test
-    public void method_on_select_is_invoked() {
-
-        FluentSelect fs = fwd.select().selectByValue("bar");
-
-        assertThat(fs, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: select) -> we1\n" +
-                        "we1.getTagName() -> 'select'\n" +
-                        "we1.getAttribute(multiple) -> multiple_value\n" +
-                        "we1.findElements(By.xpath: .//option[@value = \"bar\"]) -> [we2, we3]\n" +
-                        "we2.isSelected() -> true\n" +
-                        "we3.isSelected() -> false\n" +
-                        "we3.click()\n"
-        ));
-    }
-
-    @Test
-    public void selects_functionality() {
-        FluentWebElements fe = fwd.select()
-                .selects(By.name("qux"));
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: select) -> we1\n" +
-                        "we1.getTagName() -> 'select'\n" +
-                        "we1.findElements(By.name: qux) -> [we2, we3]\n" +
-                        "we2.getTagName() -> 'select'\n" +
-                        "we3.getTagName() -> 'select'\n"
-        ));
-    }
-
-    @Test
-    public void select_mismatched() {
-        try {
-            fwd.select(By.linkText("mismatching_tag_name"))
-                    .clearField();
-            fail("should have barfed");
-        } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.select(By.linkText: mismatching_tag_name)"));
-            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
-        }
-    }
 
     @Test
     public void selectByValue_delegates() {

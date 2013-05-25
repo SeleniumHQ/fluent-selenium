@@ -14,23 +14,23 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class title extends BaseTest2 {
+public class currentUrl extends BaseTest2 {
 
     @Test
-    public void title_functionality() {
+    public void currentUrl_functionality() {
 
         wd = mock(WebDriver.class);
         fwd = new FluentWebDriverImpl(wd);
 
-        TestableString ts = fwd.title();
+        TestableString ts = fwd.currentUrl();
 
         assertThat(ts, notNullValue());
         verifyNoMoreInteractions(wd);
-        // invocation of getTitle is lazy.
-        when(wd.getTitle()).thenReturn("foo");
+        // invocation of getCurrentUrl is lazy.
+        when(wd.getCurrentUrl()).thenReturn("http://foo/bar");
         String actual = ts.toString();
-        assertThat(actual, equalTo("foo"));
-        verify(wd).getTitle();
+        assertThat(actual, equalTo("http://foo/bar"));
+        verify(wd).getCurrentUrl();
         verifyNoMoreInteractions(wd);
     }
 
