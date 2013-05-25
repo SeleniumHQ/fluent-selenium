@@ -96,7 +96,7 @@ public class div extends BaseTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.linkText: mismatching_tag_name)"));
-            assertTrue(e.getCause().getMessage().contains("tag was incorrect"));
+            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been div but was boo"));
         }
 
     }
