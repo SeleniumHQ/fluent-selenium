@@ -17,6 +17,8 @@ package org.seleniumhq.selenium.fluent;
 
 public class FluentExecutionStopped extends RuntimeException {
 
+    private long duration;
+
     public FluentExecutionStopped(String message, Throwable cause) {
         super(message, cause);
     }
@@ -24,11 +26,17 @@ public class FluentExecutionStopped extends RuntimeException {
         super(message);
     }
 
-
     @Override
     public String getMessage() {
         String message = "";
+        if (duration > 0) {
+            message = message + "; " + duration + " ms duration";
+        }
         return super.getMessage() + message;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public static class BecauseOfStaleElement extends FluentExecutionStopped {
