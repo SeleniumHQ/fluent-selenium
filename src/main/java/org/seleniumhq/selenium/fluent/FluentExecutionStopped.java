@@ -16,8 +16,6 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 public class FluentExecutionStopped extends RuntimeException {
-    private int retries;
-    private long durationInMillis;
 
     public FluentExecutionStopped(String message, Throwable cause) {
         super(message, cause);
@@ -26,24 +24,10 @@ public class FluentExecutionStopped extends RuntimeException {
         super(message);
     }
 
-    public FluentExecutionStopped setRetries(int retries) {
-        this.retries = retries;
-        return this;
-    }
-
-    public void setDuration(long durationInMillis) {
-        this.durationInMillis = durationInMillis;
-    }
 
     @Override
     public String getMessage() {
         String message = "";
-        if (retries > 0) {
-            message = message + "; " + retries + " retries";
-        }
-        if (durationInMillis > 0) {
-            message = message + "; " + durationInMillis + " ms duration";
-        }
         return super.getMessage() + message;
     }
 
