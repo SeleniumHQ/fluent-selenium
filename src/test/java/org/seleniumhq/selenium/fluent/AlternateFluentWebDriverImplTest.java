@@ -14,10 +14,12 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -555,6 +557,192 @@ public class AlternateFluentWebDriverImplTest extends BaseTest2 {
                 return "myMatcher('" + toString + "')";
             }
         };
+    }
+
+    @Test
+    public void xPaths_and_non_ongoing() {
+
+        when(wd.findElement(By.tagName("div"))).thenReturn(we);
+        when(we.getTagName()).thenReturn("div");
+        when(we.findElement(By.xpath(".//span[@foo = 'bar']"))).thenReturn(we2);
+        when(we2.getTagName()).thenReturn("span");
+
+        FluentWebElement fwe = fwd.div().span(By.xpath("@foo = 'bar'"))
+                .sendKeys("apple").clearField().submit();
+
+// TODO
+//        sb.setLength(0);
+//        TestableString tagName = fwe.getTagName();
+//        assertThat(tagName.toString(), equalTo(cs("taggart")));
+//        assertThat(sb.toString(), equalTo("we2.getTagName() -> 'taggart'\n"));
+
+
+        doReturn(true).when(we2).isSelected();
+        boolean isSelected = fwe.isSelected();
+        assertThat(isSelected, equalTo(true));
+
+        doReturn(true).when(we2).isEnabled();
+        boolean isEnabled = fwe.isEnabled();
+        assertThat(isEnabled, equalTo(true));
+
+        doReturn(true).when(we2).isDisplayed();
+        boolean isDisplayed = fwe.isDisplayed();
+        assertThat(isDisplayed, equalTo(true));
+
+        doReturn("Mary had 3 little lamb(s).").when(we2).getText();
+        TestableString text = fwe.getText();
+        assertThat(text.toString(), equalTo("Mary had 3 little lamb(s)."));
+
+    }
+
+
+    @Test
+    public void runtime_exceptions_decorated_for_single_element() {
+        wrap_exceptions_tests(RuntimeException.class);
+    }
+
+    @Test
+    public void assertion_errors_decorated_for_single_element() {
+        wrap_exceptions_tests(AssertionError.class);
+    }
+
+    private void wrap_exceptions_tests(Class<? extends Throwable> throwable) {
+
+        when(wd.findElement(By.id("foo"))).thenReturn(we);
+        when(we.getTagName()).thenReturn("div");
+
+        FluentWebElement fwe = fwd.div(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+        try {
+            doThrow(throwable).when(we).getAttribute("valerie");
+            TestableString valerie = fwe.getAttribute("valerie");
+            valerie.toString();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getAttribute('valerie')"));
+        }
+        try {
+            doThrow(throwable).when(we).getCssValue("blort");
+            fwe.getCssValue("blort").toString();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue('blort')"));
+        }
+
+        try {
+            doThrow(throwable).when(we).getTagName();
+            fwe.getTagName().toString();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getTagName()"));
+        }
+
+        try {
+            doThrow(throwable).when(we).isSelected();
+            fwe.isSelected();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isSelected()"));
+        }
+
+        try {
+            doThrow(throwable).when(we).isEnabled();
+            fwe.isEnabled();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isEnabled()"));
+        }
+
+        try {
+            doThrow(throwable).when(we).isDisplayed();
+            fwe.isDisplayed();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).isDisplayed()"));
+        }
+        try {
+            doThrow(throwable).when(we).getText();
+            fwe.getText().toString();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.div(By.id: foo).getText()"));
+        }
+    }
+
+    @Test
+    public void exceptions_decorated_for_filter() {
+        filter_exception_handling(RuntimeException.class);
+    }
+
+    @Test
+    public void assertion_errors_decorated_for_filter() {
+        filter_exception_handling(AssertionError.class);
+    }
+
+    private void filter_exception_handling(Class<? extends Throwable> throwable) {
+
+        when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+        try {
+            doThrow(throwable).when(we).getText();
+            fwe.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
+            assertThat(e.getCause(), instanceOf(throwable));
+        }
+    }
+
+    @Test
+    public void nothing_matching_in_filter_exception_handling() {
+
+        when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+        try {
+            when(we.getText()).thenReturn("dsfsdf");
+            when(we2.getText()).thenReturn("darw3rsfsdf");
+            fwe.filter(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).filter(myMatcher('Hello'))"));
+            assertNull(e.getCause());
+        }
+    }
+
+    @Test
+    public void nothing_matching_in_first_exception_handling() {
+
+        when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+        try {
+            when(we.getText()).thenReturn("dsfsdf");
+            when(we2.getText()).thenReturn("sdfsdfew");
+            fwe.first(makeMatcherThatUsesWebDriver("Hello"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Hello'))"));
+            assertNull(e.getCause());
+        }
     }
 
 
