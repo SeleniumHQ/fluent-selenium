@@ -138,6 +138,10 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
         throw meaningless("within("+p+")");
     }
 
+    public FluentWebDriver without(Period p) {
+        return null;
+    }
+
     public FluentWebElements filter(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "filter", null, matcher);
         return makeFluentWebElements(decorateExecution(new FilterMatches(matcher), ctx), ctx);
