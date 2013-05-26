@@ -8,6 +8,9 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -242,5 +245,172 @@ public class AlternateFluentWebDriverImplTest extends BaseTest2 {
             return webElement.getText().contains("4 little lamb(s)");
         }
     }
+
+    @Test
+    public void is_a_list() {
+
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        FluentWebElement item0 = mock(FluentWebElement.class);
+        elems.add(item0);
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
+
+        FluentWebElements fwes = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
+
+        assertThat(fwes.size(), equalTo(4));
+        assertThat(fwes.get(0), equalTo(item0));
+
+        {
+            List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
+            elems2.add(mock(FluentWebElement.class));
+            elems2.add(mock(FluentWebElement.class));
+
+            fwes.addAll(elems2);
+        }
+
+        assertThat(fwes.size(), equalTo(6));
+
+        fwes.remove(item0);
+
+        assertThat(fwes.size(), equalTo(5));
+
+        fwes.removeAll(elems);
+
+        assertThat(fwes.size(), equalTo(2));
+
+        fwes.remove(0);
+
+        assertThat(fwes.size(), equalTo(1));
+
+        assertThat(fwes.contains("foo"), equalTo(false));
+
+        fwes.add(item0);
+
+        assertThat(fwes.indexOf(item0), equalTo(1));
+        assertThat(fwes.indexOf("foo"), equalTo(-1));
+
+        fwes.remove(item0);
+
+        fwes.add(0, item0);
+
+        assertThat(fwes.indexOf(item0), equalTo(0));
+        assertThat(fwes.lastIndexOf(item0), equalTo(0));
+
+        fwes.remove(0);
+        assertThat(fwes.size(), equalTo(1));
+        assertThat(fwes.isEmpty(), equalTo(false));
+        fwes.remove(0);
+        assertThat(fwes.size(), equalTo(0));
+        assertThat(fwes.isEmpty(), equalTo(true));
+
+        fwes.addAll(0, elems);
+        assertThat(fwes.size(), equalTo(4));
+
+        assertThat(fwes.toArray().length, equalTo(4));
+        FluentWebElement[] wes = new FluentWebElement[0] ;
+        assertThat(fwes.toArray(wes).length, equalTo(4));
+
+        assertThat(fwes.subList(1, 2).size(), equalTo(1));
+
+        assertThat(fwes.listIterator(), notNullValue());
+
+        assertThat(fwes.listIterator(0), notNullValue());
+
+        fwes.clear();
+
+        assertThat(fwes.size(), equalTo(0));
+
+    }
+
+    @Test
+    public void multiple_hits_from_the_outset_and_operations_on_the_resulting_list() {
+
+
+        when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements elems = fwd.divs();
+
+        assertThat(elems, notNullValue());
+
+        FluentWebElements fwes = elems.clearField();
+        assertThat(fwes, notNullValue());
+        verify(we).clear();
+        verify(we2).clear();
+
+        FluentWebElements fwe3 = elems.click();
+        assertThat(fwe3, notNullValue());
+        verify(we).click();
+        verify(we2).click();
+
+        // TODO should be selected() in line with singular ?
+        when(we.isSelected()).thenReturn(true);
+        when(we2.isSelected()).thenReturn(false);
+        boolean areSelected = elems.isSelected();
+        assertThat(areSelected, equalTo(false));
+        verify(we).isSelected();
+        verify(we2).isSelected();
+
+        when(we.isEnabled()).thenReturn(true);
+        when(we2.isEnabled()).thenReturn(false);
+        boolean areEnabled = elems.isEnabled();
+        assertThat(areEnabled, equalTo(false));
+        verify(we).isEnabled();
+        verify(we2).isEnabled();
+
+        when(we.isDisplayed()).thenReturn(true);
+        when(we2.isDisplayed()).thenReturn(false);
+        boolean areDisplayed = elems.isDisplayed();
+        assertThat(areDisplayed, equalTo(false));
+        verify(we).isDisplayed();
+        verify(we2).isDisplayed();
+
+        FluentWebElements fwe4 = elems.sendKeys("aaa");
+        assertThat(fwe4, notNullValue());
+        verify(we).sendKeys("aaa");
+        verify(we2).sendKeys("aaa");
+
+        FluentWebElements fwe5 = elems.submit();
+        assertThat(fwe5, notNullValue());
+        verify(we).submit();
+        verify(we2).submit();
+
+        when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
+        when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
+        CharSequence text = elems.getText().toString();
+        assertThat(text.toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+
+        try {
+            elems.getLocation();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getLocation() has no meaning for multiple elements"));
+        }
+        try {
+            elems.getSize();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getSize() has no meaning for multiple elements"));
+        }
+
+        try {
+            elems.getCssValue("x");
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getCssValue('x') has no meaning for multiple elements"));
+        }
+
+        try {
+            elems.getAttribute("x");
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getAttribute('x') has no meaning for multiple elements"));
+        }
+
+        try {
+            elems.getTagName();
+        } catch (Exception e) {
+            assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
+        }
+    }
+
 
 }
