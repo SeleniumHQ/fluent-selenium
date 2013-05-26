@@ -122,7 +122,7 @@ public class FluentWebDriverImplTest extends BaseTest {
             fwe.location().shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was <(1, 1)>"));
+            assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was (1, 1)."));
         }
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
@@ -148,6 +148,14 @@ public class FluentWebDriverImplTest extends BaseTest {
             fail("should have barfed");
         } catch (AssertionError e) {
             assertThat(e.getMessage(), equalTo("?.div().size().shouldNotBe((10, 10)) ~ but was."));
+        }
+
+        when(we.getSize()).thenReturn(new Dimension(10, 10));
+        try {
+            fwe.size().shouldBe(new Dimension(20, 20));
+            fail("should have barfed");
+        } catch (AssertionError e) {
+            assertThat(e.getMessage(), equalTo("?.div().size().shouldBe((20, 20)) ~ but was (10, 10)."));
         }
 
         when(we.getCssValue("blort")).thenReturn("blort_value");
