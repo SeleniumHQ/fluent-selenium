@@ -11,6 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.Mock;
@@ -83,6 +85,8 @@ public class WithoutTest {
             fluentWebDriver.without(secs(2)).span();
             fail();
         } catch (FluentExecutionStopped executionStopped) {
+            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).span()"));
+            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
         }
     }
 

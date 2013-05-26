@@ -16,10 +16,11 @@ public class NegatingFluentWebDriver extends FluentWebDriverImpl {
     @Override
     protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
         final T neverFound = null;
-
+        T found = null;
         while (!durationHasElapsed(startedAt)) {
             try {
-                super.decorateExecution(execution, ctx);
+                found = super.decorateExecution(execution, ctx);
+
             } catch (FluentExecutionStopped executionStopped) {
                 if (!(executionStopped.getCause() instanceof ElementNotFoundException)) {
                     continue;
@@ -28,7 +29,7 @@ public class NegatingFluentWebDriver extends FluentWebDriverImpl {
                 }
             }
         }
-        throw new FluentExecutionStopped("Element never disapeared");
+        throw decorateAssertionError(ctx, new AssertionError("Element never disappeared"));
     }
 
     protected Boolean durationHasElapsed(Long startMillis) {
