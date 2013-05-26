@@ -8,10 +8,11 @@ public abstract class Period {
     public abstract TimeUnit timeUnit();
     public abstract long getEndMillis(long from);
 
-    public static class Seconds extends Period {
+    public static class Seconds extends Milliseconds {
         private final int secs;
 
         public Seconds(int secs) {
+            super(secs * 1000);
             this.secs = secs;
         }
 
@@ -26,20 +27,16 @@ public abstract class Period {
         }
 
         @Override
-        public long getEndMillis(long from) {
-            return from + (secs * 1000);
-        }
-
-        @Override
         public String toString() {
             return "secs(" + secs + ")";
         }
     }
 
-    public static class Minutes extends Period {
+    public static class Minutes extends Seconds {
         private final int mins;
 
         public Minutes(int mins) {
+            super(mins * 60);
             this.mins = mins;
         }
 
@@ -51,11 +48,6 @@ public abstract class Period {
         @Override
         public TimeUnit timeUnit() {
             return TimeUnit.MINUTES;
-        }
-
-        @Override
-        public long getEndMillis(long from) {
-            return from + (mins * 1000 * 60);
         }
 
         @Override
@@ -81,8 +73,7 @@ public abstract class Period {
             return TimeUnit.MILLISECONDS;
         }
 
-        @Override
-        public long getEndMillis(long from) {
+        public final long getEndMillis(long from) {
             return from + millis;
         }
 

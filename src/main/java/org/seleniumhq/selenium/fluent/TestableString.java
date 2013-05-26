@@ -169,19 +169,6 @@ public class TestableString {
         return is;
     }
 
-    protected String assignValueAndWrapExceptionsIfNeeded(BaseFluentWebDriver.Context ctx, long start) {
-        try {
-            assignValueIfNeeded();
-            return is;
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
-    }
-
     public TestableString shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
