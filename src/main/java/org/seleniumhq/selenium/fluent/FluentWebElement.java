@@ -111,11 +111,11 @@ public class FluentWebElement extends BaseFluentWebElement {
         return decorateExecution(new GetSize(), Context.singular(context, "getSize"));
     }
 
-    public TestableString getCssValue(final String cssName) {
+    public TestableString cssValue(final String cssName) {
         return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
     }
 
-    public TestableString getAttribute(final String attr) {
+    public TestableString attribute(final String attr) {
         return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
     }
 
@@ -131,16 +131,6 @@ public class FluentWebElement extends BaseFluentWebElement {
     //@Override
     public WebElementValue<Dimension> size() {
         return new WebElementValue<Dimension>(currentElement.getSize(), Context.singular(context, "size"));
-    }
-
-    //@Override
-    public WebElementValue<String> cssValue(String name) {
-        return new WebElementValue<String>(currentElement.getCssValue(name), Context.singular(context, "cssValue"));
-    }
-
-    //@Override
-    public WebElementValue<String> attribute(String name) {
-        return new WebElementValue<String>(currentElement.getAttribute(name), Context.singular(context, "attribute"));
     }
 
     //@Override

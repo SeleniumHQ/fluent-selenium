@@ -18,7 +18,6 @@ package org.seleniumhq.selenium.fluent;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -49,9 +48,9 @@ public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
 
     public abstract Point getLocation();
 
-    public abstract TestableString getCssValue(String cssName);
+    public abstract TestableString cssValue(String cssName);
 
-    public abstract TestableString getAttribute(String attrName);
+    public abstract TestableString attribute(String attrName);
 
     public abstract TestableString getTagName();
 

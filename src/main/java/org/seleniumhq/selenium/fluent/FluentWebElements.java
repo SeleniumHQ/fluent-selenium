@@ -115,12 +115,12 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     @Override
-    public final TestableString getCssValue(String cssName) {
+    public final TestableString cssValue(String cssName) {
         throw meaningless("getCssValue('"+cssName+"')");
     }
 
     @Override
-    public final TestableString getAttribute(String attrName) {
+    public final TestableString attribute(String attrName) {
         throw meaningless("getAttribute('"+attrName+"')");
     }
 

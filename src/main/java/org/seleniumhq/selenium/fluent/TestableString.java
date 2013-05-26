@@ -32,7 +32,7 @@ public class TestableString {
         public abstract void validate(long start);
     }
 
-    public void shouldBe(final String shouldBe) {
+    public TestableString shouldBe(final String shouldBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
 
         validateWrapRethrow(new Validation() {
@@ -53,6 +53,7 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, equalTo(shouldBe));
             }
         }, ctx);
+        return this;
     }
 
     private void validateWrapRethrow(Validation validation, BaseFluentWebDriver.Context ctx) {
@@ -79,7 +80,7 @@ public class TestableString {
         is = execution.execute();
     }
 
-    public void shouldNotBe(final String shouldNotBe) {
+    public TestableString shouldNotBe(final String shouldNotBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
         validateWrapRethrow(new Validation() {
             @Override
@@ -96,9 +97,10 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, not(equalTo(shouldNotBe)));
             }
         }, ctx);
+        return this;
     }
 
-    public void shouldContain(final String shouldContain) {
+    public TestableString shouldContain(final String shouldContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
         validateWrapRethrow(new Validation() {
             @Override
@@ -115,6 +117,7 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, containsString(shouldContain));
             }
         }, ctx);
+        return this;
     }
 
     private String durationIfNotZero(long start) {
@@ -131,7 +134,7 @@ public class TestableString {
         return within.getEndMillis(System.currentTimeMillis());
     }
 
-    public void shouldNotContain(final String shouldNotContain) {
+    public TestableString shouldNotContain(final String shouldNotContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
         validateWrapRethrow(new Validation() {
             @Override
@@ -148,7 +151,7 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
             }
         }, ctx);
-
+        return this;
     }
 
     @Override
@@ -179,7 +182,7 @@ public class TestableString {
         }
     }
 
-    public void shouldMatch(String regex) {
+    public TestableString shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
         validateWrapRethrow(new Validation() {
@@ -198,9 +201,10 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, matcher);
             }
         }, ctx);
+        return this;
     }
 
-    public void shouldNotMatch(final String regex) {
+    public TestableString shouldNotMatch(final String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
         validateWrapRethrow(new Validation() {
@@ -218,6 +222,7 @@ public class TestableString {
                 assertThat(durationIfNotZero(start), is, not(matcher));
             }
         }, ctx);
+        return this;
     }
 
     private static class MatchesRegex extends BaseMatcher<String> {
@@ -241,6 +246,5 @@ public class TestableString {
 
             return pattern.matcher((String) item).find();
         }
-
     }
 }

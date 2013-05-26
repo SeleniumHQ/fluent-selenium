@@ -396,13 +396,13 @@ public class FluentWebDriverImplTest extends BaseTest {
         }
 
         try {
-            elems.getCssValue("x");
+            elems.cssValue("x");
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getCssValue('x') has no meaning for multiple elements"));
         }
 
         try {
-            elems.getAttribute("x");
+            elems.attribute("x");
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getAttribute('x') has no meaning for multiple elements"));
         }
@@ -614,7 +614,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         try {
             doThrow(throwable).when(we).getAttribute("valerie");
-            TestableString valerie = fwe.getAttribute("valerie");
+            TestableString valerie = fwe.attribute("valerie");
             valerie.toString();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
@@ -622,7 +622,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         }
         try {
             doThrow(throwable).when(we).getCssValue("blort");
-            fwe.getCssValue("blort").toString();
+            fwe.cssValue("blort").toString();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue('blort')"));
