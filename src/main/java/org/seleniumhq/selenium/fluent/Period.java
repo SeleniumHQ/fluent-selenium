@@ -35,6 +35,7 @@ public abstract class Period {
             return "secs(" + secs + ")";
         }
     }
+
     public static class Minutes extends Period {
         private final int mins;
 

@@ -570,26 +570,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
     }
 
-    @Test
-    public void filtering() {
 
-        FluentWebElements fe = fwd.divs().filter(new FourLambFilter()).click();
-
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(),
-                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
-                "we1.getTagName() -> 'div'\n" +
-                "we2.getTagName() -> 'div'\n" +
-                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
-                "we2.getText() -> 'Mary had 4 little lamb(s).'\n" +
-                "we2.click()\n"));
-    }
-
-    public static class FourLambFilter implements FluentMatcher {
-        public boolean matches(WebElement webElement) {
-            return webElement.getText().contains("4 little lamb(s)");
-        }
-    }
 
 
 

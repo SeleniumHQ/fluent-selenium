@@ -221,4 +221,26 @@ public class AlternateFluentWebDriverImplTest extends BaseTest2 {
         }
     }
 
+    @Test
+    public void filtering() {
+
+        when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+        when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
+        when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
+
+        FluentWebElements fe = fwd.divs().filter(new FourLambFilter()).click();
+
+        assertThat(fe, notNullValue());
+
+        verify(we2).click();
+    }
+
+    public static class FourLambFilter implements FluentMatcher {
+        public boolean matches(WebElement webElement) {
+            return webElement.getText().contains("4 little lamb(s)");
+        }
+    }
+
 }
