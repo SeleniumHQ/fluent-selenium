@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
 public class AlternateFluentWebDriverImplTest extends BaseTest2 {
 
@@ -410,6 +412,149 @@ public class AlternateFluentWebDriverImplTest extends BaseTest2 {
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
         }
+    }
+
+    @Test
+    public void runtime_exceptions_decorated_for_first() {
+        first_exception_handling(RuntimeException.class);
+    }
+
+    @Test
+    public void assertion_error_decorated_for_first() {
+        first_exception_handling(AssertionError.class);
+    }
+
+    private void first_exception_handling(Class<? extends Throwable> throwable) {
+
+        when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+        when(we.getText()).thenThrow(throwable);
+
+        try {
+            fwe.first(makeMatcherThatUsesWebDriver("Goodbye"));
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).first(myMatcher('Goodbye'))"));
+        }
+    }
+
+    @Test
+    public void further_find_element_after_multiple_is_unsupported() {
+
+        when(wd.findElements(By.xpath("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+        try {
+            fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+    }
+
+    @Test
+    public void runtime_exceptions_decorated_for_multiple_element() {
+        multiple_elem_exception_handling(RuntimeException.class);
+    }
+
+    @Test
+    public void assertion_error_decorated_for_multiple_element() {
+        multiple_elem_exception_handling(AssertionError.class);
+    }
+
+    private void multiple_elem_exception_handling(Class<? extends Throwable> throwable) {
+
+        when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
+
+        assertThat(fwe, notNullValue());
+
+
+        try {
+            doThrow(throwable).when(we).sendKeys("a");
+            fwe.sendKeys("a");
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).sendKeys('a')"));
+        }
+
+        try {
+            doThrow(throwable).when(we).click();
+            fwe.click();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).click()"));
+        }
+
+        try {
+            doThrow(throwable).when(we).submit();
+            fwe.submit();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).submit()"));
+        }
+
+        try {
+            doThrow(throwable).when(we).clear();
+            fwe.clearField();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).clearField()"));
+        }
+
+        try {
+            when(we.isSelected()).thenThrow(throwable);
+            fwe.isSelected();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isSelected()"));
+        }
+
+        try {
+            when(we.isEnabled()).thenThrow(throwable);
+            fwe.isEnabled();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isEnabled()"));
+        }
+
+        try {
+            when(we.isDisplayed()).thenThrow(throwable);
+            fwe.isDisplayed();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).isDisplayed()"));
+        }
+
+        try {
+            when(we.getText()).thenThrow(throwable);
+            fwe.getText().toString();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), containsString("?.divs(By.id: foo).getText()"));
+        }
+    }
+
+    private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
+        return new FluentMatcher() {
+            public boolean matches(WebElement webElement) {
+                throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
+                return webElement.getText().equals("it does not matter, as an exception will be thrown");
+            }
+            @Override
+            public String toString() {
+                return "myMatcher('" + toString + "')";
+            }
+        };
     }
 
 
