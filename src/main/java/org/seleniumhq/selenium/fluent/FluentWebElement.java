@@ -162,6 +162,10 @@ public class FluentWebElement extends BaseFluentWebElement {
         return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period);
     }
 
+    public FluentWebDriver without(Period period) {
+        return null;
+    }
+
 
     private class RetryingFluentWebElement extends FluentWebElement {
 

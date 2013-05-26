@@ -145,6 +145,7 @@ public interface FluentWebDriver {
     FluentWebElements maps(By by);
 
     FluentWebDriver within(Period p);
+    FluentWebDriver without(Period p);
 
     TestableString url();
     TestableString title();
