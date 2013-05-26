@@ -26,7 +26,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
 public class FluentWebDriverImplTest extends BaseTest2 {
 
@@ -549,7 +548,6 @@ public class FluentWebDriverImplTest extends BaseTest2 {
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
             public boolean matches(WebElement webElement) {
-                throwExceptionMaybe(FluentWebDriverImplTest.FAIL_ON_NEXT.get());
                 return webElement.getText().equals("it does not matter, as an exception will be thrown");
             }
             @Override
