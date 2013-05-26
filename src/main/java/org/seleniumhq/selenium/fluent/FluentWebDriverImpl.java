@@ -58,6 +58,10 @@ public class FluentWebDriverImpl extends BaseFluentWebDriver {
         return new RetryingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period));
     }
 
+    public NegatingFluentWebDriver without(Period period) {
+        return new NegatingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period));
+    }
+
     private class RetryingFluentWebDriver extends FluentWebDriverImpl {
 
         private final Period period;

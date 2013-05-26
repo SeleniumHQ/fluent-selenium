@@ -43,6 +43,10 @@ public class BaseFluentWebDriverTest {
                 return null;
             }
 
+            public FluentWebDriver without(Period p) {
+                return null;
+            }
+
             @Override
             protected WebElement actualFindIt(By by) {
                 return null;
