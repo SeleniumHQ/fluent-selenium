@@ -18,8 +18,6 @@ package org.seleniumhq.selenium.fluent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -55,33 +53,6 @@ public class FluentWebDriverImplTest extends BaseTest {
         wd = new WebDriverJournal(sb);
         fwd = new FluentWebDriverImpl(wd);
         FAIL_ON_NEXT.set(null);
-
-    }
-
-
-    @Test
-    public void lengthier_expression_with_late_assertion_error() {
-
-        BaseFluentWebDriver fc = null;
-        try {
-            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
-
-            FAIL_ON_NEXT.set(AssertionError.class);
-
-            fc = span.sendKeys("RAIN_IN_SPAIN");
-        } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
-            assertThat(e.getCause(), notNullValue());
-        }
-
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.id: idA) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(By.id: idB) -> we2\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we2.findElement(By.tagName: span) -> we3\n" +
-                        "we3.getTagName() -> 'span'\n"
-        ));
     }
 
     @Test
@@ -147,113 +118,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(sb.toString(), equalTo("we2.getText() -> 'Mary had 3 little lamb(s).'\n"));
 
     }
-    @Test
 
-    public void assertions_against_otherwise_non_ongoing() {
-
-        FluentWebElement fwe = fwd.div();
-
-        assertThat(fwe, notNullValue());
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.tagName: div) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n"
-        ));
-
-        sb.setLength(0);
-        WebElementValue<Point> location = fwe.location();
-        Point shouldBe = new Point(1, 1);
-        Matchable<Point> pointMatchable = location.shouldBe(shouldBe);
-        Point locn = pointMatchable.value();
-        assertThat(locn.toString(), equalTo("(1, 1)"));
-        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
-
-        sb.setLength(0);
-        try {
-            WebElementValue<Point> location1 = fwe.location();
-            location1.shouldBe(new Point(2, 2)).value();
-            fail("should have barfed");
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was <(1, 1)>"));
-        }
-        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
-
-        sb.setLength(0);
-        locn = fwe.location().shouldNotBe(new Point(2, 2)).value();
-        assertThat(locn.toString(), equalTo("(1, 1)"));
-        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
-
-        sb.setLength(0);
-        try {
-            fwe.location().shouldNotBe(new Point(1, 1)).value();
-            fail("should have barfed");
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldNotBe((1, 1)) ~ but was."));
-        }
-        assertThat(locn.toString(), equalTo("(1, 1)"));
-        assertThat(sb.toString(), equalTo("we1.getLocation() -> 1,1\n"));
-
-        {
-            sb.setLength(0);
-            Dimension size = fwe.size().shouldBe(new Dimension(10, 10)).value();
-            assertThat(size, equalTo(new Dimension(10, 10)));
-            assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
-        }
-        {
-
-            sb.setLength(0);
-            Matchable<Dimension> should = fwe.size().shouldBe(new Dimension(10,10));
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.getSize() -> 10,10\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<String> should = fwe.cssValue("blort").shouldBe("blort_value");
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.getCssValue(blort) -> blort_value\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<String> should = fwe.attribute("valerie").shouldBe("valerie_value");
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.getAttribute(valerie) -> valerie_value\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<String> should = fwe.tagName().shouldBe("taggart");
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.getTagName() -> 'taggart'\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<Boolean> should = fwe.selected().shouldBe(true);
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.isSelected() -> true\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<Boolean> should = fwe.enabled().shouldBe(true);
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.isEnabled() -> true\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<Boolean> should = fwe.displayed().shouldBe(true);
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.isDisplayed() -> true\n"));
-        }
-        {
-            sb.setLength(0);
-            Matchable<String> should = fwe.text().shouldBe("Mary had 2 little lamb(s).");
-            assertThat(should, notNullValue());
-            assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
-        }
-//        {
-//            sb.setLength(0);
-//            Matchable<String> should = fwe.text().should().have(containsString("lamb"));
-//            assertThat(should, notNullValue());
-//            assertThat(sb.toString(), equalTo("we1.getText() -> 'Mary had 2 little lamb(s).'\n"));
-//        }
-    }
 
     @Test
     public void runtime_exceptions_decorated_for_single_element() {
