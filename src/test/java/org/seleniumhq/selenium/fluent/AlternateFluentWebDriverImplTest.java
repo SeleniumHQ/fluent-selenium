@@ -8,13 +8,16 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
@@ -162,6 +165,60 @@ public class AlternateFluentWebDriverImplTest extends BaseTest2 {
 
         when(we.getText()).thenReturn("Mary had 2 little lamb(s).");
         assertThat(fwe.text().shouldBe("Mary had 2 little lamb(s)."), notNullValue());
+    }
+
+    @Test
+    public void first_can_find_nothing() {
+
+        when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+        when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
+        when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
+
+        try {
+            fwd.divs().first(new TextContainsWord("mutton")).click();
+            fail("should have barfed");
+        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
+            assertThat(e.getMessage(), equalTo("org.seleniumhq.selenium.fluent.NothingMatches during invocation of: ?.divs(By.tagName: div)" +
+                    ".first(TextContainsWord{word='mutton'})"));
+            assertNull(e.getCause());
+        }
+
+    }
+
+    @Test
+    public void first_element_matched_from_larger_list() {
+
+        when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we2.getTagName()).thenReturn("div");
+        when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
+
+        FluentWebElement fe = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
+
+        assertThat(fe, notNullValue());
+
+        verify(we).click();
+
+    }
+
+    public static class TextContainsWord implements FluentMatcher {
+
+        private String word;
+
+        public TextContainsWord(String word) {
+            this.word = word;
+        }
+
+        public boolean matches(WebElement webElement) {
+            return webElement.getText().indexOf(word) > -1;
+        }
+
+        @Override
+        public String toString() {
+            return "TextContainsWord{word='" + word + "'}";
+        }
     }
 
 }

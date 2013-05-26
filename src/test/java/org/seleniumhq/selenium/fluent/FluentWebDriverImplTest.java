@@ -591,59 +591,10 @@ public class FluentWebDriverImplTest extends BaseTest {
         }
     }
 
-    @Test
-    public void first_element_matched_from_larger_list() {
 
-        FluentWebElement fe = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
-        assertThat(fe, notNullValue());
-        assertThat(sb.toString(),
-                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
-                "we1.getTagName() -> 'div'\n" +
-                "we2.getTagName() -> 'div'\n" +
-                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
-                "we1.click()\n"));
-    }
 
-    @Test
-    public void first_finds_nothing() {
 
-        try {
-            fwd.divs().first(new TextContainsWord("mutton")).click();
-            fail("should have barfed");
-        } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
-            assertThat(e.getMessage(), equalTo("org.seleniumhq.selenium.fluent.NothingMatches during invocation of: ?.divs(By.tagName: div)" +
-                    ".first(TextContainsWord{word='mutton'})"));
-            assertNull(e.getCause());
-        }
-
-        assertThat(sb.toString(),
-                equalTo("wd0.findElements(By.tagName: div) -> [we1, we2]\n" +
-                "we1.getTagName() -> 'div'\n" +
-                "we2.getTagName() -> 'div'\n" +
-                "we1.getText() -> 'Mary had 3 little lamb(s).'\n" +
-                "we2.getText() -> 'Mary had 4 little lamb(s).'\n"));
-    }
-
-    public static class TextContainsWord implements FluentMatcher {
-
-        private String word;
-
-        public TextContainsWord(String word) {
-            this.word = word;
-        }
-
-        public boolean matches(WebElement webElement) {
-            return webElement.getText().contains(word);
-        }
-
-        @Override
-        public String toString() {
-            return "TextContainsWord{" +
-                    "word='" + word + '\'' +
-                    '}';
-        }
-    }
 
 
 
