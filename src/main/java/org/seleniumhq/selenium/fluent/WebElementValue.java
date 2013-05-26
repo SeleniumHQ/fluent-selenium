@@ -25,15 +25,15 @@ public class WebElementValue<T> {
         this.context = context;
     }
 
-    public Matchable<T> shouldBe(T shouldBe) {
-        Matchable<T> tMatchable = new Matchable<T>(val, shouldBe, context + ".shouldBe(" + shouldBe + ")", true);
-        tMatchable.match();
-        return tMatchable;
+    public ShouldOrShouldNotBeMatchable<T> shouldBe(T shouldBe) {
+        ShouldOrShouldNotBeMatchable<T> tShouldOrShouldNotBeMatchable = new ShouldOrShouldNotBeMatchable<T>(val, shouldBe, context + ".shouldBe(" + shouldBe + ")", true);
+        tShouldOrShouldNotBeMatchable.match();
+        return tShouldOrShouldNotBeMatchable;
     }
 
-    public Matchable<T> shouldNotBe(T shouldNotBe) {
-        Matchable<T> tMatchable = new Matchable<T>(val, shouldNotBe, context + ".shouldNotBe(" + shouldNotBe + ")", false);
-        tMatchable.match();
-        return tMatchable;
+    public ShouldOrShouldNotBeMatchable<T> shouldNotBe(T shouldNotBe) {
+        ShouldOrShouldNotBeMatchable<T> tShouldOrShouldNotBeMatchable = new ShouldOrShouldNotBeMatchable<T>(val, shouldNotBe, context + ".shouldNotBe(" + shouldNotBe + ")", false);
+        tShouldOrShouldNotBeMatchable.match();
+        return tShouldOrShouldNotBeMatchable;
     }
 }

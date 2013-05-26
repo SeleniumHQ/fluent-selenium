@@ -15,7 +15,11 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -304,4 +308,5 @@ public class FluentWebElement extends BaseFluentWebElement {
             return true;
         }
     }
+
 }

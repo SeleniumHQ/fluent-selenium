@@ -113,15 +113,15 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
         WebElementValue<Point> location = fwe.location();
-        Matchable<Point> pointMatchable = location.shouldBe(new Point(1, 1));
-        Point locn = pointMatchable.value();
+        ShouldOrShouldNotBeMatchable<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
+        Point locn = pointShouldOrShouldNotBeMatchable.value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
         try {
             fwe.location().shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
-        } catch (RuntimeException e) {
+        } catch (AssertionError e) {
             assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was <(1, 1)>"));
         }
 
@@ -133,7 +133,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         try {
             fwe.location().shouldNotBe(new Point(1, 1)).value();
             fail("should have barfed");
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             assertThat(e.getMessage(), equalTo("?.div().location().shouldNotBe((1, 1)) ~ but was."));
         }
 
@@ -146,10 +146,9 @@ public class FluentWebDriverImplTest extends BaseTest {
         try {
             fwe.size().shouldNotBe(new Dimension(10, 10));
             fail("should have barfed");
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             assertThat(e.getMessage(), equalTo("?.div().size().shouldNotBe((10, 10)) ~ but was."));
         }
-
 
         when(we.getCssValue("blort")).thenReturn("blort_value");
         assertThat(fwe.cssValue("blort").shouldBe("blort_value"), notNullValue());
