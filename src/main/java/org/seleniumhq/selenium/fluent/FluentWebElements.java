@@ -67,8 +67,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public boolean isSelected() {
         Context ctx = Context.singular(context, "isSelected");
-        boolean areSelected = decorateExecution(new IsSelected(), ctx);
-        return areSelected;
+        return decorateExecution(new IsSelected(), ctx);
     }
 
     public boolean isEnabled() {
@@ -83,8 +82,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public TestableString getText() {
         Context ctx = Context.singular(context, "getText");
-        Execution<String> execution = new GetText();
-        return new TestableString(execution, ctx).within(getPeriod());
+        return new TestableString(new GetText(), ctx).within(getPeriod());
     }
 
     @Override

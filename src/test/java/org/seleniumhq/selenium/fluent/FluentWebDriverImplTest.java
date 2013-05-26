@@ -17,7 +17,6 @@ package org.seleniumhq.selenium.fluent;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -34,10 +33,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 import static org.seleniumhq.selenium.fluent.WebElementJournal.throwExceptionMaybe;
 
 /**
@@ -62,55 +58,6 @@ public class FluentWebDriverImplTest extends BaseTest {
 
     }
 
-    @Test
-    public void reference_test_with_mockito() {
-        WebDriver wd = mock(WebDriver.class);
-        WebElement we = mock(WebElement.class);
-        WebElement we2 = mock(WebElement.class);
-
-        FluentWebDriverImpl fwd = new FluentWebDriverImpl(wd);
-
-        when(wd.findElement(ID_A)).thenReturn(we);
-        when(we.findElement(ID_B)).thenReturn(we2);
-        when(we.getTagName()).thenReturn("div");
-        when(we2.getTagName()).thenReturn("div");
-
-        FluentWebElement fe = fwd.div(ID_A).div(ID_B);
-
-        assertThat(fe, notNullValue());
-
-        InOrder io = inOrder(we, wd, we2);
-        io.verify(wd).findElement(ID_A);
-        io.verify(we).getTagName();
-        io.verify(we).findElement(ID_B);
-        io.verify(we2).getTagName();
-        verifyNoMoreInteractions(wd, we, we2);
-    }
-
-    @Test
-    public void lengthier_expression_with_late_runtime_exception() {
-
-        BaseFluentWebDriver fc = null;
-        try {
-            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
-
-            FAIL_ON_NEXT.set(RuntimeException.class);
-
-            fc = span.sendKeys("RAIN_IN_SPAIN");
-        } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.div(By.id: idA).div(By.id: idB).span().sendKeys('RAIN_IN_SPAIN')"));
-            assertThat(e.getCause(), notNullValue());
-        }
-
-        assertThat(sb.toString(), equalTo(
-                "wd0.findElement(By.id: idA) -> we1\n" +
-                        "we1.getTagName() -> 'div'\n" +
-                        "we1.findElement(By.id: idB) -> we2\n" +
-                        "we2.getTagName() -> 'div'\n" +
-                        "we2.findElement(By.tagName: span) -> we3\n" +
-                        "we3.getTagName() -> 'span'\n"
-        ));
-    }
 
     @Test
     public void lengthier_expression_with_late_assertion_error() {
