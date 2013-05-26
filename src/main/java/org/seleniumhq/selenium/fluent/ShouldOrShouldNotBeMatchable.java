@@ -24,7 +24,7 @@ import org.openqa.selenium.Point;
 import static java.lang.String.valueOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class ShouldOrShouldNotBeMatchable<T> {
+public abstract class ShouldOrShouldNotBeMatchable<T> {
     private T val;
     private final T shouldOrShouldNotBe;
     private final String context;
