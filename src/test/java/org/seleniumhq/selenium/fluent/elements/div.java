@@ -2,7 +2,7 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.seleniumhq.selenium.fluent.BaseTest2;
+import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
 
@@ -10,10 +10,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class div extends BaseTest2 {
+public class div extends BaseTest {
 
     @Test
     public void div_functionality() {

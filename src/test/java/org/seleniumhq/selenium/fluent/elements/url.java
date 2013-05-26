@@ -2,7 +2,7 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.seleniumhq.selenium.fluent.BaseTest2;
+import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
 import org.seleniumhq.selenium.fluent.TestableString;
 
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class url extends BaseTest2 {
+public class url extends BaseTest {
 
     @Test
     public void url_functionality() {

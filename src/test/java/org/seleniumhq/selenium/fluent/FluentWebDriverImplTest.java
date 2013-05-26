@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class FluentWebDriverImplTest extends BaseTest2 {
+public class FluentWebDriverImplTest extends BaseTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");

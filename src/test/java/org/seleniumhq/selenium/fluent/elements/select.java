@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
-import org.seleniumhq.selenium.fluent.BaseTest2;
+import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.Execution;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentSelect;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class select extends BaseTest2 {
+public class select extends BaseTest {
 
     @Test
     public void select_functionality() {
