@@ -28,23 +28,36 @@ public class TestableString {
         this.context = ctx;
     }
 
-    public void shouldBe(String shouldBe) {
+    private static abstract class Validation {
+        public abstract void validate(long start);
+    }
+
+    public void shouldBe(final String shouldBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
-        long start = System.currentTimeMillis();
-        try {
-            if (!shouldBe.equals(is)) {
-                if (within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.execute();
-                        passed = is != null && is.equals(shouldBe);
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                } else {
-                    assignValueIfNeeded();
+
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                if (!shouldBe.equals(is)) {
+                    if (within != null) {
+                        boolean passed;
+                        long endMillis = calcEndMillis();
+                        do {
+                            is = execution.execute();
+                            passed = is != null && is.equals(shouldBe);
+                        } while (System.currentTimeMillis() < endMillis && !passed);
+                    } else {
+                        assignValueIfNeeded();
+                    }
                 }
+                assertThat(durationIfNotZero(start), is, equalTo(shouldBe));
             }
-            assertThat(durationIfNotZero(start), is, equalTo(shouldBe));
+        }, ctx);
+    }
+
+    private void validateWrapRethrow(Validation validation, BaseFluentWebDriver.Context ctx) {
+        try {
+            validation.validate(System.currentTimeMillis());
         } catch (UnsupportedOperationException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -66,50 +79,42 @@ public class TestableString {
         is = execution.execute();
     }
 
-    public void shouldNotBe(String shouldNotBe) {
+    public void shouldNotBe(final String shouldNotBe) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
-        long start = System.currentTimeMillis();
-        try {
-            assignValueIfNeeded();
-            if (shouldNotBe.equals(is) && within != null) {
-                boolean passed;
-                long endMillis = calcEndMillis();
-                do {
-                    is = execution.execute();
-                    passed = is != null && !is.equals(shouldNotBe);
-                } while (System.currentTimeMillis() < endMillis && !passed);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
+                if (shouldNotBe.equals(is) && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.execute();
+                        passed = is != null && !is.equals(shouldNotBe);
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), is, not(equalTo(shouldNotBe)));
             }
-            assertThat(durationIfNotZero(start), is, not(equalTo(shouldNotBe)));
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
     }
 
-    public void shouldContain(String shouldContain) {
+    public void shouldContain(final String shouldContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
-        long start = System.currentTimeMillis();
-        try {
-            assignValueIfNeeded();
-            if (is.indexOf(shouldContain) == -1 && within != null) {
-                boolean passed;
-                long endMillis = calcEndMillis();
-                do {
-                    is = execution.execute();
-                    passed = is != null && is.indexOf(shouldContain) > -1;
-                } while (System.currentTimeMillis() < endMillis && !passed);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
+                if (is.indexOf(shouldContain) == -1 && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.execute();
+                        passed = is != null && is.indexOf(shouldContain) > -1;
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), is, containsString(shouldContain));
             }
-            assertThat(durationIfNotZero(start), is, containsString(shouldContain));
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
     }
 
     private String durationIfNotZero(long start) {
@@ -126,34 +131,38 @@ public class TestableString {
         return within.getEndMillis(System.currentTimeMillis());
     }
 
-    public void shouldNotContain(String shouldNotContain) {
+    public void shouldNotContain(final String shouldNotContain) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
-        long start = System.currentTimeMillis();
-        try {
-            assignValueIfNeeded();
-            if (is.indexOf(shouldNotContain) > -1 && within != null) {
-                boolean passed;
-                long endMillis = calcEndMillis();
-                do {
-                    is = execution.execute();
-                    passed = is != null && is.indexOf(shouldNotContain) == -1;
-                } while (System.currentTimeMillis() < endMillis && !passed);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
+                if (is.indexOf(shouldNotContain) > -1 && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.execute();
+                        passed = is != null && is.indexOf(shouldNotContain) == -1;
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
             }
-            assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
+
     }
 
     @Override
     public String toString() {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "toString", null, "");
-        long start = System.currentTimeMillis();
-        assignValueAndWrapExceptionsIfNeeded(ctx, start);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                if (is != null) {
+                    return;
+                }
+                is = execution.execute();
+            }
+        }, ctx);
         return is;
     }
 
@@ -172,52 +181,43 @@ public class TestableString {
 
     public void shouldMatch(String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
-        long start = System.currentTimeMillis();
-        MatchesRegex matcher = new MatchesRegex(regex);
-        try {
-            assignValueIfNeeded();
+        final MatchesRegex matcher = new MatchesRegex(regex);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
 
-            if ((is != null && !matcher.matches(is)) && within != null) {
-                boolean passed;
-                long endMillis = calcEndMillis();
-                do {
-                    is = execution.execute();
-                    passed = is != null && matcher.matches(is);
-                } while (System.currentTimeMillis() < endMillis && !passed);
+                if ((is != null && !matcher.matches(is)) && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.execute();
+                        passed = is != null && matcher.matches(is);
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), is, matcher);
             }
-            assertThat(durationIfNotZero(start), is, matcher);
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
     }
 
-    public void shouldNotMatch(String regex) {
+    public void shouldNotMatch(final String regex) {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
-        long start = System.currentTimeMillis();
-        MatchesRegex matcher = new MatchesRegex(regex);
-
-        try {
-            assignValueIfNeeded();
-            if ((is != null && matcher.matches(is)) && within != null) {
-                boolean passed;
-                long endMillis = calcEndMillis();
-                do {
-                    is = execution.execute();
-                    passed = is != null && !matcher.matches(is);
-                } while (System.currentTimeMillis() < endMillis && !passed);
+        final MatchesRegex matcher = new MatchesRegex(regex);
+        validateWrapRethrow(new Validation() {
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
+                if ((is != null && matcher.matches(is)) && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.execute();
+                        passed = is != null && !matcher.matches(is);
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), is, not(matcher));
             }
-            assertThat(durationIfNotZero(start), is, not(matcher));
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
+        }, ctx);
     }
 
     private static class MatchesRegex extends BaseMatcher<String> {

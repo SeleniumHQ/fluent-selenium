@@ -55,6 +55,39 @@ public class TestableStringTest {
     }
 
     @Test
+    public void unsupportedOperationExceptionShouldBeReThrownAsIs() {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        try {
+            new TestableString(new Execution<String>() {
+                public String execute() {
+                    throw new UnsupportedOperationException("oops");
+                }
+            }, ctx).within(secs(1)).shouldBe("bar");
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            assertThat(e.getMessage(), equalTo("oops"));
+
+        }
+    }
+
+    @Test
+    public void runtimeExceptionShouldBeWrappedAndReThrown() {
+        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        try {
+            new TestableString(new Execution<String>() {
+                public String execute() {
+                    throw new RuntimeException("oops");
+                }
+            }, ctx).within(secs(1)).shouldBe("bar");
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy2().within(secs(1)).shouldBe('bar')"));
+            // TODO, no time recorded.
+            assertThat(e.getCause().getMessage(), equalTo("oops"));
+        }
+    }
+
+    @Test
     public void stringShouldNotBeSomething() {
         BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).shouldNotBe("bar");

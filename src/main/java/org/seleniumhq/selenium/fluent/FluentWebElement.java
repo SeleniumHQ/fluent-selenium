@@ -55,12 +55,7 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                currentElement.click();
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new Click(), ctx);
         return new FluentWebElement(delegate, currentElement, ctx);
     }
 
@@ -70,23 +65,13 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                currentElement.clear();
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new Clear(), ctx);
         return new FluentWebElement(delegate, currentElement, ctx);
     }
 
 
     public FluentWebElement submit() {
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                currentElement.submit();
-                return true;
-            }
-        }, Context.singular(context, "submit"));
+        decorateExecution(new Submit(), Context.singular(context, "submit"));
         return new FluentWebElement(delegate, currentElement, context);
     }
 
@@ -94,93 +79,44 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
 
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                currentElement.sendKeys(keysToSend);
-                return true;
-            }
-        }, Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)));
+        decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)));
         return new FluentWebElement(delegate, currentElement, context);
     }
 
     public TestableString getTagName() {
-        return new TagNameTestableString(new Execution<String>() {
-            public String execute() {
-                return currentElement.getTagName();
-            }
-        }, Context.singular(context, "getTagName"));
-    }
-
-    private static class TagNameTestableString extends TestableString {
-        private TagNameTestableString(Execution<String> execution, Context ctx) {
-            super(execution, ctx);
-            long start = System.currentTimeMillis();
-            assignValueAndWrapExceptionsIfNeeded(ctx, start);
-        }
+        return new TestableString(new GetTagName(), Context.singular(context, "getTagName"));
     }
 
     public boolean isSelected() {
-        return decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                return currentElement.isSelected();
-            }
-        }, Context.singular(context, "isSelected"));
+        return decorateExecution(new IsSelected(), Context.singular(context, "isSelected"));
     }
 
     public boolean isEnabled() {
-        return decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                return currentElement.isEnabled();
-            }
-        }, Context.singular(context, "isEnabled"));
+        return decorateExecution(new IsEnabled(), Context.singular(context, "isEnabled"));
     }
 
     public boolean isDisplayed() {
-        return decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                return currentElement.isDisplayed();
-            }
-        }, Context.singular(context, "isDisplayed"));
+        return decorateExecution(new IsDisplayed(), Context.singular(context, "isDisplayed"));
     }
 
     public Point getLocation() {
-        return decorateExecution(new Execution<Point>() {
-            public Point execute() {
-                return currentElement.getLocation();
-            }
-        }, Context.singular(context, "getLocation"));
+        return decorateExecution(new GetLocation(), Context.singular(context, "getLocation"));
     }
 
     public Dimension getSize() {
-        return decorateExecution(new Execution<Dimension>() {
-            public Dimension execute() {
-                return currentElement.getSize();
-            }
-        }, Context.singular(context, "getSize"));
+        return decorateExecution(new GetSize(), Context.singular(context, "getSize"));
     }
 
     public TestableString getCssValue(final String cssName) {
-        return new TestableString(new Execution<String>() {
-            public String execute() {
-                return currentElement.getCssValue(cssName);
-            }
-        }, Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
+        return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
     }
 
     public TestableString getAttribute(final String attr) {
-        return new TestableString(new Execution<String>() {
-            public String execute() {
-                return currentElement.getAttribute(attr);
-            }
-        }, Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
+        return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
     }
 
     public TestableString getText() {
-        return new TestableString(new Execution<String>() {
-            public String execute() {
-                return currentElement.getText();
-            }
-        }, Context.singular(context, "getText")).within(getPeriod());
+        return new TestableString(new GetText(), Context.singular(context, "getText")).within(getPeriod());
     }
 
     //@Override
@@ -269,5 +205,103 @@ public class FluentWebElement extends BaseFluentWebElement {
 
     }
 
+    private class Clear implements Execution<Boolean> {
+        public Boolean execute() {
+            currentElement.clear();
+            return true;
+        }
+    }
 
+    private class GetTagName implements Execution<String> {
+        public String execute() {
+            return currentElement.getTagName();
+        }
+    }
+
+    private class Click implements Execution<Boolean> {
+        public Boolean execute() {
+            currentElement.click();
+            return true;
+        }
+    }
+
+    private class GetAttribute implements Execution<String> {
+        private final String attr;
+
+        public GetAttribute(String attr) {
+            this.attr = attr;
+        }
+
+        public String execute() {
+            return currentElement.getAttribute(attr);
+        }
+    }
+
+    private class GetCssValue implements Execution<String> {
+        private final String cssName;
+
+        public GetCssValue(String cssName) {
+            this.cssName = cssName;
+        }
+
+        public String execute() {
+            return currentElement.getCssValue(cssName);
+        }
+    }
+
+    private class GetText implements Execution<String> {
+        public String execute() {
+            return currentElement.getText();
+        }
+    }
+
+    private class GetSize implements Execution<Dimension> {
+        public Dimension execute() {
+            return currentElement.getSize();
+        }
+    }
+
+    private class GetLocation implements Execution<Point> {
+        public Point execute() {
+            return currentElement.getLocation();
+        }
+    }
+
+    private class IsDisplayed implements Execution<Boolean> {
+        public Boolean execute() {
+            return currentElement.isDisplayed();
+        }
+    }
+
+    private class IsEnabled implements Execution<Boolean> {
+        public Boolean execute() {
+            return currentElement.isEnabled();
+        }
+    }
+
+    private class IsSelected implements Execution<Boolean> {
+        public Boolean execute() {
+            return currentElement.isSelected();
+        }
+    }
+
+    private class SendKeys implements Execution<Boolean> {
+        private final CharSequence[] keysToSend;
+
+        public SendKeys(CharSequence... keysToSend) {
+            this.keysToSend = keysToSend;
+        }
+
+        public Boolean execute() {
+            currentElement.sendKeys(keysToSend);
+            return true;
+        }
+    }
+
+    private class Submit implements Execution<Boolean> {
+        public Boolean execute() {
+            currentElement.submit();
+            return true;
+        }
+    }
 }

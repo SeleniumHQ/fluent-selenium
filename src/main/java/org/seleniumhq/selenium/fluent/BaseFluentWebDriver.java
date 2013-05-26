@@ -559,11 +559,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     public TestableString url() {
-        Execution<String> execution = new Execution<String>() {
-            public String execute() {
-                return delegate.getCurrentUrl();
-            }
-        };
+        Execution<String> execution = new CurrentUrl();
         Context ctx = Context.singular(context, "url");
         return new TestableString(execution, ctx).within(getPeriod());
     }
@@ -573,11 +569,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
     }
 
     public TestableString title() {
-        Execution<String> execution = new Execution<String>() {
-            public String execute() {
-                return delegate.getTitle();
-            }
-        };
+        Execution<String> execution = new GetTitle();
         Context ctx = Context.singular(context, "title");
         return new TestableString(execution, ctx).within(getPeriod());
     }
@@ -870,4 +862,15 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     protected abstract List<WebElement> actualFindThem(By by);
 
+    private class CurrentUrl implements Execution<String> {
+        public String execute() {
+            return delegate.getCurrentUrl();
+        }
+    }
+
+    private class GetTitle implements Execution<String> {
+        public String execute() {
+            return delegate.getTitle();
+        }
+    }
 }

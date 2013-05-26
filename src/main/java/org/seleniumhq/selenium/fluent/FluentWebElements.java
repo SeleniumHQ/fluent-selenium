@@ -38,14 +38,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public FluentWebElements click() {
         Context ctx = Context.singular(context, "click");
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    webElement.click();
-                }
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new Click(), ctx);
         return makeFluentWebElements(this, ctx);
     }
 
@@ -54,27 +47,13 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
      */
     public FluentWebElements clearField() {
         Context ctx = Context.singular(context, "clearField");
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    webElement.getWebElement().clear();
-                }
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new Clear(), ctx);
         return makeFluentWebElements(this, ctx);
     }
 
     public FluentWebElements submit() {
         Context ctx = Context.singular(context, "submit");
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    webElement.submit();
-                }
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new Submit(), ctx);
         return makeFluentWebElements(this, ctx);
     }
 
@@ -82,68 +61,29 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         Context ctx = Context.singular(context, "sendKeys", charSeqArrayAsHumanString(keysToSend));
-        decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    webElement.sendKeys(keysToSend);
-                }
-                return true;
-            }
-        }, ctx);
+        decorateExecution(new SendKeys(keysToSend), ctx);
         return makeFluentWebElements(this, ctx);
     }
 
     public boolean isSelected() {
         Context ctx = Context.singular(context, "isSelected");
-        boolean areSelected = decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                boolean areSelected = true;
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    areSelected = areSelected & webElement.isSelected();
-                }
-                return areSelected;
-            }
-        }, ctx);
+        boolean areSelected = decorateExecution(new IsSelected(), ctx);
         return areSelected;
     }
 
     public boolean isEnabled() {
         Context ctx = Context.singular(context, "isEnabled");
-        return decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                boolean areSelected = true;
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    areSelected = areSelected & webElement.isEnabled();
-                }
-                return areSelected;
-            }
-        }, ctx);
+        return decorateExecution(new IsEnabled(), ctx);
     }
 
     public boolean isDisplayed() {
         Context ctx = Context.singular(context, "isDisplayed");
-        return decorateExecution(new Execution<Boolean>() {
-            public Boolean execute() {
-                boolean areSelected = true;
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    areSelected = areSelected & webElement.isDisplayed();
-                }
-                return areSelected;
-            }
-        }, ctx);
+        return decorateExecution(new IsDisplayed(), ctx);
     }
 
     public TestableString getText() {
         Context ctx = Context.singular(context, "getText");
-        Execution<String> execution = new Execution<String>() {
-            public String execute() {
-                String text = "";
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    text = text + webElement.getText();
-                }
-                return text;
-            }
-        };
+        Execution<String> execution = new GetText();
         return new TestableString(execution, ctx).within(getPeriod());
     }
 
@@ -202,43 +142,12 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "filter", null, matcher);
-        final List<FluentWebElement> subset = decorateExecution(new Execution<List<FluentWebElement>>() {
-            public List<FluentWebElement> execute() {
-                List<FluentWebElement> results = new ArrayList<FluentWebElement>();
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    if (matcher.matches(webElement.getWebElement())) {
-                        results.add(webElement);
-                    }
-                }
-                if (results.size() == 0) {
-                    throw new NothingMatches();
-                }
-                return results;
-            }
-        }, ctx);
-        return makeFluentWebElements(subset, ctx);
+        return makeFluentWebElements(decorateExecution(new FilterMatches(matcher), ctx), ctx);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "first", null, matcher);
-        FluentWebElement first = decorateExecution(new Execution<FluentWebElement>() {
-            public FluentWebElement execute() {
-                FluentWebElement result = null;
-                for (FluentWebElement webElement : FluentWebElements.this) {
-                    if (matcher.matches(webElement.getWebElement())) {
-                        result = webElement;
-                        break;
-                    }
-                }
-                if (result == null) {
-                    throw new NothingMatches();
-                } else {
-                    return result;
-                }
-            }
-        }, ctx);
-
-        return first;
+        return decorateExecution(new MatchesFirst(matcher), ctx);
     }
 
 
@@ -853,5 +762,131 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     @Override
     public final TestableString url() {
         throw notSupported();
+    }
+
+    private class Clear implements Execution<Boolean> {
+        public Boolean execute() {
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                webElement.getWebElement().clear();
+            }
+            return true;
+        }
+    }
+
+    private class Click implements Execution<Boolean> {
+        public Boolean execute() {
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                webElement.click();
+            }
+            return true;
+        }
+    }
+
+    private class MatchesFirst implements Execution<FluentWebElement> {
+        private final FluentMatcher matcher;
+
+        public MatchesFirst(FluentMatcher matcher) {
+            this.matcher = matcher;
+        }
+
+        public FluentWebElement execute() {
+            FluentWebElement result = null;
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                if (matcher.matches(webElement.getWebElement())) {
+                    result = webElement;
+                    break;
+                }
+            }
+            if (result == null) {
+                throw new NothingMatches();
+            } else {
+                return result;
+            }
+        }
+    }
+
+    private class FilterMatches implements Execution<List<FluentWebElement>> {
+        private final FluentMatcher matcher;
+
+        public FilterMatches(FluentMatcher matcher) {
+            this.matcher = matcher;
+        }
+
+        public List<FluentWebElement> execute() {
+            List<FluentWebElement> results = new ArrayList<FluentWebElement>();
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                if (matcher.matches(webElement.getWebElement())) {
+                    results.add(webElement);
+                }
+            }
+            if (results.size() == 0) {
+                throw new NothingMatches();
+            }
+            return results;
+        }
+    }
+
+    private class GetText implements Execution<String> {
+        public String execute() {
+            String text = "";
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                text = text + webElement.getText();
+            }
+            return text;
+        }
+    }
+
+    private class IsDisplayed implements Execution<Boolean> {
+        public Boolean execute() {
+            boolean areSelected = true;
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                areSelected = areSelected & webElement.isDisplayed();
+            }
+            return areSelected;
+        }
+    }
+
+    private class IsEnabled implements Execution<Boolean> {
+        public Boolean execute() {
+            boolean areSelected = true;
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                areSelected = areSelected & webElement.isEnabled();
+            }
+            return areSelected;
+        }
+    }
+
+    private class IsSelected implements Execution<Boolean> {
+        public Boolean execute() {
+            boolean areSelected = true;
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                areSelected = areSelected & webElement.isSelected();
+            }
+            return areSelected;
+        }
+    }
+
+    private class SendKeys implements Execution<Boolean> {
+        private final CharSequence[] keysToSend;
+
+        public SendKeys(CharSequence... keysToSend) {
+            this.keysToSend = keysToSend;
+        }
+
+        public Boolean execute() {
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                webElement.sendKeys(keysToSend);
+            }
+            return true;
+        }
+    }
+
+    private class Submit implements Execution<Boolean> {
+        public Boolean execute() {
+            for (FluentWebElement webElement : FluentWebElements.this) {
+                webElement.submit();
+            }
+            return true;
+        }
     }
 }
