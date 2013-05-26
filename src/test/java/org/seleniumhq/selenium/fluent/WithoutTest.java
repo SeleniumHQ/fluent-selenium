@@ -59,6 +59,8 @@ public class WithoutTest {
             fluentWebDriver.without(secs(2)).div();
             fail();
         } catch (FluentExecutionStopped executionStopped) {
+            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).div()"));
+            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
         }
     }
 
