@@ -139,7 +139,7 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
     }
 
     public FluentWebDriver without(Period p) {
-        return null;
+        throw meaningless("without("+p+")");
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {

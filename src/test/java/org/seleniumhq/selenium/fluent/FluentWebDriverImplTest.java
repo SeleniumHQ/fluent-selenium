@@ -271,13 +271,11 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(fwes.size(), equalTo(4));
         assertThat(fwes.get(0), equalTo(item0));
 
-        {
-            List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
-            elems2.add(mock(FluentWebElement.class));
-            elems2.add(mock(FluentWebElement.class));
+        List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
+        elems2.add(mock(FluentWebElement.class));
+        elems2.add(mock(FluentWebElement.class));
 
-            fwes.addAll(elems2);
-        }
+        fwes.addAll(elems2);
 
         assertThat(fwes.size(), equalTo(6));
 
@@ -286,6 +284,8 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(fwes.size(), equalTo(5));
 
         fwes.removeAll(elems);
+
+        assertThat(fwes.containsAll(newArrayList("a", "b")), equalTo(false));
 
         assertThat(fwes.size(), equalTo(2));
 
