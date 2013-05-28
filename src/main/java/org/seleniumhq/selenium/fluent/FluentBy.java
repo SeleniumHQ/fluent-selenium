@@ -89,16 +89,11 @@ public abstract class FluentBy {
     /**
      * Finds elements a composite of other By strategies
      */
-    public static ByComposite composite(final By... bys) {
-        if (bys == null)
-            throw new IllegalArgumentException("Cannot make composite with no varargs of Bys");
-        if (bys.length != 2
-                || !(bys[0] instanceof By.ByTagName)
-                && (!(bys[1] instanceof By.ByClassName) || !(bys[1] instanceof ByAttribute))) {
-            throw new IllegalArgumentException("can only do this with By.tagName " +
-                    "followed one of By.className or FluentBy.attribute");
-        }
-        return new ByComposite(bys);
+    public static ByComposite composite(By.ByTagName b0, By.ByClassName b1) {
+        return new ByComposite(b0, b1);
+    }
+    public static ByComposite composite(By.ByTagName b0, FluentBy.ByAttribute b1) {
+        return new ByComposite(b0, b1);
     }
 
     public static ByLast last(By by) {
@@ -112,7 +107,7 @@ public abstract class FluentBy {
         return new ByLast();
     }
 
-    static class ByLast extends By {
+    private static class ByLast extends By {
         
         private final String orig;
         private final ByAttribute by;
@@ -131,7 +126,7 @@ public abstract class FluentBy {
             return makeXPath().findElements(context);
         }
 
-        By makeXPath() {
+        private By makeXPath() {
             return By.xpath((orig.substring(0, orig.length() - 1)
                     + " and position() = last()]").replace("[ and ", "["));
         }
@@ -150,11 +145,11 @@ public abstract class FluentBy {
 
     // Until WebDriver supports a composite in browser implementations, only
     // TagName + ClassName is allowed as it can easily map to XPath.
-    static class ByComposite extends By {
+    private static class ByComposite extends By {
 
         private final By[] bys;
 
-        public ByComposite(By... bys) {
+        private ByComposite(By... bys) {
             this.bys = bys;
         }
 
@@ -168,12 +163,12 @@ public abstract class FluentBy {
               + word + " ')";
         }
 
-        By makeByXPath() {
+        private By makeByXPath() {
             String xpathExpression = makeXPath();
             return By.xpath(xpathExpression);
         }
 
-        String makeXPath() {
+        private String makeXPath() {
             String xpathExpression = ".//" + getTagName();
 
             if (bys[1] instanceof ByClassName) {
@@ -230,7 +225,7 @@ public abstract class FluentBy {
         }
     }
 
-    static class ByAttribute extends By {
+    public static class ByAttribute extends By {
         private final String name;
         private final String value;
 
@@ -244,11 +239,11 @@ public abstract class FluentBy {
             return makeByXPath().findElement(context);
         }
 
-        By makeByXPath() {
+        private By makeByXPath() {
             return By.xpath(makeXPath());
         }
 
-        String makeXPath() {
+        private String makeXPath() {
             return ".//*[" + nameAndValue() + "]";
         }
 
@@ -270,7 +265,5 @@ public abstract class FluentBy {
             return "FluentBy.attribute: " + name + val();
         }
     }
-
-
 
 }

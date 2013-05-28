@@ -581,7 +581,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
             by = xpath(".//" + tagName + "[" + by.toString().substring(by.toString().indexOf(":") + 1).trim() + "]");
         }
         if (by.getClass().getName().equals("org.openqa.selenium.By$ByClassName")) {
-            by = composite(tagName(tagName), by);
+            by = composite(new By.ByTagName(tagName), (By.ByClassName) by);
         }
         return by;
     }
