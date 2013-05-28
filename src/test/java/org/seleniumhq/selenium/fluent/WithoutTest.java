@@ -64,6 +64,18 @@ public class WithoutTest {
         }
     }
 
+    @Test
+    public void meaninglessChainedDivDetected() {
+        when(webDriver.findElement(By.tagName("div"))).thenThrow(new ElementNotFoundException("div", null, null));
+
+        try {
+            final FluentWebElement disappearedElement = fluentWebDriver.without(secs(100)).div();
+            disappearedElement.div();
+            fail();
+        } catch(UnsupportedOperationException ex) {
+        }
+    }
+
 
     @Test
     public void spanIsGoneBeforeWeLookForIt() {

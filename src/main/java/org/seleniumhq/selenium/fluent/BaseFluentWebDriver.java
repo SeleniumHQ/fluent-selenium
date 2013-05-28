@@ -44,12 +44,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement span() {
         SingleResult single = single(tagName("span"), "span");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement span(By by) {
         SingleResult single = single(by, "span");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements spans() {
@@ -80,12 +80,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement div() {
         SingleResult single = single(tagName("div"), "div");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement div(By by) {
         SingleResult single = single(by, "div");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements divs() {
@@ -100,12 +100,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement button() {
         SingleResult single = single(tagName("button"), "button");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement button(By by) {
         SingleResult single = single(by, "button");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements buttons() {
@@ -120,12 +120,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement link() {
         SingleResult single = single(tagName("a"), "a");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement link(By by) {
         SingleResult single = single(by, "a");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements links() {
@@ -140,12 +140,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement input() {
         SingleResult single = single(tagName("input"), "input");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement input(By by) {
         SingleResult single = single(by, "input");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements inputs() {
@@ -180,12 +180,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h1() {
         SingleResult single = single(tagName("h1"), "h1");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement h1(By by) {
         SingleResult single = single(by, "h1");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h1s() {
@@ -200,12 +200,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h2() {
         SingleResult single = single(tagName("h2"), "h2");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement h2(By by) {
         SingleResult single = single(by, "h2");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h2s() {
@@ -220,7 +220,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h3() {
         SingleResult single = single(tagName("h3"), "h3");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h3s() {
@@ -230,7 +230,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h3(By by) {
         SingleResult single = single(by, "h3");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h3s(By by) {
@@ -240,7 +240,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h4(){
         SingleResult single = single(tagName("h4"), "h4");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h4s() {
@@ -250,7 +250,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement h4(By by) {
         SingleResult single = single(by, "h4");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements h4s(By by) {
@@ -260,7 +260,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement p() {
         SingleResult single = single(tagName("p"), "p");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ps() {
@@ -270,7 +270,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement p(By by) {
         SingleResult single = single(by, "p");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ps(By by) {
@@ -280,7 +280,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement img() {
         SingleResult single = single(tagName("img"), "img");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements imgs() {
@@ -290,7 +290,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement img(By by) {
         SingleResult single = single(by, "img");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements imgs(By by) {
@@ -300,7 +300,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement table() {
         SingleResult single = single(tagName("table"), "table");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tables() {
@@ -310,7 +310,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement table(By by) {
         SingleResult single = single(by, "table");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tables(By by) {
@@ -320,7 +320,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement fieldset() {
         SingleResult single = single(tagName("fieldset"), "fieldset");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements fieldsets() {
@@ -330,7 +330,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement fieldset(By by) {
         SingleResult single = single(by, "fieldset");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements fieldsets(By by) {
@@ -340,7 +340,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement legend() {
         SingleResult single = single(tagName("legend"), "legend");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements legends() {
@@ -350,7 +350,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement legend(By by) {
         SingleResult single = single(by, "legend");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements legends(By by) {
@@ -360,7 +360,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement tr() {
         SingleResult single = single(tagName("tr"), "tr");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements trs() {
@@ -370,7 +370,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement tr(By by) {
         SingleResult single = single(by, "tr");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements trs(By by) {
@@ -380,7 +380,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement td() {
         SingleResult single = single(tagName("td"), "td");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tds() {
@@ -390,7 +390,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement td(By by) {
         SingleResult single = single(by, "td");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements tds(By by) {
@@ -400,7 +400,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement th() {
         SingleResult single = single(tagName("th"), "th");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ths() {
@@ -410,7 +410,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement th(By by) {
         SingleResult single = single(by, "th");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ths(By by) {
@@ -420,7 +420,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement ul() {
         SingleResult single = single(tagName("ul"), "ul");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements uls() {
@@ -430,7 +430,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement ul(By by) {
         SingleResult single = single(by, "ul");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements uls(By by) {
@@ -440,7 +440,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement ol() {
         SingleResult single = single(tagName("ol"), "ol");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ols() {
@@ -450,7 +450,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement ol(By by) {
         SingleResult single = single(by, "ol");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements ols(By by) {
@@ -460,7 +460,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement form() {
         SingleResult single = single(tagName("form"), "form");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements forms() {
@@ -470,7 +470,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement form(By by) {
         SingleResult single = single(by, "form");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements forms(By by) {
@@ -480,7 +480,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement textarea() {
         SingleResult single = single(tagName("textarea"), "textarea");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements textareas() {
@@ -490,7 +490,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement textarea(By by) {
         SingleResult single = single(by, "textarea");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements textareas(By by) {
@@ -500,7 +500,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement option() {
         SingleResult single = single(tagName("option"), "option");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements options() {
@@ -510,7 +510,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement option(By by) {
         SingleResult single = single(by, "option");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements options(By by) {
@@ -520,12 +520,12 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement li() {
         SingleResult single = single(tagName("li"), "li");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElement li(By by) {
         SingleResult single = single(by, "li");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements lis() {
@@ -540,7 +540,7 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement map() {
         SingleResult single = single(tagName("map"), "map");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements maps() {
@@ -550,12 +550,16 @@ public abstract class BaseFluentWebDriver implements FluentWebDriver {
 
     public FluentWebElement map(By by) {
         SingleResult single = single(by, "map");
-        return new FluentWebElement(delegate, single.getResult(), single.getCtx());
+        return newFluentWebElement(delegate, single.getResult(), single.getCtx());
     }
 
     public FluentWebElements maps(By by) {
         MultipleResult multiple = multiple(by, "map");
         return newFluentWebElements(multiple.getResult(), multiple.getCtx());
+    }
+
+    protected FluentWebElement newFluentWebElement(WebDriver delegate, WebElement result, Context context) {
+        return new FluentWebElement(delegate, result, context);
     }
 
     public TestableString url() {
