@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class NegatingFluentWebDriver extends FluentWebDriverImpl {
     private final Period duration;
@@ -15,17 +16,15 @@ public class NegatingFluentWebDriver extends FluentWebDriverImpl {
 
     @Override
     protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
-        final T neverFound = null;
-        T found = null;
+        final T successfullyAbsent = null;
         while (!durationHasElapsed(startedAt)) {
             try {
-                found = super.decorateExecution(execution, ctx);
-
+                super.decorateExecution(execution, ctx);
             } catch (FluentExecutionStopped executionStopped) {
-                if (!(executionStopped.getCause() instanceof ElementNotFoundException)) {
-                    continue;
-                } else {
-                    return neverFound;
+                final boolean elementGone = executionStopped.getCause() instanceof ElementNotFoundException;
+
+                if (elementGone) {
+                    return successfullyAbsent;
                 }
             }
         }
@@ -34,5 +33,10 @@ public class NegatingFluentWebDriver extends FluentWebDriverImpl {
 
     protected Boolean durationHasElapsed(Long startMillis) {
         return duration.getEndMillis(startMillis) <= System.currentTimeMillis();
+    }
+
+    @Override
+    protected FluentWebElement newFluentWebElement(WebDriver delegate, WebElement result, Context context) {
+        return new DisappearedFluentWebElement(delegate, context);
     }
 }
