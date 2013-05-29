@@ -6,7 +6,7 @@ public class DisappearedFluentWebElement extends FluentWebElement {
         super(delegate, null, context);
     }
     private UnsupportedOperationException meaningless(final String invocation) {
-        return new UnsupportedOperationException(invocation + " has no meaning for disappeared element");
+        return new UnsupportedOperationException(invocation + " has no meaning for element that has disappeared from the DOM");
     }
     @Override
     protected WebElement findIt(By by) {
@@ -74,7 +74,7 @@ public class DisappearedFluentWebElement extends FluentWebElement {
     }
     @Override
     public TestableString getText() {
-        throw meaningless("getSize()");
+        throw meaningless("getText()");
     }
     @Override
     public WebElementValue<Point> location() {
