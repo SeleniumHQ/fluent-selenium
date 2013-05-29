@@ -15,8 +15,6 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
@@ -40,28 +38,5 @@ public abstract class BaseFluentWebElement extends BaseFluentWebDriver {
         return keys.substring(2);  // delete comma-space prefix
     }
 
-
-    // All these have peer equivalents in the WebElement interface
-    // ===========================================================
-
-    // These are as they would be in the WebElement API
-
-    public abstract Point getLocation();
-
-    public abstract TestableString cssValue(String cssName);
-
-    public abstract TestableString attribute(String attrName);
-
-    public abstract TestableString getTagName();
-
-    public abstract Dimension getSize();
-
-    public abstract boolean isSelected();
-
-    public abstract boolean isEnabled();
-
-    public abstract boolean isDisplayed();
-
-    public abstract TestableString getText();
 
 }

@@ -30,11 +30,6 @@ public class FluentSelects extends FluentWebElements {
     }
 
     @Override
-    public FluentSelects within(Period p) {
-        return (FluentSelects) super.within(p);
-    }
-
-    @Override
     public FluentSelects filter(FluentMatcher matcher) {
         return (FluentSelects) super.filter(matcher);
     }

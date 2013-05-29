@@ -47,7 +47,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        FluentWebElement fe = fwd.div(ID_A).div(ID_B);
+        BaseFluentWebElement fe = fwd.div(ID_A).div(ID_B);
 
         assertThat(fe, notNullValue());
 
@@ -392,34 +392,6 @@ public class FluentWebDriverImplTest extends BaseTest {
         CharSequence text = elems.getText().toString();
         assertThat(text.toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
 
-        try {
-            elems.getLocation();
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getLocation() has no meaning for multiple elements"));
-        }
-        try {
-            elems.getSize();
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getSize() has no meaning for multiple elements"));
-        }
-
-        try {
-            elems.cssValue("x");
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getCssValue('x') has no meaning for multiple elements"));
-        }
-
-        try {
-            elems.attribute("x");
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getAttribute('x') has no meaning for multiple elements"));
-        }
-
-        try {
-            elems.getTagName();
-        } catch (Exception e) {
-            assertThat(e.getMessage(), equalTo("getTagName() has no meaning for multiple elements"));
-        }
     }
 
     @Test

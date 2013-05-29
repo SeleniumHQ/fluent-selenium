@@ -16,8 +16,6 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -27,13 +25,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class FluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
+public class FluentWebElements extends BaseFluentWebElements {
 
     private final List<FluentWebElement> currentElements;
 
     public FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {
         super(delegate, context);
         this.currentElements = currentElements;
+    }
+
+    protected BaseFluentWebElements newFluentWebElements(MultipleResult multiple) {
+        List<WebElement> result = multiple.getResult();
+        Context ctx = multiple.getCtx();
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        for (WebElement aResult : result) {
+            elems.add(new FluentWebElement(delegate, aResult, ctx));
+        }
+        return new FluentWebElements(delegate, elems, ctx);
     }
 
     public FluentWebElements click() {
@@ -87,59 +95,22 @@ public class FluentWebElements extends BaseFluentWebElement implements List<Flue
 
     @Override
     protected final WebElement findIt(By by) {
-        throw meaningless("findIt('" + by + "')");
+        return null;
     }
 
     @Override
     protected final List<WebElement> findThem(By by) {
-        throw meaningless("findThem('" + by + "')");
+        return null;
     }
 
     @Override
     protected final WebElement actualFindIt(By by) {
-        throw meaningless("findIt('" + by + "')");
+        return null;
     }
 
     @Override
     protected final List<WebElement> actualFindThem(By by) {
-        throw meaningless("findThem('" + by + "')");
-    }
-
-    @Override
-    public final Point getLocation() {
-        throw meaningless("getLocation()");
-    }
-
-    private UnsupportedOperationException meaningless(final String invocation) {
-        return new UnsupportedOperationException(invocation + " has no meaning for multiple elements");
-    }
-
-    @Override
-    public final TestableString cssValue(String cssName) {
-        throw meaningless("getCssValue('"+cssName+"')");
-    }
-
-    @Override
-    public final TestableString attribute(String attrName) {
-        throw meaningless("getAttribute('"+attrName+"')");
-    }
-
-    @Override
-    public final TestableString getTagName() {
-        throw meaningless("getTagName()");
-    }
-
-    @Override
-    public final Dimension getSize() {
-        throw meaningless("getSize()");
-    }
-
-    public FluentWebElements within(Period p) {
-        throw meaningless("within("+p+")");
-    }
-
-    public FluentWebDriver without(Period p) {
-        throw meaningless("without("+p+")");
+        return null;
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {

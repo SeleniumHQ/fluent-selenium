@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.seleniumhq.selenium.fluent.BaseFluentWebElements;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
@@ -19,7 +20,7 @@ public class td extends BaseTest {
 
         setupExpecations("td");
 
-        FluentWebElements fe = fwd.td()
+        BaseFluentWebElements fe = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
@@ -33,7 +34,7 @@ public class td extends BaseTest {
 
         setupExpecations2("td");
 
-        FluentWebElements fe = fwd.td()
+        BaseFluentWebElements fe = fwd.td()
                 .tds(By.name("qux"));
 
         assertThat(fe, notNullValue());

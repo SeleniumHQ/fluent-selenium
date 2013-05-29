@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.seleniumhq.selenium.fluent.BaseFluentWebElements;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
@@ -19,7 +20,7 @@ public class map extends BaseTest {
 
         setupExpecations("map");
 
-        FluentWebElements fe = fwd.map()
+        BaseFluentWebElements fe = fwd.map()
                 .map(By.xpath("@foo = 'bar'"))
                 .map(By.cssSelector("baz"))
                 .maps();
@@ -33,7 +34,7 @@ public class map extends BaseTest {
 
         setupExpecations2("map");
 
-        FluentWebElements fe = fwd.map()
+        BaseFluentWebElements fe = fwd.map()
                 .maps(By.name("qux"));
 
         assertThat(fe, notNullValue());

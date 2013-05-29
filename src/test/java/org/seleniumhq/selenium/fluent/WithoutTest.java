@@ -1,6 +1,5 @@
 package org.seleniumhq.selenium.fluent;
 
-import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +7,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -28,7 +28,7 @@ public class WithoutTest {
     @Mock
     WebElement spanElement;
 
-    FluentWebDriver fluentWebDriver;
+    FluentWebDriverImpl fluentWebDriver;
 
     @Before
     public void setup() {
@@ -39,7 +39,7 @@ public class WithoutTest {
 
     @Test
     public void divIsGoneBeforeWeLookForIt() {
-        when(webDriver.findElement(By.tagName("div"))).thenThrow(new ElementNotFoundException("div", null, null));
+        when(webDriver.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
 
         fluentWebDriver.without(secs(2)).div();
     }
@@ -65,21 +65,8 @@ public class WithoutTest {
     }
 
     @Test
-    public void meaninglessChainedDivDetected() {
-        when(webDriver.findElement(By.tagName("div"))).thenThrow(new ElementNotFoundException("div", null, null));
-
-        try {
-            final FluentWebElement disappearedElement = fluentWebDriver.without(secs(100)).div();
-            disappearedElement.div();
-            fail();
-        } catch(UnsupportedOperationException ex) {
-        }
-    }
-
-
-    @Test
     public void spanIsGoneBeforeWeLookForIt() {
-        when(webDriver.findElement(By.tagName("span"))).thenThrow(new ElementNotFoundException("span", null, null));
+        when(webDriver.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
 
         fluentWebDriver.without(secs(2)).span();
     }
@@ -119,7 +106,7 @@ public class WithoutTest {
             long now = System.currentTimeMillis();
             boolean durationHasElapsed = duration.getEndMillis(startedAt()) <= now;
             if (durationHasElapsed) {
-                throw new ElementNotFoundException(null, null, null);
+                throw new NotFoundException("");
             }
             return webElement;
         }
