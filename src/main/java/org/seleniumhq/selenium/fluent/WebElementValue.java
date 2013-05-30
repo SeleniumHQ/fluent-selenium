@@ -36,4 +36,8 @@ public class WebElementValue<T> {
         shouldNotBeMatchable.match();
         return shouldNotBeMatchable;
     }
+
+    public T getValue() {
+        return val;
+    }
 }

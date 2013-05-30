@@ -32,7 +32,6 @@ public class BaseTest {
         fwd = new FluentWebDriverImpl(wd);
     }
 
-
     protected void setupExpecations(String name) {
         when(wd.findElement(By.tagName(name))).thenReturn(we);
         when(we.getTagName()).thenReturn(name);

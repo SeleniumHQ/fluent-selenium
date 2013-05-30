@@ -112,72 +112,72 @@ public class FluentWebDriverImplTest extends BaseTest {
         assertThat(fwe, notNullValue());
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
-        WebElementValue<Point> location = fwe.location();
+        WebElementValue<Point> location = fwe.getLocation();
         ShouldOrShouldNotBeMatchable<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
         Point locn = pointShouldOrShouldNotBeMatchable.value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
         try {
-            fwe.location().shouldBe(new Point(2, 2)).value();
+            fwe.getLocation().shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldBe((2, 2)) ~ but was (1, 1)."));
+            assertThat(e.getMessage(), equalTo("?.div().getLocation().shouldBe((2, 2)) ~ but was (1, 1)."));
         }
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
-        locn = fwe.location().shouldNotBe(new Point(2, 2)).value();
+        locn = fwe.getLocation().shouldNotBe(new Point(2, 2)).value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
         try {
-            fwe.location().shouldNotBe(new Point(1, 1)).value();
+            fwe.getLocation().shouldNotBe(new Point(1, 1)).value();
             fail("should have barfed");
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().location().shouldNotBe((1, 1)) ~ but was."));
+            assertThat(e.getMessage(), equalTo("?.div().getLocation().shouldNotBe((1, 1)) ~ but was."));
         }
 
         when(we.getSize()).thenReturn(new Dimension(10, 10));
-        Dimension size = fwe.size().shouldBe(new Dimension(10, 10)).value();
+        Dimension size = fwe.getSize().shouldBe(new Dimension(10, 10)).value();
         assertThat(size, equalTo(new Dimension(10, 10)));
 
 
         when(we.getSize()).thenReturn(new Dimension(10, 10));
         try {
-            fwe.size().shouldNotBe(new Dimension(10, 10));
+            fwe.getSize().shouldNotBe(new Dimension(10, 10));
             fail("should have barfed");
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().size().shouldNotBe((10, 10)) ~ but was."));
+            assertThat(e.getMessage(), equalTo("?.div().getSize().shouldNotBe((10, 10)) ~ but was."));
         }
 
         when(we.getSize()).thenReturn(new Dimension(10, 10));
         try {
-            fwe.size().shouldBe(new Dimension(20, 20));
+            fwe.getSize().shouldBe(new Dimension(20, 20));
             fail("should have barfed");
         } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().size().shouldBe((20, 20)) ~ but was (10, 10)."));
+            assertThat(e.getMessage(), equalTo("?.div().getSize().shouldBe((20, 20)) ~ but was (10, 10)."));
         }
 
         when(we.getCssValue("blort")).thenReturn("blort_value");
-        assertThat(fwe.cssValue("blort").shouldBe("blort_value"), notNullValue());
+        assertThat(fwe.getCssValue("blort").shouldBe("blort_value"), notNullValue());
 
         when(we.getAttribute("valerie")).thenReturn("valerie_value");
-        assertThat(fwe.attribute("valerie").shouldBe("valerie_value"), notNullValue());
+        assertThat(fwe.getAttribute("valerie").shouldBe("valerie_value"), notNullValue());
 
         when(we.getTagName()).thenReturn("taggart");
-        assertThat(fwe.tagName().shouldBe("taggart"), notNullValue());
+        assertThat(fwe.getTagName().shouldBe("taggart"), notNullValue());
 
         when(we.isSelected()).thenReturn(true);
-        assertThat(fwe.selected().shouldBe(true), notNullValue());
+        assertThat(fwe.isSelected().shouldBe(true), notNullValue());
 
         when(we.isEnabled()).thenReturn(true);
-        assertThat(fwe.enabled().shouldBe(true), notNullValue());
+        assertThat(fwe.isEnabled().shouldBe(true), notNullValue());
 
         when(we.isDisplayed()).thenReturn(true);
-        assertThat(fwe.displayed().shouldBe(true), notNullValue());
+        assertThat(fwe.isDisplayed().shouldBe(true), notNullValue());
 
         when(we.getText()).thenReturn("Mary had 2 little lamb(s).");
-        assertThat(fwe.text().shouldBe("Mary had 2 little lamb(s)."), notNullValue());
+        assertThat(fwe.getText().shouldBe("Mary had 2 little lamb(s)."), notNullValue());
     }
 
     @Test
@@ -555,15 +555,15 @@ public class FluentWebDriverImplTest extends BaseTest {
 
 
         doReturn(true).when(we2).isSelected();
-        boolean isSelected = fwe.isSelected();
+        boolean isSelected = fwe.isSelected().getValue();
         assertThat(isSelected, equalTo(true));
 
         doReturn(true).when(we2).isEnabled();
-        boolean isEnabled = fwe.isEnabled();
+        boolean isEnabled = fwe.isEnabled().getValue();
         assertThat(isEnabled, equalTo(true));
 
         doReturn(true).when(we2).isDisplayed();
-        boolean isDisplayed = fwe.isDisplayed();
+        boolean isDisplayed = fwe.isDisplayed().getValue();
         assertThat(isDisplayed, equalTo(true));
 
         doReturn("Mary had 3 little lamb(s).").when(we2).getText();
@@ -594,7 +594,7 @@ public class FluentWebDriverImplTest extends BaseTest {
 
         try {
             doThrow(throwable).when(we).getAttribute("valerie");
-            TestableString valerie = fwe.attribute("valerie");
+            TestableString valerie = fwe.getAttribute("valerie");
             valerie.toString();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
@@ -602,7 +602,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         }
         try {
             doThrow(throwable).when(we).getCssValue("blort");
-            fwe.cssValue("blort").toString();
+            fwe.getCssValue("blort").toString();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).getCssValue('blort')"));

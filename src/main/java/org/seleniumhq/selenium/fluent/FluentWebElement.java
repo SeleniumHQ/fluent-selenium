@@ -91,31 +91,41 @@ public class FluentWebElement extends BaseFluentWebElement {
         return new TestableString(new GetTagName(), Context.singular(context, "getTagName"));
     }
 
-    public boolean isSelected() {
-        return decorateExecution(new IsSelected(), Context.singular(context, "isSelected"));
+    public WebElementValue<Boolean> isSelected() {
+        Context isSelected = Context.singular(context, "isSelected");
+        Boolean foo = decorateExecution(new IsSelected(), isSelected);
+        return new WebElementValue<Boolean>(foo, isSelected);
     }
 
-    public boolean isEnabled() {
-        return decorateExecution(new IsEnabled(), Context.singular(context, "isEnabled"));
+    public WebElementValue<Boolean> isEnabled() {
+        Context isEnabled = Context.singular(context, "isEnabled");
+        Boolean foo = decorateExecution(new IsEnabled(), isEnabled);
+        return new WebElementValue<Boolean>(foo, isEnabled);
     }
 
-    public boolean isDisplayed() {
-        return decorateExecution(new IsDisplayed(), Context.singular(context, "isDisplayed"));
+    public WebElementValue<Boolean> isDisplayed() {
+        Context isDisplayed = Context.singular(context, "isDisplayed");
+        Boolean foo = decorateExecution(new IsDisplayed(), isDisplayed);
+        return new WebElementValue<Boolean>(foo, isDisplayed);
     }
 
-    public Point getLocation() {
-        return decorateExecution(new GetLocation(), Context.singular(context, "getLocation"));
+    public WebElementValue<Point> getLocation() {
+        Context getLocation = Context.singular(context, "getLocation");
+        Point foo = decorateExecution(new GetLocation(), getLocation);
+        return new WebElementValue<Point>(foo, getLocation);
     }
 
-    public Dimension getSize() {
-        return decorateExecution(new GetSize(), Context.singular(context, "getSize"));
+    public WebElementValue<Dimension> getSize() {
+        Context getSize = Context.singular(context, "getSize");
+        Dimension foo = decorateExecution(new GetSize(), getSize);
+        return new WebElementValue<Dimension>(foo, getSize);
     }
 
-    public TestableString cssValue(final String cssName) {
+    public TestableString getCssValue(final String cssName) {
         return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
     }
 
-    public TestableString attribute(final String attr) {
+    public TestableString getAttribute(final String attr) {
         return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
     }
 
@@ -123,46 +133,12 @@ public class FluentWebElement extends BaseFluentWebElement {
         return new TestableString(new GetText(), Context.singular(context, "getText")).within(getPeriod());
     }
 
-    //@Override
-    public WebElementValue<Point> location() {
-        return new WebElementValue<Point>(currentElement.getLocation(), Context.singular(context, "location"));
-    }
-
-    //@Override
-    public WebElementValue<Dimension> size() {
-        return new WebElementValue<Dimension>(currentElement.getSize(), Context.singular(context, "size"));
-    }
-
-    //@Override
-    public WebElementValue<String> tagName() {
-        return new WebElementValue<String>(currentElement.getTagName(), Context.singular(context, "tagName"));
-    }
-
-    //@Override
-    public WebElementValue<Boolean> selected() {
-        return new WebElementValue<Boolean>(currentElement.isSelected(), Context.singular(context, "selected"));
-    }
-
-    //@Override
-    public WebElementValue<Boolean> enabled() {
-        return new WebElementValue<Boolean>(currentElement.isEnabled(), Context.singular(context, "enabled"));
-    }
-
-    //@Override
-    public WebElementValue<Boolean> displayed() {
-        return new WebElementValue<Boolean>(currentElement.isDisplayed(), Context.singular(context, "isDisplayed"));
-    }
-
-    //@Override
-    public WebElementValue<String> text() {
-        return new WebElementValue<String>(currentElement.getText(), Context.singular(context, "text()"));
-    }
-
     public FluentWebElement within(Period period) {
         return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period);
     }
 
     public FluentWebDriver without(Period period) {
+        // TODO Kris
         return null;
     }
 
