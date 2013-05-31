@@ -19,7 +19,7 @@ public class BaseTest {
     protected WebElement we3;
     protected WebElement we4;
     protected WebElement we5;
-    protected FluentWebDriverImpl fwd;
+    protected FluentWebDriver fwd;
 
     @Before
     public void setup() {
@@ -29,7 +29,7 @@ public class BaseTest {
         we3 = mock(WebElement.class);
         we4 = mock(WebElement.class);
         we5 = mock(WebElement.class);
-        fwd = new FluentWebDriverImpl(wd);
+        fwd = new FluentWebDriver(wd);
     }
 
     protected void setupExpecations(String name) {

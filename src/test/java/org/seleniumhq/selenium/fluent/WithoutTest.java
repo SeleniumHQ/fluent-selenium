@@ -28,11 +28,11 @@ public class WithoutTest {
     @Mock
     WebElement spanElement;
 
-    FluentWebDriverImpl fluentWebDriver;
+    FluentWebDriver fluentWebDriver;
 
     @Before
     public void setup() {
-        fluentWebDriver = new FluentWebDriverImpl(webDriver);
+        fluentWebDriver = new FluentWebDriver(webDriver);
         when(divElement.getTagName()).thenReturn("div");
         when(spanElement.getTagName()).thenReturn("span");
     }

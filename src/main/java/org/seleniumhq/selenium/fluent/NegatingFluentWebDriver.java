@@ -4,13 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 
-public class NegatingFluentWebDriver implements FluentWebDriver {
-    private final FluentWebDriverImpl delegate;
+public class NegatingFluentWebDriver {
+    private final FluentWebDriver delegate;
     private final Period duration;
     private final Long startedAt;
 
     protected NegatingFluentWebDriver(WebDriver delegate, Period duration, BaseFluentWebDriver.Context context) {
-        this.delegate = new FluentWebDriverImpl(delegate, context) {
+        this.delegate = new FluentWebDriver(delegate, context) {
             protected <T> T decorateExecution(Execution<T> execution, BaseFluentWebDriver.Context ctx) {
                 final T successfullyAbsent = null;
                 while (!durationHasElapsed(startedAt)) {

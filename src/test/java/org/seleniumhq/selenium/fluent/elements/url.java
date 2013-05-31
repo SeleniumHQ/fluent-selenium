@@ -3,7 +3,7 @@ package org.seleniumhq.selenium.fluent.elements;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
-import org.seleniumhq.selenium.fluent.FluentWebDriverImpl;
+import org.seleniumhq.selenium.fluent.FluentWebDriver;
 import org.seleniumhq.selenium.fluent.TestableString;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,7 +20,7 @@ public class url extends BaseTest {
     public void url_functionality() {
 
         wd = mock(WebDriver.class);
-        fwd = new FluentWebDriverImpl(wd);
+        fwd = new FluentWebDriver(wd);
 
         TestableString ts = fwd.url();
 

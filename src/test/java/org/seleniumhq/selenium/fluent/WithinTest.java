@@ -32,7 +32,7 @@ public class WithinTest {
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
         when(timeouts.implicitlyWait(0, TimeUnit.SECONDS)).thenReturn(timeouts);
-        FluentWebDriverImpl fwd = new FluentWebDriverImpl(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd);
 
         fwd.within(Period.secs(10)).div();
 
@@ -60,7 +60,7 @@ public class WithinTest {
         when(options.timeouts()).thenReturn(timeouts);
         when(timeouts.implicitlyWait(10, TimeUnit.SECONDS)).thenReturn(timeouts);
 
-        FluentWebDriverImpl fwd = new FluentWebDriverImpl(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd);
 
 
         try {

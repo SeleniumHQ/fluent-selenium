@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class FluentWebDriverImplTest extends BaseTest {
+public class FluentWebDriverTest extends BaseTest {
 
     static final By ID_A = By.id("idA");
     static final By ID_B = By.id("idB");
@@ -40,7 +40,7 @@ public class FluentWebDriverImplTest extends BaseTest {
         WebElement we = mock(WebElement.class);
         WebElement we2 = mock(WebElement.class);
 
-        FluentWebDriverImpl fwd = new FluentWebDriverImpl(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd);
 
         when(wd.findElement(ID_A)).thenReturn(we);
         when(we.findElement(ID_B)).thenReturn(we2);
