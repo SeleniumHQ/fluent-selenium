@@ -1,6 +1,6 @@
 # FluentSelenium
 
-Refer my "Fluent Selenium Examples Blog Entry":http://paulhammant.com/2013/05/19/fluent-selenium-examples for an actual use.
+Refer my [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples) for an actual use.
 
 ## Basic Use
 
@@ -43,7 +43,7 @@ Regex is possible too, and it will ignore carriage returns (which Java pre-proce
 fwd.div(id("foo").getText().shouldMatch("\d bar");
 fwd.div(id("foo").getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors").getText().shouldNotMatch("\d errors");
-```java
+```
 
 As shown above, you can transparently wait for the think to become true:
 
