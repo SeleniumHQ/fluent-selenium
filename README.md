@@ -186,10 +186,11 @@ There are no instances of FluentMatcher built in, other than CompositeFluentMatc
 
 Obviously you want tests using FluentSelenium to pass.  Getting tests to be stable has also been a
 historical challenge for the Selenium world, but a real failure of previously working test, is worth
-debugging (before or after a developer commit that may have broken the build):
+debugging (before or after a developer commit that may have broken the build).
 
-```java
 Fluent-Selenium throws exceptions that show fluent context for WebDriverException? root causes like so:
+
+```
       "WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
 ```
 
