@@ -18,8 +18,36 @@ fwd.span(id("results").getText().shouldBe("1 result");
 ```java
 fwd.div(id("foo").div(className("bar").within(secs(5)).button().click();
 
-fwd.span(id("results").within(millis(200)).getText().shouldBe("1 result");
+String resultsText = fwd.span(id("results").within(millis(200)).getText().toString();
 ```
+### Stale Elements
+
+WebDriver, by default, does not handle findElement traversals from elements that have
+gone stale transparently. It prefers to throw StaleElementReferenceException, which you
+have to catch and then do something with. Retry is one option. FluentSelenium has retry
+capability:
+
+```java
+new RetryAfterStaleElement() {
+    public void toRetry() {
+        div(className("fromto-column")).getText().toString();
+    }
+}.stopAfter(secs(8));
+```
+
+In this example, the element can go stale any amount of times in eight seconds, and the whole
+traversal is restarted again and again.  If you're trying to store values, you'll have a
+problem with Java's inner-class rules, and have to do dirty tricks like:
+
+```java
+final String selectedFlight[] = new String[1];
+new RetryAfterStaleElement() {
+    public void toRetry() {
+        selectedFlight[0] = div(className("fromto-column")).getText().toString();
+    }
+}.stopAfter(secs(8));
+```
+Use of the one elem array is the dirty trick, because of the need for final.
 
 ## Built-in Assertions
 
@@ -95,5 +123,34 @@ One more strictClassName is used like so:
 FluentBy.strictClassName("name")
 ```
 
-Strict is where there is only one class for that element.  The built-in WebDriver one allows for many classes for an element,
-with the one specified amongst them.
+Strict is where there is only one class for that element.  The built-in WebDriver one allows
+for many classes for an element, with the one specified amongst them.
+
+# Multiple elements
+
+Just like WebDriver, FluentSelenium can return a collection of Elements matching a locator:
+
+```java
+FluentWebElements elems = fwd.div(id("foo").div(className("bar").buttons();
+elems = fwd.div(id("foo").divs(className("bar");
+elems = fwd.divs(id("foo");
+```
+
+Look at the pluralization of the methods above, and that it only makes sense if
+it's the last in the fluent expression.
+
+## Fluently traversing through multiple elements:
+
+Use a FluentMatcher instance (which is just a predicate)
+
+```java
+FluentMatcher fm = new MyIntricateFluentMatcher();
+// click on first matching one...
+fwd.inputs(className("bar").first(fm).click();
+
+// click on all matching matching ones...
+fwd.inputs(className("bar").filter(fm).click();
+```
+
+There are no instances of FluentMatcher built in, other than CompositeFluentMatcher.
+
