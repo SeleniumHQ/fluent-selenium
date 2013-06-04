@@ -36,11 +36,15 @@ fwd.span(id("results").getText().shouldBe("1 result");
 
 ## Situations where the DOM is changing slowly
 
+There's a "within" capability in the fluent language. It will retry within an advised period,
+giving the fluent expression a chance to get past a slowly appearing node:
+
 ```java
 fwd.div(id("foo").div(className("bar").within(secs(5)).button().click();
 
-String resultsText = fwd.span(id("results").within(millis(200)).getText().toString();
+fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
+
 ### Stale Elements
 
 WebDriver, by default, does not handle findElement traversals from elements that have
@@ -99,6 +103,9 @@ As shown above, you can transparently wait for the think to become true:
 ```java
 fwd.div(id("foo").getText().within(secs(10)).shouldBe("1 bar");
 ```
+
+If used in conjunction with a within(..) expression the assertion is also retried
+subject to the advised period.
 
 ### Others
 
