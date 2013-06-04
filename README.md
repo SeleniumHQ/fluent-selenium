@@ -182,3 +182,16 @@ fwd.inputs(className("bar").filter(fm).click();
 
 There are no instances of FluentMatcher built in, other than CompositeFluentMatcher.
 
+# Exceptions
+
+Obviously you want tests using FluentSelenium to pass.  Getting tests to be stable has also been a
+historical challenge for the Selenium world, but a real failure of previously working test, is worth
+debugging (before or after a developer commit that may have broken the build):
+
+```java
+Fluent-Selenium throws exceptions that show fluent context for WebDriverException? root causes like so:
+      "WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
+```
+
+That exception's getCause() will be the WebDriverException derivative that happened during
+the h3() invocation -  implicitly before any subsequent operation like click().
