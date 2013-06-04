@@ -2,6 +2,27 @@
 
 Refer my [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples) for an actual use.
 
+To use via Maven:
+
+```xml
+<dependency>
+   <groupId>org.seleniumhq.selenium.fluent</groupId>
+   <artifactId>fluent-selenium</artifactId>
+   <version>1.8</version>
+   <scope>test</scope>
+</dependency>
+
+<!-- you need to choose a hamcrest version that works for you too -->
+<dependency>
+   <groupId>org.hamcrest</groupId>
+   <artifactId>hamcrest-all</artifactId>
+   <version>1.3</version>
+   <scope>test</scope>
+</dependency>
+```
+
+For non Maven-Central build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22)
+
 ## Basic Use
 
 ```java
