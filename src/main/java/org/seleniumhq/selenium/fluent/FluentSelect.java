@@ -158,15 +158,14 @@ public class FluentSelect extends FluentWebElement {
     }
 
     public FluentSelect within(Period period) {
-        return new MorePatientFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement, period);
+        return new RetryingFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement, period);
     }
 
-    // TODO rename
-    private class MorePatientFluentSelect extends FluentSelect {
+    private class RetryingFluentSelect extends FluentSelect {
 
         private final Period period;
 
-        public MorePatientFluentSelect(WebDriver webDriver, Context context, Select currentSelect, WebElement currentElement, Period period) {
+        public RetryingFluentSelect(WebDriver webDriver, Context context, Select currentSelect, WebElement currentElement, Period period) {
             super(webDriver, currentSelect, currentElement, context);
             this.period = period;
         }
