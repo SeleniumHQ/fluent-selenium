@@ -292,21 +292,21 @@ public class FluentWebElements extends BaseFluentWebElements {
 
     private class IsDisplayed implements Execution<Boolean> {
         public Boolean execute() {
-            boolean areSelected = true;
+            boolean areDisplayed = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
-                areSelected = areSelected & webElement.isDisplayed().getValue();
+                areDisplayed = areDisplayed & webElement.isDisplayed().getValue();
             }
-            return areSelected;
+            return areDisplayed;
         }
     }
 
     private class IsEnabled implements Execution<Boolean> {
         public Boolean execute() {
-            boolean areSelected = true;
+            boolean areEnabled = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
-                areSelected = areSelected & webElement.isEnabled().getValue();
+                areEnabled = areEnabled & webElement.isEnabled().getValue();
             }
-            return areSelected;
+            return areEnabled;
         }
     }
 
