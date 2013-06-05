@@ -425,20 +425,6 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
     @Test
-    public void further_find_element_after_multiple_is_unsupported() {
-
-        when(wd.findElements(By.xpath("foo"))).thenReturn(newArrayList(we, we2));
-        when(we.getTagName()).thenReturn("div");
-        when(we2.getTagName()).thenReturn("div");
-        try {
-            fwd.divs(By.xpath("foo")).span(By.xpath("bar"));
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
-
-    @Test
     public void runtime_exceptions_decorated_for_multiple_element() {
         multiple_elem_exception_handling(RuntimeException.class);
     }
