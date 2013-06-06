@@ -1,4 +1,4 @@
-package org.seleniumhq.selenium.fluent;
+package org.seleniumhq.selenium.fluent.internal;
 
 public class ShouldBeMatchable<T> extends ShouldOrShouldNotBeMatchable<T> {
     public ShouldBeMatchable(T val, T shouldOrShouldNotBe, String context) {

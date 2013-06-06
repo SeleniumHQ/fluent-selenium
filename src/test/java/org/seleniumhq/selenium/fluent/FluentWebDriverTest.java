@@ -7,6 +7,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.internal.ShouldOrShouldNotBeMatchable;
 
 import java.util.ArrayList;
 import java.util.List;

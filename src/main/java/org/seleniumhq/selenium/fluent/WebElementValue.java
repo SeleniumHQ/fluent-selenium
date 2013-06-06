@@ -15,6 +15,9 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import org.seleniumhq.selenium.fluent.internal.ShouldBeMatchable;
+import org.seleniumhq.selenium.fluent.internal.ShouldNotBeMatchable;
+
 public class WebElementValue<T> {
 
     private T val;
