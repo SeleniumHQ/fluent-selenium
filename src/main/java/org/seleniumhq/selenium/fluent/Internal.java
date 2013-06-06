@@ -11,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
+import org.seleniumhq.selenium.fluent.internal.TestableString;
+import org.seleniumhq.selenium.fluent.internal.WebElementValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -652,7 +654,7 @@ public class Internal {
             }
         }
 
-        protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
+        public static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
             FluentExecutionStopped rv = null;
             if (e instanceof StaleElementReferenceException) {
                 rv =  new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
@@ -671,7 +673,7 @@ public class Internal {
                     + " during invocation of: ";
         }
 
-        protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
+        public static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
             FluentExecutionStopped rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
             return rv;
         }

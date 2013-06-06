@@ -1,9 +1,8 @@
-package org.seleniumhq.selenium.fluent;
+package org.seleniumhq.selenium.fluent.internal;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.seleniumhq.selenium.fluent.internal.Context;
-import org.seleniumhq.selenium.fluent.internal.Execution;
+import org.seleniumhq.selenium.fluent.Period;
 
 import java.util.regex.Pattern;
 

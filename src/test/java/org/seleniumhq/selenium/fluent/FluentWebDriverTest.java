@@ -8,6 +8,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.ShouldOrShouldNotBeMatchable;
+import org.seleniumhq.selenium.fluent.internal.TestableString;
+import org.seleniumhq.selenium.fluent.internal.WebElementValue;
 
 import java.util.ArrayList;
 import java.util.List;

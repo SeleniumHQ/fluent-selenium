@@ -21,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
+import org.seleniumhq.selenium.fluent.internal.TestableString;
 
 import java.util.ArrayList;
 import java.util.List;
