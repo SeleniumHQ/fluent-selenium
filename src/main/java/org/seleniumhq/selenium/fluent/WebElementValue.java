@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package org.seleniumhq.selenium.fluent.internal;
+package org.seleniumhq.selenium.fluent;
 
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.ShouldBeMatchable;
@@ -24,7 +24,7 @@ public class WebElementValue<T> {
     private T val;
     private final Context context;
 
-    public WebElementValue(T val, Context context) {
+    protected WebElementValue(T val, Context context) {
         this.val = val;
         this.context = context;
     }

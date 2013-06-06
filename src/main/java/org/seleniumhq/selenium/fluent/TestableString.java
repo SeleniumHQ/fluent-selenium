@@ -1,8 +1,9 @@
-package org.seleniumhq.selenium.fluent.internal;
+package org.seleniumhq.selenium.fluent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.seleniumhq.selenium.fluent.Period;
+import org.seleniumhq.selenium.fluent.internal.Context;
+import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.regex.Pattern;
 
@@ -19,7 +20,7 @@ public class TestableString {
     private final Execution<String> execution;
     private final Context context;
 
-    public TestableString(Execution<String> execution, Context ctx) {
+    protected TestableString(Execution<String> execution, Context ctx) {
         this(null, execution, ctx);
     }
 

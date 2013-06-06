@@ -21,7 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
-import org.seleniumhq.selenium.fluent.internal.TestableString;
+import org.seleniumhq.selenium.fluent.TestableString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
-    protected Internal.FluentWebElements makeFluentWebElements(List<Internal.FluentWebElement> results, Context context) {
-        return new Internal.FluentWebElements(super.delegate, results, context);
+    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
+        return new FluentWebElements(super.delegate, results, context);
     }
 
     protected WebElement findIt(By by) {
@@ -70,11 +70,11 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     protected Internal.BaseFluentWebElements newFluentWebElements(MultipleResult multiple) {
         List<WebElement> result = multiple.getResult();
         Context ctx = multiple.getCtx();
-        List<Internal.FluentWebElement> elems = new ArrayList<Internal.FluentWebElement>();
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new Internal.FluentWebElement(delegate, aResult, ctx));
+            elems.add(new FluentWebElement(delegate, aResult, ctx));
         }
-        return new Internal.FluentWebElements(delegate, elems, ctx);
+        return new FluentWebElements(delegate, elems, ctx);
     }
 
     private class RetryingFluentWebDriver extends FluentWebDriver {
@@ -379,503 +379,503 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
-    public Internal.FluentWebElement span() {
-        return (Internal.FluentWebElement) super.span();
+    public FluentWebElement span() {
+        return (FluentWebElement) super.span();
     }
 
     @Override
-    public Internal.FluentWebElement span(By by) {
-        return (Internal.FluentWebElement) super.span(by);
+    public FluentWebElement span(By by) {
+        return (FluentWebElement) super.span(by);
     }
 
     @Override
-    public Internal.FluentWebElements spans() {
-        return (Internal.FluentWebElements) super.spans();
+    public FluentWebElements spans() {
+        return (FluentWebElements) super.spans();
     }
 
     @Override
-    public Internal.FluentWebElements spans(By by) {
-        return (Internal.FluentWebElements) super.spans(by);
+    public FluentWebElements spans(By by) {
+        return (FluentWebElements) super.spans(by);
     }
 
     @Override
-    public Internal.FluentWebElement div() {
-        return (Internal.FluentWebElement) super.div();
+    public FluentWebElement div() {
+        return (FluentWebElement) super.div();
     }
 
     @Override
-    public Internal.FluentWebElement div(By by) {
-        return (Internal.FluentWebElement) super.div(by);
+    public FluentWebElement div(By by) {
+        return (FluentWebElement) super.div(by);
     }
 
     @Override
-    public Internal.FluentWebElements divs() {
-        return (Internal.FluentWebElements) super.divs();
+    public FluentWebElements divs() {
+        return (FluentWebElements) super.divs();
     }
 
     @Override
-    public Internal.FluentWebElements divs(By by) {
-        return (Internal.FluentWebElements) super.divs(by);
+    public FluentWebElements divs(By by) {
+        return (FluentWebElements) super.divs(by);
     }
 
     @Override
-    public Internal.FluentWebElement button() {
-        return (Internal.FluentWebElement) super.button();
+    public FluentWebElement button() {
+        return (FluentWebElement) super.button();
     }
 
     @Override
-    public Internal.FluentWebElement button(By by) {
-        return (Internal.FluentWebElement) super.button(by);
+    public FluentWebElement button(By by) {
+        return (FluentWebElement) super.button(by);
     }
 
     @Override
-    public Internal.FluentWebElements buttons() {
-        return (Internal.FluentWebElements) super.buttons();
+    public FluentWebElements buttons() {
+        return (FluentWebElements) super.buttons();
     }
 
     @Override
-    public Internal.FluentWebElements buttons(By by) {
-        return (Internal.FluentWebElements) super.buttons(by);
+    public FluentWebElements buttons(By by) {
+        return (FluentWebElements) super.buttons(by);
     }
 
     @Override
-    public Internal.FluentWebElement link() {
-        return (Internal.FluentWebElement) super.link();
+    public FluentWebElement link() {
+        return (FluentWebElement) super.link();
     }
 
     @Override
-    public Internal.FluentWebElement link(By by) {
-        return (Internal.FluentWebElement) super.link(by);
+    public FluentWebElement link(By by) {
+        return (FluentWebElement) super.link(by);
     }
 
     @Override
-    public Internal.FluentWebElements links() {
-        return (Internal.FluentWebElements) super.links();
+    public FluentWebElements links() {
+        return (FluentWebElements) super.links();
     }
 
     @Override
-    public Internal.FluentWebElements links(By by) {
-        return (Internal.FluentWebElements) super.links(by);
+    public FluentWebElements links(By by) {
+        return (FluentWebElements) super.links(by);
     }
 
     @Override
-    public Internal.FluentWebElement input() {
-        return (Internal.FluentWebElement) super.input();
+    public FluentWebElement input() {
+        return (FluentWebElement) super.input();
     }
 
     @Override
-    public Internal.FluentWebElement input(By by) {
-        return (Internal.FluentWebElement) super.input(by);
+    public FluentWebElement input(By by) {
+        return (FluentWebElement) super.input(by);
     }
 
     @Override
-    public Internal.FluentWebElements inputs() {
-        return (Internal.FluentWebElements) super.inputs();
+    public FluentWebElements inputs() {
+        return (FluentWebElements) super.inputs();
     }
 
     @Override
-    public Internal.FluentWebElements inputs(By by) {
-        return (Internal.FluentWebElements) super.inputs(by);
+    public FluentWebElements inputs(By by) {
+        return (FluentWebElements) super.inputs(by);
     }
 
     @Override
-    public Internal.FluentSelect select() {
+    public FluentSelect select() {
         return super.select();
     }
 
     @Override
-    public Internal.FluentSelect select(By by) {
+    public FluentSelect select(By by) {
         return super.select(by);
     }
 
     @Override
-    public Internal.FluentSelects selects() {
+    public FluentSelects selects() {
         return super.selects();
     }
 
     @Override
-    public Internal.FluentSelects selects(By by) {
+    public FluentSelects selects(By by) {
         return super.selects(by);
     }
 
     @Override
-    public Internal.FluentWebElement h1() {
-        return (Internal.FluentWebElement) super.h1();
+    public FluentWebElement h1() {
+        return (FluentWebElement) super.h1();
     }
 
     @Override
-    public Internal.FluentWebElement h1(By by) {
-        return (Internal.FluentWebElement) super.h1(by);
+    public FluentWebElement h1(By by) {
+        return (FluentWebElement) super.h1(by);
     }
 
     @Override
-    public Internal.FluentWebElements h1s() {
-        return (Internal.FluentWebElements) super.h1s();
+    public FluentWebElements h1s() {
+        return (FluentWebElements) super.h1s();
     }
 
     @Override
-    public Internal.FluentWebElements h1s(By by) {
-        return (Internal.FluentWebElements) super.h1s(by);
+    public FluentWebElements h1s(By by) {
+        return (FluentWebElements) super.h1s(by);
     }
 
     @Override
-    public Internal.FluentWebElement h2() {
-        return (Internal.FluentWebElement) super.h2();
+    public FluentWebElement h2() {
+        return (FluentWebElement) super.h2();
     }
 
     @Override
-    public Internal.FluentWebElement h2(By by) {
-        return (Internal.FluentWebElement) super.h2(by);
+    public FluentWebElement h2(By by) {
+        return (FluentWebElement) super.h2(by);
     }
 
     @Override
-    public Internal.FluentWebElements h2s() {
-        return (Internal.FluentWebElements) super.h2s();
+    public FluentWebElements h2s() {
+        return (FluentWebElements) super.h2s();
     }
 
     @Override
-    public Internal.FluentWebElements h2s(By by) {
-        return (Internal.FluentWebElements) super.h2s(by);
+    public FluentWebElements h2s(By by) {
+        return (FluentWebElements) super.h2s(by);
     }
 
     @Override
-    public Internal.FluentWebElement h3() {
-        return (Internal.FluentWebElement) super.h3();
+    public FluentWebElement h3() {
+        return (FluentWebElement) super.h3();
     }
 
     @Override
-    public Internal.FluentWebElements h3s() {
-        return (Internal.FluentWebElements) super.h3s();
+    public FluentWebElements h3s() {
+        return (FluentWebElements) super.h3s();
     }
 
     @Override
-    public Internal.FluentWebElement h3(By by) {
-        return (Internal.FluentWebElement) super.h3(by);
+    public FluentWebElement h3(By by) {
+        return (FluentWebElement) super.h3(by);
     }
 
     @Override
-    public Internal.FluentWebElements h3s(By by) {
-        return (Internal.FluentWebElements) super.h3s(by);
+    public FluentWebElements h3s(By by) {
+        return (FluentWebElements) super.h3s(by);
     }
 
     @Override
-    public Internal.FluentWebElement h4() {
-        return (Internal.FluentWebElement) super.h4();
+    public FluentWebElement h4() {
+        return (FluentWebElement) super.h4();
     }
 
     @Override
-    public Internal.FluentWebElements h4s() {
-        return (Internal.FluentWebElements) super.h4s();
+    public FluentWebElements h4s() {
+        return (FluentWebElements) super.h4s();
     }
 
     @Override
-    public Internal.FluentWebElement h4(By by) {
-        return (Internal.FluentWebElement) super.h4(by);
+    public FluentWebElement h4(By by) {
+        return (FluentWebElement) super.h4(by);
     }
 
     @Override
-    public Internal.FluentWebElements h4s(By by) {
-        return (Internal.FluentWebElements) super.h4s(by);
+    public FluentWebElements h4s(By by) {
+        return (FluentWebElements) super.h4s(by);
     }
 
     @Override
-    public Internal.FluentWebElement p() {
-        return (Internal.FluentWebElement) super.p();
+    public FluentWebElement p() {
+        return (FluentWebElement) super.p();
     }
 
     @Override
-    public Internal.FluentWebElements ps() {
-        return (Internal.FluentWebElements) super.ps();
+    public FluentWebElements ps() {
+        return (FluentWebElements) super.ps();
     }
 
     @Override
-    public Internal.FluentWebElement p(By by) {
-        return (Internal.FluentWebElement) super.p(by);
+    public FluentWebElement p(By by) {
+        return (FluentWebElement) super.p(by);
     }
 
     @Override
-    public Internal.FluentWebElements ps(By by) {
-        return (Internal.FluentWebElements) super.ps(by);
+    public FluentWebElements ps(By by) {
+        return (FluentWebElements) super.ps(by);
     }
 
     @Override
-    public Internal.FluentWebElement img() {
-        return (Internal.FluentWebElement) super.img();
+    public FluentWebElement img() {
+        return (FluentWebElement) super.img();
     }
 
     @Override
-    public Internal.FluentWebElements imgs() {
-        return (Internal.FluentWebElements) super.imgs();
+    public FluentWebElements imgs() {
+        return (FluentWebElements) super.imgs();
     }
 
     @Override
-    public Internal.FluentWebElement img(By by) {
-        return (Internal.FluentWebElement) super.img(by);
+    public FluentWebElement img(By by) {
+        return (FluentWebElement) super.img(by);
     }
 
     @Override
-    public Internal.FluentWebElements imgs(By by) {
-        return (Internal.FluentWebElements) super.imgs(by);
+    public FluentWebElements imgs(By by) {
+        return (FluentWebElements) super.imgs(by);
     }
 
     @Override
-    public Internal.FluentWebElement table() {
-        return (Internal.FluentWebElement) super.table();
+    public FluentWebElement table() {
+        return (FluentWebElement) super.table();
     }
 
     @Override
-    public Internal.FluentWebElements tables() {
-        return (Internal.FluentWebElements) super.tables();
+    public FluentWebElements tables() {
+        return (FluentWebElements) super.tables();
     }
 
     @Override
-    public Internal.FluentWebElement table(By by) {
-        return (Internal.FluentWebElement) super.table(by);
+    public FluentWebElement table(By by) {
+        return (FluentWebElement) super.table(by);
     }
 
     @Override
-    public Internal.FluentWebElements tables(By by) {
-        return (Internal.FluentWebElements) super.tables(by);
+    public FluentWebElements tables(By by) {
+        return (FluentWebElements) super.tables(by);
     }
 
     @Override
-    public Internal.FluentWebElement fieldset() {
-        return (Internal.FluentWebElement) super.fieldset();
+    public FluentWebElement fieldset() {
+        return (FluentWebElement) super.fieldset();
     }
 
     @Override
-    public Internal.FluentWebElements fieldsets() {
-        return (Internal.FluentWebElements) super.fieldsets();
+    public FluentWebElements fieldsets() {
+        return (FluentWebElements) super.fieldsets();
     }
 
     @Override
-    public Internal.FluentWebElement fieldset(By by) {
-        return (Internal.FluentWebElement) super.fieldset(by);
+    public FluentWebElement fieldset(By by) {
+        return (FluentWebElement) super.fieldset(by);
     }
 
     @Override
-    public Internal.FluentWebElements fieldsets(By by) {
-        return (Internal.FluentWebElements) super.fieldsets(by);
+    public FluentWebElements fieldsets(By by) {
+        return (FluentWebElements) super.fieldsets(by);
     }
 
     @Override
-    public Internal.FluentWebElement legend() {
-        return (Internal.FluentWebElement) super.legend();
+    public FluentWebElement legend() {
+        return (FluentWebElement) super.legend();
     }
 
     @Override
-    public Internal.FluentWebElements legends() {
-        return (Internal.FluentWebElements) super.legends();
+    public FluentWebElements legends() {
+        return (FluentWebElements) super.legends();
     }
 
     @Override
-    public Internal.FluentWebElement legend(By by) {
-        return (Internal.FluentWebElement) super.legend(by);
+    public FluentWebElement legend(By by) {
+        return (FluentWebElement) super.legend(by);
     }
 
     @Override
-    public Internal.FluentWebElements legends(By by) {
-        return (Internal.FluentWebElements) super.legends(by);
+    public FluentWebElements legends(By by) {
+        return (FluentWebElements) super.legends(by);
     }
 
     @Override
-    public Internal.FluentWebElement tr() {
-        return (Internal.FluentWebElement) super.tr();
+    public FluentWebElement tr() {
+        return (FluentWebElement) super.tr();
     }
 
     @Override
-    public Internal.FluentWebElements trs() {
-        return (Internal.FluentWebElements) super.trs();
+    public FluentWebElements trs() {
+        return (FluentWebElements) super.trs();
     }
 
     @Override
-    public Internal.FluentWebElement tr(By by) {
-        return (Internal.FluentWebElement) super.tr(by);
+    public FluentWebElement tr(By by) {
+        return (FluentWebElement) super.tr(by);
     }
 
     @Override
-    public Internal.FluentWebElements trs(By by) {
-        return (Internal.FluentWebElements) super.trs(by);
+    public FluentWebElements trs(By by) {
+        return (FluentWebElements) super.trs(by);
     }
 
     @Override
-    public Internal.FluentWebElement td() {
-        return (Internal.FluentWebElement) super.td();
+    public FluentWebElement td() {
+        return (FluentWebElement) super.td();
     }
 
     @Override
-    public Internal.FluentWebElements tds() {
-        return (Internal.FluentWebElements) super.tds();
+    public FluentWebElements tds() {
+        return (FluentWebElements) super.tds();
     }
 
     @Override
-    public Internal.FluentWebElement td(By by) {
-        return (Internal.FluentWebElement) super.td(by);
+    public FluentWebElement td(By by) {
+        return (FluentWebElement) super.td(by);
     }
 
     @Override
-    public Internal.FluentWebElements tds(By by) {
-        return (Internal.FluentWebElements) super.tds(by);
+    public FluentWebElements tds(By by) {
+        return (FluentWebElements) super.tds(by);
     }
 
     @Override
-    public Internal.FluentWebElement th() {
-        return (Internal.FluentWebElement) super.th();
+    public FluentWebElement th() {
+        return (FluentWebElement) super.th();
     }
 
     @Override
-    public Internal.FluentWebElements ths() {
-        return (Internal.FluentWebElements) super.ths();
+    public FluentWebElements ths() {
+        return (FluentWebElements) super.ths();
     }
 
     @Override
-    public Internal.FluentWebElement th(By by) {
-        return (Internal.FluentWebElement) super.th(by);
+    public FluentWebElement th(By by) {
+        return (FluentWebElement) super.th(by);
     }
 
     @Override
-    public Internal.FluentWebElements ths(By by) {
-        return (Internal.FluentWebElements) super.ths(by);
+    public FluentWebElements ths(By by) {
+        return (FluentWebElements) super.ths(by);
     }
 
     @Override
-    public Internal.FluentWebElement ul() {
-        return (Internal.FluentWebElement) super.ul();
+    public FluentWebElement ul() {
+        return (FluentWebElement) super.ul();
     }
 
     @Override
-    public Internal.FluentWebElements uls() {
-        return (Internal.FluentWebElements) super.uls();
+    public FluentWebElements uls() {
+        return (FluentWebElements) super.uls();
     }
 
     @Override
-    public Internal.FluentWebElement ul(By by) {
-        return (Internal.FluentWebElement) super.ul(by);
+    public FluentWebElement ul(By by) {
+        return (FluentWebElement) super.ul(by);
     }
 
     @Override
-    public Internal.FluentWebElements uls(By by) {
-        return (Internal.FluentWebElements) super.uls(by);
+    public FluentWebElements uls(By by) {
+        return (FluentWebElements) super.uls(by);
     }
 
     @Override
-    public Internal.FluentWebElement ol() {
-        return (Internal.FluentWebElement) super.ol();
+    public FluentWebElement ol() {
+        return (FluentWebElement) super.ol();
     }
 
     @Override
-    public Internal.FluentWebElements ols() {
-        return (Internal.FluentWebElements) super.ols();
+    public FluentWebElements ols() {
+        return (FluentWebElements) super.ols();
     }
 
     @Override
-    public Internal.FluentWebElement ol(By by) {
-        return (Internal.FluentWebElement) super.ol(by);
+    public FluentWebElement ol(By by) {
+        return (FluentWebElement) super.ol(by);
     }
 
     @Override
-    public Internal.FluentWebElements ols(By by) {
-        return (Internal.FluentWebElements) super.ols(by);
+    public FluentWebElements ols(By by) {
+        return (FluentWebElements) super.ols(by);
     }
 
     @Override
-    public Internal.FluentWebElement form() {
-        return (Internal.FluentWebElement) super.form();
+    public FluentWebElement form() {
+        return (FluentWebElement) super.form();
     }
 
     @Override
-    public Internal.FluentWebElements forms() {
-        return (Internal.FluentWebElements) super.forms();
+    public FluentWebElements forms() {
+        return (FluentWebElements) super.forms();
     }
 
     @Override
-    public Internal.FluentWebElement form(By by) {
-        return (Internal.FluentWebElement) super.form(by);
+    public FluentWebElement form(By by) {
+        return (FluentWebElement) super.form(by);
     }
 
     @Override
-    public Internal.FluentWebElements forms(By by) {
-        return (Internal.FluentWebElements) super.forms(by);
+    public FluentWebElements forms(By by) {
+        return (FluentWebElements) super.forms(by);
     }
 
     @Override
-    public Internal.FluentWebElement textarea() {
-        return (Internal.FluentWebElement) super.textarea();
+    public FluentWebElement textarea() {
+        return (FluentWebElement) super.textarea();
     }
 
     @Override
-    public Internal.FluentWebElements textareas() {
-        return (Internal.FluentWebElements) super.textareas();
+    public FluentWebElements textareas() {
+        return (FluentWebElements) super.textareas();
     }
 
     @Override
-    public Internal.FluentWebElement textarea(By by) {
-        return (Internal.FluentWebElement) super.textarea(by);
+    public FluentWebElement textarea(By by) {
+        return (FluentWebElement) super.textarea(by);
     }
 
     @Override
-    public Internal.FluentWebElements textareas(By by) {
-        return (Internal.FluentWebElements) super.textareas(by);
+    public FluentWebElements textareas(By by) {
+        return (FluentWebElements) super.textareas(by);
     }
 
     @Override
-    public Internal.FluentWebElement option() {
-        return (Internal.FluentWebElement) super.option();
+    public FluentWebElement option() {
+        return (FluentWebElement) super.option();
     }
 
     @Override
-    public Internal.FluentWebElements options() {
-        return (Internal.FluentWebElements) super.options();
+    public FluentWebElements options() {
+        return (FluentWebElements) super.options();
     }
 
     @Override
-    public Internal.FluentWebElement option(By by) {
-        return (Internal.FluentWebElement) super.option(by);
+    public FluentWebElement option(By by) {
+        return (FluentWebElement) super.option(by);
     }
 
     @Override
-    public Internal.FluentWebElements options(By by) {
-        return (Internal.FluentWebElements) super.options(by);
+    public FluentWebElements options(By by) {
+        return (FluentWebElements) super.options(by);
     }
 
     @Override
-    public Internal.FluentWebElement li() {
-        return (Internal.FluentWebElement) super.li();
+    public FluentWebElement li() {
+        return (FluentWebElement) super.li();
     }
 
     @Override
-    public Internal.FluentWebElement li(By by) {
-        return (Internal.FluentWebElement) super.li(by);
+    public FluentWebElement li(By by) {
+        return (FluentWebElement) super.li(by);
     }
 
     @Override
-    public Internal.FluentWebElements lis() {
-        return (Internal.FluentWebElements) super.lis();
+    public FluentWebElements lis() {
+        return (FluentWebElements) super.lis();
     }
 
     @Override
-    public Internal.FluentWebElements lis(By by) {
-        return (Internal.FluentWebElements) super.lis(by);
+    public FluentWebElements lis(By by) {
+        return (FluentWebElements) super.lis(by);
     }
 
     @Override
-    public Internal.FluentWebElement map() {
-        return (Internal.FluentWebElement) super.map();
+    public FluentWebElement map() {
+        return (FluentWebElement) super.map();
     }
 
     @Override
-    public Internal.FluentWebElements maps() {
-        return (Internal.FluentWebElements) super.maps();
+    public FluentWebElements maps() {
+        return (FluentWebElements) super.maps();
     }
 
     @Override
-    public Internal.FluentWebElement map(By by) {
-        return (Internal.FluentWebElement) super.map(by);
+    public FluentWebElement map(By by) {
+        return (FluentWebElement) super.map(by);
     }
 
     @Override
-    public Internal.FluentWebElements maps(By by) {
-        return (Internal.FluentWebElements) super.maps(by);
+    public FluentWebElements maps(By by) {
+        return (FluentWebElements) super.maps(by);
     }
 
     @Override

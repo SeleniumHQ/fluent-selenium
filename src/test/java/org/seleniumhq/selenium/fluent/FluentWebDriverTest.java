@@ -8,8 +8,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.ShouldOrShouldNotBeMatchable;
-import org.seleniumhq.selenium.fluent.internal.TestableString;
-import org.seleniumhq.selenium.fluent.internal.WebElementValue;
+import org.seleniumhq.selenium.fluent.TestableString;
+import org.seleniumhq.selenium.fluent.WebElementValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we3.getTagName()).thenReturn("span");
 
         try {
-            Internal.FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
+            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
             doThrow(new RuntimeException()).when(we3).sendKeys("RAIN_IN_SPAIN");
             span.sendKeys("RAIN_IN_SPAIN");
         } catch (FluentExecutionStopped e) {
@@ -92,7 +92,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we3.getTagName()).thenReturn("span");
 
         try {
-            Internal.FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
+            FluentWebElement span = fwd.div(ID_A).div(ID_B).span();
 
             doThrow(new AssertionError()).when(we3).sendKeys("RAIN_IN_SPAIN");;
 
@@ -110,7 +110,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElement fwe = fwd.div();
+        FluentWebElement fwe = fwd.div();
 
         assertThat(fwe, notNullValue());
 
@@ -211,7 +211,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we2.getTagName()).thenReturn("div");
         when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
 
-        Internal.FluentWebElement fe = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
+        FluentWebElement fe = fwd.divs().first(new TextContainsWord("lamb(s)")).click();
 
         assertThat(fe, notNullValue());
 
@@ -246,7 +246,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
         when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
 
-        Internal.FluentWebElements fe = fwd.divs().filter(new FourLambFilter()).click();
+        FluentWebElements fe = fwd.divs().filter(new FourLambFilter()).click();
 
         assertThat(fe, notNullValue());
 
@@ -262,21 +262,21 @@ public class FluentWebDriverTest extends BaseTest {
     @Test
     public void is_a_list() {
 
-        List<Internal.FluentWebElement> elems = new ArrayList<Internal.FluentWebElement>();
-        Internal.FluentWebElement item0 = mock(Internal.FluentWebElement.class);
+        List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
+        FluentWebElement item0 = mock(FluentWebElement.class);
         elems.add(item0);
-        elems.add(mock(Internal.FluentWebElement.class));
-        elems.add(mock(Internal.FluentWebElement.class));
-        elems.add(mock(Internal.FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
+        elems.add(mock(FluentWebElement.class));
 
-        Internal.FluentWebElements fwes = new Internal.FluentWebElements(null, new ArrayList<Internal.FluentWebElement>(elems), null);
+        FluentWebElements fwes = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
 
         assertThat(fwes.size(), equalTo(4));
         assertThat(fwes.get(0), equalTo(item0));
 
-        List<Internal.FluentWebElement> elems2 = new ArrayList<Internal.FluentWebElement>();
-        elems2.add(mock(Internal.FluentWebElement.class));
-        elems2.add(mock(Internal.FluentWebElement.class));
+        List<FluentWebElement> elems2 = new ArrayList<FluentWebElement>();
+        elems2.add(mock(FluentWebElement.class));
+        elems2.add(mock(FluentWebElement.class));
 
         fwes.addAll(elems2);
 
@@ -321,7 +321,7 @@ public class FluentWebDriverTest extends BaseTest {
         assertThat(fwes.size(), equalTo(4));
 
         assertThat(fwes.toArray().length, equalTo(4));
-        Internal.FluentWebElement[] wes = new Internal.FluentWebElement[0] ;
+        FluentWebElement[] wes = new FluentWebElement[0] ;
         assertThat(fwes.toArray(wes).length, equalTo(4));
 
         assertThat(fwes.subList(1, 2).size(), equalTo(1));
@@ -344,16 +344,16 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements elems = fwd.divs();
+        FluentWebElements elems = fwd.divs();
 
         assertThat(elems, notNullValue());
 
-        Internal.FluentWebElements fwes = elems.clearField();
+        FluentWebElements fwes = elems.clearField();
         assertThat(fwes, notNullValue());
         verify(we).clear();
         verify(we2).clear();
 
-        Internal.FluentWebElements fwe3 = elems.click();
+        FluentWebElements fwe3 = elems.click();
         assertThat(fwe3, notNullValue());
         verify(we).click();
         verify(we2).click();
@@ -380,12 +380,12 @@ public class FluentWebDriverTest extends BaseTest {
         verify(we).isDisplayed();
         verify(we2).isDisplayed();
 
-        Internal.FluentWebElements fwe4 = elems.sendKeys("aaa");
+        FluentWebElements fwe4 = elems.sendKeys("aaa");
         assertThat(fwe4, notNullValue());
         verify(we).sendKeys("aaa");
         verify(we2).sendKeys("aaa");
 
-        Internal.FluentWebElements fwe5 = elems.submit();
+        FluentWebElements fwe5 = elems.submit();
         assertThat(fwe5, notNullValue());
         verify(we).submit();
         verify(we2).submit();
@@ -413,7 +413,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements fwe = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 
@@ -443,7 +443,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements fwe = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 
@@ -533,7 +533,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.findElement(By.xpath(".//span[@foo = 'bar']"))).thenReturn(we2);
         when(we2.getTagName()).thenReturn("span");
 
-        Internal.FluentWebElement fwe = fwd.div().span(By.xpath("@foo = 'bar'"))
+        FluentWebElement fwe = fwd.div().span(By.xpath("@foo = 'bar'"))
                 .sendKeys("apple").clearField().submit();
 
 // TODO
@@ -577,7 +577,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(wd.findElement(By.id("foo"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElement fwe = fwd.div(By.id("foo"));
+        FluentWebElement fwe = fwd.div(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 
@@ -653,7 +653,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements fwe = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 
@@ -674,7 +674,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements fwe = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 
@@ -696,7 +696,7 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getTagName()).thenReturn("div");
         when(we2.getTagName()).thenReturn("div");
 
-        Internal.FluentWebElements fwe = fwd.divs(By.id("foo"));
+        FluentWebElements fwe = fwd.divs(By.id("foo"));
 
         assertThat(fwe, notNullValue());
 

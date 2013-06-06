@@ -7,7 +7,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.BaseTest;
-import org.seleniumhq.selenium.fluent.Internal;
+import org.seleniumhq.selenium.fluent.FluentSelect;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
@@ -32,7 +33,7 @@ public class select extends BaseTest {
 
         setupExpecations("select");
 
-        Internal.FluentWebElements fe = fwd.select()
+        FluentWebElements fe = fwd.select()
                 .select(By.xpath("@foo = 'bar'"))
                 .select(By.cssSelector("baz"))
                 .selects();
@@ -52,7 +53,7 @@ public class select extends BaseTest {
         when(we2.isSelected()).thenReturn(true);
         when(we3.isSelected()).thenReturn(false);
 
-        Internal.FluentSelect fs = fwd.select().selectByValue("bar");
+        FluentSelect fs = fwd.select().selectByValue("bar");
 
         assertThat(fs, notNullValue());
 
@@ -73,7 +74,7 @@ public class select extends BaseTest {
 
         setupExpecations2("select");
 
-        Internal.FluentWebElements fe = fwd.select()
+        FluentWebElements fe = fwd.select()
                 .selects(By.name("qux"));
 
         assertThat(fe, notNullValue());
@@ -106,7 +107,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -128,7 +129,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).selectByValue("humphrey");
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -165,7 +166,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -188,7 +189,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).selectByIndex(444);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -225,7 +226,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -248,7 +249,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).selectByVisibleText("humphrey");
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -285,7 +286,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -307,7 +308,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).deselectAll();
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -344,7 +345,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -366,7 +367,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).deselectByValue("humphrey");
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -403,7 +404,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -425,7 +426,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).deselectByVisibleText("humphrey");
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -462,7 +463,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -484,7 +485,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).deselectByIndex(444);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -521,7 +522,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -543,7 +544,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).getFirstSelectedOption();
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -580,7 +581,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -602,7 +603,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).isMultiple();
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -639,7 +640,7 @@ public class select extends BaseTest {
         WebElement we = mock(WebElement.class);
         final Select wdSelect = mock(Select.class);
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -661,7 +662,7 @@ public class select extends BaseTest {
         final WebDriverException fooE = new WebDriverException("foo");
         doThrow(fooE).when(wdSelect).getOptions();
 
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -699,7 +700,7 @@ public class select extends BaseTest {
         final Select wdSelect = mock(Select.class);
 
         
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
@@ -722,7 +723,7 @@ public class select extends BaseTest {
         doThrow(fooE).when(wdSelect).getAllSelectedOptions();
 
         
-        Internal.FluentSelect select = new Internal.FluentSelect(wd, we, Context.singular(null, "dummy")) {
+        FluentSelect select = new FluentSelect(wd, we, Context.singular(null, "dummy")) {
             @Override
             protected Select getSelect() {
                 return wdSelect;
