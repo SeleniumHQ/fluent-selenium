@@ -2,10 +2,9 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.seleniumhq.selenium.fluent.BaseFluentWebElements;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,7 +19,7 @@ public class legend extends BaseTest {
 
         setupExpecations("legend");
 
-        BaseFluentWebElements fe = fwd.legend()
+        Internal.BaseFluentWebElements fe = fwd.legend()
                 .legend(By.xpath("@foo = 'bar'"))
                 .legend(By.cssSelector("baz"))
                 .legends();
@@ -34,7 +33,7 @@ public class legend extends BaseTest {
 
         setupExpecations2("legend");
 
-        BaseFluentWebElements fe = fwd.legend()
+        Internal.BaseFluentWebElements fe = fwd.legend()
                 .legends(By.name("qux"));
 
         assertThat(fe, notNullValue());

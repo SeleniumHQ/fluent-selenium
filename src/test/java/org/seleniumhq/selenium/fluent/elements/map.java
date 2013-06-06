@@ -2,10 +2,9 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.seleniumhq.selenium.fluent.BaseFluentWebElements;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,7 +19,7 @@ public class map extends BaseTest {
 
         setupExpecations("map");
 
-        BaseFluentWebElements fe = fwd.map()
+        Internal.BaseFluentWebElements fe = fwd.map()
                 .map(By.xpath("@foo = 'bar'"))
                 .map(By.cssSelector("baz"))
                 .maps();
@@ -34,7 +33,7 @@ public class map extends BaseTest {
 
         setupExpecations2("map");
 
-        BaseFluentWebElements fe = fwd.map()
+        Internal.BaseFluentWebElements fe = fwd.map()
                 .maps(By.name("qux"));
 
         assertThat(fe, notNullValue());

@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,7 +19,7 @@ public class img extends BaseTest {
 
         setupExpecations("img");
 
-        FluentWebElements fe = fwd.img()
+        Internal.FluentWebElements fe = fwd.img()
                 .img(By.xpath("@foo = 'bar'"))
                 .img(By.cssSelector("baz"))
                 .imgs();
@@ -33,7 +33,7 @@ public class img extends BaseTest {
 
         setupExpecations2("img");
 
-        FluentWebElements fe = fwd.img()
+        Internal.FluentWebElements fe = fwd.img()
                 .imgs(By.name("qux"));
 
         assertThat(fe, notNullValue());

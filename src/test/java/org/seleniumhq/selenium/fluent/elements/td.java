@@ -2,10 +2,9 @@ package org.seleniumhq.selenium.fluent.elements;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.seleniumhq.selenium.fluent.BaseFluentWebElements;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,7 +19,7 @@ public class td extends BaseTest {
 
         setupExpecations("td");
 
-        BaseFluentWebElements fe = fwd.td()
+        Internal.BaseFluentWebElements fe = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
                 .td(By.cssSelector("baz"))
                 .tds();
@@ -34,7 +33,7 @@ public class td extends BaseTest {
 
         setupExpecations2("td");
 
-        BaseFluentWebElements fe = fwd.td()
+        Internal.BaseFluentWebElements fe = fwd.td()
                 .tds(By.name("qux"));
 
         assertThat(fe, notNullValue());

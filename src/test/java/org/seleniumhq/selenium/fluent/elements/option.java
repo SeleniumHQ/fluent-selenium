@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,7 +19,7 @@ public class option extends BaseTest {
 
         setupExpecations("option");
 
-        FluentWebElements fe = fwd.option()
+        Internal.FluentWebElements fe = fwd.option()
                 .option(By.xpath("@foo = 'bar'"))
                 .option(By.cssSelector("baz"))
                 .options();
@@ -33,7 +33,7 @@ public class option extends BaseTest {
 
         setupExpecations2("option");
 
-        FluentWebElements fe = fwd.option()
+        Internal.FluentWebElements fe = fwd.option()
                 .options(By.name("qux"));
 
         assertThat(fe, notNullValue());

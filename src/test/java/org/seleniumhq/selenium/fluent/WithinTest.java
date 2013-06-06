@@ -64,7 +64,7 @@ public class WithinTest {
 
 
         try {
-            FluentWebElement within = fwd.div().within(Period.secs(10));
+            Internal.FluentWebElement within = fwd.div().within(Period.secs(10));
 
             when(we.findElement(By.tagName("div"))).thenReturn(we2);
             when(we2.getTagName()).thenThrow(new AssertionError("barf"));

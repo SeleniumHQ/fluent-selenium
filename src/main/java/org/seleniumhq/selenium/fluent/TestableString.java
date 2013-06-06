@@ -11,8 +11,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateAssertionError;
-import static org.seleniumhq.selenium.fluent.BaseFluentWebDriver.decorateRuntimeException;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateAssertionError;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateRuntimeException;
 
 public class TestableString {
     private String is;

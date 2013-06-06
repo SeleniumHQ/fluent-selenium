@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,7 +19,7 @@ public class textarea extends BaseTest {
 
         setupExpecations("textarea");
 
-        FluentWebElements fe = fwd.textarea()
+        Internal.FluentWebElements fe = fwd.textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
                 .textarea(By.cssSelector("baz"))
                 .textareas();
@@ -33,7 +33,7 @@ public class textarea extends BaseTest {
 
         setupExpecations2("textarea");
 
-        FluentWebElements fe = fwd.textarea()
+        Internal.FluentWebElements fe = fwd.textarea()
                 .textareas(By.name("qux"));
 
         assertThat(fe, notNullValue());

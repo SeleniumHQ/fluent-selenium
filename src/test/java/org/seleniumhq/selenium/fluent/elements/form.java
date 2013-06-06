@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,7 +19,7 @@ public class form extends BaseTest {
 
         setupExpecations("form");
 
-        FluentWebElements fe = fwd.form()
+        Internal.FluentWebElements fe = fwd.form()
                 .form(By.xpath("@foo = 'bar'"))
                 .form(By.cssSelector("baz"))
                 .forms();
@@ -33,7 +33,7 @@ public class form extends BaseTest {
 
         setupExpecations2("form");
 
-        FluentWebElements fe = fwd.form()
+        Internal.FluentWebElements fe = fwd.form()
                 .forms(By.name("qux"));
 
         assertThat(fe, notNullValue());

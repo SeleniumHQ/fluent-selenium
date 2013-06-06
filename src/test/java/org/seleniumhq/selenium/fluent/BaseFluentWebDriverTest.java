@@ -20,14 +20,14 @@ import static org.mockito.Mockito.mock;
 public class BaseFluentWebDriverTest {
 
     private WebDriver wd = mock(WebDriver.class);
-    private BaseFluentWebDriver fc;
+    private Internal.BaseFluentWebDriver fc;
 
     @Before
     public void setup() {
-        fc = new BaseFluentWebDriver(wd, Context.singular(null, "dummy")) {
+        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy")) {
 
             @Override
-            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
+            protected Internal.FluentWebElements makeFluentWebElements(List<Internal.FluentWebElement> results, Context context) {
                 return null;
             }
 
@@ -41,7 +41,7 @@ public class BaseFluentWebDriverTest {
                 return null;
             }
 
-            public BaseFluentWebDriver within(Period p) {
+            public Internal.BaseFluentWebDriver within(Period p) {
                 return null;
             }
 

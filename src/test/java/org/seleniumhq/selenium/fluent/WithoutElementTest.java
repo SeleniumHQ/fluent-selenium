@@ -30,7 +30,7 @@ public class WithoutElementTest {
     @Mock
     WebElement spanElement;
 
-    FluentWebElement fluentWebElement;
+    Internal.FluentWebElement fluentWebElement;
 
     @Before
     public void setup() {

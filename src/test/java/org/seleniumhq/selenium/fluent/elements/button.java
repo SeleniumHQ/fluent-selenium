@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
-import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -21,7 +21,7 @@ public class button extends BaseTest {
 
         setupExpecations("button");
 
-        FluentWebElements fe = fwd.button()
+        Internal.FluentWebElements fe = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
                 .button(By.cssSelector("baz"))
                 .buttons(); // very artificial, sure.
@@ -37,7 +37,7 @@ public class button extends BaseTest {
 
         setupExpecations2("button");
 
-        FluentWebElements fe = fwd.button().buttons(By.name("qux"));
+        Internal.FluentWebElements fe = fwd.button().buttons(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
