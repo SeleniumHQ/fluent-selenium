@@ -16,6 +16,7 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.WebDriver;
+import org.seleniumhq.selenium.fluent.internal.Context;
 
 import java.util.List;
 

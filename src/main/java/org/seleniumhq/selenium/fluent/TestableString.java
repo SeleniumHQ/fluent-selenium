@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.regex.Pattern;
@@ -17,13 +18,13 @@ public class TestableString {
     private String is;
     private final Period within;
     private final Execution<String> execution;
-    private final BaseFluentWebDriver.Context context;
+    private final Context context;
 
-    public TestableString(Execution<String> execution, BaseFluentWebDriver.Context ctx) {
+    public TestableString(Execution<String> execution, Context ctx) {
         this(null, execution, ctx);
     }
 
-    private TestableString(Period within, Execution<String> execution, BaseFluentWebDriver.Context ctx) {
+    private TestableString(Period within, Execution<String> execution, Context ctx) {
         this.within = within;
         this.execution = execution;
         this.context = ctx;
@@ -34,7 +35,7 @@ public class TestableString {
     }
 
     public TestableString shouldBe(final String shouldBe) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldBe", null, shouldBe);
+        Context ctx = Context.singular(context, "shouldBe", null, shouldBe);
 
         validateWrapRethrow(new Validation() {
             @Override
@@ -57,7 +58,7 @@ public class TestableString {
         return this;
     }
 
-    private void validateWrapRethrow(Validation validation, BaseFluentWebDriver.Context ctx) {
+    private void validateWrapRethrow(Validation validation, Context ctx) {
         try {
             validation.validate(System.currentTimeMillis());
         } catch (UnsupportedOperationException e) {
@@ -70,7 +71,7 @@ public class TestableString {
     }
 
     public TestableString within(Period period) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "within", null, period);
+        Context ctx = Context.singular(context, "within", null, period);
         return new TestableString(period, execution, ctx);
     }
 
@@ -82,7 +83,7 @@ public class TestableString {
     }
 
     public TestableString shouldNotBe(final String shouldNotBe) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotBe", null, shouldNotBe);
+        Context ctx = Context.singular(context, "shouldNotBe", null, shouldNotBe);
         validateWrapRethrow(new Validation() {
             @Override
             public void validate(long start) {
@@ -102,7 +103,7 @@ public class TestableString {
     }
 
     public TestableString shouldContain(final String shouldContain) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldContain", null, shouldContain);
+        Context ctx = Context.singular(context, "shouldContain", null, shouldContain);
         validateWrapRethrow(new Validation() {
             @Override
             public void validate(long start) {
@@ -136,7 +137,7 @@ public class TestableString {
     }
 
     public TestableString shouldNotContain(final String shouldNotContain) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotContain", null, shouldNotContain);
+        Context ctx = Context.singular(context, "shouldNotContain", null, shouldNotContain);
         validateWrapRethrow(new Validation() {
             @Override
             public void validate(long start) {
@@ -157,7 +158,7 @@ public class TestableString {
 
     @Override
     public String toString() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "toString", null, "");
+        Context ctx = Context.singular(context, "toString", null, "");
         validateWrapRethrow(new Validation() {
             @Override
             public void validate(long start) {
@@ -171,7 +172,7 @@ public class TestableString {
     }
 
     public TestableString shouldMatch(String regex) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldMatch", null, regex);
+        Context ctx = Context.singular(context, "shouldMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
         validateWrapRethrow(new Validation() {
             @Override
@@ -193,7 +194,7 @@ public class TestableString {
     }
 
     public TestableString shouldNotMatch(final String regex) {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(context, "shouldNotMatch", null, regex);
+        Context ctx = Context.singular(context, "shouldNotMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
         validateWrapRethrow(new Validation() {
             @Override

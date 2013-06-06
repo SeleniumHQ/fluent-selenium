@@ -15,15 +15,16 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
+import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.ShouldBeMatchable;
 import org.seleniumhq.selenium.fluent.internal.ShouldNotBeMatchable;
 
 public class WebElementValue<T> {
 
     private T val;
-    private final BaseFluentWebDriver.Context context;
+    private final Context context;
 
-    public WebElementValue(T val, BaseFluentWebDriver.Context context) {
+    public WebElementValue(T val, Context context) {
         this.val = val;
         this.context = context;
     }

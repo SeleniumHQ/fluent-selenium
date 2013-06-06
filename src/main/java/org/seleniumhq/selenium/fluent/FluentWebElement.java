@@ -21,6 +21,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.List;
@@ -644,9 +645,9 @@ public class FluentWebElement extends BaseFluentWebElement {
         private final Period duration;
         private final Long startedAt;
 
-        protected NegatingFluentWebElement(WebDriver delegate, WebElement currentElement, Period duration, BaseFluentWebDriver.Context context) {
+        protected NegatingFluentWebElement(WebDriver delegate, WebElement currentElement, Period duration, Context context) {
             this.delegate = new FluentWebElement(delegate, currentElement, context) {
-                protected <T> T decorateExecution(Execution<T> execution, BaseFluentWebDriver.Context ctx) {
+                protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
                     final T successfullyAbsent = null;
                     while (!durationHasElapsed(startedAt)) {
                         try {

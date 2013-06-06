@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
+import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -31,7 +32,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldBeSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).shouldBe("foo");
         try {
             new TestableString(FOO_EXECUTION, ctx).shouldBe("bar");
@@ -44,7 +45,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldBeSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldBe("foo");
         try {
             new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldBe("bar");
@@ -57,7 +58,7 @@ public class TestableStringTest {
 
     @Test
     public void unsupportedOperationExceptionShouldBeReThrownAsIs() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         try {
             new TestableString(new Execution<String>() {
                 public String execute() {
@@ -73,7 +74,7 @@ public class TestableStringTest {
 
     @Test
     public void runtimeExceptionShouldBeWrappedAndReThrown() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         try {
             new TestableString(new Execution<String>() {
                 public String execute() {
@@ -90,7 +91,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotBeSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).shouldNotBe("bar");
         try {
             new TestableString(FOO_EXECUTION, ctx).shouldNotBe("foo");
@@ -103,7 +104,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotBeSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotBe("bar");
         try {
             new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotBe("foo");
@@ -116,7 +117,7 @@ public class TestableStringTest {
     
     @Test
     public void stringShouldContainSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).shouldContain("o");
         try {
             new TestableString(FOO_EXECUTION, ctx).shouldContain("a");
@@ -129,7 +130,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldContainSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldContain("o");
         try {
             new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldContain("a");
@@ -142,7 +143,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotContainSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).shouldNotContain("a");
         try {
             new TestableString(FOO_EXECUTION, ctx).shouldNotContain("o");
@@ -155,7 +156,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotContainSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotContain("a");
         try {
             new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotContain("o");
@@ -168,7 +169,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldRegexMatchSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION, ctx).shouldMatch(".* Has \\d\\d.*");
         try {
             new TestableString(MARY_EXECUTION, ctx).shouldMatch(".* blort \\d\\d.*");
@@ -181,13 +182,13 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldRegexMatchSomethingEvenIfThereAreNewlines() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldMatch("(.*)12(.*)");
     }
 
     @Test
     public void stringShouldNotRegexMatchSomething() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION, ctx).shouldNotMatch(".* blort \\d\\d.*");
         try {
             new TestableString(MARY_EXECUTION, ctx).shouldNotMatch(".* Has \\d\\d.*");
@@ -202,7 +203,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotRegexMatchSomethingEvenIfThereAreNewlines() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         try {
             new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldNotMatch("(.*)12(.*)");
         } catch (FluentExecutionStopped e) {
@@ -216,7 +217,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldRegexMatchSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldMatch(".* Has \\d\\d.*");
         try {
             new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldMatch(".* blort \\d\\d.*");
@@ -229,7 +230,7 @@ public class TestableStringTest {
 
     @Test
     public void stringShouldNotRegexMatchSomethingWithinSomeTime() {
-        BaseFluentWebDriver.Context ctx = BaseFluentWebDriver.Context.singular(null, "dummy2");
+        Context ctx = Context.singular(null, "dummy2");
         new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldNotMatch(".* blort \\d\\d.*");
         try {
             new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldNotMatch(".* Has \\d\\d.*");

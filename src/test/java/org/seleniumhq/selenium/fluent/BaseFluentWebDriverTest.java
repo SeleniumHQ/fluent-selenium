@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class BaseFluentWebDriverTest {
 
     @Before
     public void setup() {
-        fc = new BaseFluentWebDriver(wd, BaseFluentWebDriver.Context.singular(null, "dummy")) {
+        fc = new BaseFluentWebDriver(wd, Context.singular(null, "dummy")) {
 
             @Override
             protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
@@ -66,7 +67,7 @@ public class BaseFluentWebDriverTest {
     public void assertionError_should_be_wrapped_in_context_exception() {
 
         try {
-            BaseFluentWebDriver.Context dummy_context = BaseFluentWebDriver.Context.singular(null, "dummy");
+            Context dummy_context = Context.singular(null, "dummy");
             fc.decorateExecution(new Execution() {
                 public Void execute() {
                     throw new AssertionError("Oops");
@@ -88,7 +89,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
-            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy()"));
@@ -105,7 +106,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new StaleElementReferenceException("Oops");
                 }
-            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseOfStaleElement e) {
             assertThat(e.getMessage(), equalTo("StaleElementReferenceException during invocation of: ?.dummy()"));
@@ -122,7 +123,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
-            }, BaseFluentWebDriver.Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"));
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Oops"));
