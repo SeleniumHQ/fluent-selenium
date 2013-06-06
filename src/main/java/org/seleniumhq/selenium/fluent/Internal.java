@@ -659,7 +659,7 @@ public class Internal {
             if (e instanceof StaleElementReferenceException) {
                 rv =  new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
             } else if (e instanceof NothingMatches) {
-                rv = new FluentExecutionStopped.BecauseNothingMatchesInFilter(replacePkgNames(e) + ctx);
+                rv = new FluentExecutionStopped.BecauseNothingMatchesInFilter("Nothing matched filter, during invocation of: " + ctx);
             } else {
                 rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
             }
@@ -2416,5 +2416,8 @@ public class Internal {
         protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context) {
             return new FluentSelects(super.delegate, results, context);
         }
+    }
+
+    public static class NothingMatches extends RuntimeException {
     }
 }

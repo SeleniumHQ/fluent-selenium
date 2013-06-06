@@ -196,7 +196,7 @@ public class FluentWebDriverTest extends BaseTest {
             fwd.divs().first(new TextContainsWord("mutton")).click();
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseNothingMatchesInFilter e) {
-            assertThat(e.getMessage(), equalTo("org.seleniumhq.selenium.fluent.NothingMatches during invocation of: ?.divs(By.tagName: div)" +
+            assertThat(e.getMessage(), equalTo("Nothing matched filter, during invocation of: ?.divs(By.tagName: div)" +
                     ".first(TextContainsWord{word='mutton'})"));
             assertNull(e.getCause());
         }
