@@ -568,37 +568,6 @@ public abstract class BaseFluentWebDriver {
         return new SingleResult(result, ctx);
     }
 
-    public static class ContextElem {
-        private final String tagName;
-        private final By by;
-        private final Object arg;
-
-        public ContextElem(String tagName, By by, Object arg) {
-            this.tagName = tagName;
-            this.by = by;
-            this.arg = arg;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb =
-                    new StringBuilder(".")
-                            .append(tagName);
-            if (by == null && arg == null) {
-                return sb.append("()").toString();
-            }
-            if (by != null) {
-                return sb.append("(").append(by).append(")").toString();
-
-            }
-            String quote = "'";
-            if (arg instanceof Number || arg instanceof Period || arg instanceof FluentMatcher) {
-                quote = "";
-            }
-            return sb.append("(").append(quote).append(arg).append(quote).append(")").toString();
-        }
-    }
-    
     public static class SingleResult {
         private final WebElement result;
         private final Context ctx;
@@ -713,7 +682,6 @@ public abstract class BaseFluentWebDriver {
     }
 
     protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
-        long start = System.currentTimeMillis();
         try {
             return execution.execute();
         } catch (UnsupportedOperationException e) {
