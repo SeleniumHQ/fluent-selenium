@@ -19,74 +19,78 @@ import static org.mockito.MockitoAnnotations.Mock;
 import static org.seleniumhq.selenium.fluent.Period.secs;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WithoutTest {
+public class WithoutElementTest {
 
     @Mock
-    WebDriver webDriver;
+    WebDriver wwebDriver;
+    @Mock
+    WebElement rootDiv;
     @Mock
     WebElement divElement;
     @Mock
     WebElement spanElement;
 
-    FluentWebDriver fluentWebDriver;
+    FluentWebElement fluentWebElement;
 
     @Before
     public void setup() {
-        fluentWebDriver = new FluentWebDriver(webDriver);
+        when(wwebDriver.findElement(By.tagName("div"))).thenReturn(rootDiv);
+        when(rootDiv.getTagName()).thenReturn("div");
+        fluentWebElement = new FluentWebDriver(wwebDriver).div();
         when(divElement.getTagName()).thenReturn("div");
         when(spanElement.getTagName()).thenReturn("span");
     }
 
     @Test
     public void divIsGoneBeforeWeLookForIt() {
-        when(webDriver.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
+        when(rootDiv.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
 
-        fluentWebDriver.without(secs(2)).div();
+        fluentWebElement.without(secs(2)).div();
     }
 
     @Test
     public void divDisappearsInTime() {
-        when(webDriver.findElement(By.tagName("div"))).thenAnswer(new DisappearingElement(divElement, secs(1)));
+        when(rootDiv.findElement(By.tagName("div"))).thenAnswer(new DisappearingElement(divElement, secs(1)));
 
-        fluentWebDriver.without(secs(2)).div();
+        fluentWebElement.without(secs(2)).div();
     }
 
     @Test
     public void divFailsToDisappearInTime() {
-        when(webDriver.findElement(By.tagName("div"))).thenReturn(divElement);
+        when(rootDiv.findElement(By.tagName("div"))).thenReturn(divElement);
 
         try {
-            fluentWebDriver.without(secs(2)).div();
+            fluentWebElement.without(secs(2)).div();
             fail();
         } catch (FluentExecutionStopped executionStopped) {
-            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).div()"));
+            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.div().without(secs(2)).div()"));
             assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
         }
     }
 
     @Test
     public void spanIsGoneBeforeWeLookForIt() {
-        when(webDriver.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
+        when(rootDiv.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
 
-        fluentWebDriver.without(secs(2)).span();
+        fluentWebElement.without(secs(2)).span();
     }
 
     @Test
     public void spanDisappearsInTime() {
-        when(webDriver.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
+        when(rootDiv.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
-        fluentWebDriver.without(secs(2)).span();
+        fluentWebElement.without(secs(2)).span();
     }
 
     @Test
     public void spanFailsToDisappearInTime() {
-        when(webDriver.findElement(By.tagName("span"))).thenReturn(spanElement);
+        when(rootDiv.findElement(By.tagName("span"))).thenReturn(spanElement);
 
         try {
-            fluentWebDriver.without(secs(2)).span();
+            fluentWebElement.without(secs(2)).span();
             fail();
         } catch (FluentExecutionStopped executionStopped) {
-            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).span()"));
+            assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.div().without(secs(2)).span()"));
             assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
         }
     }

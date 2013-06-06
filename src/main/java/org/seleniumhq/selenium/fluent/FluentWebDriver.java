@@ -114,7 +114,7 @@ public class FluentWebDriver extends BaseFluentWebDriver {
 
 
     public static class NegatingFluentWebDriver {
-        private final FluentWebDriver delegate;
+        private final BaseFluentWebDriver delegate;
         private final Period duration;
         private final Long startedAt;
 
@@ -139,8 +139,6 @@ public class FluentWebDriver extends BaseFluentWebDriver {
             this.duration = duration;
             startedAt = System.currentTimeMillis();
         }
-
-
 
         protected Boolean durationHasElapsed(Long startMillis) {
             return duration.getEndMillis(startMillis) <= System.currentTimeMillis();
