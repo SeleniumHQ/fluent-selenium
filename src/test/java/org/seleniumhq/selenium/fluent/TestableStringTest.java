@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
+import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;

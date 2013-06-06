@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.regex.Pattern;
 

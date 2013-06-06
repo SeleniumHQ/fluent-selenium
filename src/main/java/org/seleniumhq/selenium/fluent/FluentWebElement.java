@@ -21,6 +21,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

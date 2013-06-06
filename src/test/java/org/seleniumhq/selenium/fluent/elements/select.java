@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.BaseFluentWebDriver;
 import org.seleniumhq.selenium.fluent.BaseTest;
-import org.seleniumhq.selenium.fluent.Execution;
+import org.seleniumhq.selenium.fluent.internal.Execution;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentSelect;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
