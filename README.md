@@ -1,6 +1,7 @@
 # FluentSelenium
 
-Refer my [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples) for an actual use.
+Refer my [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples)
+about this, or the project that showcases Fluent Selenium - [Fluent Selenium Examples](https://github.com/paul-hammant/fluent-selenium-examples).
 
 To use via Maven:
 
@@ -8,7 +9,7 @@ To use via Maven:
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.8</version>
+   <version>1.8.1</version>
    <scope>test</scope>
 </dependency>
 
@@ -36,7 +37,9 @@ fwd.span(id("results").getText().shouldBe("1 result");
 
 ## Situations where the DOM is changing slowly
 
-There's a "within" capability in the fluent language. It will retry within an advised period,
+### within()
+
+There's a "within" capability in the fluent language. It will retry for an advised period,
 giving the fluent expression a chance to get past a slowly appearing node:
 
 ```java
@@ -44,6 +47,25 @@ fwd.div(id("foo").div(className("bar").within(secs(5)).button().click();
 
 fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
+
+### without()
+
+There's a "without" capability in the fluent language. It will retry for an advised period,
+giving the fluent expression observe that something in the page should disappear:
+
+```java
+fwd.div(id("foo").div(className("bar").without(secs(5)).button();
+```
+
+The element disappearing in the page means that the fluent expression stops
+there. Also, disappear means that the locator used to find the element does
+not find it, thus the following does not mean that there's no span element,
+it just means that there is no span element with a class of "baz":
+
+```java
+fwd.div(id("foo").div(className("bar").without(secs(5)).span(className("baz"));
+```
+
 
 ### Stale Elements
 
