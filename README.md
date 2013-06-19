@@ -22,7 +22,7 @@ To use via Maven:
 </dependency>
 ```
 
-For non Maven-Central build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22)
+For non Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22)
 
 ## Basic Use
 
@@ -173,7 +173,7 @@ One more strictClassName is used like so:
 FluentBy.strictClassName("name")
 ```
 
-Strict is where there is only one class for that element.  The built-in WebDriver one allows
+Strict is where there is only one class for that element. The built-in WebDriver one allows
 for many classes for an element, with the one specified amongst them.
 
 # Multiple elements
@@ -216,5 +216,5 @@ Fluent-Selenium throws exceptions that show fluent context for WebDriverExceptio
       "WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
 ```
 
-That exception's getCause() will be the WebDriverException derivative that happened during
-the h3() invocation -  implicitly before any subsequent operation like click().
+That exception's <code>getCause()</code> will be the WebDriverException derivative that happened during
+the <code>h3()</code> invocation -  implicitly before any subsequent operation like click().
