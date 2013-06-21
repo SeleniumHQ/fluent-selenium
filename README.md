@@ -120,14 +120,13 @@ fwd.div(id("foo").getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors").getText().shouldNotMatch("\d errors");
 ```
 
-As shown above, you can transparently wait for the think to become true:
+As shown above, you can transparently wait for the thing to become true:
 
 ```java
 fwd.div(id("foo").getText().within(secs(10)).shouldBe("1 bar");
 ```
 
-If used in conjunction with a within(..) expression the assertion is also retried
-subject to the advised period.
+The assertion is retried for the advised period.
 
 ### Others
 
@@ -147,6 +146,14 @@ fwd.div(id("foo").getSize().shouldNotBe(new Dimension(640, 480));
 fwd.div(id("foo").isEnabled().shouldBe(true);
 fwd.div(id("foo").isDisplayed().shouldNotBe(false);
 ```
+
+Like for Strings, you can transparently wait for the thing to become true:
+
+```java
+fwd.div(id("foo").isDisplayed().within(secs(10)).shouldBe(true);
+```
+
+The assertion is retried for the advised period.
 
 ## Locators
 
