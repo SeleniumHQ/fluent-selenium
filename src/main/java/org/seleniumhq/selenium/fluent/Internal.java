@@ -29,6 +29,8 @@ import java.util.List;
 import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 import static org.seleniumhq.selenium.fluent.FluentBy.composite;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateAssertionError;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateRuntimeException;
 
 public class Internal {
 
@@ -782,6 +784,58 @@ public class Internal {
         protected BaseFluentWebElements(WebDriver delegate, Context context) {
             super(delegate, context);
         }
+    }
+
+    public abstract static class BaseTestableObject<T> {
+
+        protected final Period within;
+        protected final Execution<T> execution;
+        protected T is;
+
+
+        public BaseTestableObject(Period within, Execution<T> execution) {
+            this.within = within;
+            this.execution = execution;
+        }
+
+        protected long calcEndMillis() {
+            return within.getEndMillis(System.currentTimeMillis());
+        }
+
+        protected void validateWrapRethrow(Validation validation, Context ctx) {
+            try {
+                validation.validate(System.currentTimeMillis());
+            } catch (UnsupportedOperationException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                throw decorateRuntimeException(ctx, e);
+            } catch (AssertionError e) {
+                throw decorateAssertionError(ctx, e);
+            }
+        }
+
+        protected void assignValueIfNeeded() {
+            if (is != null) {
+                return;
+            }
+            is = execution.execute();
+        }
+
+        protected String durationIfNotZero(long start) {
+            long duration = System.currentTimeMillis() - start;
+            if (duration > 0 ) {
+                return "(after " + duration + " ms)";
+            } else {
+                return "";
+            }
+        }
+
+    }
+
+
+
+    public abstract static class Validation {
+        public abstract void validate(long start);
     }
 
     public static class NothingMatches extends RuntimeException {

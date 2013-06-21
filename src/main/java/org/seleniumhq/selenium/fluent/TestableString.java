@@ -26,13 +26,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateAssertionError;
-import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateRuntimeException;
 
-public class TestableString {
-    private String is;
-    private final Period within;
-    private final Execution<String> execution;
+public class TestableString extends Internal.BaseTestableObject<String> {
     private final Context context;
 
     protected TestableString(Execution<String> execution, Context ctx) {
@@ -40,19 +35,14 @@ public class TestableString {
     }
 
     private TestableString(Period within, Execution<String> execution, Context ctx) {
-        this.within = within;
-        this.execution = execution;
+        super(within, execution);
         this.context = ctx;
-    }
-
-    private static abstract class Validation {
-        public abstract void validate(long start);
     }
 
     public TestableString shouldBe(final String shouldBe) {
         Context ctx = Context.singular(context, "shouldBe", null, shouldBe);
 
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 if (!shouldBe.equals(is)) {
@@ -73,33 +63,15 @@ public class TestableString {
         return this;
     }
 
-    private void validateWrapRethrow(Validation validation, Context ctx) {
-        try {
-            validation.validate(System.currentTimeMillis());
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw decorateRuntimeException(ctx, e);
-        } catch (AssertionError e) {
-            throw decorateAssertionError(ctx, e);
-        }
-    }
-
     public TestableString within(Period period) {
         Context ctx = Context.singular(context, "within", null, period);
         return new TestableString(period, execution, ctx);
     }
 
-    private void assignValueIfNeeded() {
-        if (is != null) {
-            return;
-        }
-        is = execution.execute();
-    }
 
     public TestableString shouldNotBe(final String shouldNotBe) {
         Context ctx = Context.singular(context, "shouldNotBe", null, shouldNotBe);
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 assignValueIfNeeded();
@@ -119,7 +91,7 @@ public class TestableString {
 
     public TestableString shouldContain(final String shouldContain) {
         Context ctx = Context.singular(context, "shouldContain", null, shouldContain);
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 assignValueIfNeeded();
@@ -137,23 +109,10 @@ public class TestableString {
         return this;
     }
 
-    private String durationIfNotZero(long start) {
-        long duration = System.currentTimeMillis() - start;
-        if (duration > 0 ) {
-            return "(after " + duration + " ms)";
-        } else {
-            return "";
-        }
-
-    }
-
-    private long calcEndMillis() {
-        return within.getEndMillis(System.currentTimeMillis());
-    }
 
     public TestableString shouldNotContain(final String shouldNotContain) {
         Context ctx = Context.singular(context, "shouldNotContain", null, shouldNotContain);
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 assignValueIfNeeded();
@@ -174,7 +133,7 @@ public class TestableString {
     @Override
     public String toString() {
         Context ctx = Context.singular(context, "toString", null, "");
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 if (is != null) {
@@ -189,7 +148,7 @@ public class TestableString {
     public TestableString shouldMatch(String regex) {
         Context ctx = Context.singular(context, "shouldMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 assignValueIfNeeded();
@@ -211,7 +170,7 @@ public class TestableString {
     public TestableString shouldNotMatch(final String regex) {
         Context ctx = Context.singular(context, "shouldNotMatch", null, regex);
         final MatchesRegex matcher = new MatchesRegex(regex);
-        validateWrapRethrow(new Validation() {
+        validateWrapRethrow(new Internal.Validation() {
             @Override
             public void validate(long start) {
                 assignValueIfNeeded();

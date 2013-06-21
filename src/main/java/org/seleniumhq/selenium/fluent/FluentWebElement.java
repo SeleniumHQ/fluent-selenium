@@ -96,32 +96,27 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public WebElementValue<Boolean> isSelected() {
         Context isSelected = Context.singular(context, "isSelected");
-        Boolean foo = decorateExecution(new IsSelected(), isSelected);
-        return new WebElementValue<Boolean>(foo, isSelected);
+        return new WebElementValue<Boolean>(new IsSelected(), isSelected);
     }
 
     public WebElementValue<Boolean> isEnabled() {
         Context isEnabled = Context.singular(context, "isEnabled");
-        Boolean foo = decorateExecution(new IsEnabled(), isEnabled);
-        return new WebElementValue<Boolean>(foo, isEnabled);
+        return new WebElementValue<Boolean>(new IsEnabled(), isEnabled);
     }
 
     public WebElementValue<Boolean> isDisplayed() {
         Context isDisplayed = Context.singular(context, "isDisplayed");
-        Boolean foo = decorateExecution(new IsDisplayed(), isDisplayed);
-        return new WebElementValue<Boolean>(foo, isDisplayed);
+        return new WebElementValue<Boolean>(new IsDisplayed(), isDisplayed);
     }
 
     public WebElementValue<Point> getLocation() {
-        Context getLocation = Context.singular(context, "getLocation");
-        Point foo = decorateExecution(new GetLocation(), getLocation);
-        return new WebElementValue<Point>(foo, getLocation);
+        final Context getLocation = Context.singular(context, "getLocation");
+        return new WebElementValue<Point>(new GetLocation(), getLocation);
     }
 
     public WebElementValue<Dimension> getSize() {
         Context getSize = Context.singular(context, "getSize");
-        Dimension foo = decorateExecution(new GetSize(), getSize);
-        return new WebElementValue<Dimension>(foo, getSize);
+        return new WebElementValue<Dimension>(new GetSize(), getSize);
     }
 
     public TestableString getCssValue(final String cssName) {

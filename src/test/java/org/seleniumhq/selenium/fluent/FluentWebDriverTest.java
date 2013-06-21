@@ -7,9 +7,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.seleniumhq.selenium.fluent.internal.ShouldOrShouldNotBeMatchable;
-import org.seleniumhq.selenium.fluent.TestableString;
-import org.seleniumhq.selenium.fluent.WebElementValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +101,6 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
     @Test
-
     public void assertions_against_otherwise_non_ongoing() {
 
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
@@ -116,7 +112,7 @@ public class FluentWebDriverTest extends BaseTest {
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
         WebElementValue<Point> location = fwe.getLocation();
-        ShouldOrShouldNotBeMatchable<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
+        WebElementValue<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
         Point locn = pointShouldOrShouldNotBeMatchable.value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
 
@@ -124,8 +120,9 @@ public class FluentWebDriverTest extends BaseTest {
         try {
             fwe.getLocation().shouldBe(new Point(2, 2)).value();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().getLocation().shouldBe((2, 2)) ~ but was (1, 1)."));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().getLocation().shouldBe('(2, 2)')"));
+            assertThat(e.getCause().getMessage().replace("(after 1 ms)", ""), equalTo("\nExpected: <(2, 2)>\n     but: was <(1, 1)>"));
         }
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
@@ -136,8 +133,9 @@ public class FluentWebDriverTest extends BaseTest {
         try {
             fwe.getLocation().shouldNotBe(new Point(1, 1)).value();
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().getLocation().shouldNotBe((1, 1)) ~ but was."));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().getLocation().shouldNotBe('(1, 1)')"));
+            assertThat(e.getCause().getMessage().replace("(after 1 ms)", ""), equalTo("\nExpected: not <(1, 1)>\n     but: was <(1, 1)>"));
         }
 
         when(we.getSize()).thenReturn(new Dimension(10, 10));
@@ -149,16 +147,18 @@ public class FluentWebDriverTest extends BaseTest {
         try {
             fwe.getSize().shouldNotBe(new Dimension(10, 10));
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().getSize().shouldNotBe((10, 10)) ~ but was."));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().getSize().shouldNotBe('(10, 10)')"));
+            assertThat(e.getCause().getMessage().replace("(after 1 ms)", ""), equalTo("\nExpected: not <(10, 10)>\n     but: was <(10, 10)>"));
         }
 
         when(we.getSize()).thenReturn(new Dimension(10, 10));
         try {
             fwe.getSize().shouldBe(new Dimension(20, 20));
             fail("should have barfed");
-        } catch (AssertionError e) {
-            assertThat(e.getMessage(), equalTo("?.div().getSize().shouldBe((20, 20)) ~ but was (10, 10)."));
+        } catch (FluentExecutionStopped e) {
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().getSize().shouldBe('(20, 20)')"));
+            assertThat(e.getCause().getMessage().replace("(after 1 ms)", ""), equalTo("\nExpected: <(20, 20)>\n     but: was <(10, 10)>"));
         }
 
         when(we.getCssValue("blort")).thenReturn("blort_value");
@@ -544,15 +544,15 @@ public class FluentWebDriverTest extends BaseTest {
 
 
         doReturn(true).when(we2).isSelected();
-        boolean isSelected = fwe.isSelected().getValue();
+        boolean isSelected = fwe.isSelected().value();
         assertThat(isSelected, equalTo(true));
 
         doReturn(true).when(we2).isEnabled();
-        boolean isEnabled = fwe.isEnabled().getValue();
+        boolean isEnabled = fwe.isEnabled().value();
         assertThat(isEnabled, equalTo(true));
 
         doReturn(true).when(we2).isDisplayed();
-        boolean isDisplayed = fwe.isDisplayed().getValue();
+        boolean isDisplayed = fwe.isDisplayed().value();
         assertThat(isDisplayed, equalTo(true));
 
         doReturn("Mary had 3 little lamb(s).").when(we2).getText();
@@ -607,7 +607,7 @@ public class FluentWebDriverTest extends BaseTest {
 
         try {
             doThrow(throwable).when(we).isSelected();
-            fwe.isSelected();
+            fwe.isSelected().value();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isSelected()"));
@@ -615,7 +615,7 @@ public class FluentWebDriverTest extends BaseTest {
 
         try {
             doThrow(throwable).when(we).isEnabled();
-            fwe.isEnabled();
+            fwe.isEnabled().value();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isEnabled()"));
@@ -623,7 +623,7 @@ public class FluentWebDriverTest extends BaseTest {
 
         try {
             doThrow(throwable).when(we).isDisplayed();
-            fwe.isDisplayed();
+            fwe.isDisplayed().value();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), containsString("?.div(By.id: foo).isDisplayed()"));

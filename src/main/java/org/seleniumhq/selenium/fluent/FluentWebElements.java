@@ -296,7 +296,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         public Boolean execute() {
             boolean areDisplayed = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
-                areDisplayed = areDisplayed & webElement.isDisplayed().getValue();
+                areDisplayed = areDisplayed & webElement.isDisplayed().value();
             }
             return areDisplayed;
         }
@@ -306,7 +306,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         public Boolean execute() {
             boolean areEnabled = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
-                areEnabled = areEnabled & webElement.isEnabled().getValue();
+                areEnabled = areEnabled & webElement.isEnabled().value();
             }
             return areEnabled;
         }
@@ -316,7 +316,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         public Boolean execute() {
             boolean areSelected = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
-                areSelected = areSelected & webElement.isSelected().getValue();
+                areSelected = areSelected & webElement.isSelected().value();
             }
             return areSelected;
         }

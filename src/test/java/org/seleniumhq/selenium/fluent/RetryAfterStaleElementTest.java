@@ -15,7 +15,6 @@ public class RetryAfterStaleElementTest {
 
         final int tries[] = new int[1];
 
-
         RetryAfterStaleElement rase = new RetryAfterStaleElement() {
             @Override
             public void toRetry() {
@@ -37,13 +36,10 @@ public class RetryAfterStaleElementTest {
         assertTrue(elapsed > 999);
         assertTrue(elapsed < 1010);
 
-
-
     }
 
     @Test
     public void keeps_failing_and_therefore_times_out() {
-
 
         RetryAfterStaleElement rase = new RetryAfterStaleElement() {
             @Override
@@ -65,8 +61,6 @@ public class RetryAfterStaleElementTest {
 
         assertTrue(elapsed > 999);
         assertTrue(elapsed < 1010);
-
-
 
     }
 }
