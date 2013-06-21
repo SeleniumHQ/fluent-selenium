@@ -22,44 +22,22 @@ import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.regex.Pattern;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 public class TestableString extends Internal.BaseTestableObject<String> {
-    private final Context context;
 
     protected TestableString(Execution<String> execution, Context ctx) {
         this(null, execution, ctx);
     }
 
     private TestableString(Period within, Execution<String> execution, Context ctx) {
-        super(within, execution);
-        this.context = ctx;
+        super(within, execution, ctx);
     }
 
     public TestableString shouldBe(final String shouldBe) {
-        Context ctx = Context.singular(context, "shouldBe", null, shouldBe);
-
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                if (!shouldBe.equals(is)) {
-                    if (within != null) {
-                        boolean passed;
-                        long endMillis = calcEndMillis();
-                        do {
-                            is = execution.execute();
-                            passed = is != null && is.equals(shouldBe);
-                        } while (System.currentTimeMillis() < endMillis && !passed);
-                    } else {
-                        assignValueIfNeeded();
-                    }
-                }
-                assertThat(durationIfNotZero(start), is, equalTo(shouldBe));
-            }
-        }, ctx);
+        baseShouldBe(shouldBe);
         return this;
     }
 
@@ -70,22 +48,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
 
 
     public TestableString shouldNotBe(final String shouldNotBe) {
-        Context ctx = Context.singular(context, "shouldNotBe", null, shouldNotBe);
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                assignValueIfNeeded();
-                if (shouldNotBe.equals(is) && within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.execute();
-                        passed = is != null && !is.equals(shouldNotBe);
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                }
-                assertThat(durationIfNotZero(start), is, not(equalTo(shouldNotBe)));
-            }
-        }, ctx);
+        baseShouldNotBe(shouldNotBe);
         return this;
     }
 
@@ -108,7 +71,6 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         }, ctx);
         return this;
     }
-
 
     public TestableString shouldNotContain(final String shouldNotContain) {
         Context ctx = Context.singular(context, "shouldNotContain", null, shouldNotContain);

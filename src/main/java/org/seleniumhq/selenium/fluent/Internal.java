@@ -26,6 +26,9 @@ import org.seleniumhq.selenium.fluent.internal.Execution;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 import static org.seleniumhq.selenium.fluent.FluentBy.composite;
@@ -790,12 +793,14 @@ public class Internal {
 
         protected final Period within;
         protected final Execution<T> execution;
+        protected final Context context;
         protected T is;
 
 
-        public BaseTestableObject(Period within, Execution<T> execution) {
+        public BaseTestableObject(Period within, Execution<T> execution, Context context) {
             this.within = within;
             this.execution = execution;
+            this.context = context;
         }
 
         protected long calcEndMillis() {
@@ -830,6 +835,48 @@ public class Internal {
             }
         }
 
+        public void baseShouldBe(final T shouldBe) {
+            Context ctx = Context.singular(context, "shouldBe", null, shouldBe);
+
+            validateWrapRethrow(new Internal.Validation() {
+                @Override
+                public void validate(long start) {
+                    if (!shouldBe.equals(is)) {
+                        if (within != null) {
+                            boolean passed;
+                            long endMillis = calcEndMillis();
+                            do {
+                                is = execution.execute();
+                                passed = is != null && is.equals(shouldBe);
+                            } while (System.currentTimeMillis() < endMillis && !passed);
+                        } else {
+                            assignValueIfNeeded();
+                        }
+                    }
+                    assertThat(durationIfNotZero(start), (T) is, equalTo(shouldBe));
+                }
+            }, ctx);
+        }
+
+        public void baseShouldNotBe(final T shouldNotBe) {
+            Context ctx = Context.singular(context, "shouldNotBe", null, shouldNotBe);
+            validateWrapRethrow(new Internal.Validation() {
+                @Override
+                public void validate(long start) {
+                    assignValueIfNeeded();
+                    if (shouldNotBe.equals(is) && within != null) {
+                        boolean passed;
+                        long endMillis = calcEndMillis();
+                        do {
+                            is = execution.execute();
+                            passed = is != null && !is.equals(shouldNotBe);
+                        } while (System.currentTimeMillis() < endMillis && !passed);
+                    }
+                    assertThat(durationIfNotZero(start), (T) is, not(equalTo(shouldNotBe)));
+                }
+            }, ctx);
+
+        }
     }
 
 

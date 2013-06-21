@@ -111,8 +111,8 @@ public class FluentWebDriverTest extends BaseTest {
         assertThat(fwe, notNullValue());
 
         when(we.getLocation()).thenReturn(new Point(1, 1));
-        WebElementValue<Point> location = fwe.getLocation();
-        WebElementValue<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
+        TestableValue<Point> location = fwe.getLocation();
+        TestableValue<Point> pointShouldOrShouldNotBeMatchable = location.shouldBe(new Point(1, 1));
         Point locn = pointShouldOrShouldNotBeMatchable.value();
         assertThat(locn.toString(), equalTo("(1, 1)"));
 
