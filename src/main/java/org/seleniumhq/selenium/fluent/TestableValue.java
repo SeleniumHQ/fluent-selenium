@@ -50,7 +50,7 @@ public class TestableValue<T> extends Internal.BaseTestableObject {
                 if (is != null) {
                     return;
                 }
-                is = execution.execute();
+                is = execution.doExecution();
             }
         }, ctx);
         return (T) is;

@@ -3,7 +3,6 @@ package org.seleniumhq.selenium.fluent;
 import org.junit.Test;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
-import org.seleniumhq.selenium.fluent.TestableString;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;

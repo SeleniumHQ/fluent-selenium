@@ -15,6 +15,10 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent.internal;
 
-public interface Execution<T> {
-    public T execute();
+public abstract class Execution<T> {
+    public T doExecution() {
+        return execute();
+    }
+
+    public abstract T execute();
 }

@@ -21,7 +21,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
-import org.seleniumhq.selenium.fluent.TestableString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, aResult, ctx));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
         }
         return new FluentWebElements(delegate, elems, ctx);
     }

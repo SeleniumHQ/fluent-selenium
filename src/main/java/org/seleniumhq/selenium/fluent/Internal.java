@@ -16,6 +16,7 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -49,6 +50,10 @@ public class Internal {
             this.context = context;
         }
 
+        protected SearchContext getSearchContext() {
+            return delegate;
+        }
+
         protected BaseFluentWebElement span() {
             SingleResult single = single(tagName("span"), "span");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
@@ -68,7 +73,7 @@ public class Internal {
             Context ctx = multiple.getCtx();
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentWebElement(delegate, aResult, ctx));
+                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
             }
             return new FluentWebElements(delegate, elems, ctx);
         }
@@ -159,12 +164,12 @@ public class Internal {
 
         public FluentSelect select() {
             SingleResult single = single(tagName("select"), "select");
-            return new FluentSelect(delegate, single.getResult(), single.getCtx());
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx());
         }
 
         public FluentSelect select(By by) {
             SingleResult single = single(by, "select");
-            return new FluentSelect(delegate, single.getResult(), single.getCtx());
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx());
         }
 
         public FluentSelects selects() {
@@ -519,7 +524,7 @@ public class Internal {
             return newFluentWebElements(multiple(by, "map"));
         }
 
-        protected BaseFluentWebElement newFluentWebElement(WebDriver delegate, WebElement result, Context context) {
+        protected BaseFluentWebElement newFluentWebElement(WebDriver delegate, WebElementHolder result, Context context) {
             return new FluentWebElement(delegate, result, context);
         }
 
@@ -564,26 +569,47 @@ public class Internal {
         private SingleResult single(final By by, final String tagName) {
             final By by2 = fixupBy(by, tagName);
             Context ctx = contextualize(by, tagName);
-            final WebElement result;
+            final WebElementHolder result;
             try {
                 changeTimeout();
                 FindIt execution = new FindIt(by2, tagName);
-                result = decorateExecution(execution, ctx);
+                WebElement found = decorateExecution(execution, ctx);
+                result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
                 resetTimeout();
             }
             return new SingleResult(result, ctx);
         }
 
+        public static class WebElementHolder {
+            private final SearchContext parent;
+            protected WebElement foundElement;
+            private final By locator;
+
+            public WebElementHolder(SearchContext parent, WebElement found, By locator) {
+                this.parent = parent;
+                this.foundElement = found;
+                this.locator = locator;
+            }
+
+            public WebElement getFound() {
+                return foundElement;
+            }
+
+            public void reFindElement() {
+                foundElement = parent.findElement(locator);
+            }
+        }
+
         public static class SingleResult {
-            private final WebElement result;
+            private final WebElementHolder result;
             private final Context ctx;
-            public SingleResult(WebElement result, Context ctx) {
+            public SingleResult(WebElementHolder result, Context ctx) {
                 this.result = result;
                 this.ctx = ctx;
             }
 
-            public WebElement getResult() {
+            public WebElementHolder getResult() {
                 return result;
             }
 
@@ -592,7 +618,7 @@ public class Internal {
             }
         }
 
-        private class FindIt implements Execution<WebElement> {
+        private class FindIt extends Execution<WebElement> {
             private final By by2;
             private final String tagName;
 
@@ -646,7 +672,7 @@ public class Internal {
             }
         }
 
-        private class FindThem implements Execution<List<WebElement>> {
+        private class FindThem extends Execution<List<WebElement>> {
             private final By by2;
             private final String tagName;
 
@@ -690,7 +716,7 @@ public class Internal {
 
         protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
             try {
-                return execution.execute();
+                return execution.doExecution();
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
@@ -748,13 +774,13 @@ public class Internal {
 
         protected abstract List<WebElement> actualFindThem(By by);
 
-        private class CurrentUrl implements Execution<String> {
+        private class CurrentUrl extends Execution<String> {
             public String execute() {
                 return delegate.getCurrentUrl();
             }
         }
 
-        private class GetTitle implements Execution<String> {
+        private class GetTitle extends Execution<String> {
             public String execute() {
                 return delegate.getTitle();
             }
@@ -823,7 +849,7 @@ public class Internal {
             if (is != null) {
                 return;
             }
-            is = execution.execute();
+            is = execution.doExecution();
         }
 
         protected String durationIfNotZero(long start) {
@@ -846,7 +872,7 @@ public class Internal {
                             boolean passed;
                             long endMillis = calcEndMillis();
                             do {
-                                is = execution.execute();
+                                is = execution.doExecution();
                                 passed = is != null && is.equals(shouldBe);
                             } while (System.currentTimeMillis() < endMillis && !passed);
                         } else {
@@ -868,7 +894,7 @@ public class Internal {
                         boolean passed;
                         long endMillis = calcEndMillis();
                         do {
-                            is = execution.execute();
+                            is = execution.doExecution();
                             passed = is != null && !is.equals(shouldNotBe);
                         } while (System.currentTimeMillis() < endMillis && !passed);
                     }

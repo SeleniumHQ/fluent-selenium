@@ -62,7 +62,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
                     boolean passed;
                     long endMillis = calcEndMillis();
                     do {
-                        is = execution.execute();
+                        is = execution.doExecution();
                         passed = is != null && is.indexOf(shouldContain) > -1;
                     } while (System.currentTimeMillis() < endMillis && !passed);
                 }
@@ -82,7 +82,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
                     boolean passed;
                     long endMillis = calcEndMillis();
                     do {
-                        is = execution.execute();
+                        is = execution.doExecution();
                         passed = is != null && is.indexOf(shouldNotContain) == -1;
                     } while (System.currentTimeMillis() < endMillis && !passed);
                 }
@@ -101,7 +101,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
                 if (is != null) {
                     return;
                 }
-                is = execution.execute();
+                is = execution.doExecution();
             }
         }, ctx);
         return is;
@@ -119,7 +119,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
                     boolean passed;
                     long endMillis = calcEndMillis();
                     do {
-                        is = execution.execute();
+                        is = execution.doExecution();
                         passed = is != null && matcher.matches(is);
                     } while (System.currentTimeMillis() < endMillis && !passed);
                 }
@@ -140,7 +140,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
                     boolean passed;
                     long endMillis = calcEndMillis();
                     do {
-                        is = execution.execute();
+                        is = execution.doExecution();
                         passed = is != null && !matcher.matches(is);
                     } while (System.currentTimeMillis() < endMillis && !passed);
                 }

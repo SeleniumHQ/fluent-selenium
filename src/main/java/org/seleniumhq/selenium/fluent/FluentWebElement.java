@@ -19,7 +19,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
@@ -29,15 +32,20 @@ import java.util.concurrent.TimeUnit;
 
 public class FluentWebElement extends Internal.BaseFluentWebElement {
 
-    protected final WebElement currentElement;
+    protected final WebElementHolder currentElement;
 
-    protected FluentWebElement(WebDriver delegate, WebElement currentElement, Context context) {
+    protected FluentWebElement(WebDriver delegate, WebElementHolder currentElement, Context context) {
         super(delegate, context);
         this.currentElement = currentElement;
     }
 
+    @Override
+    protected SearchContext getSearchContext() {
+        return currentElement.getFound();
+    }
+
     protected WebElement getWebElement() {
-        return currentElement;
+        return currentElement.getFound();
     }
 
     @Override
@@ -52,12 +60,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     @Override
     protected WebElement actualFindIt(By by) {
-        return currentElement.findElement(by);
+        return currentElement.getFound().findElement(by);
     }
 
     @Override
     protected List<WebElement> actualFindThem(By by) {
-        return currentElement.findElements(by);
+        return currentElement.getFound().findElements(by);
     }
 
     public FluentWebElement click() {
@@ -603,7 +611,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         private final Period period;
 
-        public RetryingFluentWebElement(WebDriver webDriver, WebElement currentElement, Context context, Period period) {
+        public RetryingFluentWebElement(WebDriver webDriver, WebElementHolder currentElement, Context context, Period period) {
             super(webDriver, currentElement, context);
             this.period = period;
         }
@@ -640,7 +648,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final Period duration;
         private final Long startedAt;
 
-        protected NegatingFluentWebElement(WebDriver delegate, WebElement currentElement, Period duration, Context context) {
+        protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context) {
             this.delegate = new FluentWebElement(delegate, currentElement, context) {
                 protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
                     final T successfullyAbsent = null;
@@ -895,27 +903,49 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     }
 
-    private class Clear implements Execution<Boolean> {
+    private class Clear extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            currentElement.clear();
+            currentElement.getFound().clear();
             return true;
         }
     }
 
-    private class GetTagName implements Execution<String> {
+    private class GetTagName extends StaleElementRecoveringExecution<String> {
         public String execute() {
-            return currentElement.getTagName();
+            return currentElement.getFound().getTagName();
         }
     }
 
-    private class Click implements Execution<Boolean> {
+    private class Click extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            currentElement.click();
+            currentElement.getFound().click();
             return true;
         }
     }
 
-    private class GetAttribute implements Execution<String> {
+    private abstract class StaleElementRecoveringExecution<T> extends Execution<T> {
+
+        @Override
+        public T doExecution() {
+            try {
+                return execute();
+            } catch (StaleElementReferenceException orig) {
+                // try to recover from StaleElementReferenceException just once
+                try {
+                    currentElement.reFindElement();
+                    return execute();
+                } catch (WebDriverException e) {
+                    // might have been a grandparent that was stale
+                    // - can't recover from that, and the original staleness
+                    // is more important that this during-recovery exception
+                    // whatever it is.
+                    throw orig;
+                }
+            }
+        }
+    }
+
+    private class GetAttribute extends StaleElementRecoveringExecution<String> {
         private final String attr;
 
         public GetAttribute(String attr) {
@@ -923,11 +953,20 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
 
         public String execute() {
-            return currentElement.getAttribute(attr);
+            try {
+                return currentElement.getFound().getAttribute(attr);
+            } catch (StaleElementReferenceException orig) {
+                try {
+                    currentElement.reFindElement();
+                    return currentElement.getFound().getAttribute(attr);
+                } catch (StaleElementReferenceException e) {
+                    throw orig;
+                }
+            }
         }
     }
 
-    private class GetCssValue implements Execution<String> {
+    private class GetCssValue extends StaleElementRecoveringExecution<String> {
         private final String cssName;
 
         public GetCssValue(String cssName) {
@@ -935,47 +974,47 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
 
         public String execute() {
-            return currentElement.getCssValue(cssName);
+            return currentElement.getFound().getCssValue(cssName);
         }
     }
 
-    private class GetText implements Execution<String> {
+    private class GetText extends StaleElementRecoveringExecution<String> {
         public String execute() {
-            return currentElement.getText();
+            return currentElement.getFound().getText();
         }
     }
 
-    private class GetSize implements Execution<Dimension> {
+    private class GetSize extends StaleElementRecoveringExecution<Dimension> {
         public Dimension execute() {
-            return currentElement.getSize();
+            return currentElement.getFound().getSize();
         }
     }
 
-    private class GetLocation implements Execution<Point> {
+    private class GetLocation extends StaleElementRecoveringExecution<Point> {
         public Point execute() {
-            return currentElement.getLocation();
+            return currentElement.getFound().getLocation();
         }
     }
 
-    private class IsDisplayed implements Execution<Boolean> {
+    private class IsDisplayed extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            return currentElement.isDisplayed();
+            return currentElement.getFound().isDisplayed();
         }
     }
 
-    private class IsEnabled implements Execution<Boolean> {
+    private class IsEnabled extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            return currentElement.isEnabled();
+            return currentElement.getFound().isEnabled();
         }
     }
 
-    private class IsSelected implements Execution<Boolean> {
+    private class IsSelected extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            return currentElement.isSelected();
+            return currentElement.getFound().isSelected();
         }
     }
 
-    private class SendKeys implements Execution<Boolean> {
+    private class SendKeys extends StaleElementRecoveringExecution<Boolean> {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
@@ -983,14 +1022,14 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
 
         public Boolean execute() {
-            currentElement.sendKeys(keysToSend);
+            currentElement.getFound().sendKeys(keysToSend);
             return true;
         }
     }
 
-    private class Submit implements Execution<Boolean> {
+    private class Submit extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
-            currentElement.submit();
+            currentElement.getFound().submit();
             return true;
         }
     }

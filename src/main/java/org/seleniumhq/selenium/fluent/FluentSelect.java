@@ -30,11 +30,11 @@ public class FluentSelect extends FluentWebElement {
     private Select currentSelect;
 
     protected FluentSelect(WebDriver delegate, WebElement currentElement, Context context) {
-        super(delegate, currentElement, context);
+        super(delegate, new WebElementHolder(null, currentElement, null), context);
     }
 
     protected FluentSelect(WebDriver delegate, Select currentSelect, WebElement currentElement, Context context) {
-        super(delegate, currentElement, context);
+        super(delegate, new WebElementHolder(null, currentElement, null), context);
         this.currentSelect = currentSelect;
     }
 
@@ -78,7 +78,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByVisibleText(final String text) {
         decorateExecution(new SelectByVisibleText(text), Context.singular(context, "selectByVisibleText", null, text));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -89,7 +89,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByIndex(final int index) {
         decorateExecution(new SelectByIndex(index), Context.singular(context, "selectByIndex", null, index));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -102,7 +102,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByValue(final String value) {
         decorateExecution(new SelectByValue(value), Context.singular(context, "selectByValue", null, value));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectAll() {
         decorateExecution(new DeselectAll(), Context.singular(context, "deselectAll"));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -125,7 +125,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByValue(final String value) {
         decorateExecution(new DeselectByValue(value), Context.singular(context, "deselectByValue", null, value));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -136,7 +136,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByIndex(final int index) {
         decorateExecution(new DeselectByIndex(index), Context.singular(context, "deselectByIndex", null, index));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     /**
@@ -149,18 +149,18 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByVisibleText(final String text) {
         decorateExecution(new DeselectByVisibleText(text), Context.singular(context, "deselectByVisibleText", null, text));
-        return new FluentSelect(super.delegate, currentElement, this.context);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context);
     }
 
     protected synchronized Select getSelect() {
         if (currentSelect == null) {
-            currentSelect = new Select(currentElement);
+            currentSelect = new Select(currentElement.getFound());
         }
         return currentSelect;
     }
 
     public FluentSelect within(Period period) {
-        return new RetryingFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement, period);
+        return new RetryingFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement.getFound(), period);
     }
 
     private class RetryingFluentSelect extends FluentSelect {
@@ -200,14 +200,14 @@ public class FluentSelect extends FluentWebElement {
     }
 
 
-    private class DeselectAll implements Execution<Boolean> {
+    private class DeselectAll extends Execution<Boolean> {
         public Boolean execute() {
             getSelect().deselectAll();
             return true;
         }
     }
 
-    private class SelectByValue implements Execution<Boolean> {
+    private class SelectByValue extends Execution<Boolean> {
         private final String value;
 
         public SelectByValue(String value) {
@@ -221,7 +221,7 @@ public class FluentSelect extends FluentWebElement {
         }
     }
 
-    private class SelectByIndex implements Execution<Boolean> {
+    private class SelectByIndex extends Execution<Boolean> {
         private final int index;
 
         public SelectByIndex(int index) {
@@ -234,7 +234,7 @@ public class FluentSelect extends FluentWebElement {
         }
     }
 
-    private class SelectByVisibleText implements Execution<Boolean> {
+    private class SelectByVisibleText extends Execution<Boolean> {
         private final String text;
 
         public SelectByVisibleText(String text) {
@@ -247,31 +247,31 @@ public class FluentSelect extends FluentWebElement {
         }
     }
 
-    private class GetFirstSelectedOption implements Execution<WebElement> {
+    private class GetFirstSelectedOption extends Execution<WebElement> {
         public WebElement execute() {
             return getSelect().getFirstSelectedOption();
         }
     }
 
-    private class GetAllSelectedOptions implements Execution<List<WebElement>> {
+    private class GetAllSelectedOptions extends Execution<List<WebElement>> {
         public List<WebElement> execute() {
             return getSelect().getAllSelectedOptions();
         }
     }
 
-    private class GetOptions implements Execution<List<WebElement>> {
+    private class GetOptions extends Execution<List<WebElement>> {
         public List<WebElement> execute() {
             return getSelect().getOptions();
         }
     }
 
-    private class IsMultiple implements Execution<Boolean> {
+    private class IsMultiple extends Execution<Boolean> {
         public Boolean execute() {
             return getSelect().isMultiple();
         }
     }
 
-    private class DeselectByValue implements Execution<Boolean> {
+    private class DeselectByValue extends Execution<Boolean> {
         private final String value;
 
         public DeselectByValue(String value) {
@@ -284,7 +284,7 @@ public class FluentSelect extends FluentWebElement {
         }
     }
 
-    private class DeselectByIndex implements Execution<Boolean> {
+    private class DeselectByIndex extends Execution<Boolean> {
         private final int index;
 
         public DeselectByIndex(int index) {
@@ -297,7 +297,7 @@ public class FluentSelect extends FluentWebElement {
         }
     }
 
-    private class DeselectByVisibleText implements Execution<Boolean> {
+    private class DeselectByVisibleText extends Execution<Boolean> {
         private final String text;
 
         public DeselectByVisibleText(String text) {

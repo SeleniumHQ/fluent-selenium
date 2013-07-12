@@ -41,7 +41,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, aResult, ctx));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
         }
         return new FluentWebElements(delegate, elems, ctx);
     }
@@ -220,7 +220,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return currentElements.subList(i, i1);
     }
 
-    private class Clear implements Execution<Boolean> {
+    private class Clear extends Execution<Boolean> {
         public Boolean execute() {
             for (FluentWebElement webElement : FluentWebElements.this) {
                 webElement.getWebElement().clear();
@@ -229,7 +229,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class Click implements Execution<Boolean> {
+    private class Click extends Execution<Boolean> {
         public Boolean execute() {
             for (FluentWebElement webElement : FluentWebElements.this) {
                 webElement.click();
@@ -238,7 +238,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class MatchesFirst implements Execution<FluentWebElement> {
+    private class MatchesFirst extends Execution<FluentWebElement> {
         private final FluentMatcher matcher;
 
         public MatchesFirst(FluentMatcher matcher) {
@@ -261,7 +261,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class FilterMatches implements Execution<List<FluentWebElement>> {
+    private class FilterMatches extends Execution<List<FluentWebElement>> {
         private final FluentMatcher matcher;
 
         public FilterMatches(FluentMatcher matcher) {
@@ -282,7 +282,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class GetText implements Execution<String> {
+    private class GetText extends Execution<String> {
         public String execute() {
             String text = "";
             for (FluentWebElement webElement : FluentWebElements.this) {
@@ -292,7 +292,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class IsDisplayed implements Execution<Boolean> {
+    private class IsDisplayed extends Execution<Boolean> {
         public Boolean execute() {
             boolean areDisplayed = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
@@ -302,7 +302,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class IsEnabled implements Execution<Boolean> {
+    private class IsEnabled extends Execution<Boolean> {
         public Boolean execute() {
             boolean areEnabled = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
@@ -312,7 +312,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class IsSelected implements Execution<Boolean> {
+    private class IsSelected extends Execution<Boolean> {
         public Boolean execute() {
             boolean areSelected = true;
             for (FluentWebElement webElement : FluentWebElements.this) {
@@ -322,7 +322,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class SendKeys implements Execution<Boolean> {
+    private class SendKeys extends Execution<Boolean> {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
@@ -337,7 +337,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
     }
 
-    private class Submit implements Execution<Boolean> {
+    private class Submit extends Execution<Boolean> {
         public Boolean execute() {
             for (FluentWebElement webElement : FluentWebElements.this) {
                 webElement.submit();
