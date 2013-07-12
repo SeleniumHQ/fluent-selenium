@@ -111,24 +111,24 @@ but any element supports getText() and WebDriver will try to make a chunk of tex
 that represents that (often with carriage returns).
 
 ```java
-fwd.div(id("foo").getText().shouldBe("1 bar");
-fwd.div(id("foo").getText().shouldNotBe("0 bars");
-fwd.div(id("foo").getText().shouldContain("bar");
-fwd.div(id("foo").getText().shouldNotContain("error");
+fwd.div(id("foo")).getText().shouldBe("1 bar");
+fwd.div(id("foo")).getText().shouldNotBe("0 bars");
+fwd.div(id("foo")).getText().shouldContain("bar");
+fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
 
 Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\n)
 
 ```java
-fwd.div(id("foo").getText().shouldMatch("\d bar");
-fwd.div(id("foo").getText().shouldMatch("[1-9] bar");
-fwd.div(id("formErrors").getText().shouldNotMatch("\d errors");
+fwd.div(id("foo")).getText().shouldMatch("\d bar");
+fwd.div(id("foo")).getText().shouldMatch("[1-9] bar");
+fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 ```
 
 As shown above, you can transparently wait for the thing to become true:
 
 ```java
-fwd.div(id("foo").getText().within(secs(10)).shouldBe("1 bar");
+fwd.div(id("foo")).getText().within(secs(10)).shouldBe("1 bar");
 ```
 
 The assertion is retried for the advised period.
@@ -142,20 +142,20 @@ Some elements have boolean from isDisplayed(), isEnabled() and isSelected()
 All of these have assertions:
 
 ```java
-fwd.div(id("foo").getLocation().shouldBe(new Point(1, 1));
-fwd.div(id("foo").getLocation().shouldNotBe(new Point(1, 1));
+fwd.div(id("foo")).getLocation().shouldBe(new Point(1, 1));
+fwd.div(id("foo")).getLocation().shouldNotBe(new Point(1, 1));
 
-fwd.div(id("foo").getSize().shouldBe(new Dimension(640, 480));
-fwd.div(id("foo").getSize().shouldNotBe(new Dimension(640, 480));
+fwd.div(id("foo")).getSize().shouldBe(new Dimension(640, 480));
+fwd.div(id("foo")).getSize().shouldNotBe(new Dimension(640, 480));
 
-fwd.div(id("foo").isEnabled().shouldBe(true);
-fwd.div(id("foo").isDisplayed().shouldNotBe(false);
+fwd.div(id("foo")).isEnabled().shouldBe(true);
+fwd.div(id("foo")).isDisplayed().shouldBe(false);
 ```
 
 Like for Strings, you can transparently wait for the thing to become true:
 
 ```java
-fwd.div(id("foo").isDisplayed().within(secs(10)).shouldBe(true);
+fwd.div(id("foo")).isDisplayed().within(secs(10)).shouldBe(true);
 ```
 
 The assertion is retried for the advised period.
@@ -165,24 +165,24 @@ The assertion is retried for the advised period.
 WebDriver's own "By" locator mechanism is what is used. Here are examples using that:
 
 ```java
-By.id("id")
-By.className("name")
-By.tagName("table")
+by = By.id("id")
+by = By.className("name")
+by = By.tagName("table")
 ```
 
 Class FluentBy adds a few more:
 
 ```java
-FluentBy.attribute("ng-model")
-FluentBy.attribute("ng-model", "shopperSelection.payPalPreferred") {
-FluentBy.composite(tagName("table"), className("paymentType"))
-FluentBy.composite(tagName("table"), attribute("ng-click")) {
+by = FluentBy.attribute("ng-model")
+by = FluentBy.attribute("ng-model", "shopperSelection.payPalPreferred") {
+by = FluentBy.composite(tagName("table"), className("paymentType"))
+by = FluentBy.composite(tagName("table"), attribute("ng-click")) {
 ```
 
 One more strictClassName is used like so:
 
 ```java
-FluentBy.strictClassName("name")
+by = FluentBy.strictClassName("name")
 ```
 
 Strict is where there is only one class for that element. The built-in WebDriver one allows
@@ -193,8 +193,8 @@ for many classes for an element, with the one specified amongst them.
 Just like WebDriver, FluentSelenium can return a collection of Elements matching a locator:
 
 ```java
-FluentWebElements elems = fwd.div(id("foo").div(className("bar").buttons();
-elems = fwd.div(id("foo").divs(className("bar");
+FluentWebElements elems = fwd.div(id("foo")).div(className("bar")).buttons();
+elems = fwd.div(id("foo")).divs(className("bar"));
 elems = fwd.divs(id("foo");
 ```
 
