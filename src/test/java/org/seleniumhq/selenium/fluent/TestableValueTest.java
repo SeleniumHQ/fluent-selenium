@@ -15,7 +15,7 @@ public class TestableValueTest {
     public void can_be_true() {
 
         Execution<Boolean> exTrue = mock(Execution.class);
-        when(exTrue.execute()).thenReturn(true);
+        when(exTrue.doExecution()).thenReturn(true);
 
         Context ctx = Context.singular(null, "dummy");
         TestableValue<Boolean> wev = new TestableValue<Boolean>(exTrue, ctx);
@@ -31,7 +31,7 @@ public class TestableValueTest {
     public void can_be_false() {
 
         Execution<Boolean> exFalse = mock(Execution.class);
-        when(exFalse.execute()).thenReturn(false);
+        when(exFalse.doExecution()).thenReturn(false);
 
         Context ctx = Context.singular(null, "dummy");
         TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx);
@@ -48,8 +48,8 @@ public class TestableValueTest {
     public void within_works() {
 
         Execution<Boolean> exFalse = mock(Execution.class);
-        when(exFalse.execute()).thenReturn(false);
-        when(exFalse.execute()).thenReturn(true);
+        when(exFalse.doExecution()).thenReturn(false);
+        when(exFalse.doExecution()).thenReturn(true);
 
         Context ctx = Context.singular(null, "dummy");
         TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx);
