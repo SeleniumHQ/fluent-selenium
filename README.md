@@ -117,7 +117,7 @@ fwd.div(id("foo")).getText().shouldContain("bar");
 fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
 
-Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\n)
+Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\\n)
 
 ```java
 fwd.div(id("foo")).getText().shouldMatch("\d bar");
