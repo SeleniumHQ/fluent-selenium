@@ -9,7 +9,7 @@ To use via Maven:
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.8.2</version>
+   <version>1.9</version>
    <scope>test</scope>
 </dependency>
 
@@ -22,6 +22,8 @@ To use via Maven:
 </dependency>
 ```
 
+Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium2. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium2.
+
 For non Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22)
 
 ## Basic Use
@@ -30,9 +32,9 @@ For non Maven build systems, [download it yourself](http://search.maven.org/#sea
 WebDriver wd = new FirefoxDriver();
 FluentWebDriver fwd = new FluentWebDriver(wd);
 
-fwd.div(id("foo").div(className("bar").button().click();
+fwd.div(id("foo")).div(className("bar")).button().click();
 
-fwd.span(id("results").getText().shouldBe("1 result");
+fwd.span(id("results")).getText().shouldBe("1 result");
 ```
 
 ## Situations where the DOM is changing slowly
@@ -43,7 +45,7 @@ There's a "within" capability in the fluent language. It will retry for an advis
 giving the fluent expression a chance to get past a slowly appearing node:
 
 ```java
-fwd.div(id("foo").div(className("bar").within(secs(5)).button().click();
+fwd.div(id("foo")).div(className("bar")).within(secs(5)).button().click();
 
 fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
@@ -54,7 +56,7 @@ There's a "without" capability in the fluent language. It will retry for an advi
 giving the fluent expression observe that something in the page should disappear:
 
 ```java
-fwd.div(id("foo").div(className("bar").without(secs(5)).button();
+fwd.div(id("foo")).div(className("bar")).without(secs(5)).button();
 ```
 
 The element disappearing in the page means that the fluent expression stops
@@ -63,21 +65,21 @@ not find it, thus the following does not mean that there's no span element,
 it just means that there is no span element with a class of "baz":
 
 ```java
-fwd.div(id("foo").div(className("bar").without(secs(5)).span(className("baz"));
+fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"));
 ```
 
 
 ### Stale Elements
 
-WebDriver, by default, does not handle findElement traversals from elements that have
-gone stale transparently. It prefers to throw StaleElementReferenceException, which you
+WebDriver, by default, does not handle <code>findElement</code> traversals from elements that have
+gone stale transparently. It prefers to throw <code>StaleElementReferenceException</code>, which you
 have to catch and then do something with. Retry is one option. FluentSelenium has retry
 capability:
 
 ```java
 new RetryAfterStaleElement() {
     public void toRetry() {
-        div(className("fromto-column")).getText().toString();
+        div(id("thirdAddress")).div(className("fromto-column")).getText().toString();
     }
 }.stopAfter(secs(8));
 ```
@@ -94,7 +96,10 @@ new RetryAfterStaleElement() {
     }
 }.stopAfter(secs(8));
 ```
-Use of the one elem array is the dirty trick, because of the need for final.
+Use of the one element array is the dirty trick, because of the need for final.   
+
+FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations. 
+If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it persistent in its staleness after recovery, then the exception is throw. Recovery means finding it again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
 
 ## Built-in Assertions
 
