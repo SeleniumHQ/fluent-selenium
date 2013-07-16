@@ -27,11 +27,24 @@ public class p extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("p");
     }
+    @Test
+    public void p_case_functionality() {
+
+        setupExpecations("p", "P");
+
+        FluentWebElements fe = fwd.p()
+                .p(By.xpath("@foo = 'bar'"))
+                .p(By.cssSelector("baz"))
+                .ps();
+
+        assertThat(fe, notNullValue());
+        verifications("p");
+    }
 
     @Test
-    public void ps_functionality() {
+    public void ps_case_functionality() {
 
-        setupExpecations2("p");
+        setupExpecations2("p", "P");
 
         FluentWebElements fe = fwd.p()
                 .ps(By.name("qux"));

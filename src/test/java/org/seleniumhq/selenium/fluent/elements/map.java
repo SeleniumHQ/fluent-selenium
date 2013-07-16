@@ -27,11 +27,39 @@ public class map extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("map");
     }
+    
+    @Test
+    public void map_case_functionality() {
+
+        setupExpecations("map", "MAP");
+
+        Internal.BaseFluentWebElements fe = fwd.map()
+                .map(By.xpath("@foo = 'bar'"))
+                .map(By.cssSelector("baz"))
+                .maps();
+
+        assertThat(fe, notNullValue());
+        verifications("map");
+    }
 
     @Test
     public void maps_functionality() {
 
         setupExpecations2("map");
+
+        Internal.BaseFluentWebElements fe = fwd.map()
+                .maps(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("map");
+
+    }
+    
+    @Test
+    public void maps_case_functionality() {
+
+        setupExpecations2("map", "MAP");
 
         Internal.BaseFluentWebElements fe = fwd.map()
                 .maps(By.name("qux"));

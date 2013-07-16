@@ -27,6 +27,20 @@ public class img extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("img");
     }
+    
+    @Test
+    public void img_case_functionality() {
+
+        setupExpecations("img","IMG");
+
+        FluentWebElements fe = fwd.img()
+                .img(By.xpath("@foo = 'bar'"))
+                .img(By.cssSelector("baz"))
+                .imgs();
+
+        assertThat(fe, notNullValue());
+        verifications("img");
+    }
 
     @Test
     public void imgs_functionality() {
@@ -40,6 +54,18 @@ public class img extends BaseTest {
 
         verifications2("img");
 
+    }
+    @Test
+    public void imgs_case_functionality() {
+
+        setupExpecations2("img","IMG");
+
+        FluentWebElements fe = fwd.img()
+                .imgs(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("img");
     }
 
     @Test

@@ -31,11 +31,40 @@ public class button extends BaseTest {
 
 
     }
+    
+    @Test
+    public void button_case_functionality() {
+
+    	setupExpecations("button", "BUTTON");
+
+        FluentWebElements fe = fwd.button()
+                .button(By.xpath("@foo = 'bar'"))
+                .button(By.cssSelector("baz"))
+                .buttons(); // very artificial, sure.
+
+        assertThat(fe, notNullValue());
+        verifications("button");
+
+
+    }
 
     @Test
     public void buttons_functionality() {
 
         setupExpecations2("button");
+
+        FluentWebElements fe = fwd.button().buttons(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("button");
+
+    }
+    
+    @Test
+    public void buttons_case_functionality() {
+
+    	setupExpecations2("button", "BUTTON" );
 
         FluentWebElements fe = fwd.button().buttons(By.name("qux"));
 

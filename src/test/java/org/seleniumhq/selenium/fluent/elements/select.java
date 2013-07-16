@@ -41,6 +41,20 @@ public class select extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("select");
     }
+    
+    @Test
+    public void select_case_functionality() {
+
+        setupExpecations("select", "SELECT");
+
+        FluentWebElements fe = fwd.select()
+                .select(By.xpath("@foo = 'bar'"))
+                .select(By.cssSelector("baz"))
+                .selects();
+
+        assertThat(fe, notNullValue());
+        verifications("select");
+    }
 
     @Test
     public void method_on_select_is_invoked() {
@@ -73,6 +87,20 @@ public class select extends BaseTest {
     public void selects_functionality() {
 
         setupExpecations2("select");
+
+        FluentWebElements fe = fwd.select()
+                .selects(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("select");
+
+    }
+    
+    @Test
+    public void selects_case_functionality() {
+
+        setupExpecations2("select", "SELECT");
 
         FluentWebElements fe = fwd.select()
                 .selects(By.name("qux"));

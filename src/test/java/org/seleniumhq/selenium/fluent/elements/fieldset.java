@@ -27,11 +27,39 @@ public class fieldset extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("fieldset");
     }
+    
+    @Test
+    public void fieldset_case_functionality() {
+
+        setupExpecations("fieldset", "FIELDSET");
+
+        FluentWebElements fe = fwd.fieldset()
+                .fieldset(By.xpath("@foo = 'bar'"))
+                .fieldset(By.cssSelector("baz"))
+                .fieldsets();
+
+        assertThat(fe, notNullValue());
+        verifications("fieldset");
+    }
 
     @Test
     public void fieldsets_functionality() {
 
         setupExpecations2("fieldset");
+
+        FluentWebElements fe = fwd.fieldset()
+                .fieldsets(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("fieldset");
+
+    }
+    
+    @Test
+    public void fieldsets_case_functionality() {
+
+        setupExpecations2("fieldset", "FIELDSET");
 
         FluentWebElements fe = fwd.fieldset()
                 .fieldsets(By.name("qux"));

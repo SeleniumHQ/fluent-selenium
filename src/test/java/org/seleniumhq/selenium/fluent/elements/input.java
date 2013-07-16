@@ -27,6 +27,20 @@ public class input extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("input");
     }
+    
+    @Test
+    public void input_case_functionality() {
+
+        setupExpecations("input", "INPUT");
+
+        FluentWebElements fe = fwd.input()
+                .input(By.xpath("@foo = 'bar'"))
+                .input(By.cssSelector("baz"))
+                .inputs();
+
+        assertThat(fe, notNullValue());
+        verifications("input");
+    }
 
     @Test
     public void inputs_functionality() {
@@ -41,6 +55,21 @@ public class input extends BaseTest {
         verifications2("input");
 
     }
+    
+    @Test
+    public void inputs_case_functionality() {
+
+        setupExpecations2("input", "INPUT");
+
+        FluentWebElements fe = fwd.input()
+                .inputs(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("input");
+
+    }
+
 
     @Test
     public void input_mismatched() {

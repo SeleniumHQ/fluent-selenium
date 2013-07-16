@@ -27,11 +27,39 @@ public class table extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("table");
     }
+    
+    @Test
+    public void table_case_functionality() {
+
+        setupExpecations("table", "TABLE");
+
+        FluentWebElements fe = fwd.table()
+                .table(By.xpath("@foo = 'bar'"))
+                .table(By.cssSelector("baz"))
+                .tables();
+
+        assertThat(fe, notNullValue());
+        verifications("table");
+    }
 
     @Test
     public void tables_functionality() {
 
         setupExpecations2("table");
+
+        FluentWebElements fe = fwd.table()
+                .tables(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("table");
+
+    }
+    
+    @Test
+    public void tables_case_functionality() {
+
+        setupExpecations2("table", "TABLE");
 
         FluentWebElements fe = fwd.table()
                 .tables(By.name("qux"));

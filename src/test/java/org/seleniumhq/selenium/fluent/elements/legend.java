@@ -27,11 +27,39 @@ public class legend extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("legend");
     }
+    
+    @Test
+    public void legend_case_functionality() {
+
+        setupExpecations("legend", "LEGEND");
+
+        Internal.BaseFluentWebElements fe = fwd.legend()
+                .legend(By.xpath("@foo = 'bar'"))
+                .legend(By.cssSelector("baz"))
+                .legends();
+
+        assertThat(fe, notNullValue());
+        verifications("legend");
+    }
 
     @Test
     public void legends_functionality() {
 
         setupExpecations2("legend");
+
+        Internal.BaseFluentWebElements fe = fwd.legend()
+                .legends(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("legend");
+
+    }
+    
+    @Test
+    public void legends_case_functionality() {
+
+        setupExpecations2("legend", "LEGEND");
 
         Internal.BaseFluentWebElements fe = fwd.legend()
                 .legends(By.name("qux"));

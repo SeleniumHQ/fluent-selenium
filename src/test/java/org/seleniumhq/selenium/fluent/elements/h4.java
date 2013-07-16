@@ -27,11 +27,39 @@ public class h4 extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("h4");
     }
+    
+    @Test
+    public void h4_case_functionality() {
+
+        setupExpecations("h4","H4");
+
+        FluentWebElements fe = fwd.h4()
+                .h4(By.xpath("@foo = 'bar'"))
+                .h4(By.cssSelector("baz"))
+                .h4s();
+
+        assertThat(fe, notNullValue());
+        verifications("h4");
+    }
 
     @Test
     public void h4s_functionality() {
 
         setupExpecations2("h4");
+
+        FluentWebElements fe = fwd.h4()
+                .h4s(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("h4");
+
+    }
+    
+    @Test
+    public void h4s_case_functionality() {
+
+        setupExpecations2("h4","h4");
 
         FluentWebElements fe = fwd.h4()
                 .h4s(By.name("qux"));

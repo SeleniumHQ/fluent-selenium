@@ -27,11 +27,39 @@ public class link extends BaseTest {
         assertThat(fe, notNullValue());
         verifications("a");
     }
+    
+    @Test
+    public void link_case_functionality() {
+
+        setupExpecations("a", "A");
+
+        FluentWebElements fe = fwd.link()
+                .link(By.xpath("@foo = 'bar'"))
+                .link(By.cssSelector("baz"))
+                .links();
+
+        assertThat(fe, notNullValue());
+        verifications("a");
+    }
 
     @Test
     public void links_functionality() {
 
         setupExpecations2("a");
+
+        FluentWebElements fe = fwd.link()
+                .links(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verifications2("a");
+
+    }
+    
+    @Test
+    public void links_case_functionality() {
+
+        setupExpecations2("a", "A");
 
         FluentWebElements fe = fwd.link()
                 .links(By.name("qux"));
