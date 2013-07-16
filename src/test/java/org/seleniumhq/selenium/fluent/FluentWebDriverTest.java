@@ -278,47 +278,72 @@ public class FluentWebDriverTest extends BaseTest {
         elems2.add(mock(FluentWebElement.class));
         elems2.add(mock(FluentWebElement.class));
 
-        fwes.addAll(elems2);
+        try {
+            fwes.addAll(elems2);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
-        assertThat(fwes.size(), equalTo(6));
+        assertThat(fwes.size(), equalTo(4));
 
-        fwes.remove(item0);
+        try {
+            fwes.remove(item0);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
-        assertThat(fwes.size(), equalTo(5));
+        assertThat(fwes.size(), equalTo(4));
 
-        fwes.removeAll(elems);
+        try {
+            fwes.removeAll(elems);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
         assertThat(fwes.containsAll(newArrayList("a", "b")), equalTo(false));
 
-        assertThat(fwes.size(), equalTo(2));
+        assertThat(fwes.size(), equalTo(4));
 
-        fwes.remove(0);
+        try {
+            fwes.remove(0);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
-        assertThat(fwes.size(), equalTo(1));
+        assertThat(fwes.size(), equalTo(4));
 
         assertThat(fwes.contains("foo"), equalTo(false));
 
-        fwes.add(item0);
+        try {
+            fwes.add(item0);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
-        assertThat(fwes.indexOf(item0), equalTo(1));
+        assertThat(fwes.indexOf(item0), equalTo(0));
         assertThat(fwes.indexOf("foo"), equalTo(-1));
 
-        fwes.remove(item0);
+        try {
+            fwes.remove(item0);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
-        fwes.add(0, item0);
+        try {
+            fwes.add(0, item0);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
         assertThat(fwes.indexOf(item0), equalTo(0));
         assertThat(fwes.lastIndexOf(item0), equalTo(0));
-
-        fwes.remove(0);
-        assertThat(fwes.size(), equalTo(1));
-        assertThat(fwes.isEmpty(), equalTo(false));
-        fwes.remove(0);
-        assertThat(fwes.size(), equalTo(0));
-        assertThat(fwes.isEmpty(), equalTo(true));
-
-        fwes.addAll(0, elems);
-        assertThat(fwes.size(), equalTo(4));
 
         assertThat(fwes.toArray().length, equalTo(4));
         FluentWebElement[] wes = new FluentWebElement[0] ;

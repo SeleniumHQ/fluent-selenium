@@ -156,12 +156,12 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return currentElements.toArray(ts);
     }
 
-    public boolean add(FluentWebElement webElement) {
-        return currentElements.add(webElement);
+    public boolean add(FluentWebElement fwe) {
+        throw new UnsupportedOperationException();
     }
 
     public boolean remove(Object o) {
-        return currentElements.remove(o);
+        throw new UnsupportedOperationException();
     }
 
     public boolean containsAll(Collection<?> objects) {
@@ -169,15 +169,15 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     public boolean addAll(Collection<? extends FluentWebElement> webElements) {
-        return currentElements.addAll(webElements);
+        throw new UnsupportedOperationException();
     }
 
     public boolean addAll(int i, Collection<? extends FluentWebElement> webElements) {
-        return currentElements.addAll(webElements);
+        throw new UnsupportedOperationException();
     }
 
     public boolean removeAll(Collection<?> objects) {
-        return currentElements.removeAll(objects);
+        throw new UnsupportedOperationException();
     }
 
     public boolean retainAll(Collection<?> objects) {
@@ -188,16 +188,16 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return currentElements.get(i);
     }
 
-    public FluentWebElement set(int i, FluentWebElement webElement) {
-        return currentElements.set(i, webElement);
+    public FluentWebElement set(int i, FluentWebElement fwe) {
+        throw new UnsupportedOperationException();
     }
 
-    public void add(int i, FluentWebElement webElement) {
-        currentElements.add(i,webElement);
+    public void add(int i, FluentWebElement fwe) {
+        throw new UnsupportedOperationException();
     }
 
     public FluentWebElement remove(int i) {
-        return currentElements.remove(i);
+        throw new UnsupportedOperationException();
     }
 
     public int indexOf(Object o) {
@@ -222,8 +222,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     private class Clear extends Execution<Boolean> {
         public Boolean execute() {
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                webElement.getWebElement().clear();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                fwe.clearField();
             }
             return true;
         }
@@ -231,8 +231,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     private class Click extends Execution<Boolean> {
         public Boolean execute() {
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                webElement.click();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                fwe.click();
             }
             return true;
         }
@@ -247,9 +247,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
         public FluentWebElement execute() {
             FluentWebElement result = null;
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                if (matcher.matches(webElement.getWebElement())) {
-                    result = webElement;
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                if (matcher.matches(fwe.getWebElement())) {
+                    result = fwe;
                     break;
                 }
             }
@@ -270,9 +270,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
         public List<FluentWebElement> execute() {
             List<FluentWebElement> results = new ArrayList<FluentWebElement>();
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                if (matcher.matches(webElement.getWebElement())) {
-                    results.add(webElement);
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                if (matcher.matches(fwe.getWebElement())) {
+                    results.add(fwe);
                 }
             }
             if (results.size() == 0) {
@@ -285,8 +285,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     private class GetText extends Execution<String> {
         public String execute() {
             String text = "";
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                text = text + webElement.getText();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                text = text + fwe.getText();
             }
             return text;
         }
@@ -295,8 +295,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     private class IsDisplayed extends Execution<Boolean> {
         public Boolean execute() {
             boolean areDisplayed = true;
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                areDisplayed = areDisplayed & webElement.isDisplayed().value();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                areDisplayed = areDisplayed & fwe.isDisplayed().value();
             }
             return areDisplayed;
         }
@@ -305,8 +305,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     private class IsEnabled extends Execution<Boolean> {
         public Boolean execute() {
             boolean areEnabled = true;
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                areEnabled = areEnabled & webElement.isEnabled().value();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                areEnabled = areEnabled & fwe.isEnabled().value();
             }
             return areEnabled;
         }
@@ -315,8 +315,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     private class IsSelected extends Execution<Boolean> {
         public Boolean execute() {
             boolean areSelected = true;
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                areSelected = areSelected & webElement.isSelected().value();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                areSelected = areSelected & fwe.isSelected().value();
             }
             return areSelected;
         }
@@ -330,8 +330,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         }
 
         public Boolean execute() {
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                webElement.sendKeys(keysToSend);
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                fwe.sendKeys(keysToSend);
             }
             return true;
         }
@@ -339,8 +339,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     private class Submit extends Execution<Boolean> {
         public Boolean execute() {
-            for (FluentWebElement webElement : FluentWebElements.this) {
-                webElement.submit();
+            for (FluentWebElement fwe : FluentWebElements.this) {
+                fwe.submit();
             }
             return true;
         }

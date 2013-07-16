@@ -56,21 +56,9 @@ public class FluentSelects extends FluentWebElements {
         return (FluentSelect) super.first(matcher);
     }
 
-
     @Override
     public FluentSelect get(int i) {
         return (FluentSelect) super.get(i);
-    }
-
-    @Override
-    public FluentSelect set(int i, FluentWebElement webElement) {
-        return (FluentSelect) super.set(i, webElement);
-    }
-
-
-    @Override
-    public FluentSelect remove(int i) {
-        return (FluentSelect) super.remove(i);
     }
 
     @Override
