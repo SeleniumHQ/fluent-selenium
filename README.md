@@ -9,7 +9,7 @@ To use via Maven:
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.9</version>
+   <version>1.9.1</version>
    <scope>test</scope>
 </dependency>
 
