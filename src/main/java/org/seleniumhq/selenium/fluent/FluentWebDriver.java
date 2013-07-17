@@ -586,7 +586,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return super.title();
     }
 
-    private class RetryingFluentWebDriver extends FluentWebDriver {
+    private static class RetryingFluentWebDriver extends FluentWebDriver {
 
         private final Period period;
 
@@ -623,7 +623,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         }
 
     }
-
 
     public static class NegatingFluentWebDriver {
         private final Internal.BaseFluentWebDriver delegate;
@@ -672,7 +671,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.div(by);
         }
 
-
         public void button() {
             delegate.button();
         }
@@ -697,7 +695,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.input(by);
         }
 
-
         public void select() {
             delegate.select();
         }
@@ -713,7 +710,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         public void h1(By by) {
             delegate.h1(by);
         }
-
 
         public void h2() {
             delegate.h2();
@@ -749,7 +745,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.p(by);
         }
 
-
         public void img() {
             delegate.img();
         }
@@ -757,7 +752,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         public void img(By by) {
             delegate.img(by);
         }
-
 
         public void table() {
             delegate.table();
@@ -771,21 +765,17 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.fieldset();
         }
 
-
         public void fieldset(By by) {
             delegate.fieldset(by);
         }
-
 
         public void legend() {
             delegate.legend();
         }
 
-
         public void legend(By by) {
             delegate.legend(by);
         }
-
 
         public void tr() {
             delegate.tr();
@@ -795,21 +785,17 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.tr(by);
         }
 
-
         public void td() {
             delegate.td();
         }
-
 
         public void td(By by) {
             delegate.td(by);
         }
 
-
         public void th() {
             delegate.th();
         }
-
 
         public void th(By by) {
             delegate.th(by);
@@ -819,16 +805,13 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             delegate.ul();
         }
 
-
         public void ul(By by) {
             delegate.ul(by);
         }
 
-
         public void ol() {
             delegate.ol();
         }
-
 
         public void ol(By by) {
             delegate.ol(by);
