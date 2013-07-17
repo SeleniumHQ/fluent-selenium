@@ -16,6 +16,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.Mock;
+import static org.openqa.selenium.By.id;
 import static org.seleniumhq.selenium.fluent.Period.secs;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -72,10 +73,25 @@ public class WithoutDriverTest {
     }
 
     @Test
+    public void bySpanIsGoneBeforeWeLookForIt() {
+        By id = id("id");
+        when(webDriver.findElement(id)).thenThrow(new NotFoundException("span"));
+        fluentWebDriver.without(secs(2)).span(id);
+    }
+
+    @Test
     public void spanDisappearsInTime() {
         when(webDriver.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).span();
+    }
+
+    @Test
+    public void bySpanDisappearsInTime() {
+        By id = By.id("id");
+        when(webDriver.findElement(id)).thenAnswer(new DisappearingElement(spanElement, secs(1)));
+
+        fluentWebDriver.without(secs(2)).span(id);
     }
 
     @Test

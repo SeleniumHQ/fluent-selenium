@@ -128,10 +128,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     // From java.util.List
 
-    public void clear() {
-        currentElements.clear();
-    }
-
     public int size() {
         return currentElements.size();
     }
@@ -156,28 +152,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return currentElements.toArray(ts);
     }
 
-    public boolean add(FluentWebElement fwe) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
     public boolean containsAll(Collection<?> objects) {
         return currentElements.containsAll(objects);
-    }
-
-    public boolean addAll(Collection<? extends FluentWebElement> webElements) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean addAll(int i, Collection<? extends FluentWebElement> webElements) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean removeAll(Collection<?> objects) {
-        throw new UnsupportedOperationException();
     }
 
     public boolean retainAll(Collection<?> objects) {
@@ -186,18 +162,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElement get(int i) {
         return currentElements.get(i);
-    }
-
-    public FluentWebElement set(int i, FluentWebElement fwe) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void add(int i, FluentWebElement fwe) {
-        throw new UnsupportedOperationException();
-    }
-
-    public FluentWebElement remove(int i) {
-        throw new UnsupportedOperationException();
     }
 
     public int indexOf(Object o) {

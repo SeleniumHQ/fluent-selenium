@@ -25,6 +25,7 @@ import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -40,7 +41,6 @@ public class Internal {
 
     public abstract static class BaseFluentWebDriver {
 
-        private static final RuntimeException AN_EXCEPTION = new RuntimeException();
 
         protected final WebDriver delegate;
         protected final Context context;
@@ -597,7 +597,9 @@ public class Internal {
             }
 
             public void reFindElement() {
-                foundElement = parent.findElement(locator);
+                if (parent != null) {
+                    foundElement = parent.findElement(locator);
+                }
             }
         }
 
@@ -734,18 +736,19 @@ public class Internal {
 
         protected final WebElement retryingFindIt(By by) {
             long endMillis = getPeriod().getEndMillis(System.currentTimeMillis());
-            RuntimeException exceptionCausingRetry = new RuntimeException();
+            RuntimeException exceptionCausingRetry = null;
+            boolean toRetry = true;
             WebElement it = null;
-            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
                     it = actualFindIt(by);
-                    exceptionCausingRetry = null;
+                    toRetry = false;
                     return it;
                 } catch (WebDriverException e) {
                     exceptionCausingRetry = e;
                 }
             }
-            if (exceptionCausingRetry != null) {
+            if (toRetry) {
                 throw exceptionCausingRetry;
             }
             return it;
@@ -753,18 +756,19 @@ public class Internal {
 
         protected final List<WebElement> retryingFindThem(By by) {
             long endMillis = getPeriod().getEndMillis(System.currentTimeMillis());
-            RuntimeException exceptionCausingRetry = AN_EXCEPTION;
+            RuntimeException exceptionCausingRetry = null;
+            boolean toRetry = true;
             List<WebElement> them = null;
-            while (exceptionCausingRetry != null && endMillis - System.currentTimeMillis() > 0) {
+            while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
                     them = actualFindThem(by);
-                    exceptionCausingRetry = null;
+                    toRetry = false;
                     return them;
                 } catch (WebDriverException e) {
                     exceptionCausingRetry = e;
                 }
             }
-            if (exceptionCausingRetry != null) {
+            if (toRetry) {
                 throw exceptionCausingRetry;
             }
             return them;
@@ -812,6 +816,42 @@ public class Internal {
     public abstract static class BaseFluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
         protected BaseFluentWebElements(WebDriver delegate, Context context) {
             super(delegate, context);
+        }
+
+        public final FluentWebElement set(int i, FluentWebElement fwe) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final void add(int index, FluentWebElement element) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final FluentWebElement remove(int index) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        public final boolean remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final boolean removeAll(Collection<?> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final boolean addAll(Collection<? extends FluentWebElement> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final boolean addAll(int index, Collection<? extends FluentWebElement> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        public final boolean add(FluentWebElement fluentWebElement) {
+            throw new UnsupportedOperationException();
         }
     }
 

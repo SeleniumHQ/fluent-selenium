@@ -355,9 +355,12 @@ public class FluentWebDriverTest extends BaseTest {
 
         assertThat(fwes.listIterator(0), notNullValue());
 
-        fwes.clear();
-
-        assertThat(fwes.size(), equalTo(0));
+        try {
+            fwes.clear();
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
 
     }
 
