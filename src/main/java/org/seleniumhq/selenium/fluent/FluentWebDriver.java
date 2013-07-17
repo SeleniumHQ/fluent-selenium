@@ -21,10 +21,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
+import org.seleniumhq.selenium.fluent.internal.RetryingFluentWebDriver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
@@ -584,44 +584,6 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     @Override
     public TestableString title() {
         return super.title();
-    }
-
-    private static class RetryingFluentWebDriver extends FluentWebDriver {
-
-        private final Period period;
-
-        public RetryingFluentWebDriver(WebDriver webDriver, Period period, Context context) {
-            super(webDriver, context);
-            this.period = period;
-        }
-
-        @Override
-        protected WebElement findIt(By by) {
-            return retryingFindIt(by);
-        }
-
-        @Override
-        protected List<WebElement> findThem(By by) {
-            return retryingFindThem(by);
-        }
-
-
-        @Override
-        protected Period getPeriod() {
-            return period;
-        }
-
-        @Override
-        protected void changeTimeout() {
-            delegate.manage().timeouts().implicitlyWait(period.howLong(), period.timeUnit());
-
-        }
-
-        @Override
-        protected void resetTimeout() {
-            delegate.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        }
-
     }
 
     public static class NegatingFluentWebDriver {
