@@ -31,8 +31,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     private final List<FluentWebElement> currentElements;
 
-    protected FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {
-        super(delegate, context);
+    protected FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor) {
+        super(delegate, context, monitor);
         this.currentElements = currentElements;
     }
 
@@ -41,15 +41,15 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
         }
-        return new FluentWebElements(delegate, elems, ctx);
+        return new FluentWebElements(delegate, elems, ctx, monitor);
     }
 
     public FluentWebElements click() {
         Context ctx = Context.singular(context, "click");
         decorateExecution(new Click(), ctx);
-        return makeFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx, monitor);
     }
 
     /**
@@ -58,13 +58,13 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     public FluentWebElements clearField() {
         Context ctx = Context.singular(context, "clearField");
         decorateExecution(new Clear(), ctx);
-        return makeFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx, monitor);
     }
 
     public FluentWebElements submit() {
         Context ctx = Context.singular(context, "submit");
         decorateExecution(new Submit(), ctx);
-        return makeFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx, monitor);
     }
 
     // These are as they would be in the WebElement API
@@ -72,7 +72,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         Context ctx = Context.singular(context, "sendKeys", charSeqArrayAsHumanString(keysToSend));
         decorateExecution(new SendKeys(keysToSend), ctx);
-        return makeFluentWebElements(this, ctx);
+        return makeFluentWebElements(this, ctx, monitor);
     }
 
     public boolean isSelected() {
@@ -117,7 +117,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "filter", null, matcher);
-        return makeFluentWebElements(decorateExecution(new FilterMatches(matcher), ctx), ctx);
+        return makeFluentWebElements(decorateExecution(new FilterMatches(matcher), ctx), ctx, monitor);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {

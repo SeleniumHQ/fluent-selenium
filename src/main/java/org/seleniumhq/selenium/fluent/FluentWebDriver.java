@@ -40,8 +40,8 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
-    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
-        return new FluentWebElements(super.delegate, results, context);
+    protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
+        return new FluentWebElements(super.delegate, results, context, monitor);
     }
 
     protected WebElement findIt(By by, Context ctx) {
@@ -84,9 +84,9 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, null));
         }
-        return new FluentWebElements(delegate, elems, ctx);
+        return new FluentWebElements(delegate, elems, ctx, monitor);
     }
 
     @Override

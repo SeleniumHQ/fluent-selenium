@@ -269,7 +269,7 @@ public class FluentWebDriverTest extends BaseTest {
         elems.add(mock(FluentWebElement.class));
         elems.add(mock(FluentWebElement.class));
 
-        FluentWebElements fwes = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null);
+        FluentWebElements fwes = new FluentWebElements(null, new ArrayList<FluentWebElement>(elems), null, new Monitor.NULL());
 
         assertThat(fwes.size(), equalTo(4));
         assertThat(fwes.get(0), equalTo(item0));

@@ -75,17 +75,17 @@ public class Internal {
             Context ctx = multiple.getCtx();
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx));
+                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
             }
-            return new FluentWebElements(delegate, elems, ctx);
+            return new FluentWebElements(delegate, elems, ctx, monitor);
         }
 
         private FluentSelects newFluentSelects(List<WebElement> result, Context ctx) {
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentSelect(delegate, aResult, ctx));
+                elems.add(new FluentSelect(delegate, aResult, ctx, monitor));
             }
-            return new FluentSelects(delegate, elems, ctx);
+            return new FluentSelects(delegate, elems, ctx, monitor);
         }
 
         protected BaseFluentWebElements spans(By by) {
@@ -166,12 +166,12 @@ public class Internal {
 
         public FluentSelect select() {
             SingleResult single = single(tagName("select"), "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx());
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor);
         }
 
         public FluentSelect select(By by) {
             SingleResult single = single(by, "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx());
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor);
         }
 
         public FluentSelects selects() {
@@ -527,7 +527,7 @@ public class Internal {
         }
 
         protected BaseFluentWebElement newFluentWebElement(WebDriver delegate, WebElementHolder result, Context context) {
-            return new FluentWebElement(delegate, result, context);
+            return new FluentWebElement(delegate, result, context, monitor);
         }
 
         public TestableString url() {
@@ -546,7 +546,7 @@ public class Internal {
             return new TestableString(execution, ctx).within(getPeriod());
         }
 
-        protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context);
+        protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor);
 
         protected final By fixupBy(By by, String tagName) {
             if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
@@ -799,13 +799,13 @@ public class Internal {
 
     public abstract static class BaseFluentWebElement extends BaseFluentWebDriver {
 
-        public BaseFluentWebElement(WebDriver delegate, Context context) {
-            super(delegate, context, null);
+        public BaseFluentWebElement(WebDriver delegate, Context context, Monitor monitor) {
+            super(delegate, context, monitor);
         }
 
         @Override
-        protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
-            return new FluentWebElements(super.delegate, results, context);
+        protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor1) {
+            return new FluentWebElements(super.delegate, results, context, monitor);
         }
 
         protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
@@ -820,8 +820,8 @@ public class Internal {
     }
 
     public abstract static class BaseFluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
-        protected BaseFluentWebElements(WebDriver delegate, Context context) {
-            super(delegate, context);
+        protected BaseFluentWebElements(WebDriver delegate, Context context, Monitor monitor) {
+            super(delegate, context, monitor);
         }
 
         public final FluentWebElement set(int i, FluentWebElement fwe) {
@@ -950,8 +950,6 @@ public class Internal {
 
         }
     }
-
-
 
     public abstract static class Validation {
         public abstract void validate(long start);

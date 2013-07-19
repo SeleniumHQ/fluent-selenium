@@ -20,11 +20,15 @@ public class MonitoringTest {
     @Mock
     WebDriver webDriver;
     @Mock
+    WebElement element2;
+    @Mock
     WebElement element;
     @Mock
     Monitor monitor;
     @Mock
     Monitor.Timer timer;
+    @Mock
+    Monitor.Timer timer2;
 
     FluentWebDriver fluentWebDriver;
 
@@ -58,6 +62,27 @@ public class MonitoringTest {
         verify(monitor).start("?.divs(By.id: foo)");
         verify(timer).end();
     }
+
+    @Test
+    public void single_should_monitor2() {
+
+        when(webDriver.findElement(By.tagName("div"))).thenReturn(element);
+        when(element.getTagName()).thenReturn("div");
+        when(element.findElement(By.tagName("span"))).thenReturn(element2);
+        when(element2.getTagName()).thenReturn("span");
+
+        when(monitor.start("?.div()")).thenReturn(timer);
+        when(monitor.start("?.div().span()")).thenReturn(timer2);
+
+        fluentWebDriver.div().span();
+
+        verify(monitor).start("?.div()");
+        verify(timer).end();
+        verify(monitor).start("?.div().span()");
+        verify(timer).end();
+        verify(timer2).end();
+    }
+
 
 
 }

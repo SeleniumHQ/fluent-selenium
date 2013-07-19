@@ -24,10 +24,10 @@ public class BaseFluentWebDriverTest {
 
     @Before
     public void setup() {
-        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy"), null) {
+        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy"), new Monitor.NULL()) {
 
             @Override
-            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
+            protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor1) {
                 return null;
             }
 

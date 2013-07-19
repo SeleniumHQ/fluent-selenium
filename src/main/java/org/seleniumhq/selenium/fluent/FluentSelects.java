@@ -22,8 +22,8 @@ import java.util.List;
 
 public class FluentSelects extends FluentWebElements {
 
-    protected FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context) {
-        super(delegate, currentElements, context);
+    protected FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor) {
+        super(delegate, currentElements, context, monitor);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class FluentSelects extends FluentWebElements {
     }
 
     @Override
-    protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context) {
-        return new FluentSelects(super.delegate, results, context);
+    protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
+        return new FluentSelects(super.delegate, results, context, monitor);
     }
 }
