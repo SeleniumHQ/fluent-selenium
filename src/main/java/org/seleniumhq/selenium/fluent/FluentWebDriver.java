@@ -28,11 +28,15 @@ import java.util.List;
 public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
     public FluentWebDriver(WebDriver delegate) {
-        super(delegate, null);
+        super(delegate, null, new Monitor.NULL());
     }
 
     protected FluentWebDriver(WebDriver delegate, Context context) {
-        super(delegate, context);
+        super(delegate, context, new Monitor.NULL());
+    }
+
+    public FluentWebDriver(WebDriver webDriver, Monitor monitor) {
+        super(webDriver, null, monitor);
     }
 
     @Override
@@ -40,21 +44,31 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return new FluentWebElements(super.delegate, results, context);
     }
 
-    protected WebElement findIt(By by) {
-        return actualFindIt(by);
+    protected WebElement findIt(By by, Context ctx) {
+        return actualFindIt(by, ctx);
     }
 
     @Override
-    protected List<WebElement> findThem(By by) {
-        return actualFindThem(by);
+    protected List<WebElement> findThem(By by, Context ctx) {
+        return actualFindThem(by, ctx);
     }
 
-    protected final WebElement actualFindIt(By by) {
-        return delegate.findElement(by);
+    protected final WebElement actualFindIt(By by, Context ctx) {
+        Monitor.Timer timer = monitor.start(ctx.toString());
+        try {
+            return delegate.findElement(by);
+        } finally {
+            timer.end();
+        }
     }
 
-    protected final List<WebElement> actualFindThem(By by) {
-        return delegate.findElements(by);
+    protected final List<WebElement> actualFindThem(By by, Context ctx) {
+        Monitor.Timer timer = monitor.start(ctx.toString());
+        try {
+            return delegate.findElements(by);
+        } finally {
+            timer.end();
+        }
     }
 
     public FluentWebDriver within(final Period period) {

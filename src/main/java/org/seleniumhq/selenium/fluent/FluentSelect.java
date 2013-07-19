@@ -173,12 +173,12 @@ public class FluentSelect extends FluentWebElement {
         }
 
         @Override
-        protected WebElement findIt(By by) {
+        protected WebElement findIt(By by, Context ctx) {
             return retryingFindIt(by);
         }
 
         @Override
-        protected List<WebElement> findThem(By by) {
+        protected List<WebElement> findThem(By by, Context ctx) {
             return retryingFindThem(by);
         }
 

@@ -44,10 +44,12 @@ public class Internal {
 
         protected final WebDriver delegate;
         protected final Context context;
+        protected final Monitor monitor;
 
-        protected BaseFluentWebDriver(WebDriver delegate, Context context) {
+        protected BaseFluentWebDriver(WebDriver delegate, Context context, Monitor monitor) {
             this.delegate = delegate;
             this.context = context;
+            this.monitor = monitor;
         }
 
         protected SearchContext getSearchContext() {
@@ -562,9 +564,9 @@ public class Internal {
             }
         }
 
-        protected abstract WebElement findIt(By by);
+        protected abstract WebElement findIt(By by, Context ctx);
 
-        protected abstract List<WebElement> findThem(By by);
+        protected abstract List<WebElement> findThem(By by, Context ctx);
 
         private SingleResult single(final By by, final String tagName) {
             final By by2 = fixupBy(by, tagName);
@@ -572,7 +574,7 @@ public class Internal {
             final WebElementHolder result;
             try {
                 changeTimeout();
-                FindIt execution = new FindIt(by2, tagName);
+                FindIt execution = new FindIt(by2, tagName, ctx);
                 WebElement found = decorateExecution(execution, ctx);
                 result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
@@ -623,14 +625,16 @@ public class Internal {
         private class FindIt extends Execution<WebElement> {
             private final By by2;
             private final String tagName;
+            private final Context ctx;
 
-            public FindIt(By by2, String tagName) {
+            public FindIt(By by2, String tagName, Context ctx) {
                 this.by2 = by2;
                 this.tagName = tagName;
+                this.ctx = ctx;
             }
 
             public WebElement execute() {
-                WebElement it = findIt(by2);
+                WebElement it = findIt(by2, ctx);
                 assertTagIs(it.getTagName(), tagName);
                 return it;
             }
@@ -649,7 +653,7 @@ public class Internal {
             Context ctx = Context.plural(context, tagName, by);
             try {
                 changeTimeout();
-                FindThem execution = new FindThem(by2, tagName);
+                FindThem execution = new FindThem(by2, tagName, ctx);
                 result = decorateExecution(execution, ctx);
             } finally {
                 resetTimeout();
@@ -677,14 +681,16 @@ public class Internal {
         private class FindThem extends Execution<List<WebElement>> {
             private final By by2;
             private final String tagName;
+            private final Context ctx;
 
-            public FindThem(By by2, String tagName) {
+            public FindThem(By by2, String tagName, Context ctx) {
                 this.by2 = by2;
                 this.tagName = tagName;
+                this.ctx = ctx;
             }
 
             public List<WebElement> execute() {
-                List<WebElement> results = findThem(by2);
+                List<WebElement> results = findThem(by2, ctx);
                 for (WebElement webElement : results) {
                     assertTagIs(webElement.getTagName(), tagName);
                 }
@@ -741,7 +747,7 @@ public class Internal {
             WebElement it = null;
             while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
-                    it = actualFindIt(by);
+                    it = actualFindIt(by, context);
                     toRetry = false;
                     return it;
                 } catch (WebDriverException e) {
@@ -761,7 +767,7 @@ public class Internal {
             List<WebElement> them = null;
             while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
-                    them = actualFindThem(by);
+                    them = actualFindThem(by, context);
                     toRetry = false;
                     return them;
                 } catch (WebDriverException e) {
@@ -774,9 +780,9 @@ public class Internal {
             return them;
         }
 
-        protected abstract WebElement actualFindIt(By by);
+        protected abstract WebElement actualFindIt(By by, Context ctx);
 
-        protected abstract List<WebElement> actualFindThem(By by);
+        protected abstract List<WebElement> actualFindThem(By by, Context ctx);
 
         private class CurrentUrl extends Execution<String> {
             public String execute() {
@@ -794,7 +800,7 @@ public class Internal {
     public abstract static class BaseFluentWebElement extends BaseFluentWebDriver {
 
         public BaseFluentWebElement(WebDriver delegate, Context context) {
-            super(delegate, context);
+            super(delegate, context, null);
         }
 
         @Override

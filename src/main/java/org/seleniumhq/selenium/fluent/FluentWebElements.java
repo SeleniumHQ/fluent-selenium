@@ -96,22 +96,22 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     @Override
-    protected final WebElement findIt(By by) {
+    protected final WebElement findIt(By by, Context ctx) {
         return null;
     }
 
     @Override
-    protected final List<WebElement> findThem(By by) {
+    protected final List<WebElement> findThem(By by, Context ctx) {
         return null;
     }
 
     @Override
-    protected final WebElement actualFindIt(By by) {
+    protected final WebElement actualFindIt(By by, Context ctx) {
         return null;
     }
 
     @Override
-    protected final List<WebElement> actualFindThem(By by) {
+    protected final List<WebElement> actualFindThem(By by, Context ctx) {
         return null;
     }
 

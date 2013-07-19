@@ -24,7 +24,7 @@ public class BaseFluentWebDriverTest {
 
     @Before
     public void setup() {
-        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy")) {
+        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy"), null) {
 
             @Override
             protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context) {
@@ -32,12 +32,12 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement findIt(By by) {
+            protected WebElement findIt(By by, Context ctx) {
                 return null;
             }
 
             @Override
-            protected List<WebElement> findThem(By by) {
+            protected List<WebElement> findThem(By by, Context ctx) {
                 return null;
             }
 
@@ -50,12 +50,12 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement actualFindIt(By by) {
+            protected WebElement actualFindIt(By by, Context ctx) {
                 return null;
             }
 
             @Override
-            protected List<WebElement> actualFindThem(By by) {
+            protected List<WebElement> actualFindThem(By by, Context ctx) {
                 return null;
             }
 
