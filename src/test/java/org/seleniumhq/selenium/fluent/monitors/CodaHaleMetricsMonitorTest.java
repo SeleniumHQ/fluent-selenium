@@ -10,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class CodaHaleMetricsMonitor2Test {
+public class CodaHaleMetricsMonitorTest {
 
     @Test
     public void metrics_hooked_up_to_monitor() {
 
-        CodaHaleMetrics2Monitor cmm = new CodaHaleMetrics2Monitor("org.seleniumhq.selenium.fluent.monitors.CodaHaleMetricsMonitorTest", "Test");
+        CodaHaleMetricsMonitor cmm = new CodaHaleMetricsMonitor("org.seleniumhq.selenium.fluent.monitors.CodaHaleMetricsMonitorTest", "Test");
         Monitor.Timer timer = cmm.start("div().span()");
         try {
             Thread.sleep(999);
@@ -70,7 +70,7 @@ public class CodaHaleMetricsMonitor2Test {
     @Test
     public void metrics_hooked_up_to_monitor_from_inner_class() {
 
-        final CodaHaleMetrics2Monitor cmm = new CodaHaleMetrics2Monitor("org.seleniumhq.selenium.fluent.monitors.CodaHaleMetricsMonitorTest", "Test");
+        final CodaHaleMetricsMonitor cmm = new CodaHaleMetricsMonitor("org.seleniumhq.selenium.fluent.monitors.CodaHaleMetricsMonitorTest", "Test");
 
         new Fooo() {{
             Monitor.Timer timer = cmm.start("div().span()");
