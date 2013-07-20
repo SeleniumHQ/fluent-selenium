@@ -230,3 +230,89 @@ Fluent-Selenium throws exceptions that show fluent context for WebDriverExceptio
 
 That exception's <code>getCause()</code> will be the WebDriverException derivative that happened during
 the <code>h3()</code> invocation -  implicitly before any subsequent operation like click().
+
+# Metrics
+
+Fluent Selenium can generate metrics related to interactions with the browser. Specifically, what fluent operation was started/ended.  It's somewhat blind to whether the operation passed or failed presently, and only monitors that it happened.  Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
+
+## Coda Hale's Metrics implementation.
+
+Also shown here is how to hook that up to a JUnit4 suite running under Maven.
+
+The separate listener class:
+
+```java
+public class MyRunListener extends RunListener {
+    public static final CodaHaleMetricsMonitor codahaleMetricsMonitor = new CodaHaleMetricsMonitor("com.paulhammant.fluentSeleniumExamples.");
+    @Override
+    public void testRunFinished(Result result) throws Exception {
+        super.testRunFinished(result);
+        final ConsoleReporter reporter = ConsoleReporter.forRegistry(codahaleMetricsMonitor.getMetrics())
+                .convertRatesTo(TimeUnit.MILLISECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .outputTo(System.out)
+                .build();
+        reporter.report();
+    }
+}
+```
+
+Hooking that into each/all FluentWebDriver usages:
+
+```java
+public class Home extends FluentWebDriver {
+    public Home(WebDriver delegate) {
+        super(delegate, MyRunListener.codahaleMetricsMonitor);
+    }
+	// etc
+}
+
+// or the more conventional non inner-class style:
+
+fwd = new FluentWebDriver(webDriver, MyRunListener.codahaleMetricsMonitor);
+```
+
+And in Maven's pom.xml:
+
+```xml
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <properties>
+            <property>
+              <name>listener</name>
+              <value>com.example.MyRunListener</value>
+            </property>
+          </properties>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+```
+
+This will spit our stats in the log like so, that require some interpretation:
+
+```text
+package.MyClass.aMethod:div(By.className: aClassName)
+             count = 2
+         mean rate = 0.00 calls/millisecond
+     1-minute rate = 0.00 calls/millisecond
+     5-minute rate = 0.00 calls/millisecond
+    15-minute rate = 0.00 calls/millisecond
+               min = 31.95 milliseconds
+               max = 36.66 milliseconds
+              mean = 34.31 milliseconds
+            stddev = 3.33 milliseconds
+            median = 34.31 milliseconds
+              75% <= 36.66 milliseconds
+              95% <= 36.66 milliseconds
+              98% <= 36.66 milliseconds
+              99% <= 36.66 milliseconds
+            99.9% <= 36.66 milliseconds
+```
+
+Coda Hale's Metrics library has other [reporters you could attach](http://metrics.codahale.com/manual/core/#reporters).
+
