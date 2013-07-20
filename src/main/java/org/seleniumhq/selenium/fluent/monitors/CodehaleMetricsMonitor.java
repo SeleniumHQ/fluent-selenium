@@ -23,7 +23,18 @@ public class CodehaleMetricsMonitor implements Monitor {
         String prefix = "";
         for (StackTraceElement elem : elems) {
             if (elem.getClassName().startsWith(toStripFromClassName)) {
-                prefix = prefix + elem.getClassName().replace(toStripFromClassName, replaceWith) + "." + elem.getMethodName() + ":";
+                if (elem.getClassName().matches("(.*)\\$\\d+$")) {
+                    try {
+                        Class clazz = Class.forName(elem.getClassName());
+                        if (clazz.isAnonymousClass()) {
+                            clazz = clazz.getSuperclass();
+                            prefix = prefix + clazz.getName().replace(toStripFromClassName, "") + "." + elem.getMethodName() + ":";
+                        }
+                    } catch (ClassNotFoundException e) {
+                    }
+                    continue;
+                }
+                prefix = elem.getClassName().replace(toStripFromClassName, replaceWith) + "." + elem.getMethodName() + ":" + prefix;
                 break;
             }
         }
