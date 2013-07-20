@@ -3,18 +3,18 @@ package org.seleniumhq.selenium.fluent.monitors;
 import com.codahale.metrics.MetricRegistry;
 import org.seleniumhq.selenium.fluent.Monitor;
 
-public class CodehaleMetricsMonitor implements Monitor {
+public class CodaHaleMetricsMonitor implements Monitor {
 
     final MetricRegistry metrics = new MetricRegistry();
     private final String toStripFromClassName;
     private final String replaceWith;
 
-    public CodehaleMetricsMonitor(String toStripFromClassName, String replaceWith) {
+    public CodaHaleMetricsMonitor(String toStripFromClassName, String replaceWith) {
         this.toStripFromClassName = toStripFromClassName;
         this.replaceWith = replaceWith;
     }
 
-    public CodehaleMetricsMonitor(String toStripFromClassName) {
+    public CodaHaleMetricsMonitor(String toStripFromClassName) {
         this(toStripFromClassName, "");
     }
 
