@@ -11,13 +11,13 @@ import java.util.concurrent.TimeUnit;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
-public class CodehaleMonitorTest {
+public class CodehaleMetricsMonitorTest {
 
     @Test
     public void codehale_hooked_up_to_monitor() {
 
-        CodehaleMonitor cm = new CodehaleMonitor();
-        Monitor.Timer timer = cm.start("?.div().span()");
+        CodehaleMetricsMonitor cmm = new CodehaleMetricsMonitor();
+        Monitor.Timer timer = cmm.start("?.div().span()");
         try {
             Thread.sleep(999);
         } catch (InterruptedException e) {
@@ -28,7 +28,7 @@ public class CodehaleMonitorTest {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        final ConsoleReporter reporter = ConsoleReporter.forRegistry(cm.getMetrics())
+        final ConsoleReporter reporter = ConsoleReporter.forRegistry(cmm.getMetrics())
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.SECONDS)
                 .outputTo(new PrintStream(baos))

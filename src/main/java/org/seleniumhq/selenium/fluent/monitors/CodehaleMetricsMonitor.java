@@ -3,7 +3,7 @@ package org.seleniumhq.selenium.fluent.monitors;
 import com.codahale.metrics.MetricRegistry;
 import org.seleniumhq.selenium.fluent.Monitor;
 
-public class CodehaleMonitor implements Monitor {
+public class CodehaleMetricsMonitor implements Monitor {
 
     final MetricRegistry metrics = new MetricRegistry();
 

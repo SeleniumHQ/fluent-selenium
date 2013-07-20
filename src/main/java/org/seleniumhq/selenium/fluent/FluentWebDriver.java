@@ -54,21 +54,11 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     protected final WebElement actualFindIt(By by, Context ctx) {
-        Monitor.Timer timer = monitor.start(ctx.toString());
-        try {
-            return delegate.findElement(by);
-        } finally {
-            timer.end();
-        }
+        return delegate.findElement(by);
     }
 
     protected final List<WebElement> actualFindThem(By by, Context ctx) {
-        Monitor.Timer timer = monitor.start(ctx.toString());
-        try {
-            return delegate.findElements(by);
-        } finally {
-            timer.end();
-        }
+        return delegate.findElements(by);
     }
 
     public FluentWebDriver within(final Period period) {
@@ -84,7 +74,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, null));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
         }
         return new FluentWebElements(delegate, elems, ctx, monitor);
     }

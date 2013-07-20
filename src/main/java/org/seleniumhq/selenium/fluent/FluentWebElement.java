@@ -60,12 +60,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     @Override
     protected WebElement actualFindIt(By by, Context ctx) {
-        Monitor.Timer timer = monitor.start(ctx.toString());
-        try {
-            return currentElement.getFound().findElement(by);
-        } finally {
-            timer.end();
-        }
+        return currentElement.getFound().findElement(by);
     }
 
     @Override

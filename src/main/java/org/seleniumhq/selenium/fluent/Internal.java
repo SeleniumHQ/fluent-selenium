@@ -723,6 +723,8 @@ public class Internal {
         }
 
         protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
+
+            Monitor.Timer timer = monitor.start(ctx.toString());
             try {
                 return execution.doExecution();
             } catch (UnsupportedOperationException e) {
@@ -731,6 +733,8 @@ public class Internal {
                 throw decorateRuntimeException(ctx, e);
             } catch (AssertionError e) {
                 throw decorateAssertionError(ctx, e);
+            } finally {
+                timer.end();
             }
         }
 
