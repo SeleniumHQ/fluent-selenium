@@ -724,7 +724,7 @@ public class Internal {
 
         protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
 
-            Monitor.Timer timer = monitor.start(ctx.toString());
+            Monitor.Timer timer = monitor.start(ctx.toString().substring(2));
             try {
                 return execution.doExecution();
             } catch (UnsupportedOperationException e) {

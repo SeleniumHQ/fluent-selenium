@@ -19,13 +19,24 @@ public class CodehaleMetricsMonitor implements Monitor {
     public Timer start(String item) {
         StackTraceElement[] elems = Thread.currentThread().getStackTrace();
         String prefix = "";
-        for (StackTraceElement elem : elems) {
-            if (classes.contains(elem.getClassName())) {
-                prefix = prefix + ":" + elem.getClassName().replace(toStripFromClassName, "") + "." + elem.getMethodName();
-                break;
+        if (!classes.isEmpty()) {
+            for (StackTraceElement elem : elems) {
+                if (classes.contains(elem.getClassName())) {
+                    prefix = prefix + elem.getClassName().replace(toStripFromClassName, "") + "." + elem.getMethodName() + ":";
+                    break;
+                }
             }
+        } else {
+            for (StackTraceElement elem : elems) {
+                if (!elem.getClassName().equals(Thread.class.getName())
+                    && !elem.getClassName().equals(CodehaleMetricsMonitor.class.getName())) {
+                    prefix = prefix + elem.getClassName().replace(toStripFromClassName, "") + "." + elem.getMethodName() + ":";
+                    break;
+                }
+            }
+
         }
-        return new Timer(metrics.timer(prefix.substring(1) + item));
+        return new Timer(metrics.timer(prefix + item));
     }
 
     public synchronized void addClass(Class clazz) {

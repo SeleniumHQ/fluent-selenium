@@ -42,11 +42,11 @@ public class MonitoringTest {
 
         when(webDriver.findElement(By.tagName("div"))).thenReturn(element);
         when(element.getTagName()).thenReturn("div");
-        when(monitor.start("?.div()")).thenReturn(timer);
+        when(monitor.start("div()")).thenReturn(timer);
 
         fluentWebDriver.div();
 
-        verify(monitor).start("?.div()");
+        verify(monitor).start("div()");
         verify(timer).end();
     }
 
@@ -55,11 +55,11 @@ public class MonitoringTest {
 
         when(webDriver.findElements(By.tagName("div"))).thenReturn(asList(element));
         when(element.getTagName()).thenReturn("div");
-        when(monitor.start("?.divs(By.id: foo)")).thenReturn(timer);
+        when(monitor.start("divs(By.id: foo)")).thenReturn(timer);
 
         fluentWebDriver.divs(id("foo"));
 
-        verify(monitor).start("?.divs(By.id: foo)");
+        verify(monitor).start("divs(By.id: foo)");
         verify(timer).end();
     }
 
@@ -71,14 +71,14 @@ public class MonitoringTest {
         when(element.findElement(By.tagName("span"))).thenReturn(element2);
         when(element2.getTagName()).thenReturn("span");
 
-        when(monitor.start("?.div()")).thenReturn(timer);
-        when(monitor.start("?.div().span()")).thenReturn(timer2);
+        when(monitor.start("div()")).thenReturn(timer);
+        when(monitor.start("div().span()")).thenReturn(timer2);
 
         fluentWebDriver.div().span();
 
-        verify(monitor).start("?.div()");
+        verify(monitor).start("div()");
         verify(timer).end();
-        verify(monitor).start("?.div().span()");
+        verify(monitor).start("div().span()");
         verify(timer).end();
         verify(timer2).end();
     }
@@ -91,14 +91,14 @@ public class MonitoringTest {
         when(element.findElements(By.tagName("span"))).thenReturn(asList(element2));
         when(element2.getTagName()).thenReturn("span");
 
-        when(monitor.start("?.div()")).thenReturn(timer);
-        when(monitor.start("?.div().spans(By.id: foo)")).thenReturn(timer2);
+        when(monitor.start("div()")).thenReturn(timer);
+        when(monitor.start("div().spans(By.id: foo)")).thenReturn(timer2);
 
         fluentWebDriver.div().spans(id("foo"));
 
-        verify(monitor).start("?.div()");
+        verify(monitor).start("div()");
         verify(timer).end();
-        verify(monitor).start("?.div().spans(By.id: foo)");
+        verify(monitor).start("div().spans(By.id: foo)");
         verify(timer).end();
         verify(timer2).end();
     }
@@ -108,13 +108,13 @@ public class MonitoringTest {
 
         when(webDriver.findElement(By.tagName("div"))).thenReturn(element);
         when(element.getTagName()).thenReturn("div");
-        when(monitor.start("?.div()")).thenReturn(timer);
-        when(monitor.start("?.div().click()")).thenReturn(timer2);
+        when(monitor.start("div()")).thenReturn(timer);
+        when(monitor.start("div().click()")).thenReturn(timer2);
 
         fluentWebDriver.div().click();
 
-        verify(monitor).start("?.div()");
-        verify(monitor).start("?.div().click()");
+        verify(monitor).start("div()");
+        verify(monitor).start("div().click()");
         verify(timer).end();
         verify(timer2).end();
     }
@@ -124,13 +124,13 @@ public class MonitoringTest {
 
         when(webDriver.findElement(By.tagName("div"))).thenReturn(element);
         when(element.getTagName()).thenReturn("div");
-        when(monitor.start("?.div()")).thenReturn(timer);
-        when(monitor.start("?.div().sendKeys('abc')")).thenReturn(timer2);
+        when(monitor.start("div()")).thenReturn(timer);
+        when(monitor.start("div().sendKeys('abc')")).thenReturn(timer2);
 
         fluentWebDriver.div().sendKeys("abc");
 
-        verify(monitor).start("?.div()");
-        verify(monitor).start("?.div().sendKeys('abc')");
+        verify(monitor).start("div()");
+        verify(monitor).start("div().sendKeys('abc')");
         verify(timer).end();
         verify(timer2).end();
     }

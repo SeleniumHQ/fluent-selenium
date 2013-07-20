@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
 public interface Monitor {
+
     Timer start(String item);
 
     void addClass(Class clazz);
