@@ -3,47 +3,31 @@ package org.seleniumhq.selenium.fluent.monitors;
 import com.codahale.metrics.MetricRegistry;
 import org.seleniumhq.selenium.fluent.Monitor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class CodehaleMetricsMonitor implements Monitor {
 
     final MetricRegistry metrics = new MetricRegistry();
     private final String toStripFromClassName;
-    private Set<String> classes = new HashSet<String>();
+    private final String replaceWith;
+
+    public CodehaleMetricsMonitor(String toStripFromClassName, String replaceWith) {
+        this.toStripFromClassName = toStripFromClassName;
+        this.replaceWith = replaceWith;
+    }
 
     public CodehaleMetricsMonitor(String toStripFromClassName) {
-        this.toStripFromClassName = toStripFromClassName;
+        this(toStripFromClassName, "");
     }
 
     public Timer start(String item) {
         StackTraceElement[] elems = Thread.currentThread().getStackTrace();
         String prefix = "";
-        if (!classes.isEmpty()) {
-            for (StackTraceElement elem : elems) {
-                if (classes.contains(elem.getClassName())) {
-                    prefix = prefix + elem.getClassName().replace(toStripFromClassName, "") + "." + elem.getMethodName() + ":";
-                    break;
-                }
+        for (StackTraceElement elem : elems) {
+            if (elem.getClassName().startsWith(toStripFromClassName)) {
+                prefix = prefix + elem.getClassName().replace(toStripFromClassName, replaceWith) + "." + elem.getMethodName() + ":";
+                break;
             }
-        } else {
-            for (StackTraceElement elem : elems) {
-                if (!elem.getClassName().equals(Thread.class.getName())
-                    && !elem.getClassName().equals(CodehaleMetricsMonitor.class.getName())) {
-                    prefix = prefix + elem.getClassName().replace(toStripFromClassName, "") + "." + elem.getMethodName() + ":";
-                    break;
-                }
-            }
-
         }
         return new Timer(metrics.timer(prefix + item));
-    }
-
-    public synchronized void addClass(Class clazz) {
-        if (clazz.isAnonymousClass()) {
-            clazz = clazz.getSuperclass();
-        }
-        classes.add(clazz.getName());
     }
 
     public MetricRegistry getMetrics() {
