@@ -136,7 +136,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public TestableString getText() {
-        return new TestableString(new GetText(), Context.singular(context, "getText")).within(getPeriod());
+        return new TestableString(new GetText(), Context.singular(context, "getText"));
     }
 
     public FluentWebElement within(Period period) {

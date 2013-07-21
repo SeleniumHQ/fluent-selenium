@@ -15,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.seleniumhq.selenium.fluent.Period.secs;
 
 public class WithinTest {
 
@@ -34,7 +35,7 @@ public class WithinTest {
         when(timeouts.implicitlyWait(0, TimeUnit.SECONDS)).thenReturn(timeouts);
         FluentWebDriver fwd = new FluentWebDriver(wd);
 
-        fwd.within(Period.secs(10)).div();
+        fwd.within(secs(10)).div();
 
         verify(wd, times(2)).manage();
         verify(options, times(2)).timeouts();
@@ -64,7 +65,7 @@ public class WithinTest {
 
 
         try {
-            FluentWebElement within = fwd.div().within(Period.secs(10));
+            FluentWebElement within = fwd.div().within(secs(10));
 
             when(we.findElement(By.tagName("div"))).thenReturn(we2);
             when(we2.getTagName()).thenThrow(new AssertionError("barf"));
