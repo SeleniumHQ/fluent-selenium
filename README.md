@@ -86,7 +86,7 @@ new RetryAfterStaleElement() {
 
 In this example, the element can go stale any amount of times in eight seconds, and the whole
 traversal is restarted again and again.  If you're trying to store values, you'll have a
-problem with Java's inner-class rules, and have to do dirty tricks like:
+problem with Java's inner-class rules, and have to **use member fields** or do dirty tricks like:
 
 ```java
 final String selectedFlight[] = new String[1];
