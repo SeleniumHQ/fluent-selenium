@@ -20,7 +20,15 @@ To use via Maven:
    <version>1.3</version>
    <scope>test</scope>
 </dependency>
+
+<!-- If you're needing Coda Hale's Metrics integration (optional) -->
+<dependency>
+   <groupId>com.codahale.metrics</groupId>
+   <artifactId>metrics-core</artifactId>
+   <version>3.0.0</version>
+</dependency>
 ```
+
 
 Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium2. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium2.
 
@@ -254,6 +262,7 @@ public class MyRunListener extends RunListener {
                 .build();
         reporter.report();
     }
+	// More likely, you'd send stats to Graphite (etc).
 }
 ```
 
@@ -313,6 +322,7 @@ package.MyClass.aMethod:div(By.className: aClassName)
               99% <= 36.66 milliseconds
             99.9% <= 36.66 milliseconds
 ```
+[There's a fuller example of stats in the 'Fluent Selenium Examples' project](https://github.com/paul-hammant/fluent-selenium-examples/blob/master/metrics.out)
 
 Coda Hale's Metrics library has other [reporters you could attach](http://metrics.codahale.com/manual/core/#reporters).
 
