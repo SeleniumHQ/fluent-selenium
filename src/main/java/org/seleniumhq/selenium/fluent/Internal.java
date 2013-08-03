@@ -16,6 +16,9 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -41,15 +44,16 @@ public class Internal {
 
     public abstract static class BaseFluentWebDriver {
 
-
         protected final WebDriver delegate;
         protected final Context context;
         protected final Monitor monitor;
+        protected final boolean booleanInsteadOfNoSuchElement;
 
-        protected BaseFluentWebDriver(WebDriver delegate, Context context, Monitor monitor) {
+        protected BaseFluentWebDriver(WebDriver delegate, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
             this.delegate = delegate;
             this.context = context;
             this.monitor = monitor;
+            this.booleanInsteadOfNoSuchElement = booleanInsteadOfNoSuchElement;
         }
 
         protected SearchContext getSearchContext() {
@@ -75,17 +79,17 @@ public class Internal {
             Context ctx = multiple.getCtx();
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
+                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNoSuchElement));
             }
-            return new FluentWebElements(delegate, elems, ctx, monitor);
+            return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
         }
 
         private FluentSelects newFluentSelects(List<WebElement> result, Context ctx) {
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentSelect(delegate, aResult, ctx, monitor));
+                elems.add(new FluentSelect(delegate, aResult, ctx, monitor, booleanInsteadOfNoSuchElement));
             }
-            return new FluentSelects(delegate, elems, ctx, monitor);
+            return new FluentSelects(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
         }
 
         protected BaseFluentWebElements spans(By by) {
@@ -166,12 +170,12 @@ public class Internal {
 
         public FluentSelect select() {
             SingleResult single = single(tagName("select"), "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor);
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNoSuchElement);
         }
 
         public FluentSelect select(By by) {
             SingleResult single = single(by, "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor);
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNoSuchElement);
         }
 
         public FluentSelects selects() {
@@ -527,7 +531,7 @@ public class Internal {
         }
 
         protected BaseFluentWebElement newFluentWebElement(WebDriver delegate, WebElementHolder result, Context context) {
-            return new FluentWebElement(delegate, result, context, monitor);
+            return new FluentWebElement(delegate, result, context, monitor, booleanInsteadOfNoSuchElement);
         }
 
         public TestableString url() {
@@ -634,9 +638,18 @@ public class Internal {
             }
 
             public WebElement execute() {
-                WebElement it = findIt(by2, ctx);
-                assertTagIs(it.getTagName(), tagName);
-                return it;
+                if (booleanInsteadOfNoSuchElement) {
+                    try {
+                        findIt(by2, ctx);
+                        return new FoundOrNotFound(true);
+                    } catch (NoSuchElementException e) {
+                        return new FoundOrNotFound(false);
+                    }
+                } else {
+                    WebElement it = findIt(by2, ctx);
+                    assertTagIs(it.getTagName(), tagName);
+                    return it;
+                }
             }
         }
 
@@ -758,10 +771,7 @@ public class Internal {
                     exceptionCausingRetry = e;
                 }
             }
-            if (toRetry) {
-                throw exceptionCausingRetry;
-            }
-            return it;
+            throw exceptionCausingRetry;
         }
 
         protected final List<WebElement> retryingFindThem(By by) {
@@ -803,13 +813,15 @@ public class Internal {
 
     public abstract static class BaseFluentWebElement extends BaseFluentWebDriver {
 
-        public BaseFluentWebElement(WebDriver delegate, Context context, Monitor monitor) {
-            super(delegate, context, monitor);
+        public BaseFluentWebElement(WebDriver delegate, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+            super(delegate, context, monitor, booleanInsteadOfNoSuchElement);
         }
+
+        protected abstract WebElement getWebElement();
 
         @Override
         protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor1) {
-            return new FluentWebElements(super.delegate, results, context, monitor);
+            return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
         }
 
         protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {
@@ -824,8 +836,13 @@ public class Internal {
     }
 
     public abstract static class BaseFluentWebElements extends BaseFluentWebElement implements List<FluentWebElement> {
-        protected BaseFluentWebElements(WebDriver delegate, Context context, Monitor monitor) {
-            super(delegate, context, monitor);
+        protected BaseFluentWebElements(WebDriver delegate, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+            super(delegate, context, monitor, booleanInsteadOfNoSuchElement);
+        }
+
+        @Override
+        protected WebElement getWebElement() {
+            throw new UnsupportedOperationException();
         }
 
         public final FluentWebElement set(int i, FluentWebElement fwe) {
@@ -960,5 +977,78 @@ public class Internal {
     }
 
     public static class NothingMatches extends RuntimeException {
+    }
+
+    public static class FoundOrNotFound implements WebElement {
+
+        private boolean found;
+
+        public boolean isFound() {
+            return found;
+        }
+
+        public FoundOrNotFound(boolean found) {
+            this.found = found;
+        }
+
+        public void click() {
+            throw new UnsupportedOperationException();
+        }
+
+        public void submit() {
+            throw new UnsupportedOperationException();
+        }
+
+        public void sendKeys(CharSequence... keysToSend) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        public String getTagName() {
+            throw new UnsupportedOperationException();
+        }
+
+        public String getAttribute(String name) {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean isSelected() {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean isEnabled() {
+            throw new UnsupportedOperationException();
+        }
+
+        public String getText() {
+            throw new UnsupportedOperationException();
+        }
+
+        public List<WebElement> findElements(By by) {
+            throw new UnsupportedOperationException();
+        }
+
+        public WebElement findElement(By by) {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean isDisplayed() {
+            throw new UnsupportedOperationException();
+        }
+
+        public Point getLocation() {
+            throw new UnsupportedOperationException();
+        }
+
+        public Dimension getSize() {
+            throw new UnsupportedOperationException();
+        }
+
+        public String getCssValue(String propertyName) {
+            throw new UnsupportedOperationException();
+        }
     }
 }

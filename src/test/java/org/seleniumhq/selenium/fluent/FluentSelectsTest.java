@@ -36,7 +36,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testClick() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects click = fs.click();
 
@@ -47,7 +47,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testClearField() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects click = fs.clearField();
 
@@ -58,7 +58,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testSubmit() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects click = fs.submit();
 
@@ -68,7 +68,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testSendKeys() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects click = fs.sendKeys("abc");
 
@@ -78,7 +78,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testFilter() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects els = fs.filter(new FluentMatcher() {
             public boolean matches(WebElement webElement) {
@@ -94,7 +94,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testFirst() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelect el = fs.first(new FluentMatcher() {
             public boolean matches(WebElement webElement) {
@@ -107,7 +107,7 @@ public class FluentSelectsTest {
 
     @Test
     public void testGet() throws Exception {
-        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL());
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelect el = fs.get(1);
 

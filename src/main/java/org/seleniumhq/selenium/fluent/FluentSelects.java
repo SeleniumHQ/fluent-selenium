@@ -22,8 +22,8 @@ import java.util.List;
 
 public class FluentSelects extends FluentWebElements {
 
-    protected FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor) {
-        super(delegate, currentElements, context, monitor);
+    protected FluentSelects(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+        super(delegate, currentElements, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     @Override
@@ -63,6 +63,6 @@ public class FluentSelects extends FluentWebElements {
 
     @Override
     protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
-        return new FluentSelects(super.delegate, results, context, monitor);
+        return new FluentSelects(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
     }
 }

@@ -31,8 +31,8 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     private final List<FluentWebElement> currentElements;
 
-    protected FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor) {
-        super(delegate, context, monitor);
+    protected FluentWebElements(WebDriver delegate, List<FluentWebElement> currentElements, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+        super(delegate, context, monitor, booleanInsteadOfNoSuchElement);
         this.currentElements = currentElements;
     }
 
@@ -41,9 +41,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNoSuchElement));
         }
-        return new FluentWebElements(delegate, elems, ctx, monitor);
+        return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
     public FluentWebElements click() {

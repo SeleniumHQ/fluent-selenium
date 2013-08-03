@@ -9,7 +9,7 @@ To use via Maven:
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.9.1</version>
+   <version>1.11</version>
    <scope>test</scope>
 </dependency>
 
@@ -226,18 +226,29 @@ There are no instances of FluentMatcher built in, other than CompositeFluentMatc
 
 # Exceptions
 
-Obviously you want tests using FluentSelenium to pass.  Getting tests to be stable has also been a
+Obviously you want tests using FluentSelenium to pass. Getting tests to be stable has also been a
 historical challenge for the Selenium world, but a real failure of previously working test, is worth
 debugging (before or after a developer commit that may have broken the build).
 
-Fluent-Selenium throws exceptions that show fluent context for WebDriverException? root causes like so:
+Fluent-Selenium throws 'FluentExecutionStopped' like so:
 
 ```
       "WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
 ```
 
 That exception's <code>getCause()</code> will be the WebDriverException derivative that happened during
-the <code>h3()</code> invocation -  implicitly before any subsequent operation like click().
+the <code>h3()</code> invocation -  implicitly before any subsequent operation like click().  That could well be 'NoSuchElementException' for when an element was not found.
+
+## Alternate boolean handling of missing elements.
+
+Normal operation is for FluentSelenium to throw 'FluentExecutionStopped' wrapping 'NoSuchElementException' for the root cause.
+
+You can receive true/false instead like so:
+
+```java
+boolean isMissing = fwd.hasMissing().div(id("foo"))
+boolean isPresent = fwd.has().div(id("foo"))
+```
 
 # Metrics
 

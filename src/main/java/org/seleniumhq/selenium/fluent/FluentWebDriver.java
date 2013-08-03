@@ -28,20 +28,24 @@ import java.util.List;
 public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
     public FluentWebDriver(WebDriver delegate) {
-        super(delegate, null, new Monitor.NULL());
+        super(delegate, null, new Monitor.NULL(), false);
     }
 
     protected FluentWebDriver(WebDriver delegate, Context context) {
-        super(delegate, context, new Monitor.NULL());
+        super(delegate, context, new Monitor.NULL(), false);
     }
 
     public FluentWebDriver(WebDriver webDriver, Monitor monitor) {
-        super(webDriver, null, monitor);
+        super(webDriver, null, monitor, false);
+    }
+
+    protected FluentWebDriver(WebDriver webDriver, Monitor monitor, Context context, boolean booleanInsteadOfNoSuchElement) {
+        super(webDriver, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     @Override
     protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
-        return new FluentWebElements(super.delegate, results, context, monitor);
+        return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     protected WebElement findIt(By by, Context ctx) {
@@ -74,9 +78,9 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNoSuchElement));
         }
-        return new FluentWebElements(delegate, elems, ctx, monitor);
+        return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
     @Override
@@ -590,4 +594,244 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
 
+    public BooleanResultsAdapter hasMissing() {
+        return new BooleanResultsAdapter(super.delegate, super.monitor, super.context)
+                .invert(true);
+    }
+
+    public BooleanResultsAdapter has() {
+        return new BooleanResultsAdapter(super.delegate, super.monitor, super.context)
+                .invert(false);
+    }
+
+    public static class BooleanResultsAdapter {
+
+        private Internal.BaseFluentWebDriver bfwd;
+        private boolean invert;
+
+        protected BooleanResultsAdapter(WebDriver webDriver, Monitor monitor, Context context) {
+            bfwd = new FluentWebDriver(webDriver, monitor, context, true);
+        }
+
+        public BooleanResultsAdapter(WebDriver webDriver, WebElementHolder elementHolder, Monitor monitor, Context context) {
+            bfwd = new FluentWebElement(webDriver, elementHolder, context, monitor, true);
+        }
+
+        public BooleanResultsAdapter invert(boolean b) {
+            this.invert = b;
+            return this;
+        }
+
+        public boolean span() {
+            return returnBool(bfwd.span());
+        }
+
+        public boolean span(By by) {
+            return returnBool(bfwd.span(by));
+        }
+
+        public boolean div() {
+            return returnBool(bfwd.div());
+        }
+
+        public boolean div(By by) {
+            return returnBool(bfwd.div(by));
+        }
+
+        public boolean button() {
+            return returnBool(bfwd.button());
+        }
+
+        public boolean button(By by) {
+            return returnBool(bfwd.button(by));
+        }
+
+        public boolean link() {
+            return returnBool(bfwd.link());
+        }
+
+        public boolean link(By by) {
+            return returnBool(bfwd.link(by));
+        }
+
+        public boolean input() {
+            return returnBool(bfwd.input());
+        }
+
+        public boolean input(By by) {
+            return returnBool(bfwd.input(by));
+        }
+
+        public boolean select() {
+            return returnBool(bfwd.select());
+        }
+
+        public boolean select(By by) {
+            return returnBool(bfwd.select(by));
+        }
+
+        public boolean h1() {
+            return returnBool(bfwd.h1());
+        }
+
+        public boolean h1(By by) {
+            return returnBool(bfwd.h1(by));
+        }
+
+        public boolean h2() {
+            return returnBool(bfwd.h2());
+        }
+
+        public boolean h2(By by) {
+            return returnBool(bfwd.h2(by));
+        }
+
+        public boolean h3() {
+            return returnBool(bfwd.h3());
+        }
+
+        public boolean h3(By by) {
+            return returnBool(bfwd.h3(by));
+        }
+
+        public boolean h4() {
+            return returnBool(bfwd.h4());
+        }
+
+        public boolean h4(By by) {
+            return returnBool(bfwd.h4(by));
+        }
+
+
+        public boolean p() {
+            return returnBool(bfwd.p());
+        }
+
+
+        public boolean p(By by) {
+            return returnBool(bfwd.p(by));
+        }
+
+        public boolean img() {
+            return returnBool(bfwd.img());
+        }
+
+        public boolean img(By by) {
+            return returnBool(bfwd.img(by));
+        }
+
+        public boolean table() {
+            return returnBool(bfwd.table());
+        }
+
+        public boolean table(By by) {
+            return returnBool(bfwd.table(by));
+        }
+
+        public boolean fieldset() {
+            return returnBool(bfwd.fieldset());
+        }
+
+        public boolean fieldset(By by) {
+            return returnBool(bfwd.fieldset(by));
+        }
+
+        public boolean legend() {
+            return returnBool(bfwd.legend());
+        }
+
+        public boolean legend(By by) {
+            return returnBool(bfwd.legend(by));
+        }
+
+        public boolean tr() {
+            return returnBool(bfwd.tr());
+        }
+
+        public boolean tr(By by) {
+            return returnBool(bfwd.tr(by));
+        }
+
+        public boolean td() {
+            return returnBool(bfwd.td());
+        }
+
+        public boolean td(By by) {
+            return returnBool(bfwd.td(by));
+        }
+
+        public boolean th() {
+            return returnBool(bfwd.th());
+        }
+
+        public boolean th(By by) {
+            return returnBool(bfwd.th(by));
+        }
+
+        public boolean ul() {
+            return returnBool(bfwd.ul());
+        }
+
+        public boolean ul(By by) {
+            return returnBool(bfwd.ul(by));
+        }
+
+        public boolean ol() {
+            return returnBool(bfwd.ol());
+        }
+
+        public boolean ol(By by) {
+            return returnBool(bfwd.ol(by));
+        }
+
+        public boolean form() {
+            return returnBool(bfwd.form());
+        }
+
+        public boolean form(By by) {
+            return returnBool(bfwd.form(by));
+        }
+
+        public boolean textarea() {
+            return returnBool(bfwd.textarea());
+        }
+
+        public boolean textarea(By by) {
+            return returnBool(bfwd.textarea(by));
+        }
+
+        public boolean option() {
+            return returnBool(bfwd.option());
+        }
+
+        public boolean option(By by) {
+            return returnBool(bfwd.option(by));
+        }
+
+        public boolean li() {
+            return returnBool(bfwd.li());
+        }
+
+        public boolean li(By by) {
+            return returnBool(bfwd.li(by));
+        }
+
+        public boolean map() {
+            return returnBool(bfwd.map());
+        }
+
+        public boolean map(By by) {
+            return returnBool(bfwd.map(by));
+        }
+
+        private boolean returnBool(Internal.BaseFluentWebElement bfwe) {
+            boolean found = ((Internal.FoundOrNotFound) bfwe.getWebElement()).isFound();
+            if (invert) {
+                return !found;
+            } else {
+                return found;
+            }
+        }
+
+    }
 }

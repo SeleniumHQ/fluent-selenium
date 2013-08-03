@@ -34,8 +34,8 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     protected final WebElementHolder currentElement;
 
-    protected FluentWebElement(WebDriver delegate, WebElementHolder currentElement, Context context, Monitor monitor) {
-        super(delegate, context, monitor);
+    protected FluentWebElement(WebDriver delegate, WebElementHolder currentElement, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+        super(delegate, context, monitor, booleanInsteadOfNoSuchElement);
         this.currentElement = currentElement;
     }
 
@@ -71,7 +71,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
         decorateExecution(new Click(), ctx);
-        return new FluentWebElement(delegate, currentElement, ctx, monitor);
+        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
     /**
@@ -81,13 +81,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
         decorateExecution(new Clear(), ctx);
-        return new FluentWebElement(delegate, currentElement, ctx, monitor);
+        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
 
     public FluentWebElement submit() {
         decorateExecution(new Submit(), Context.singular(context, "submit"));
-        return new FluentWebElement(delegate, currentElement, context, monitor);
+        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     // These are as they would be in the WebElement API
@@ -95,7 +95,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
 
         decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)));
-        return new FluentWebElement(delegate, currentElement, context, monitor);
+        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     public TestableString getTagName() {
@@ -140,11 +140,11 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public FluentWebElement within(Period period) {
-        return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period, monitor);
+        return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period, monitor, booleanInsteadOfNoSuchElement);
     }
 
     public NegatingFluentWebElement without(Period period) {
-        return new NegatingFluentWebElement(delegate, currentElement, period, Context.singular(context, "without", null, period), monitor);
+        return new NegatingFluentWebElement(delegate, currentElement, period, Context.singular(context, "without", null, period), monitor, booleanInsteadOfNoSuchElement);
     }
 
     @Override
@@ -607,12 +607,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.ps(by);
     }
 
+
+    public FluentWebDriver.BooleanResultsAdapter hasMissing() {
+        return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
+                .invert(true);
+    }
+
+    public FluentWebDriver.BooleanResultsAdapter has() {
+        return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
+                .invert(false);
+    }
+
+
     private class RetryingFluentWebElement extends FluentWebElement {
 
         private final Period period;
 
-        public RetryingFluentWebElement(WebDriver webDriver, WebElementHolder currentElement, Context context, Period period, Monitor monitor) {
-            super(webDriver, currentElement, context, monitor);
+        public RetryingFluentWebElement(WebDriver webDriver, WebElementHolder currentElement, Context context, Period period, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+            super(webDriver, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
             this.period = period;
         }
 
@@ -648,8 +660,8 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final Period duration;
         private final Long startedAt;
 
-        protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context, final Monitor monitor) {
-            this.delegate = new FluentWebElement(delegate, currentElement, context, monitor) {
+        protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
+            this.delegate = new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement) {
                 protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
                     final T successfullyAbsent = null;
                     while (!durationHasElapsed(startedAt)) {

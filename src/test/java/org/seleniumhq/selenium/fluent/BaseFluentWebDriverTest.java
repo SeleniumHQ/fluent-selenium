@@ -24,7 +24,7 @@ public class BaseFluentWebDriverTest {
 
     @Before
     public void setup() {
-        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy"), new Monitor.NULL()) {
+        fc = new Internal.BaseFluentWebDriver(wd, Context.singular(null, "dummy"), new Monitor.NULL(), false) {
 
             @Override
             protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor1) {
