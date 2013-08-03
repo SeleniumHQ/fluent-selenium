@@ -21,7 +21,7 @@ public class CodaHaleMetricsMonitorTest {
             Thread.sleep(999);
         } catch (InterruptedException e) {
         }
-        timer.end();
+        timer.end(true);
 
         // Capture Stats ...
 
@@ -78,7 +78,7 @@ public class CodaHaleMetricsMonitorTest {
                 Thread.sleep(999);
             } catch (InterruptedException e) {
             }
-            timer.end();
+            timer.end(true);
         }};
 
         // Capture Stats ...
