@@ -3,7 +3,7 @@ package org.seleniumhq.selenium.fluent.monitors;
 import com.codahale.metrics.MetricRegistry;
 import org.seleniumhq.selenium.fluent.Monitor;
 
-public class CodaHaleMetricsMonitor implements Monitor {
+public class CodaHaleMetricsMonitor extends Monitor.NULL {
 
     final MetricRegistry metrics = new MetricRegistry();
     private final String toStripFromClassName;
@@ -52,7 +52,7 @@ public class CodaHaleMetricsMonitor implements Monitor {
             timing = timer.time();
         }
 
-        public void end() {
+        public void end(boolean success) {
             timing.stop();
         }
     }

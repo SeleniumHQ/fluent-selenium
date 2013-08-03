@@ -5,10 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.Mock;
@@ -47,7 +52,7 @@ public class MonitoringTest {
         fluentWebDriver.div();
 
         verify(monitor).start("div()");
-        verify(timer).end();
+        verify(timer).end(true);
     }
 
     @Test
@@ -60,7 +65,7 @@ public class MonitoringTest {
         fluentWebDriver.divs(id("foo"));
 
         verify(monitor).start("divs(By.id: foo)");
-        verify(timer).end();
+        verify(timer).end(true);
     }
 
     @Test
@@ -77,10 +82,10 @@ public class MonitoringTest {
         fluentWebDriver.div().span();
 
         verify(monitor).start("div()");
-        verify(timer).end();
+        verify(timer).end(true);
         verify(monitor).start("div().span()");
-        verify(timer).end();
-        verify(timer2).end();
+        verify(timer).end(true);
+        verify(timer2).end(true);
     }
 
     @Test
@@ -97,10 +102,10 @@ public class MonitoringTest {
         fluentWebDriver.div().spans(id("foo"));
 
         verify(monitor).start("div()");
-        verify(timer).end();
+        verify(timer).end(true);
         verify(monitor).start("div().spans(By.id: foo)");
-        verify(timer).end();
-        verify(timer2).end();
+        verify(timer).end(true);
+        verify(timer2).end(true);
     }
 
     @Test
@@ -115,8 +120,8 @@ public class MonitoringTest {
 
         verify(monitor).start("div()");
         verify(monitor).start("div().click()");
-        verify(timer).end();
-        verify(timer2).end();
+        verify(timer).end(true);
+        verify(timer2).end(true);
     }
 
     @Test
@@ -131,8 +136,29 @@ public class MonitoringTest {
 
         verify(monitor).start("div()");
         verify(monitor).start("div().sendKeys('abc')");
-        verify(timer).end();
-        verify(timer2).end();
+        verify(timer).end(true);
+        verify(timer2).end(true);
+    }
+
+    @Test
+    public void sendkeys_should_monitor_even_for_failing_situation() {
+
+        FluentExecutionStopped fes = new FluentExecutionStopped("x", new NullPointerException());
+
+        when(webDriver.findElement(By.tagName("div"))).thenThrow(new NoSuchElementException("boo"));
+        when(monitor.start("div()")).thenReturn(timer);
+        when(monitor.exceptionDuringExecution(any(FluentExecutionStopped.class))).thenReturn(fes);
+
+        try {
+            fluentWebDriver.div().sendKeys("abc");
+            fail("should have barfed");
+        } catch (FluentExecutionStopped e) {
+            assertThat(e, is(fes));
+        }
+
+        verify(monitor).start("div()");
+        verify(monitor).exceptionDuringExecution(any(FluentExecutionStopped.class));
+        verify(timer).end(false);
     }
 
 

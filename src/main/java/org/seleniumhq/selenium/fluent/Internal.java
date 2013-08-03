@@ -738,16 +738,19 @@ public class Internal {
         protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
 
             Monitor.Timer timer = monitor.start(ctx.toString().substring(2));
+            boolean success = false;
             try {
-                return execution.doExecution();
+                T t = execution.doExecution();
+                success = true;
+                return t;
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                throw decorateRuntimeException(ctx, e);
+                throw monitor.exceptionDuringExecution(decorateRuntimeException(ctx, e));
             } catch (AssertionError e) {
                 throw decorateAssertionError(ctx, e);
             } finally {
-                timer.end();
+                timer.end(success);
             }
         }
 
