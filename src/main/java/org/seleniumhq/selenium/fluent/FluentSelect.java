@@ -43,21 +43,21 @@ public class FluentSelect extends FluentWebElement {
      *         is done by checking the value of the "multiple" attribute.
      */
     public boolean isMultiple() {
-        return decorateExecution(new IsMultiple(), Context.singular(context, "isMultiple"));
+        return decorateExecution(new IsMultiple(), Context.singular(context, "isMultiple"), true);
     }
 
     /**
      * @return All options belonging to this select tag
      */
     public List<WebElement> getOptions() {
-        return decorateExecution(new GetOptions(), Context.singular(context, "getOptions"));
+        return decorateExecution(new GetOptions(), Context.singular(context, "getOptions"), true);
     }
 
     /**
      * @return All selected options belonging to this select tag
      */
     public List<WebElement> getAllSelectedOptions() {
-        return decorateExecution(new GetAllSelectedOptions(), Context.singular(context, "getAllSelectedOptions"));
+        return decorateExecution(new GetAllSelectedOptions(), Context.singular(context, "getAllSelectedOptions"), true);
     }
 
     /**
@@ -65,7 +65,7 @@ public class FluentSelect extends FluentWebElement {
      *         normal select)
      */
     public WebElement getFirstSelectedOption() {
-        return decorateExecution(new GetFirstSelectedOption(), Context.singular(context, "getFirstSelectedOption"));
+        return decorateExecution(new GetFirstSelectedOption(), Context.singular(context, "getFirstSelectedOption"), true);
     }
 
     /**
@@ -77,7 +77,7 @@ public class FluentSelect extends FluentWebElement {
      * @param text The visible text to match against
      */
     public FluentSelect selectByVisibleText(final String text) {
-        decorateExecution(new SelectByVisibleText(text), Context.singular(context, "selectByVisibleText", null, text));
+        decorateExecution(new SelectByVisibleText(text), Context.singular(context, "selectByVisibleText", null, text), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -88,7 +88,7 @@ public class FluentSelect extends FluentWebElement {
      * @param index The option at this index will be selected
      */
     public FluentSelect selectByIndex(final int index) {
-        decorateExecution(new SelectByIndex(index), Context.singular(context, "selectByIndex", null, index));
+        decorateExecution(new SelectByIndex(index), Context.singular(context, "selectByIndex", null, index), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -101,7 +101,7 @@ public class FluentSelect extends FluentWebElement {
      * @param value The value to match against
      */
     public FluentSelect selectByValue(final String value) {
-        decorateExecution(new SelectByValue(value), Context.singular(context, "selectByValue", null, value));
+        decorateExecution(new SelectByValue(value), Context.singular(context, "selectByValue", null, value), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -111,7 +111,7 @@ public class FluentSelect extends FluentWebElement {
      * @throws UnsupportedOperationException If the SELECT does not support multiple selections
      */
     public FluentSelect deselectAll() {
-        decorateExecution(new DeselectAll(), Context.singular(context, "deselectAll"));
+        decorateExecution(new DeselectAll(), Context.singular(context, "deselectAll"), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -124,7 +124,7 @@ public class FluentSelect extends FluentWebElement {
      * @param value The value to match against
      */
     public FluentSelect deselectByValue(final String value) {
-        decorateExecution(new DeselectByValue(value), Context.singular(context, "deselectByValue", null, value));
+        decorateExecution(new DeselectByValue(value), Context.singular(context, "deselectByValue", null, value), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -135,7 +135,7 @@ public class FluentSelect extends FluentWebElement {
      * @param index The option at this index will be deselected
      */
     public FluentSelect deselectByIndex(final int index) {
-        decorateExecution(new DeselectByIndex(index), Context.singular(context, "deselectByIndex", null, index));
+        decorateExecution(new DeselectByIndex(index), Context.singular(context, "deselectByIndex", null, index), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -148,7 +148,7 @@ public class FluentSelect extends FluentWebElement {
      * @param text The visible text to match against
      */
     public FluentSelect deselectByVisibleText(final String text) {
-        decorateExecution(new DeselectByVisibleText(text), Context.singular(context, "deselectByVisibleText", null, text));
+        decorateExecution(new DeselectByVisibleText(text), Context.singular(context, "deselectByVisibleText", null, text), true);
         return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
     }
 

@@ -579,7 +579,7 @@ public class Internal {
             try {
                 changeTimeout();
                 FindIt execution = new FindIt(by2, tagName, ctx);
-                WebElement found = decorateExecution(execution, ctx);
+                WebElement found = decorateExecution(execution, ctx, true);
                 result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
                 resetTimeout();
@@ -667,7 +667,7 @@ public class Internal {
             try {
                 changeTimeout();
                 FindThem execution = new FindThem(by2, tagName, ctx);
-                result = decorateExecution(execution, ctx);
+                result = decorateExecution(execution, ctx, true);
             } finally {
                 resetTimeout();
             }
@@ -735,7 +735,7 @@ public class Internal {
             return rv;
         }
 
-        protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
+        protected <T> T decorateExecution(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
 
             Monitor.Timer timer = monitor.start(ctx.toString().substring(2));
             boolean success = false;
@@ -746,9 +746,19 @@ public class Internal {
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                throw monitor.exceptionDuringExecution(decorateRuntimeException(ctx, e));
+                FluentExecutionStopped ex = decorateRuntimeException(ctx, e);
+                if (expectedToBeThere) {
+                    throw monitor.exceptionDuringExecution(ex);
+                } else {
+                    throw ex;
+                }
             } catch (AssertionError e) {
-                throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, e));
+                FluentExecutionStopped ex = decorateAssertionError(ctx, e);
+                if (expectedToBeThere) {
+                    throw monitor.exceptionDuringExecution(ex);
+                } else {
+                    throw ex;
+                }
             } finally {
                 timer.end(success);
             }

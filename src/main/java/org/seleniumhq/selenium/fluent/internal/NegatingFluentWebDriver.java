@@ -240,11 +240,12 @@ public class NegatingFluentWebDriver {
             return duration.getEndMillis(startMillis) <= System.currentTimeMillis();
         }
 
-        protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
+        protected <T> T decorateExecution(Execution<T> execution, Context ctx, boolean willBeIgnored) {
             final T successfullyAbsent = null;
             while (!durationHasElapsed(startedAt)) {
                 try {
-                    super.decorateExecution(execution, ctx);
+                    // ignore the passed in boolean-----------↴-----------------------↗
+                    super.decorateExecution(execution, ctx, false);
                 } catch (FluentExecutionStopped executionStopped) {
                     final boolean elementGone = executionStopped.getCause() instanceof NotFoundException;
 
@@ -253,7 +254,7 @@ public class NegatingFluentWebDriver {
                     }
                 }
             }
-            throw decorateAssertionError(ctx, new AssertionError("Element never disappeared"));
+            throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, new AssertionError("Element never disappeared")));
         }
     }
 }

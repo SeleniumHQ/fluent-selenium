@@ -70,7 +70,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
-        decorateExecution(new Click(), ctx);
+        decorateExecution(new Click(), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -80,13 +80,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
-        decorateExecution(new Clear(), ctx);
+        decorateExecution(new Clear(), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
     }
 
 
     public FluentWebElement submit() {
-        decorateExecution(new Submit(), Context.singular(context, "submit"));
+        decorateExecution(new Submit(), Context.singular(context, "submit"), true);
         return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -94,7 +94,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
 
-        decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)));
+        decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)), true);
         return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
     }
 
@@ -662,11 +662,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
             this.delegate = new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement) {
-                protected <T> T decorateExecution(Execution<T> execution, Context ctx) {
+                protected <T> T decorateExecution(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
                     final T successfullyAbsent = null;
                     while (!durationHasElapsed(startedAt)) {
                         try {
-                            super.decorateExecution(execution, ctx);
+                            // ignore the passed in boolean-----------↴-----------------------↗
+                            super.decorateExecution(execution, ctx, false);
                         } catch (FluentExecutionStopped executionStopped) {
                             final boolean elementGone = executionStopped.getCause() instanceof NotFoundException;
 
@@ -675,7 +676,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
                             }
                         }
                     }
-                    throw decorateAssertionError(ctx, new AssertionError("Element never disappeared"));
+                    throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, new AssertionError("Element never disappeared")));
                 }
             };
             this.duration = duration;

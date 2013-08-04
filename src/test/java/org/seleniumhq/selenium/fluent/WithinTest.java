@@ -19,6 +19,8 @@ import static org.seleniumhq.selenium.fluent.Period.secs;
 
 public class WithinTest {
 
+    int count = 0;
+
     @Test
     public void within_should_wait_and_reset() {
 
@@ -33,7 +35,9 @@ public class WithinTest {
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
         when(timeouts.implicitlyWait(0, TimeUnit.SECONDS)).thenReturn(timeouts);
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+
+        Monitor monitor = new ExceptionCounter();
+        FluentWebDriver fwd = new FluentWebDriver(wd, monitor);
 
         fwd.within(secs(10)).div();
 
@@ -43,6 +47,8 @@ public class WithinTest {
         verify(wd).findElement(By.tagName("div"));
         verify(we).getTagName();
         verify(timeouts).implicitlyWait(0, TimeUnit.SECONDS);
+
+        assertThat("Monitor's Exception handling should not be invoked for within() processing", count, equalTo(0));
 
     }
 
@@ -61,8 +67,8 @@ public class WithinTest {
         when(options.timeouts()).thenReturn(timeouts);
         when(timeouts.implicitlyWait(10, TimeUnit.SECONDS)).thenReturn(timeouts);
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
-
+        Monitor monitor = new ExceptionCounter();
+        FluentWebDriver fwd = new FluentWebDriver(wd, monitor);
 
         try {
             FluentWebElement within = fwd.div().within(secs(10));
@@ -77,8 +83,16 @@ public class WithinTest {
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.div().within(secs(10)).div()"));
             assertTrue(e.getCause() instanceof AssertionError);
+            assertThat("Monitor's Exception handling should be invoked for within() processing just once", count, equalTo(1));
         }
 
     }
 
+    private class ExceptionCounter extends Monitor.NULL {
+        @Override
+        public RuntimeException exceptionDuringExecution(RuntimeException ex) {
+            count++;
+            return super.exceptionDuringExecution(ex);
+        }
+    }
 }

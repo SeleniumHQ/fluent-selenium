@@ -72,7 +72,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new AssertionError("Oops");
                 }
-            }, dummy_context);
+            }, dummy_context, true);
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy()"));
@@ -89,7 +89,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
-            }, Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy()"));
@@ -106,7 +106,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new StaleElementReferenceException("Oops");
                 }
-            }, Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseOfStaleElement e) {
             assertThat(e.getMessage(), equalTo("StaleElementReferenceException during invocation of: ?.dummy()"));
@@ -123,7 +123,7 @@ public class BaseFluentWebDriverTest {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
-            }, Context.singular(null, "dummy"));
+            }, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Oops"));

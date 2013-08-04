@@ -1,5 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
+import org.hamcrest.core.IsEqual;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -21,19 +23,30 @@ import static org.openqa.selenium.By.tagName;
 
 public class BooleanInsteadOfNoSuchElementExceptionTest {
 
+    int count = 0;
+
+    private class ExceptionCounter extends Monitor.NULL {
+        @Override
+        public RuntimeException exceptionDuringExecution(RuntimeException ex) {
+            count++;
+            return super.exceptionDuringExecution(ex);
+        }
+    }
+
     @Test
     public void referenceException() {
 
         WebDriver wd = mock(WebDriver.class);
         when(wd.findElement(tagName("button"))).thenThrow(new NoSuchElementException("boo"));
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd, new ExceptionCounter());
 
         try {
             fwd.button();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getCause(), instanceOf(NoSuchElementException.class));
+            Assert.assertThat(count, IsEqual.equalTo(1));
         }
 
     }
@@ -43,11 +56,12 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
 
         WebDriver wd = mock(WebDriver.class);
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd, new ExceptionCounter());
 
         when(wd.findElement(tagName("button"))).thenThrow(new NoSuchElementException("boo"));
         assertThat(fwd.hasMissing().button(), equalTo(true));
         assertThat(fwd.has().button(), equalTo(false));
+        Assert.assertThat(count, IsEqual.equalTo(0));
 
     }
 
@@ -57,11 +71,12 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
         WebDriver wd = mock(WebDriver.class);
         WebElement we = mock(WebElement.class);
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd, new ExceptionCounter());
 
         when(wd.findElement(tagName("button"))).thenReturn(we);
         assertThat(fwd.hasMissing().button(), equalTo(false));
         assertThat(fwd.has().button(), equalTo(true));
+        Assert.assertThat(count, IsEqual.equalTo(0));
 
     }
 
@@ -71,7 +86,7 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
         WebDriver wd = mock(WebDriver.class);
         WebElement we = mock(WebElement.class);
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd, new ExceptionCounter());
 
         when(wd.findElement(tagName("div"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
@@ -79,6 +94,7 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
 
         assertThat(fwd.div().hasMissing().button(), equalTo(true));
         assertThat(fwd.div().has().button(), equalTo(false));
+        Assert.assertThat(count, IsEqual.equalTo(0));
 
     }
 
@@ -89,14 +105,14 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
         WebElement we = mock(WebElement.class);
         WebElement we2 = mock(WebElement.class);
 
-        FluentWebDriver fwd = new FluentWebDriver(wd);
+        FluentWebDriver fwd = new FluentWebDriver(wd, new ExceptionCounter());
 
         when(wd.findElement(tagName("div"))).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
         when(we.findElement(tagName("button"))).thenReturn(we2);
         assertThat(fwd.div().hasMissing().button(), equalTo(false));
         assertThat(fwd.div().has().button(), equalTo(true));
-
+        Assert.assertThat(count, IsEqual.equalTo(0));
 
     }
 
