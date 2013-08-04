@@ -58,6 +58,8 @@ fwd.div(id("foo")).div(className("bar")).within(secs(5)).button().click();
 fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
 
+This will throw an exception **after** the elapsed time, if it still hasn't appeared in the DOM.
+
 ### without()
 
 There's a "without" capability in the fluent language. It will retry for an advised period,
@@ -76,6 +78,7 @@ it just means that there is no span element with a class of "baz":
 fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"));
 ```
 
+This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the DOM.
 
 ### Stale Elements
 
@@ -111,7 +114,7 @@ If the item going stale is the one that is leaf-most in your fluent expression, 
 
 ## Built-in Assertions
 
-### Strings
+### String Assertions
 
 Many things return a string (actually a TestableString). Some elements of a page
 are designed to have a string representation.  Input fields and spans are obvious,
@@ -141,7 +144,7 @@ fwd.div(id("foo")).getText().within(secs(10)).shouldBe("1 bar");
 
 The assertion is retried for the advised period.
 
-### Others
+### Non-String Assertions
 
 Any element has a location via getLocation(), which yields a Point
 Any element has a size via getSize(), which yields a Dimension
@@ -168,7 +171,7 @@ fwd.div(id("foo")).isDisplayed().within(secs(10)).shouldBe(true);
 
 The assertion is retried for the advised period.
 
-## Locators
+## Locating Elements
 
 WebDriver's own "By" locator mechanism is what is used. Here are examples using that:
 
@@ -195,6 +198,9 @@ by = FluentBy.strictClassName("name")
 
 Strict is where there is only one class for that element. The built-in WebDriver one allows
 for many classes for an element, with the one specified amongst them.
+
+If an locator cannot find the element in the DOM, then an exception - 'FluentExecutionStopped' - is thrown (see below).
+
 
 # Multiple elements
 
@@ -250,11 +256,39 @@ boolean isMissing = fwd.hasMissing().div(id("foo"))
 boolean isPresent = fwd.has().div(id("foo"))
 ```
 
-# Metrics
+# Monitoring
 
-Fluent Selenium can generate metrics related to interactions with the browser. Specifically, what fluent operation was started/ended.  It's somewhat blind to whether the operation passed or failed presently, and only monitors that it happened.  Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
+Fluent Selenium can generate monitors failing interactions with the browser. It can also see what fluent operation were started/ended. 
+Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
 
-## Coda Hale's Metrics implementation.
+You specify a monitor choice by using the right constructor for FluentWebDriver (and pass in a Monitor instance). There's a default monitor that does nothing, so you don't have to choose a constructor that uses a monitor.
+
+We have three implementations presently:
+
+## TakesScreenshot 
+
+When a 'FluentExecutionStopped' failure happens, you can get automatic screenshots.  In the case of running from JUnit or TestNG under Maven control do the following, to get automatic Test-Class name & Method name in the file-name of the PNG:
+
+```java
+ffd = new FirefoxDriver();
+ssoe = new ScreenShotOnError.WithUnitTestFrameWorkContext(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
+fwd = new FluentWebDriver(ffd, ssoe);
+```
+
+If you're not wanting that JUnit/TestNG automatic file naming, do this instead:
+
+```java
+ffd = new FirefoxDriver();
+ssoe = new ScreenShotOnError(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
+fwd = new FluentWebDriver(ffd, ssoe);
+
+ssoe.setContext("something_that_has_meaning_in_a_file_name")
+div(id("foo")).click();
+ssoe.setContext("something_else_that_has_meaning_in_a_file_name")
+input(id("bar")).sendKeys("abc");
+```
+
+## Coda Hale's Metrics library
 
 Also shown here is how to hook that up to a JUnit4 suite running under Maven.
 
