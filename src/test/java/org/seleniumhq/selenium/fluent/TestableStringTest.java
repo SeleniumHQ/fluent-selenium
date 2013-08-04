@@ -33,9 +33,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldBeSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).shouldBe("foo");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldBe("foo");
         try {
-            new TestableString(FOO_EXECUTION, ctx).shouldBe("bar");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldBe("bar");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldBe('bar')"));
@@ -46,9 +46,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldBeSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldBe("foo");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldBe("foo");
         try {
-            new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldBe("bar");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldBe("bar");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldBe('bar')"));
@@ -64,7 +64,7 @@ public class TestableStringTest {
                 public String execute() {
                     throw new UnsupportedOperationException("oops");
                 }
-            }, ctx).within(secs(1)).shouldBe("bar");
+            }, ctx, new Monitor.NULL()).within(secs(1)).shouldBe("bar");
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("oops"));
@@ -80,7 +80,7 @@ public class TestableStringTest {
                 public String execute() {
                     throw new RuntimeException("oops");
                 }
-            }, ctx).within(secs(1)).shouldBe("bar");
+            }, ctx, new Monitor.NULL()).within(secs(1)).shouldBe("bar");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy2().within(secs(1)).shouldBe('bar')"));
@@ -92,9 +92,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldNotBeSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).shouldNotBe("bar");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldNotBe("bar");
         try {
-            new TestableString(FOO_EXECUTION, ctx).shouldNotBe("foo");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldNotBe("foo");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotBe('foo')"));
@@ -105,9 +105,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldNotBeSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotBe("bar");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotBe("bar");
         try {
-            new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotBe("foo");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotBe("foo");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotBe('foo')"));
@@ -118,9 +118,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldContainSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).shouldContain("o");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldContain("o");
         try {
-            new TestableString(FOO_EXECUTION, ctx).shouldContain("a");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldContain("a");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldContain('a')"));
@@ -131,9 +131,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldContainSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldContain("o");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldContain("o");
         try {
-            new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldContain("a");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldContain("a");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldContain('a')"));
@@ -144,9 +144,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldNotContainSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).shouldNotContain("a");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldNotContain("a");
         try {
-            new TestableString(FOO_EXECUTION, ctx).shouldNotContain("o");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldNotContain("o");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotContain('o')"));
@@ -157,9 +157,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldNotContainSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotContain("a");
+        new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotContain("a");
         try {
-            new TestableString(FOO_EXECUTION, ctx).within(secs(1)).shouldNotContain("o");
+            new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotContain("o");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotContain('o')"));
@@ -170,9 +170,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldRegexMatchSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(MARY_EXECUTION, ctx).shouldMatch(".* Has \\d\\d.*");
+        new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).shouldMatch(".* Has \\d\\d.*");
         try {
-            new TestableString(MARY_EXECUTION, ctx).shouldMatch(".* blort \\d\\d.*");
+            new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).shouldMatch(".* blort \\d\\d.*");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldMatch('.* blort \\d\\d.*')"));
@@ -183,15 +183,15 @@ public class TestableStringTest {
     @Test
     public void stringShouldRegexMatchSomethingEvenIfThereAreNewlines() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldMatch("(.*)12(.*)");
+        new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx, new Monitor.NULL()).shouldMatch("(.*)12(.*)");
     }
 
     @Test
     public void stringShouldNotRegexMatchSomething() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(MARY_EXECUTION, ctx).shouldNotMatch(".* blort \\d\\d.*");
+        new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).shouldNotMatch(".* blort \\d\\d.*");
         try {
-            new TestableString(MARY_EXECUTION, ctx).shouldNotMatch(".* Has \\d\\d.*");
+            new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).shouldNotMatch(".* Has \\d\\d.*");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotMatch('.* Has \\d\\d.*')"));
@@ -205,7 +205,7 @@ public class TestableStringTest {
     public void stringShouldNotRegexMatchSomethingEvenIfThereAreNewlines() {
         Context ctx = Context.singular(null, "dummy2");
         try {
-            new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx).shouldNotMatch("(.*)12(.*)");
+            new TestableString(MARY_EXECUTION_WITH_NEWLINES, ctx, new Monitor.NULL()).shouldNotMatch("(.*)12(.*)");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldNotMatch('(.*)12(.*)')"));
             String causeMessage = getCauseMessage(e);
@@ -218,9 +218,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldRegexMatchSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldMatch(".* Has \\d\\d.*");
+        new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldMatch(".* Has \\d\\d.*");
         try {
-            new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldMatch(".* blort \\d\\d.*");
+            new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldMatch(".* blort \\d\\d.*");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldMatch('.* blort \\d\\d.*')"));
@@ -231,9 +231,9 @@ public class TestableStringTest {
     @Test
     public void stringShouldNotRegexMatchSomethingWithinSomeTime() {
         Context ctx = Context.singular(null, "dummy2");
-        new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldNotMatch(".* blort \\d\\d.*");
+        new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotMatch(".* blort \\d\\d.*");
         try {
-            new TestableString(MARY_EXECUTION, ctx).within(secs(1)).shouldNotMatch(".* Has \\d\\d.*");
+            new TestableString(MARY_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldNotMatch(".* Has \\d\\d.*");
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotMatch('.* Has \\d\\d.*')"));

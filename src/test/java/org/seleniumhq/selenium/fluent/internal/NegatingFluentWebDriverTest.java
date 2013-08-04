@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
+import org.seleniumhq.selenium.fluent.Monitor;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,7 +23,7 @@ public class NegatingFluentWebDriverTest {
     @Before
     public void setup() {
         wd = mock(WebDriver.class);
-        nfwd = new NegatingFluentWebDriver(wd, millis(100), Context.singular(null, "foo", BYID));
+        nfwd = new NegatingFluentWebDriver(wd, millis(100), Context.singular(null, "foo", BYID), new Monitor.NULL());
     }
 
     @Test

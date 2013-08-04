@@ -28,12 +28,12 @@ import static org.hamcrest.Matchers.containsString;
 
 public class TestableString extends Internal.BaseTestableObject<String> {
 
-    protected TestableString(Execution<String> execution, Context ctx) {
-        this(null, execution, ctx);
+    protected TestableString(Execution<String> execution, Context ctx, Monitor monitor) {
+        this(null, execution, ctx, monitor);
     }
 
-    private TestableString(Period within, Execution<String> execution, Context ctx) {
-        super(within, execution, ctx);
+    private TestableString(Period within, Execution<String> execution, Context ctx, Monitor monitor) {
+        super(within, execution, ctx, monitor);
     }
 
     public TestableString shouldBe(final String shouldBe) {
@@ -43,7 +43,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
 
     public TestableString within(Period period) {
         Context ctx = Context.singular(context, "within", null, period);
-        return new TestableString(period, execution, ctx);
+        return new TestableString(period, execution, ctx, monitor);
     }
 
 

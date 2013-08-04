@@ -99,44 +99,44 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public TestableString getTagName() {
-        return new TestableString(new GetTagName(), Context.singular(context, "getTagName"));
+        return new TestableString(new GetTagName(), Context.singular(context, "getTagName"), monitor);
     }
 
     public TestableValue<Boolean> isSelected() {
         Context isSelected = Context.singular(context, "isSelected");
-        return new TestableValue<Boolean>(new IsSelected(), isSelected);
+        return new TestableValue<Boolean>(new IsSelected(), isSelected, monitor);
     }
 
     public TestableValue<Boolean> isEnabled() {
         Context isEnabled = Context.singular(context, "isEnabled");
-        return new TestableValue<Boolean>(new IsEnabled(), isEnabled);
+        return new TestableValue<Boolean>(new IsEnabled(), isEnabled, monitor);
     }
 
     public TestableValue<Boolean> isDisplayed() {
         Context isDisplayed = Context.singular(context, "isDisplayed");
-        return new TestableValue<Boolean>(new IsDisplayed(), isDisplayed);
+        return new TestableValue<Boolean>(new IsDisplayed(), isDisplayed, monitor);
     }
 
     public TestableValue<Point> getLocation() {
         final Context getLocation = Context.singular(context, "getLocation");
-        return new TestableValue<Point>(new GetLocation(), getLocation);
+        return new TestableValue<Point>(new GetLocation(), getLocation, monitor);
     }
 
     public TestableValue<Dimension> getSize() {
         Context getSize = Context.singular(context, "getSize");
-        return new TestableValue<Dimension>(new GetSize(), getSize);
+        return new TestableValue<Dimension>(new GetSize(), getSize, monitor);
     }
 
     public TestableString getCssValue(final String cssName) {
-        return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName)).within(getPeriod());
+        return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName), monitor).within(getPeriod());
     }
 
     public TestableString getAttribute(final String attr) {
-        return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr)).within(getPeriod());
+        return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr), monitor).within(getPeriod());
     }
 
     public TestableString getText() {
-        return new TestableString(new GetText(), Context.singular(context, "getText"));
+        return new TestableString(new GetText(), Context.singular(context, "getText"), monitor);
     }
 
     public FluentWebElement within(Period period) {

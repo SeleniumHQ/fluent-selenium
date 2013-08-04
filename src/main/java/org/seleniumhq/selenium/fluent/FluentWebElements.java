@@ -92,7 +92,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public TestableString getText() {
         Context ctx = Context.singular(context, "getText");
-        return new TestableString(new GetText(), ctx).within(getPeriod());
+        return new TestableString(new GetText(), ctx, monitor).within(getPeriod());
     }
 
     @Override

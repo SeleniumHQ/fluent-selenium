@@ -18,7 +18,7 @@ public class TestableValueTest {
         when(exTrue.doExecution()).thenReturn(true);
 
         Context ctx = Context.singular(null, "dummy");
-        TestableValue<Boolean> wev = new TestableValue<Boolean>(exTrue, ctx);
+        TestableValue<Boolean> wev = new TestableValue<Boolean>(exTrue, ctx, new Monitor.NULL());
 
         TestableValue<Boolean> foo = wev.shouldBe(true);
         assertEquals(true, foo.value());
@@ -34,7 +34,7 @@ public class TestableValueTest {
         when(exFalse.doExecution()).thenReturn(false);
 
         Context ctx = Context.singular(null, "dummy");
-        TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx);
+        TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx, new Monitor.NULL());
 
         TestableValue<Boolean> foo = wev.shouldBe(false);
         assertEquals(false, foo.value());
@@ -52,7 +52,7 @@ public class TestableValueTest {
         when(exFalse.doExecution()).thenReturn(true);
 
         Context ctx = Context.singular(null, "dummy");
-        TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx);
+        TestableValue<Boolean> wev = new TestableValue<Boolean>(exFalse, ctx, new Monitor.NULL());
 
         TestableValue<Boolean> foo = wev.within(millis(100)).shouldBe(true);
         assertEquals(true, foo.value());

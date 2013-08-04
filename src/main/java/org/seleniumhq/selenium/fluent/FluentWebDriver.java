@@ -28,15 +28,15 @@ import java.util.List;
 public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
     public FluentWebDriver(WebDriver delegate) {
-        super(delegate, null, new Monitor.NULL(), false);
+        this(delegate, new Monitor.NULL(), null, false);
     }
 
     protected FluentWebDriver(WebDriver delegate, Context context) {
-        super(delegate, context, new Monitor.NULL(), false);
+        this(delegate, new Monitor.NULL(), context, false);
     }
 
     public FluentWebDriver(WebDriver webDriver, Monitor monitor) {
-        super(webDriver, null, monitor, false);
+        this(webDriver, monitor, null, false);
     }
 
     protected FluentWebDriver(WebDriver webDriver, Monitor monitor, Context context, boolean booleanInsteadOfNoSuchElement) {
@@ -66,11 +66,11 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     public FluentWebDriver within(final Period period) {
-        return new RetryingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period));
+        return new RetryingFluentWebDriver(delegate, period, Context.singular(context, "within", null, period), monitor);
     }
 
     public NegatingFluentWebDriver without(Period period) {
-        return new NegatingFluentWebDriver(delegate, period, Context.singular(context, "without", null, period));
+        return new NegatingFluentWebDriver(delegate, period, Context.singular(context, "without", null, period), monitor);
     }
 
     protected Internal.BaseFluentWebElements newFluentWebElements(MultipleResult multiple) {

@@ -5,6 +5,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.Monitor;
 import org.seleniumhq.selenium.fluent.Period;
 
 /**
@@ -13,12 +14,12 @@ import org.seleniumhq.selenium.fluent.Period;
 public class NegatingFluentWebDriver {
     private final FluentWebDriver delegate;
 
-    public NegatingFluentWebDriver(WebDriver delegate, Period duration, Context context) {
-        this.delegate = newDelegateFluentWebDriver(delegate, context, duration);
+    public NegatingFluentWebDriver(WebDriver delegate, Period duration, Context context, Monitor monitor) {
+        this.delegate = newDelegateFluentWebDriver(delegate, context, duration, monitor);
     }
 
-    protected FluentWebDriver newDelegateFluentWebDriver(final WebDriver delegate, final Context context, Period duration) {
-        return new DelegateNegatingFWD(delegate, context, duration);
+    protected FluentWebDriver newDelegateFluentWebDriver(final WebDriver delegate, final Context context, Period duration, Monitor monitor) {
+        return new DelegateNegatingFWD(delegate, context, duration, monitor);
     }
 
     // We are deliberately returning void here, to halt fluency.
@@ -229,8 +230,8 @@ public class NegatingFluentWebDriver {
         private final long startedAt;
         private final Period duration;
 
-        public DelegateNegatingFWD(WebDriver delegate, Context context, Period duration) {
-            super(delegate, context);
+        public DelegateNegatingFWD(WebDriver delegate, Context context, Period duration, Monitor monitor1) {
+            super(delegate, monitor1, context, false);
             this.duration = duration;
             startedAt = System.currentTimeMillis();
         }

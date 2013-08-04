@@ -15,6 +15,7 @@ public interface Monitor {
     }
 
     public static class NULL implements Monitor {
+
         public Timer start(String item) {
             return new Timer.NULL();
         }

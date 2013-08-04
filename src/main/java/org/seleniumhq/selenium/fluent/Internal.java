@@ -537,7 +537,7 @@ public class Internal {
         public TestableString url() {
             Execution<String> execution = new CurrentUrl();
             Context ctx = Context.singular(context, "url");
-            return new TestableString(execution, ctx).within(getPeriod());
+            return new TestableString(execution, ctx, monitor).within(getPeriod());
         }
 
         protected Period getPeriod() {
@@ -547,7 +547,7 @@ public class Internal {
         public TestableString title() {
             Execution<String> execution = new GetTitle();
             Context ctx = Context.singular(context, "title");
-            return new TestableString(execution, ctx).within(getPeriod());
+            return new TestableString(execution, ctx, monitor).within(getPeriod());
         }
 
         protected abstract FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor);
@@ -711,7 +711,7 @@ public class Internal {
             }
         }
 
-        protected static RuntimeException decorateRuntimeException(Context ctx, RuntimeException e) {
+        protected static FluentExecutionStopped decorateRuntimeException(Context ctx, RuntimeException e) {
             FluentExecutionStopped rv = null;
             if (e instanceof StaleElementReferenceException) {
                 rv =  new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
@@ -730,7 +730,7 @@ public class Internal {
                     + " during invocation of: ";
         }
 
-        protected static RuntimeException decorateAssertionError(Context ctx, AssertionError e) {
+        protected static FluentExecutionStopped decorateAssertionError(Context ctx, AssertionError e) {
             FluentExecutionStopped rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
             return rv;
         }
@@ -748,7 +748,7 @@ public class Internal {
             } catch (RuntimeException e) {
                 throw monitor.exceptionDuringExecution(decorateRuntimeException(ctx, e));
             } catch (AssertionError e) {
-                throw decorateAssertionError(ctx, e);
+                throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, e));
             } finally {
                 timer.end(success);
             }
@@ -891,12 +891,14 @@ public class Internal {
         protected final Execution<T> execution;
         protected final Context context;
         protected T is;
+        protected Monitor monitor;
 
 
-        public BaseTestableObject(Period within, Execution<T> execution, Context context) {
+        public BaseTestableObject(Period within, Execution<T> execution, Context context, Monitor monitor) {
             this.within = within;
             this.execution = execution;
             this.context = context;
+            this.monitor = monitor;
         }
 
         protected long calcEndMillis() {
@@ -909,9 +911,9 @@ public class Internal {
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                throw decorateRuntimeException(ctx, e);
+                throw monitor.exceptionDuringExecution(decorateRuntimeException(ctx, e));
             } catch (AssertionError e) {
-                throw decorateAssertionError(ctx, e);
+                throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, e));
             }
         }
 

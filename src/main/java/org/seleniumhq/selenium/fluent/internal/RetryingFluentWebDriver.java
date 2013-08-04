@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.Monitor;
 import org.seleniumhq.selenium.fluent.Period;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public class RetryingFluentWebDriver extends FluentWebDriver {
 
     private final Period period;
 
-    public RetryingFluentWebDriver(WebDriver webDriver, Period period, Context context) {
-        super(webDriver, context);
+    public RetryingFluentWebDriver(WebDriver webDriver, Period period, Context context, Monitor monitor) {
+        super(webDriver, monitor, context, false);
         this.period = period;
     }
 

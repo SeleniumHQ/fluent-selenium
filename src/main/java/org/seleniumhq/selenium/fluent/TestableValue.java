@@ -20,16 +20,16 @@ import org.seleniumhq.selenium.fluent.internal.Execution;
 
 public class TestableValue<T> extends Internal.BaseTestableObject {
 
-    protected TestableValue(Execution<T> execution, Context context) {
-        this(null, execution, context);
+    protected TestableValue(Execution<T> execution, Context context, Monitor monitor) {
+        this(null, execution, context, monitor);
     }
 
-    public TestableValue(Period period, Execution<T> execution, Context context) {
-        super(period, execution, context);
+    public TestableValue(Period period, Execution<T> execution, Context context, Monitor monitor) {
+        super(period, execution, context, monitor);
     }
 
     public TestableValue<T> within(Period period) {
-        return new TestableValue<T>(period, execution, context);
+        return new TestableValue<T>(period, execution, context, monitor);
     }
 
     public TestableValue<T> shouldBe(final T shouldBe) {
