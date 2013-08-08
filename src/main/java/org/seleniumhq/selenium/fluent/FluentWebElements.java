@@ -161,7 +161,11 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     public FluentWebElement get(int i) {
-        return currentElements.get(i);
+        try {
+            return currentElements.get(i);
+        } catch (IndexOutOfBoundsException e) {
+            throw new FluentExecutionStopped("Element index " + i + " not in collection of " + currentElements.size() + " elements", e);
+        }
     }
 
     public int indexOf(Object o) {
@@ -177,11 +181,19 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     public ListIterator<FluentWebElement> listIterator(int i) {
-        return currentElements.listIterator(i);
+        try {
+            return currentElements.listIterator(i);
+        } catch (IndexOutOfBoundsException e) {
+            throw new FluentExecutionStopped("Element index " + i + " not in collection of " + currentElements.size() + " elements", e);
+        }
     }
 
     public List<FluentWebElement> subList(int i, int i1) {
-        return currentElements.subList(i, i1);
+        try {
+            return currentElements.subList(i, i1);
+        } catch (IndexOutOfBoundsException e) {
+            throw new FluentExecutionStopped("Element index " + i + ", or element index " + i1 + " not in collection of " + currentElements.size() + " elements", e);
+        }
     }
 
     private class Clear extends Execution<Boolean> {
