@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Cheese</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+
+
+    <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <script type="text/javascript" src="jquery.watermark.js"></script>
+
+<script type="text/javascript">
+
+    // define kraftworks namespace
+    var KRAFTWorks = {};
+    var kraftWorks = {};
+</script>
+    <script src="jquery.validate.js"></script>
+    <script type="text/javascript" src="cheddarCheese.js"></script>
+
+</head>
+<body>
+
+                <form id="cheddarCheeseLoginForm" action="/account/brie/stilton-login" method="POST">                    
+                        <input id="cheddarCheeseLoginPassword" type="password" name="password" alt="Password"
+                                    title='Password if you plz.'>
+                </form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        KRAFTWorks.stiltonBuy.bindWatermark($("#cheddarCheeseLoginPassword"), 'I can Haz Password');
+    });
+</script>
+        
+</body>
+</html>
