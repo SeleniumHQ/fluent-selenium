@@ -78,7 +78,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByVisibleText(final String text) {
         decorateExecution(new SelectByVisibleText(text), Context.singular(context, "selectByVisibleText", null, text), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -89,7 +89,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByIndex(final int index) {
         decorateExecution(new SelectByIndex(index), Context.singular(context, "selectByIndex", null, index), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -102,7 +102,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect selectByValue(final String value) {
         decorateExecution(new SelectByValue(value), Context.singular(context, "selectByValue", null, value), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectAll() {
         decorateExecution(new DeselectAll(), Context.singular(context, "deselectAll"), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -125,7 +125,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByValue(final String value) {
         decorateExecution(new DeselectByValue(value), Context.singular(context, "deselectByValue", null, value), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -136,7 +136,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByIndex(final int index) {
         decorateExecution(new DeselectByIndex(index), Context.singular(context, "deselectByIndex", null, index), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -149,7 +149,7 @@ public class FluentSelect extends FluentWebElement {
      */
     public FluentSelect deselectByVisibleText(final String text) {
         decorateExecution(new DeselectByVisibleText(text), Context.singular(context, "deselectByVisibleText", null, text), true);
-        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelect(super.delegate, currentElement.getFound(), this.context, monitor, booleanInsteadOfNotFoundException);
     }
 
     protected synchronized Select getSelect() {
@@ -160,7 +160,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     public FluentSelect within(Period period) {
-        return new RetryingFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement.getFound(), period, monitor, booleanInsteadOfNoSuchElement);
+        return new RetryingFluentSelect(delegate, Context.singular(context, "within", null, period), currentSelect, currentElement.getFound(), period, monitor, booleanInsteadOfNotFoundException);
     }
 
     private class RetryingFluentSelect extends FluentSelect {

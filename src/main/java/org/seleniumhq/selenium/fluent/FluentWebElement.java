@@ -71,7 +71,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
         decorateExecution(new Click(), ctx, true);
-        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
     /**
@@ -81,13 +81,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
         decorateExecution(new Clear(), ctx, true);
-        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
 
     public FluentWebElement submit() {
         decorateExecution(new Submit(), Context.singular(context, "submit"), true);
-        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNotFoundException);
     }
 
     // These are as they would be in the WebElement API
@@ -95,7 +95,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
 
         decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)), true);
-        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNotFoundException);
     }
 
     public TestableString getTagName() {
@@ -140,11 +140,11 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public FluentWebElement within(Period period) {
-        return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period, monitor, booleanInsteadOfNoSuchElement);
+        return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period, monitor, booleanInsteadOfNotFoundException);
     }
 
     public NegatingFluentWebElement without(Period period) {
-        return new NegatingFluentWebElement(delegate, currentElement, period, Context.singular(context, "without", null, period), monitor, booleanInsteadOfNoSuchElement);
+        return new NegatingFluentWebElement(delegate, currentElement, period, Context.singular(context, "without", null, period), monitor, booleanInsteadOfNotFoundException);
     }
 
     @Override

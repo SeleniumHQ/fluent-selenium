@@ -45,7 +45,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
     @Override
     protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
-        return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNotFoundException);
     }
 
     protected WebElement findIt(By by, Context ctx) {
@@ -78,9 +78,9 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNoSuchElement));
+            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
         }
-        return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
     @Override

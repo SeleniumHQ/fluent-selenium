@@ -17,7 +17,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -47,13 +47,13 @@ public class Internal {
         protected final WebDriver delegate;
         protected final Context context;
         protected final Monitor monitor;
-        protected final boolean booleanInsteadOfNoSuchElement;
+        protected final boolean booleanInsteadOfNotFoundException;
 
-        protected BaseFluentWebDriver(WebDriver delegate, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+        protected BaseFluentWebDriver(WebDriver delegate, Context context, Monitor monitor, boolean booleanInsteadOfNotFoundException) {
             this.delegate = delegate;
             this.context = context;
             this.monitor = monitor;
-            this.booleanInsteadOfNoSuchElement = booleanInsteadOfNoSuchElement;
+            this.booleanInsteadOfNotFoundException = booleanInsteadOfNotFoundException;
         }
 
         protected SearchContext getSearchContext() {
@@ -79,17 +79,17 @@ public class Internal {
             Context ctx = multiple.getCtx();
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNoSuchElement));
+                elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
             }
-            return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
+            return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
         }
 
         private FluentSelects newFluentSelects(List<WebElement> result, Context ctx) {
             List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
             for (WebElement aResult : result) {
-                elems.add(new FluentSelect(delegate, aResult, ctx, monitor, booleanInsteadOfNoSuchElement));
+                elems.add(new FluentSelect(delegate, aResult, ctx, monitor, booleanInsteadOfNotFoundException));
             }
-            return new FluentSelects(delegate, elems, ctx, monitor, booleanInsteadOfNoSuchElement);
+            return new FluentSelects(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
         }
 
         protected BaseFluentWebElements spans(By by) {
@@ -170,12 +170,12 @@ public class Internal {
 
         public FluentSelect select() {
             SingleResult single = single(tagName("select"), "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNoSuchElement);
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNotFoundException);
         }
 
         public FluentSelect select(By by) {
             SingleResult single = single(by, "select");
-            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNoSuchElement);
+            return new FluentSelect(delegate, single.getResult().getFound(), single.getCtx(), monitor, booleanInsteadOfNotFoundException);
         }
 
         public FluentSelects selects() {
@@ -531,7 +531,7 @@ public class Internal {
         }
 
         protected BaseFluentWebElement newFluentWebElement(WebDriver delegate, WebElementHolder result, Context context) {
-            return new FluentWebElement(delegate, result, context, monitor, booleanInsteadOfNoSuchElement);
+            return new FluentWebElement(delegate, result, context, monitor, booleanInsteadOfNotFoundException);
         }
 
         public TestableString url() {
@@ -638,11 +638,11 @@ public class Internal {
             }
 
             public WebElement execute() {
-                if (booleanInsteadOfNoSuchElement) {
+                if (booleanInsteadOfNotFoundException) {
                     try {
                         findIt(by2, ctx);
                         return new FoundOrNotFound(true);
-                    } catch (NoSuchElementException e) {
+                    } catch (NotFoundException e) {
                         return new FoundOrNotFound(false);
                     }
                 } else {
@@ -834,7 +834,7 @@ public class Internal {
 
         @Override
         protected FluentWebElements makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor1) {
-            return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
+            return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNotFoundException);
         }
 
         protected String charSeqArrayAsHumanString(CharSequence[] keysToSend) {

@@ -63,6 +63,6 @@ public class FluentSelects extends FluentWebElements {
 
     @Override
     protected FluentSelects makeFluentWebElements(List<FluentWebElement> results, Context context, Monitor monitor) {
-        return new FluentSelects(super.delegate, results, context, monitor, booleanInsteadOfNoSuchElement);
+        return new FluentSelects(super.delegate, results, context, monitor, booleanInsteadOfNotFoundException);
     }
 }
