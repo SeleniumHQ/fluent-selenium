@@ -117,6 +117,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return new TestableValue<Boolean>(new IsDisplayed(), isDisplayed, monitor);
     }
 
+    public FluentWebElement visibleWithin(Period period) {
+        Context visibleWithin = Context.singular(context, "visibleWithin", period);
+        decorateExecution(new VisibleWithin(period), visibleWithin, true);
+        return new FluentWebElement(delegate, currentElement, visibleWithin, monitor, booleanInsteadOfNotFoundException);
+    }
+
     public TestableValue<Point> getLocation() {
         final Context getLocation = Context.singular(context, "getLocation");
         return new TestableValue<Point>(new GetLocation(), getLocation, monitor);
@@ -1012,6 +1018,27 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     private class IsDisplayed extends StaleElementRecoveringExecution<Boolean> {
         public Boolean execute() {
             return currentElement.getFound().isDisplayed();
+        }
+    }
+
+    private class VisibleWithin extends StaleElementRecoveringExecution<Boolean> {
+        private Period period;
+
+        private VisibleWithin(Period period) {
+            this.period = period;
+        }
+
+        public Boolean execute() {
+            boolean visible = false;
+            long endMillis = period.getEndMillis(System.currentTimeMillis());
+            while (!visible && System.currentTimeMillis() < endMillis) {
+                visible = currentElement.getFound().isDisplayed();
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException e) {
+                }
+            }
+            return visible;
         }
     }
 
