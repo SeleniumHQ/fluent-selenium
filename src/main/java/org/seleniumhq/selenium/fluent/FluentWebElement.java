@@ -117,10 +117,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return new TestableValue<Boolean>(new IsDisplayed(), isDisplayed, monitor);
     }
 
-    public FluentWebElement visibleWithin(Period period) {
-        Context visibleWithin = Context.singular(context, "visibleWithin", period);
-        decorateExecution(new VisibleWithin(period), visibleWithin, true);
-        return new FluentWebElement(delegate, currentElement, visibleWithin, monitor, booleanInsteadOfNotFoundException);
+    public FluentWebElement ifInvisibleWaitUpTo(Period period) {
+        Context ifInvisibleWaitUpTo = Context.singular(context, "ifInvisibleWaitUpTo", period);
+        decorateExecution(new IfInvisibleWait(period), ifInvisibleWaitUpTo, true);
+        return new FluentWebElement(delegate, currentElement, ifInvisibleWaitUpTo, monitor, booleanInsteadOfNotFoundException);
     }
 
     public TestableValue<Point> getLocation() {
@@ -1021,10 +1021,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
     }
 
-    private class VisibleWithin extends StaleElementRecoveringExecution<Boolean> {
+    private class IfInvisibleWait extends StaleElementRecoveringExecution<Boolean> {
         private Period period;
 
-        private VisibleWithin(Period period) {
+        private IfInvisibleWait(Period period) {
             this.period = period;
         }
 
