@@ -335,7 +335,7 @@ public class Internal {
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
 
-        protected BaseFluentWebElements addresss() {
+        protected BaseFluentWebElements addresses() {
             return newFluentWebElements(multiple(tagName("address"), "address"));
         }
 
@@ -344,7 +344,7 @@ public class Internal {
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
 
-        protected BaseFluentWebElements addresss(By by) {
+        protected BaseFluentWebElements addresses(By by) {
             return newFluentWebElements(multiple(by, "address"));
         }
 

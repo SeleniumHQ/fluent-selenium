@@ -764,13 +764,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
-    public FluentWebElements addresss() {
-        return (FluentWebElements) super.addresss();
+    public FluentWebElements addresses() {
+        return (FluentWebElements) super.addresses();
     }
 
     @Override
-    public FluentWebElements addresss(By by) {
-        return (FluentWebElements) super.addresss(by);
+    public FluentWebElements addresses(By by) {
+        return (FluentWebElements) super.addresses(by);
     }
 
     @Override

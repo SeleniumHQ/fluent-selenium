@@ -22,7 +22,7 @@ public class address extends BaseTest {
         FluentWebElements fe = fwd.address()
                 .address(By.xpath("@foo = 'bar'"))
                 .address(By.cssSelector("baz"))
-                .addresss();
+                .addresses();
 
         assertThat(fe, notNullValue());
         verifications("address");
@@ -34,7 +34,7 @@ public class address extends BaseTest {
         setupExpecations2("address");
 
         FluentWebElements fe = fwd.address()
-                .addresss(By.name("qux"));
+                .addresses(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
