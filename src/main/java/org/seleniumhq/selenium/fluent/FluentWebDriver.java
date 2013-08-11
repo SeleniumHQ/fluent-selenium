@@ -302,6 +302,45 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     public FluentWebElements ps(By by) {
         return (FluentWebElements) super.ps(by);
     }
+    @Override
+    public FluentWebElement b() {
+        return (FluentWebElement) super.b();
+    }
+
+    @Override
+    public FluentWebElements bs() {
+        return (FluentWebElements) super.bs();
+    }
+
+    @Override
+    public FluentWebElement b(By by) {
+        return (FluentWebElement) super.b(by);
+    }
+
+    @Override
+    public FluentWebElements bs(By by) {
+        return (FluentWebElements) super.bs(by);
+    }
+
+    @Override
+    public FluentWebElement pre() {
+        return (FluentWebElement) super.pre();
+    }
+
+    @Override
+    public FluentWebElements pres() {
+        return (FluentWebElements) super.pres();
+    }
+
+    @Override
+    public FluentWebElement pre(By by) {
+        return (FluentWebElement) super.pre(by);
+    }
+
+    @Override
+    public FluentWebElements pres(By by) {
+        return (FluentWebElements) super.pres(by);
+    }
 
     @Override
     public FluentWebElement img() {
@@ -710,6 +749,24 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
         public boolean p(By by) {
             return returnBool(bfwd.p(by));
+        }
+
+        public boolean b() {
+            return returnBool(bfwd.b());
+        }
+
+
+        public boolean b(By by) {
+            return returnBool(bfwd.b(by));
+        }
+
+        public boolean pre() {
+            return returnBool(bfwd.pre());
+        }
+
+
+        public boolean pre(By by) {
+            return returnBool(bfwd.pre(by));
         }
 
         public boolean img() {

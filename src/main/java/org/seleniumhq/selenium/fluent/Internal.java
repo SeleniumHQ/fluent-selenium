@@ -277,6 +277,41 @@ public class Internal {
         protected BaseFluentWebElements ps(By by) {
             return newFluentWebElements(multiple(by, "p"));
         }
+        protected BaseFluentWebElement b() {
+            SingleResult single = single(tagName("b"), "b");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements bs() {
+            return newFluentWebElements(multiple(tagName("b"), "b"));
+        }
+
+        protected BaseFluentWebElement b(By by) {
+            SingleResult single = single(by, "b");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements bs(By by) {
+            return newFluentWebElements(multiple(by, "b"));
+        }
+
+        protected BaseFluentWebElement pre() {
+            SingleResult single = single(tagName("pre"), "pre");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements pres() {
+            return newFluentWebElements(multiple(tagName("pre"), "pre"));
+        }
+
+        protected BaseFluentWebElement pre(By by) {
+            SingleResult single = single(by, "pre");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements pres(By by) {
+            return newFluentWebElements(multiple(by, "pre"));
+        }
 
         protected BaseFluentWebElement img() {
             SingleResult single = single(tagName("img"), "img");

@@ -613,6 +613,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.ps(by);
     }
 
+    @Override
+    public FluentWebElement b() {
+        return (FluentWebElement) super.b();
+    }
+
+    @Override
+    public FluentWebElement b(By by) {
+        return (FluentWebElement) super.b(by);
+    }
+
+    @Override
+    public FluentWebElements bs() {
+        return (FluentWebElements) super.bs();
+    }
+
+    @Override
+    public FluentWebElements bs(By by) {
+        return (FluentWebElements) super.bs(by);
+    }
+
+    @Override
+    public FluentWebElement pre() {
+        return (FluentWebElement) super.pre();
+    }
+
+    @Override
+    public FluentWebElement pre(By by) {
+        return (FluentWebElement) super.pre(by);
+    }
+
+    @Override
+    public FluentWebElements pres() {
+        return (FluentWebElements) super.pres();
+    }
+
+    @Override
+    public FluentWebElements pres(By by) {
+        return (FluentWebElements) super.pres(by);
+    }
+
 
     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
@@ -785,6 +825,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         public void p(By by) {
             delegate.p(by);
+        }
+
+        public void b() {
+            delegate.b();
+        }
+
+
+        public void b(By by) {
+            delegate.b(by);
+        }
+
+        public void pre() {
+            delegate.pre();
+        }
+
+
+        public void pre(By by) {
+            delegate.pre(by);
         }
 
 
