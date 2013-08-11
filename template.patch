@@ -1,0 +1,397 @@
+commit b45864fa1d5b2edacf723047430cdb3e0680b950
+Author: Paul Hammant <paul@hammant.org>
+Date:   Sun Aug 11 13:06:41 2013 -0500
+
+    add 'pre' and 'b'
+
+diff --git a/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java b/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java
+index a1fec07..93cf3b0 100644
+--- a/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java
++++ b/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java
+@@ -302,6 +302,45 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
+     public FluentWebElements ps(By by) {
+         return (FluentWebElements) super.ps(by);
+     }
++    @Override
++    public FluentWebElement blockquote() {
++        return (FluentWebElement) super.blockquote();
++    }
++
++    @Override
++    public FluentWebElements blockquotes() {
++        return (FluentWebElements) super.blockquotes();
++    }
++
++    @Override
++    public FluentWebElement blockquote(By by) {
++        return (FluentWebElement) super.blockquote(by);
++    }
++
++    @Override
++    public FluentWebElements blockquotes(By by) {
++        return (FluentWebElements) super.blockquotes(by);
++    }
++
++    @Override
++    public FluentWebElement area() {
++        return (FluentWebElement) super.area();
++    }
++
++    @Override
++    public FluentWebElements areas() {
++        return (FluentWebElements) super.areas();
++    }
++
++    @Override
++    public FluentWebElement area(By by) {
++        return (FluentWebElement) super.area(by);
++    }
++
++    @Override
++    public FluentWebElements areas(By by) {
++        return (FluentWebElements) super.areas(by);
++    }
+ 
+     @Override
+     public FluentWebElement img() {
+@@ -712,6 +751,24 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
+             return returnBool(bfwd.p(by));
+         }
+ 
++        public boolean blockquote() {
++            return returnBool(bfwd.blockquote());
++        }
++
++
++        public boolean blockquote(By by) {
++            return returnBool(bfwd.blockquote(by));
++        }
++
++        public boolean area() {
++            return returnBool(bfwd.area());
++        }
++
++
++        public boolean area(By by) {
++            return returnBool(bfwd.area(by));
++        }
++
+         public boolean img() {
+             return returnBool(bfwd.img());
+         }
+diff --git a/src/main/java/org/seleniumhq/selenium/fluent/FluentWebElement.java b/src/main/java/org/seleniumhq/selenium/fluent/FluentWebElement.java
+index f8a04e1..640919d 100644
+--- a/src/main/java/org/seleniumhq/selenium/fluent/FluentWebElement.java
++++ b/src/main/java/org/seleniumhq/selenium/fluent/FluentWebElement.java
+@@ -613,6 +613,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
+         return (FluentWebElements) super.ps(by);
+     }
+ 
++    @Override
++    public FluentWebElement blockquote() {
++        return (FluentWebElement) super.blockquote();
++    }
++
++    @Override
++    public FluentWebElement blockquote(By by) {
++        return (FluentWebElement) super.blockquote(by);
++    }
++
++    @Override
++    public FluentWebElements blockquotes() {
++        return (FluentWebElements) super.blockquotes();
++    }
++
++    @Override
++    public FluentWebElements blockquotes(By by) {
++        return (FluentWebElements) super.blockquotes(by);
++    }
++
++    @Override
++    public FluentWebElement area() {
++        return (FluentWebElement) super.area();
++    }
++
++    @Override
++    public FluentWebElement area(By by) {
++        return (FluentWebElement) super.area(by);
++    }
++
++    @Override
++    public FluentWebElements areas() {
++        return (FluentWebElements) super.areas();
++    }
++
++    @Override
++    public FluentWebElements areas(By by) {
++        return (FluentWebElements) super.areas(by);
++    }
++
+ 
+     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
+         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
+@@ -787,6 +827,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
+             delegate.p(by);
+         }
+ 
++        public void blockquote() {
++            delegate.blockquote();
++        }
++
++
++        public void blockquote(By by) {
++            delegate.blockquote(by);
++        }
++
++        public void area() {
++            delegate.area();
++        }
++
++
++        public void area(By by) {
++            delegate.area(by);
++        }
++
+ 
+         public void img() {
+             delegate.img();
+diff --git a/src/main/java/org/seleniumhq/selenium/fluent/Internal.java b/src/main/java/org/seleniumhq/selenium/fluent/Internal.java
+index 6e819fb..7d8d663 100644
+--- a/src/main/java/org/seleniumhq/selenium/fluent/Internal.java
++++ b/src/main/java/org/seleniumhq/selenium/fluent/Internal.java
+@@ -277,6 +277,41 @@ public class Internal {
+         protected BaseFluentWebElements ps(By by) {
+             return newFluentWebElements(multiple(by, "p"));
+         }
++        protected BaseFluentWebElement blockquote() {
++            SingleResult single = single(tagName("blockquote"), "blockquote");
++            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
++        }
++
++        protected BaseFluentWebElements blockquotes() {
++            return newFluentWebElements(multiple(tagName("blockquote"), "blockquote"));
++        }
++
++        protected BaseFluentWebElement blockquote(By by) {
++            SingleResult single = single(by, "blockquote");
++            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
++        }
++
++        protected BaseFluentWebElements blockquotes(By by) {
++            return newFluentWebElements(multiple(by, "blockquote"));
++        }
++
++        protected BaseFluentWebElement area() {
++            SingleResult single = single(tagName("area"), "area");
++            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
++        }
++
++        protected BaseFluentWebElements areas() {
++            return newFluentWebElements(multiple(tagName("area"), "area"));
++        }
++
++        protected BaseFluentWebElement area(By by) {
++            SingleResult single = single(by, "area");
++            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
++        }
++
++        protected BaseFluentWebElements areas(By by) {
++            return newFluentWebElements(multiple(by, "area"));
++        }
+ 
+         protected BaseFluentWebElement img() {
+             SingleResult single = single(tagName("img"), "img");
+diff --git a/src/main/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriver.java b/src/main/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriver.java
+index 31ec6d1..faff2ce 100644
+--- a/src/main/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriver.java
++++ b/src/main/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriver.java
+@@ -114,6 +114,24 @@ public class NegatingFluentWebDriver {
+         delegate.p(by);
+     }
+ 
++    public void blockquote() {
++        delegate.blockquote();
++    }
++
++
++    public void blockquote(By by) {
++        delegate.blockquote(by);
++    }
++
++    public void area() {
++        delegate.area();
++    }
++
++
++    public void area(By by) {
++        delegate.area(by);
++    }
++
+     public void img() {
+         delegate.img();
+     }
+diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java
+new file mode 100644
+index 0000000..b427e4c
+--- /dev/null
++++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java
+@@ -0,0 +1,63 @@
++package org.seleniumhq.selenium.fluent.elements;
++
++import org.junit.Test;
++import org.openqa.selenium.By;
++import org.seleniumhq.selenium.fluent.BaseTest;
++import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
++import org.seleniumhq.selenium.fluent.FluentWebElements;
++
++import static org.hamcrest.CoreMatchers.equalTo;
++import static org.hamcrest.CoreMatchers.notNullValue;
++import static org.junit.Assert.assertThat;
++import static org.junit.Assert.fail;
++import static org.mockito.Mockito.when;
++
++public class blockquote extends BaseTest {
++
++    @Test
++    public void blockquote_functionality() {
++
++        setupExpecations("blockquote");
++
++        FluentWebElements fe = fwd.blockquote()
++                .blockquote(By.xpath("@foo = 'bar'"))
++                .blockquote(By.cssSelector("baz"))
++                .blockquotes();
++
++        assertThat(fe, notNullValue());
++        verifications("blockquote");
++    }
++
++    @Test
++    public void blockquotes_functionality() {
++
++        setupExpecations2("blockquote");
++
++        FluentWebElements fe = fwd.blockquote()
++                .blockquotes(By.name("qux"));
++
++        assertThat(fe, notNullValue());
++
++        verifications2("blockquote");
++
++    }
++
++    @Test
++    public void blockquote_mismatched() {
++
++        when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
++        when(we.getTagName()).thenReturn("boo");
++
++        try {
++            fwd.blockquote(By.linkText("mismatching_tag_name"))
++                    .clearField();
++            fail("should have barfed");
++        } catch (FluentExecutionStopped e) {
++            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.blockquote(By.linkText: mismatching_tag_name)"));
++            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been blockquote but was boo"));
++        }
++
++    }
++
++
++}
+diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java
+new file mode 100644
+index 0000000..cccaadd
+--- /dev/null
++++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java
+@@ -0,0 +1,63 @@
++package org.seleniumhq.selenium.fluent.elements;
++
++import org.junit.Test;
++import org.openqa.selenium.By;
++import org.seleniumhq.selenium.fluent.BaseTest;
++import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
++import org.seleniumhq.selenium.fluent.FluentWebElements;
++
++import static org.hamcrest.CoreMatchers.equalTo;
++import static org.hamcrest.CoreMatchers.notNullValue;
++import static org.junit.Assert.assertThat;
++import static org.junit.Assert.fail;
++import static org.mockito.Mockito.when;
++
++public class area extends BaseTest {
++
++    @Test
++    public void area_functionality() {
++
++        setupExpecations("area");
++
++        FluentWebElements fe = fwd.area()
++                .area(By.xpath("@foo = 'bar'"))
++                .area(By.cssSelector("baz"))
++                .areas();
++
++        assertThat(fe, notNullValue());
++        verifications("area");
++    }
++
++    @Test
++    public void adresss_functionality() {
++
++        setupExpecations2("area");
++
++        FluentWebElements fe = fwd.area()
++                .areas(By.name("qux"));
++
++        assertThat(fe, notNullValue());
++
++        verifications2("area");
++
++    }
++
++    @Test
++    public void area_mismatched() {
++
++        when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
++        when(we.getTagName()).thenReturn("boo");
++
++        try {
++            fwd.area(By.linkText("mismatching_tag_name"))
++                    .clearField();
++            fail("should have barfed");
++        } catch (FluentExecutionStopped e) {
++            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.area(By.linkText: mismatching_tag_name)"));
++            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been area but was boo"));
++        }
++
++    }
++
++
++}
+diff --git a/src/test/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriverTest.java b/src/test/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriverTest.java
+index 5121639..28f4c62 100644
+--- a/src/test/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriverTest.java
++++ b/src/test/java/org/seleniumhq/selenium/fluent/internal/NegatingFluentWebDriverTest.java
+@@ -119,6 +119,22 @@ public class NegatingFluentWebDriverTest {
+     }
+ 
+     @Test
++    public void testblockquote() throws Exception {
++        when(wd.findElement(tagName("blockquote"))).thenThrow(new NotFoundException());
++        nfwd.blockquote();
++        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
++        nfwd.blockquote(BYID);
++    }
++
++    @Test
++    public void testarea() throws Exception {
++        when(wd.findElement(tagName("area"))).thenThrow(new NotFoundException());
++        nfwd.area();
++        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
++        nfwd.area(BYID);
++    }
++
++    @Test
+     public void testImg() throws Exception {
+         when(wd.findElement(tagName("img"))).thenThrow(new NotFoundException());
+         nfwd.img();
