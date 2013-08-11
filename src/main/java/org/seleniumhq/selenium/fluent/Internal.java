@@ -281,6 +281,41 @@ public class Internal {
             SingleResult single = single(tagName("b"), "b");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
+        protected BaseFluentWebElement header() {
+            SingleResult single = single(tagName("header"), "header");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements headers() {
+            return newFluentWebElements(multiple(tagName("header"), "header"));
+        }
+
+        protected BaseFluentWebElement header(By by) {
+            SingleResult single = single(by, "header");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements headers(By by) {
+            return newFluentWebElements(multiple(by, "header"));
+        }
+
+        protected BaseFluentWebElement footer() {
+            SingleResult single = single(tagName("footer"), "footer");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements footers() {
+            return newFluentWebElements(multiple(tagName("footer"), "footer"));
+        }
+
+        protected BaseFluentWebElement footer(By by) {
+            SingleResult single = single(by, "footer");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements footers(By by) {
+            return newFluentWebElements(multiple(by, "footer"));
+        }
 
         protected BaseFluentWebElements bs() {
             return newFluentWebElements(multiple(tagName("b"), "b"));

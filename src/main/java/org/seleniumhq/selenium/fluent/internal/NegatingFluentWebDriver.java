@@ -132,6 +132,24 @@ public class NegatingFluentWebDriver {
         delegate.pre(by);
     }
 
+    public void header() {
+        delegate.header();
+    }
+
+
+    public void header(By by) {
+        delegate.header(by);
+    }
+
+    public void footer() {
+        delegate.footer();
+    }
+
+
+    public void footer(By by) {
+        delegate.footer(by);
+    }
+
     public void img() {
         delegate.img();
     }

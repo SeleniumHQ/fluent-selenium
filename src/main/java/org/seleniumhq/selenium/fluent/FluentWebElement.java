@@ -653,6 +653,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.pres(by);
     }
 
+    @Override
+    public FluentWebElement header() {
+        return (FluentWebElement) super.header();
+    }
+
+    @Override
+    public FluentWebElement header(By by) {
+        return (FluentWebElement) super.header(by);
+    }
+
+    @Override
+    public FluentWebElements headers() {
+        return (FluentWebElements) super.headers();
+    }
+
+    @Override
+    public FluentWebElements headers(By by) {
+        return (FluentWebElements) super.headers(by);
+    }
+
+    @Override
+    public FluentWebElement footer() {
+        return (FluentWebElement) super.footer();
+    }
+
+    @Override
+    public FluentWebElement footer(By by) {
+        return (FluentWebElement) super.footer(by);
+    }
+
+    @Override
+    public FluentWebElements footers() {
+        return (FluentWebElements) super.footers();
+    }
+
+    @Override
+    public FluentWebElements footers(By by) {
+        return (FluentWebElements) super.footers(by);
+    }
+
 
     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
@@ -843,6 +883,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         public void pre(By by) {
             delegate.pre(by);
+        }
+
+        public void header() {
+            delegate.header();
+        }
+
+
+        public void header(By by) {
+            delegate.header(by);
+        }
+
+        public void footer() {
+            delegate.footer();
+        }
+
+
+        public void footer(By by) {
+            delegate.footer(by);
         }
 
 
