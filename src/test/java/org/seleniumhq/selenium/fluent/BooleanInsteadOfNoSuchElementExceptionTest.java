@@ -141,7 +141,7 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
                 count++;
             }
         }
-        assertThat(count, equalTo(62));
+        assertThat(count, equalTo(66));
     }
 
 }

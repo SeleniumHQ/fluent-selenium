@@ -277,6 +277,41 @@ public class Internal {
             SingleResult single = single(tagName("figure"), "figure");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
+        protected BaseFluentWebElement abbr() {
+            SingleResult single = single(tagName("abbr"), "abbr");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements abbrs() {
+            return newFluentWebElements(multiple(tagName("abbr"), "abbr"));
+        }
+
+        protected BaseFluentWebElement abbr(By by) {
+            SingleResult single = single(by, "abbr");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements abbrs(By by) {
+            return newFluentWebElements(multiple(by, "abbr"));
+        }
+
+        protected BaseFluentWebElement address() {
+            SingleResult single = single(tagName("address"), "address");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements addresss() {
+            return newFluentWebElements(multiple(tagName("address"), "address"));
+        }
+
+        protected BaseFluentWebElement address(By by) {
+            SingleResult single = single(by, "address");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements addresss(By by) {
+            return newFluentWebElements(multiple(by, "address"));
+        }
 
         protected BaseFluentWebElements figures() {
             return newFluentWebElements(multiple(tagName("figure"), "figure"));

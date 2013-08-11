@@ -301,6 +301,45 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     public FluentWebElement figure() {
         return (FluentWebElement) super.figure();
     }
+    @Override
+    public FluentWebElement abbr() {
+        return (FluentWebElement) super.abbr();
+    }
+
+    @Override
+    public FluentWebElements abbrs() {
+        return (FluentWebElements) super.abbrs();
+    }
+
+    @Override
+    public FluentWebElement abbr(By by) {
+        return (FluentWebElement) super.abbr(by);
+    }
+
+    @Override
+    public FluentWebElements abbrs(By by) {
+        return (FluentWebElements) super.abbrs(by);
+    }
+
+    @Override
+    public FluentWebElement address() {
+        return (FluentWebElement) super.address();
+    }
+
+    @Override
+    public FluentWebElements addresss() {
+        return (FluentWebElements) super.addresss();
+    }
+
+    @Override
+    public FluentWebElement address(By by) {
+        return (FluentWebElement) super.address(by);
+    }
+
+    @Override
+    public FluentWebElements addresss(By by) {
+        return (FluentWebElements) super.addresss(by);
+    }
 
     @Override
     public FluentWebElements figures() {
@@ -881,6 +920,24 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
         public boolean acronym(By by) {
             return returnBool(bfwd.acronym(by));
+        }
+
+        public boolean abbr() {
+            return returnBool(bfwd.abbr());
+        }
+
+
+        public boolean abbr(By by) {
+            return returnBool(bfwd.abbr(by));
+        }
+
+        public boolean address() {
+            return returnBool(bfwd.address());
+        }
+
+
+        public boolean address(By by) {
+            return returnBool(bfwd.address(by));
         }
 
         public boolean img() {

@@ -733,6 +733,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.acronyms(by);
     }
 
+    @Override
+    public FluentWebElement abbr() {
+        return (FluentWebElement) super.abbr();
+    }
+
+    @Override
+    public FluentWebElement abbr(By by) {
+        return (FluentWebElement) super.abbr(by);
+    }
+
+    @Override
+    public FluentWebElements abbrs() {
+        return (FluentWebElements) super.abbrs();
+    }
+
+    @Override
+    public FluentWebElements abbrs(By by) {
+        return (FluentWebElements) super.abbrs(by);
+    }
+
+    @Override
+    public FluentWebElement address() {
+        return (FluentWebElement) super.address();
+    }
+
+    @Override
+    public FluentWebElement address(By by) {
+        return (FluentWebElement) super.address(by);
+    }
+
+    @Override
+    public FluentWebElements addresss() {
+        return (FluentWebElements) super.addresss();
+    }
+
+    @Override
+    public FluentWebElements addresss(By by) {
+        return (FluentWebElements) super.addresss(by);
+    }
+
 
     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
@@ -959,6 +999,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         public void acronym(By by) {
             delegate.acronym(by);
+        }
+
+        public void abbr() {
+            delegate.abbr();
+        }
+
+
+        public void abbr(By by) {
+            delegate.abbr(by);
+        }
+
+        public void address() {
+            delegate.address();
+        }
+
+
+        public void address(By by) {
+            delegate.address(by);
         }
 
 

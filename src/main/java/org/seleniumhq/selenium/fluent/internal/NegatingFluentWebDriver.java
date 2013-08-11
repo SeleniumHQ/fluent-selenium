@@ -168,6 +168,24 @@ public class NegatingFluentWebDriver {
         delegate.acronym(by);
     }
 
+    public void abbr() {
+        delegate.abbr();
+    }
+
+
+    public void abbr(By by) {
+        delegate.abbr(by);
+    }
+
+    public void address() {
+        delegate.address();
+    }
+
+
+    public void address(By by) {
+        delegate.address(by);
+    }
+
     public void img() {
         delegate.img();
     }
