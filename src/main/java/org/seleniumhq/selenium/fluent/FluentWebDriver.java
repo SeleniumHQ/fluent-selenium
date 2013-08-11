@@ -297,6 +297,45 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     public FluentWebElement p(By by) {
         return (FluentWebElement) super.p(by);
     }
+    @Override
+    public FluentWebElement figure() {
+        return (FluentWebElement) super.figure();
+    }
+
+    @Override
+    public FluentWebElements figures() {
+        return (FluentWebElements) super.figures();
+    }
+
+    @Override
+    public FluentWebElement figure(By by) {
+        return (FluentWebElement) super.figure(by);
+    }
+
+    @Override
+    public FluentWebElements figures(By by) {
+        return (FluentWebElements) super.figures(by);
+    }
+
+    @Override
+    public FluentWebElement acronym() {
+        return (FluentWebElement) super.acronym();
+    }
+
+    @Override
+    public FluentWebElements acronyms() {
+        return (FluentWebElements) super.acronyms();
+    }
+
+    @Override
+    public FluentWebElement acronym(By by) {
+        return (FluentWebElement) super.acronym(by);
+    }
+
+    @Override
+    public FluentWebElements acronyms(By by) {
+        return (FluentWebElements) super.acronyms(by);
+    }
 
     @Override
     public FluentWebElements ps(By by) {
@@ -824,6 +863,24 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
         public boolean footer(By by) {
             return returnBool(bfwd.footer(by));
+        }
+
+        public boolean figure() {
+            return returnBool(bfwd.figure());
+        }
+
+
+        public boolean figure(By by) {
+            return returnBool(bfwd.figure(by));
+        }
+
+        public boolean acronym() {
+            return returnBool(bfwd.acronym());
+        }
+
+
+        public boolean acronym(By by) {
+            return returnBool(bfwd.acronym(by));
         }
 
         public boolean img() {

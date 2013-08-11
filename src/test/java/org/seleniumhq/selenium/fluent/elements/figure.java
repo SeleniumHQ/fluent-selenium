@@ -12,49 +12,49 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-public class footer extends BaseTest {
+public class figure extends BaseTest {
 
     @Test
-    public void footer_functionality() {
+    public void figure_functionality() {
 
-        setupExpecations("footer");
+        setupExpecations("figure");
 
-        FluentWebElements fe = fwd.footer()
-                .footer(By.xpath("@foo = 'bar'"))
-                .footer(By.cssSelector("baz"))
-                .footers();
+        FluentWebElements fe = fwd.figure()
+                .figure(By.xpath("@foo = 'bar'"))
+                .figure(By.cssSelector("baz"))
+                .figures();
 
         assertThat(fe, notNullValue());
-        verifications("footer");
+        verifications("figure");
     }
 
     @Test
-    public void footers_functionality() {
+    public void figures_functionality() {
 
-        setupExpecations2("footer");
+        setupExpecations2("figure");
 
-        FluentWebElements fe = fwd.footer()
-                .footers(By.name("qux"));
+        FluentWebElements fe = fwd.figure()
+                .figures(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("footer");
+        verifications2("figure");
 
     }
 
     @Test
-    public void footer_mismatched() {
+    public void figure_mismatched() {
 
         when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
         when(we.getTagName()).thenReturn("boo");
 
         try {
-            fwd.footer(By.linkText("mismatching_tag_name"))
+            fwd.figure(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.footer(By.linkText: mismatching_tag_name)"));
-            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been footer but was boo"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.figure(By.linkText: mismatching_tag_name)"));
+            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been figure but was boo"));
         }
 
     }

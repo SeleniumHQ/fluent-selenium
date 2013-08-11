@@ -12,49 +12,49 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-public class footer extends BaseTest {
+public class acronym extends BaseTest {
 
     @Test
-    public void footer_functionality() {
+    public void acronym_functionality() {
 
-        setupExpecations("footer");
+        setupExpecations("acronym");
 
-        FluentWebElements fe = fwd.footer()
-                .footer(By.xpath("@foo = 'bar'"))
-                .footer(By.cssSelector("baz"))
-                .footers();
+        FluentWebElements fe = fwd.acronym()
+                .acronym(By.xpath("@foo = 'bar'"))
+                .acronym(By.cssSelector("baz"))
+                .acronyms();
 
         assertThat(fe, notNullValue());
-        verifications("footer");
+        verifications("acronym");
     }
 
     @Test
-    public void footers_functionality() {
+    public void acronyms_functionality() {
 
-        setupExpecations2("footer");
+        setupExpecations2("acronym");
 
-        FluentWebElements fe = fwd.footer()
-                .footers(By.name("qux"));
+        FluentWebElements fe = fwd.acronym()
+                .acronyms(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("footer");
+        verifications2("acronym");
 
     }
 
     @Test
-    public void footer_mismatched() {
+    public void acronym_mismatched() {
 
         when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
         when(we.getTagName()).thenReturn("boo");
 
         try {
-            fwd.footer(By.linkText("mismatching_tag_name"))
+            fwd.acronym(By.linkText("mismatching_tag_name"))
                     .clearField();
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
-            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.footer(By.linkText: mismatching_tag_name)"));
-            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been footer but was boo"));
+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.acronym(By.linkText: mismatching_tag_name)"));
+            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been acronym but was boo"));
         }
 
     }

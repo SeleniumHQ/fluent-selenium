@@ -150,6 +150,24 @@ public class NegatingFluentWebDriver {
         delegate.footer(by);
     }
 
+    public void figure() {
+        delegate.figure();
+    }
+
+
+    public void figure(By by) {
+        delegate.figure(by);
+    }
+
+    public void acronym() {
+        delegate.acronym();
+    }
+
+
+    public void acronym(By by) {
+        delegate.acronym(by);
+    }
+
     public void img() {
         delegate.img();
     }

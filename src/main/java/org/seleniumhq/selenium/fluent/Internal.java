@@ -273,6 +273,41 @@ public class Internal {
             SingleResult single = single(by, "p");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
+        protected BaseFluentWebElement figure() {
+            SingleResult single = single(tagName("figure"), "figure");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements figures() {
+            return newFluentWebElements(multiple(tagName("figure"), "figure"));
+        }
+
+        protected BaseFluentWebElement figure(By by) {
+            SingleResult single = single(by, "figure");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements figures(By by) {
+            return newFluentWebElements(multiple(by, "figure"));
+        }
+
+        protected BaseFluentWebElement acronym() {
+            SingleResult single = single(tagName("acronym"), "acronym");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements acronyms() {
+            return newFluentWebElements(multiple(tagName("acronym"), "acronym"));
+        }
+
+        protected BaseFluentWebElement acronym(By by) {
+            SingleResult single = single(by, "acronym");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements acronyms(By by) {
+            return newFluentWebElements(multiple(by, "acronym"));
+        }
 
         protected BaseFluentWebElements ps(By by) {
             return newFluentWebElements(multiple(by, "p"));

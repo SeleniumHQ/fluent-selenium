@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 public class header extends BaseTest {
 
     @Test
-    public void b_functionality() {
+    public void header_functionality() {
 
         setupExpecations("header");
 
@@ -29,7 +29,7 @@ public class header extends BaseTest {
     }
 
     @Test
-    public void bs_functionality() {
+    public void headers_functionality() {
 
         setupExpecations2("header");
 
@@ -43,7 +43,7 @@ public class header extends BaseTest {
     }
 
     @Test
-    public void b_mismatched() {
+    public void header_mismatched() {
 
         when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
         when(we.getTagName()).thenReturn("boo");
