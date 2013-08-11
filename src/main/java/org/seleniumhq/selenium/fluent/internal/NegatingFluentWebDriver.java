@@ -186,6 +186,24 @@ public class NegatingFluentWebDriver {
         delegate.address(by);
     }
 
+    public void blockquote() {
+        delegate.blockquote();
+    }
+
+
+    public void blockquote(By by) {
+        delegate.blockquote(by);
+    }
+
+    public void area() {
+        delegate.area();
+    }
+
+
+    public void area(By by) {
+        delegate.area(by);
+    }
+
     public void img() {
         delegate.img();
     }

@@ -305,6 +305,45 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     public FluentWebElement abbr() {
         return (FluentWebElement) super.abbr();
     }
+    @Override
+    public FluentWebElement blockquote() {
+        return (FluentWebElement) super.blockquote();
+    }
+
+    @Override
+    public FluentWebElements blockquotes() {
+        return (FluentWebElements) super.blockquotes();
+    }
+
+    @Override
+    public FluentWebElement blockquote(By by) {
+        return (FluentWebElement) super.blockquote(by);
+    }
+
+    @Override
+    public FluentWebElements blockquotes(By by) {
+        return (FluentWebElements) super.blockquotes(by);
+    }
+
+    @Override
+    public FluentWebElement area() {
+        return (FluentWebElement) super.area();
+    }
+
+    @Override
+    public FluentWebElements areas() {
+        return (FluentWebElements) super.areas();
+    }
+
+    @Override
+    public FluentWebElement area(By by) {
+        return (FluentWebElement) super.area(by);
+    }
+
+    @Override
+    public FluentWebElements areas(By by) {
+        return (FluentWebElements) super.areas(by);
+    }
 
     @Override
     public FluentWebElements abbrs() {
@@ -938,6 +977,24 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
 
         public boolean address(By by) {
             return returnBool(bfwd.address(by));
+        }
+
+        public boolean blockquote() {
+            return returnBool(bfwd.blockquote());
+        }
+
+
+        public boolean blockquote(By by) {
+            return returnBool(bfwd.blockquote(by));
+        }
+
+        public boolean area() {
+            return returnBool(bfwd.area());
+        }
+
+
+        public boolean area(By by) {
+            return returnBool(bfwd.area(by));
         }
 
         public boolean img() {

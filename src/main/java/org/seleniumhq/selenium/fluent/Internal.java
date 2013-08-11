@@ -281,6 +281,41 @@ public class Internal {
             SingleResult single = single(tagName("abbr"), "abbr");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
+        protected BaseFluentWebElement blockquote() {
+            SingleResult single = single(tagName("blockquote"), "blockquote");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements blockquotes() {
+            return newFluentWebElements(multiple(tagName("blockquote"), "blockquote"));
+        }
+
+        protected BaseFluentWebElement blockquote(By by) {
+            SingleResult single = single(by, "blockquote");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements blockquotes(By by) {
+            return newFluentWebElements(multiple(by, "blockquote"));
+        }
+
+        protected BaseFluentWebElement area() {
+            SingleResult single = single(tagName("area"), "area");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements areas() {
+            return newFluentWebElements(multiple(tagName("area"), "area"));
+        }
+
+        protected BaseFluentWebElement area(By by) {
+            SingleResult single = single(by, "area");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements areas(By by) {
+            return newFluentWebElements(multiple(by, "area"));
+        }
 
         protected BaseFluentWebElements abbrs() {
             return newFluentWebElements(multiple(tagName("abbr"), "abbr"));

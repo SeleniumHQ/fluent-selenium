@@ -773,6 +773,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.addresss(by);
     }
 
+    @Override
+    public FluentWebElement blockquote() {
+        return (FluentWebElement) super.blockquote();
+    }
+
+    @Override
+    public FluentWebElement blockquote(By by) {
+        return (FluentWebElement) super.blockquote(by);
+    }
+
+    @Override
+    public FluentWebElements blockquotes() {
+        return (FluentWebElements) super.blockquotes();
+    }
+
+    @Override
+    public FluentWebElements blockquotes(By by) {
+        return (FluentWebElements) super.blockquotes(by);
+    }
+
+    @Override
+    public FluentWebElement area() {
+        return (FluentWebElement) super.area();
+    }
+
+    @Override
+    public FluentWebElement area(By by) {
+        return (FluentWebElement) super.area(by);
+    }
+
+    @Override
+    public FluentWebElements areas() {
+        return (FluentWebElements) super.areas();
+    }
+
+    @Override
+    public FluentWebElements areas(By by) {
+        return (FluentWebElements) super.areas(by);
+    }
+
 
     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
@@ -1017,6 +1057,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         public void address(By by) {
             delegate.address(by);
+        }
+
+        public void blockquote() {
+            delegate.blockquote();
+        }
+
+
+        public void blockquote(By by) {
+            delegate.blockquote(by);
+        }
+
+        public void area() {
+            delegate.area();
+        }
+
+
+        public void area(By by) {
+            delegate.area(by);
         }
 
 
