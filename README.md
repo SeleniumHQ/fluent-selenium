@@ -9,7 +9,7 @@ To use via Maven:
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.11.1</version>
+   <version>1.12</version>
    <scope>test</scope>
 </dependency>
 
@@ -79,6 +79,17 @@ fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"))
 ```
 
 This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the DOM.
+
+### Element in the DOM, but not visible 'yet'
+
+Sometimes elements are within the DOM, buy they are invisible for a period of 
+time after an action of some sort. You can wait for elements to become visible,
+before fluently progressing:
+
+```java
+fwd.input(id("textArea")).sendKeys("Mary Had A Little Lamb...");
+fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
+```
 
 ### Stale Elements
 
