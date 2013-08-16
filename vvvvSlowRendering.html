@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- copied from http://fiddle.jshell.net/D5h7H/7/show/ -->
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo</title>
+  
+  <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular.min.js'></script>
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+  <style type='text/css'>
+    
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+
+function TstCtrl($scope) {
+    setTimeout(function() {
+    $scope.Model = {
+    };
+   
+       var dt = new Array();
+        
+    for (var i = 0; i < 30; i++) {
+         var group = {
+            Name: "Group "+i,
+            Filters: new Array()
+        };
+       for (var j = 0; j < 30; j++) {
+            var filter = {
+                Name: "Filter " + j,
+                Values: new Array()
+            };
+            for (var k = 0; k < 15; k++) {
+                filter.Values.push(k);
+            }
+            group.Filters.push(filter);
+        }
+        dt.push(group);
+    }
+    
+    $scope.Model.Groups = dt;
+        $scope.$digest();
+    }, 10);
+}
+
+//]]>  
+
+</script>
+
+
+</head>
+<body>
+  <div ng-app>
+<div ng-controller="TstCtrl">
+<div ng-repeat="group in Model.Groups">
+            <span style="font-weight: bold">{{group.Name}}</span>
+            <div ng-repeat="filter in group.Filters" class="singleFilterWrapper">
+                <input type="checkbox" ng-model="filter.enabled" id="check_{{group.Name}}_{{filter.Name}}"><label for="check_{{group.Name}}_{{filter.Name}}"> {{filter.Name}}</label>
+                    <select ng-disabled="!filter.enabled">
+                        <option ng-repeat="value in filter.Values">                        {{value}}</option>
+                    </select>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+  
+</body>
+
+
+</html>
+
