@@ -1311,10 +1311,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
     }
 
-    private class IfInvisibleWait extends StaleElementRecoveringExecution<Boolean> {
+    class IfInvisibleWait extends StaleElementRecoveringExecution<Boolean> {
         private Period period;
 
-        private IfInvisibleWait(Period period) {
+        IfInvisibleWait(Period period) {
             this.period = period;
         }
 

@@ -38,6 +38,13 @@ public class FluentSelect extends FluentWebElement {
         this.currentSelect = currentSelect;
     }
 
+    @Override
+    public FluentSelect ifInvisibleWaitUpTo(Period period) {
+        Context ifInvisibleWaitUpTo = Context.singular(context, "ifInvisibleWaitUpTo", period);
+        decorateExecution(new IfInvisibleWait(period), ifInvisibleWaitUpTo, true);
+        return new FluentSelect(delegate, currentElement.getFound(), ifInvisibleWaitUpTo, monitor, booleanInsteadOfNotFoundException);
+    }
+
     /**
      * @return Whether this select element support selecting multiple options at the same time? This
      *         is done by checking the value of the "multiple" attribute.
