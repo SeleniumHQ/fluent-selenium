@@ -382,7 +382,28 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 </dependency>
 ```
 
-Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 2.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 2.x.
+Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 2.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 2.x. ...
+
+```xml
+<dependency>
+  <groupId>org.seleniumhq.selenium.fluent</groupId>
+  <artifactId>fluent-selenium</artifactId>
+  <version>1.12</version>
+  <scope>test</scope>
+  <exclusions>
+    <exclusion>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+<dependency>
+  <groupId>org.seleniumhq.selenium</groupId>
+  <artifactId>selenium-java</artifactId>
+  <version>2.99.3</version>
+  <scope>test</scope>
+</dependency> 
+```
 
 ## Non-Maven
 
