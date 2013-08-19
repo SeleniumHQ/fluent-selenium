@@ -1,38 +1,6 @@
 # FluentSelenium
 
-Refer my [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples)
-about this, or the project that showcases Fluent Selenium - [Fluent Selenium Examples](https://github.com/paul-hammant/fluent-selenium-examples).
-
-To use via Maven:
-
-```xml
-<dependency>
-   <groupId>org.seleniumhq.selenium.fluent</groupId>
-   <artifactId>fluent-selenium</artifactId>
-   <version>1.12</version>
-   <scope>test</scope>
-</dependency>
-
-<!-- you need to choose a hamcrest version that works for you too -->
-<dependency>
-   <groupId>org.hamcrest</groupId>
-   <artifactId>hamcrest-all</artifactId>
-   <version>1.3</version>
-   <scope>test</scope>
-</dependency>
-
-<!-- If you're needing Coda Hale's Metrics integration (optional) -->
-<dependency>
-   <groupId>com.codahale.metrics</groupId>
-   <artifactId>metrics-core</artifactId>
-   <version>3.0.0</version>
-</dependency>
-```
-
-
-Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium2. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium2.
-
-For non Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22)
+FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser.  For now, it is for the Java binding to WebDriver.
 
 ## Basic Use
 
@@ -79,6 +47,8 @@ fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"))
 ```
 
 This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the DOM.
+
+Selenium 1.0 had an API function isElementPresent. The 'without' functionality is akin to isElementNotPresent, or rather waitForElementToNotBePresent.
 
 ### Element in the DOM, but not visible 'yet'
 
@@ -258,14 +228,16 @@ the <code>h3()</code> invocation -  implicitly before any subsequent operation l
 
 ## Alternate boolean handling of missing elements.
 
-Normal operation is for FluentSelenium to throw 'FluentExecutionStopped' wrapping 'NoSuchElementException' for the root cause.
+Normal operation is for FluentSelenium to throw 'FluentExecutionStopped' wrapping WebDriver's 'NoSuchElementException' for the root cause.
 
-You can receive true/false instead like so:
+With 'has()' and 'hasMissing()' you can receive true/false instead of getting exceptions like so:
 
 ```java
 boolean isMissing = fwd.hasMissing().div(id("foo"))
 boolean isPresent = fwd.has().div(id("foo"))
 ```
+
+As mentioned before, Selenium 1.0 had an API function called 'isElementPresent'. With FluentSelenium we're getting close to that again, as 'has' and 'hasMissing' preceding a thing that should or should not be there, are functionally equivalent.
 
 # Monitoring
 
@@ -381,4 +353,96 @@ package.MyClass.aMethod:div(By.className: aClassName)
 [There's a fuller example of stats in the 'Fluent Selenium Examples' project](https://github.com/paul-hammant/fluent-selenium-examples/blob/master/metrics.out)
 
 Coda Hale's Metrics library has other [reporters you could attach](http://metrics.codahale.com/manual/core/#reporters).
+
+# Including it in your project
+
+## Maven
+
+```xml
+<dependency>
+   <groupId>org.seleniumhq.selenium.fluent</groupId>
+   <artifactId>fluent-selenium</artifactId>
+   <version>1.12</version>
+   <scope>test</scope>
+</dependency>
+
+<!-- you need to choose a hamcrest version that works for you too -->
+<dependency>
+   <groupId>org.hamcrest</groupId>
+   <artifactId>hamcrest-all</artifactId>
+   <version>1.3</version>
+   <scope>test</scope>
+</dependency>
+
+<!-- If you're needing Coda Hale's Metrics integration (optional) -->
+<dependency>
+   <groupId>com.codahale.metrics</groupId>
+   <artifactId>metrics-core</artifactId>
+   <version>3.0.0</version>
+</dependency>
+```
+
+Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 2.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 2.x.
+
+## Non-Maven
+
+For non Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22).
+
+Here's what else you might need in your classpath, depending on your needs:
+
+```
+org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.13-SNAPSHOT
++- junit:junit:jar:4.11:test
++- org.hamcrest:hamcrest-all:jar:1.3:compile
++- org.mockito:mockito-core:jar:1.9.5:test
+|  +- org.hamcrest:hamcrest-core:jar:1.1:test
+|  \- org.objenesis:objenesis:jar:1.0:test
++- org.seleniumhq.selenium:selenium-java:jar:2.35.0:compile
+|  +- org.seleniumhq.selenium:selenium-android-driver:jar:2.35.0:compile
+|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.35.0:compile
+|  |     +- cglib:cglib-nodep:jar:2.1_3:compile
+|  |     +- org.json:json:jar:20080701:compile
+|  |     \- com.google.guava:guava:jar:14.0:compile
+|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.35.0:compile
+|  +- org.seleniumhq.selenium:selenium-htmlunit-driver:jar:2.35.0:compile
+|  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.12:compile
+|  |  |  +- xalan:xalan:jar:2.7.1:compile
+|  |  |  |  \- xalan:serializer:jar:2.7.1:compile
+|  |  |  +- commons-collections:commons-collections:jar:3.2.1:compile
+|  |  |  +- org.apache.commons:commons-lang3:jar:3.1:compile
+|  |  |  +- org.apache.httpcomponents:httpmime:jar:4.2.3:compile
+|  |  |  +- commons-codec:commons-codec:jar:1.7:compile
+|  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.12:compile
+|  |  |  +- xerces:xercesImpl:jar:2.10.0:compile
+|  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+|  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.18:compile
+|  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.9:compile
+|  |  |  |  \- org.w3c.css:sac:jar:1.3:compile
+|  |  |  +- commons-logging:commons-logging:jar:1.1.1:compile
+|  |  |  \- org.eclipse.jetty:jetty-websocket:jar:8.1.9.v20130131:compile
+|  |  |     +- org.eclipse.jetty:jetty-util:jar:8.1.9.v20130131:compile
+|  |  |     +- org.eclipse.jetty:jetty-io:jar:8.1.9.v20130131:compile
+|  |  |     \- org.eclipse.jetty:jetty-http:jar:8.1.9.v20130131:compile
+|  |  \- org.apache.httpcomponents:httpclient:jar:4.2.1:compile
+|  |     \- org.apache.httpcomponents:httpcore:jar:4.2.1:compile
+|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.35.0:compile
+|  |  +- commons-io:commons-io:jar:2.2:compile
+|  |  \- org.apache.commons:commons-exec:jar:1.1:compile
+|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.35.0:compile
+|  |  +- net.java.dev.jna:jna:jar:3.4.0:compile
+|  |  \- net.java.dev.jna:platform:jar:3.4.0:compile
+|  +- org.seleniumhq.selenium:selenium-iphone-driver:jar:2.35.0:compile
+|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.35.0:compile
+|  +- org.seleniumhq.selenium:selenium-support:jar:2.35.0:compile
+|  |  \- org.seleniumhq.selenium:selenium-api:jar:2.35.0:compile
+|  \- org.webbitserver:webbit:jar:0.4.14:compile
+|     \- io.netty:netty:jar:3.5.2.Final:compile
+```
+
+
+# More Reading
+
+Refer Paul Hammant's [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples)
+about this, or the project that showcases Fluent Selenium - [Fluent Selenium Examples](https://github.com/paul-hammant/fluent-selenium-examples).
+
 
