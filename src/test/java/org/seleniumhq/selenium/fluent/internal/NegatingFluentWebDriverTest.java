@@ -199,6 +199,22 @@ public class NegatingFluentWebDriverTest {
     }
 
     @Test
+    public void testlabel() throws Exception {
+        when(wd.findElement(tagName("label"))).thenThrow(new NotFoundException());
+        nfwd.label();
+        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
+        nfwd.label(BYID);
+    }
+
+    @Test
+    public void testobject() throws Exception {
+        when(wd.findElement(tagName("object"))).thenThrow(new NotFoundException());
+        nfwd.object();
+        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
+        nfwd.object(BYID);
+    }
+
+    @Test
     public void testImg() throws Exception {
         when(wd.findElement(tagName("img"))).thenThrow(new NotFoundException());
         nfwd.img();

@@ -204,6 +204,24 @@ public class NegatingFluentWebDriver {
         delegate.area(by);
     }
 
+    public void label() {
+        delegate.label();
+    }
+
+
+    public void label(By by) {
+        delegate.label(by);
+    }
+
+    public void object() {
+        delegate.object();
+    }
+
+
+    public void object(By by) {
+        delegate.object(by);
+    }
+
     public void img() {
         delegate.img();
     }

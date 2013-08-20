@@ -285,6 +285,41 @@ public class Internal {
             SingleResult single = single(tagName("blockquote"), "blockquote");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
+        protected BaseFluentWebElement label() {
+            SingleResult single = single(tagName("label"), "label");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements labels() {
+            return newFluentWebElements(multiple(tagName("label"), "label"));
+        }
+
+        protected BaseFluentWebElement label(By by) {
+            SingleResult single = single(by, "label");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements labels(By by) {
+            return newFluentWebElements(multiple(by, "label"));
+        }
+
+        protected BaseFluentWebElement object() {
+            SingleResult single = single(tagName("object"), "object");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements objects() {
+            return newFluentWebElements(multiple(tagName("object"), "object"));
+        }
+
+        protected BaseFluentWebElement object(By by) {
+            SingleResult single = single(by, "object");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements objects(By by) {
+            return newFluentWebElements(multiple(by, "object"));
+        }
 
         protected BaseFluentWebElements blockquotes() {
             return newFluentWebElements(multiple(tagName("blockquote"), "blockquote"));

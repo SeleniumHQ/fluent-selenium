@@ -813,6 +813,46 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return (FluentWebElements) super.areas(by);
     }
 
+    @Override
+    public FluentWebElement label() {
+        return (FluentWebElement) super.label();
+    }
+
+    @Override
+    public FluentWebElement label(By by) {
+        return (FluentWebElement) super.label(by);
+    }
+
+    @Override
+    public FluentWebElements labels() {
+        return (FluentWebElements) super.labels();
+    }
+
+    @Override
+    public FluentWebElements labels(By by) {
+        return (FluentWebElements) super.labels(by);
+    }
+
+    @Override
+    public FluentWebElement object() {
+        return (FluentWebElement) super.object();
+    }
+
+    @Override
+    public FluentWebElement object(By by) {
+        return (FluentWebElement) super.object(by);
+    }
+
+    @Override
+    public FluentWebElements objects() {
+        return (FluentWebElements) super.objects();
+    }
+
+    @Override
+    public FluentWebElements objects(By by) {
+        return (FluentWebElements) super.objects(by);
+    }
+
 
     public FluentWebDriver.BooleanResultsAdapter hasMissing() {
         return new FluentWebDriver.BooleanResultsAdapter(super.delegate, this.currentElement, super.monitor, super.context)
@@ -1075,6 +1115,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         public void area(By by) {
             delegate.area(by);
+        }
+
+        public void label() {
+            delegate.label();
+        }
+
+
+        public void label(By by) {
+            delegate.label(by);
+        }
+
+        public void object() {
+            delegate.object();
+        }
+
+
+        public void object(By by) {
+            delegate.object(by);
         }
 
 
