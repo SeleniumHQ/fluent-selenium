@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 
 public class TestableString extends Internal.BaseTestableObject<String> {
 
@@ -32,7 +33,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         this(null, execution, ctx, monitor);
     }
 
-    private TestableString(Period within, Execution<String> execution, Context ctx, Monitor monitor) {
+    protected TestableString(Period within, Execution<String> execution, Context ctx, Monitor monitor) {
         super(within, execution, ctx, monitor);
     }
 
@@ -71,6 +72,26 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         }, ctx);
         return this;
     }
+    
+    public TestableString shouldEndWith(final String shouldEndWith) {
+            Context ctx = Context.singular(context, "shouldEndWith", null, shouldEndWith);
+            validateWrapRethrow(new Internal.Validation() {
+                @Override
+                public void validate(long start) {
+                    assignValueIfNeeded();
+                    if (!is.endsWith(shouldEndWith)  && within != null) {
+                        boolean passed;
+                        long endMillis = calcEndMillis();
+                        do {
+                            is = execution.doExecution();
+                            passed = is != null && is.endsWith(shouldEndWith) ;
+                        } while (System.currentTimeMillis() < endMillis && !passed);
+                    }
+                    assertThat(durationIfNotZero(start), is, endsWith(shouldEndWith));
+                }
+            }, ctx);
+            return this;
+        }
 
     public TestableString shouldNotContain(final String shouldNotContain) {
         Context ctx = Context.singular(context, "shouldNotContain", null, shouldNotContain);

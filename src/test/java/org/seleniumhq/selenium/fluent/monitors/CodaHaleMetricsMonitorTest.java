@@ -6,6 +6,7 @@ import org.seleniumhq.selenium.fluent.Monitor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -31,6 +32,7 @@ public class CodaHaleMetricsMonitorTest {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.SECONDS)
                 .outputTo(new PrintStream(baos))
+                .formattedFor(Locale.US)
                 .build();
         reporter.start(1, TimeUnit.SECONDS);
         try {
@@ -89,6 +91,7 @@ public class CodaHaleMetricsMonitorTest {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.SECONDS)
                 .outputTo(new PrintStream(baos))
+                .formattedFor(Locale.US)
                 .build();
         reporter.start(1, TimeUnit.SECONDS);
         try {
