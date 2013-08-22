@@ -116,6 +116,33 @@ public class TestableStringTest {
     }
     
     @Test
+       public void stringShouldEndWithSomething() {
+           Context ctx = Context.singular(null, "dummy2");
+           new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldEndWith("oo");
+           try {
+               new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldEndWith("bar");
+               fail("should have barfed");
+           } catch (FluentExecutionStopped e) {
+               assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().shouldEndWith('bar')"));
+               assertThat(getCauseMessage(e), equalTo("\nExpected: a string ending with \"bar\"\n     but: was \"foo\""));
+           }
+       }
+   
+       @Test
+       public void stringShouldEndWithSomethingWithinSomeTime() {
+           Context ctx = Context.singular(null, "dummy2");
+           new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldEndWith("oo");
+           try {
+               new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).within(secs(1)).shouldEndWith("bar");
+               fail("should have barfed");
+           } catch (FluentExecutionStopped e) {
+               assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldEndWith('bar')"));
+               assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\nExpected: a string ending with \"bar\"\n     but: was \"foo\""));
+           }
+       }
+    
+    
+    @Test
     public void stringShouldContainSomething() {
         Context ctx = Context.singular(null, "dummy2");
         new TestableString(FOO_EXECUTION, ctx, new Monitor.NULL()).shouldContain("o");
