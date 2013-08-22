@@ -60,11 +60,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     @Override
     protected WebElement actualFindIt(By by, Context ctx) {
+        beforeFindElement(by);
         return currentElement.getFound().findElement(by);
     }
 
     @Override
     protected List<WebElement> actualFindThem(By by, Context ctx) {
+        beforeFindElement(by);
         return currentElement.getFound().findElements(by);
     }
 

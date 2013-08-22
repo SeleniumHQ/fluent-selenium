@@ -56,6 +56,12 @@ public class Internal {
             this.booleanInsteadOfNotFoundException = booleanInsteadOfNotFoundException;
         }
 
+        protected void beforeFindElement(By by) {
+            if (by instanceof FluentBy) {
+                ((FluentBy) by).beforeFindElement(delegate);
+            }
+        }
+
         protected SearchContext getSearchContext() {
             return delegate;
         }

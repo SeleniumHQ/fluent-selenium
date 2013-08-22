@@ -58,10 +58,12 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     protected final WebElement actualFindIt(By by, Context ctx) {
+        beforeFindElement(by);
         return delegate.findElement(by);
     }
 
     protected final List<WebElement> actualFindThem(By by, Context ctx) {
+        beforeFindElement(by);
         return delegate.findElements(by);
     }
 

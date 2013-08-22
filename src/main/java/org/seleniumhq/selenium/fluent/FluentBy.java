@@ -18,6 +18,7 @@ limitations under the License.
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.FindsByClassName;
 import org.openqa.selenium.internal.FindsByXPath;
@@ -41,7 +42,12 @@ import static java.util.Arrays.asList;
  * }
  * </code>
  */
-public abstract class FluentBy {
+public abstract class FluentBy extends By {
+
+
+    public void beforeFindElement(WebDriver driver) {
+        // nothing by default.
+    }
 
     /**
      * Finds elements based on the value of the "class" attribute.
@@ -52,7 +58,7 @@ public abstract class FluentBy {
      * @param className The value of the "class" attribute to search for
      * @return a By which locates elements by the value of the "class" attribute.
      */
-    public static By strictClassName(final String className) {
+    public static ByStrictClassName strictClassName(final String className) {
         if (className == null)
             throw new IllegalArgumentException(
                     "Cannot find elements when the class name expression is null.");
@@ -69,7 +75,7 @@ public abstract class FluentBy {
      * Finds elements by the presence of an attribute name irrespective
      * of element name. Currently implemented via XPath.
      */
-    public static By attribute(final String name) {
+    public static ByAttribute attribute(final String name) {
         return attribute(name, null);
     }
 
@@ -77,7 +83,7 @@ public abstract class FluentBy {
      * Finds elements by an named attribute matching a given value,
      * irrespective of element name. Currently implemented via XPath.
      */
-    public static By attribute(final String name, final String value) {
+    public static ByAttribute attribute(final String name, final String value) {
         if (name == null)
             throw new IllegalArgumentException(
                     "Cannot find elements when the attribute name is null");
@@ -107,7 +113,7 @@ public abstract class FluentBy {
         return new ByLast();
     }
 
-    private static class ByLast extends By {
+    private static class ByLast extends FluentBy {
         
         private final String orig;
         private final ByAttribute by;
@@ -145,7 +151,7 @@ public abstract class FluentBy {
 
     // Until WebDriver supports a composite in browser implementations, only
     // TagName + ClassName is allowed as it can easily map to XPath.
-    private static class ByComposite extends By {
+    private static class ByComposite extends FluentBy {
 
         private final By[] bys;
 
@@ -196,7 +202,7 @@ public abstract class FluentBy {
         }
     }
 
-    private static class ByStrictClassName extends By {
+    private static class ByStrictClassName extends FluentBy {
         private final String className;
 
         public ByStrictClassName(String className) {
@@ -225,7 +231,7 @@ public abstract class FluentBy {
         }
     }
 
-    public static class ByAttribute extends By {
+    public static class ByAttribute extends FluentBy {
         private final String name;
         private final String value;
 
