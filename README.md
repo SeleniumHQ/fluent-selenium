@@ -4,6 +4,8 @@ FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent
 
 ## Basic Use
 
+HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set:
+
 ```java
 WebDriver wd = new FirefoxDriver();
 FluentWebDriver fwd = new FluentWebDriver(wd);
@@ -12,6 +14,10 @@ fwd.div(id("foo")).div(className("bar")).button().click();
 
 fwd.span(id("results")).getText().shouldBe("1 result");
 ```
+
+Hyperlinks are marked as 'a' in HTML, but we've represented those as <code>link()</code> in the fluent API.  
+
+As with all fluent interfaces, there is no point looking at strict API documentation (JavaDoc for Java), and you're better looking at example code (this page is it).
 
 ## Situations where the DOM is changing slowly
 
@@ -50,7 +56,7 @@ This will throw an exception **after** the elapsed time, if it still hasn't **di
 
 Selenium 1.0 had an API function isElementPresent. The 'without' functionality is akin to isElementNotPresent, or rather waitForElementToNotBePresent.
 
-### Element in the DOM, but not visible 'yet'
+### Elements in the DOM, but not visible 'yet'
 
 Sometimes elements are within the DOM, buy they are invisible for a period of 
 time after an action of some sort. You can wait for elements to become visible,
@@ -60,6 +66,52 @@ before fluently progressing:
 fwd.input(id("textArea")).sendKeys("Mary Had A Little Lamb...");
 fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
 ```
+
+### Advanced JavaScript Frameworks
+
+AngularJS is an example of framework that does a huge amount of the heavy lifting in browser.  While it's doing its magic, you are going to encounter timing issues. If you prefer, the 'within' and 'without' fluent methods above will help you overcome those issues, but there is a way of being smarter about waiting for Angular's magic to stop:
+
+Somewhere in your code, define the following static method:
+
+```java
+public static By ngWait(final By by) {
+    return new FluentBy() {
+        @Override
+        public void beforeFindElement(WebDriver driver) {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("var callback = arguments[arguments.length - 1];\n" +
+                    "  angular.element(document.body).injector().get('$browser').\n" +
+                    "      notifyWhenNoOutstandingRequests(callback);");
+            super.beforeFindElement(driver);
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            return by.findElements(context);
+        }
+
+        @Override
+        public WebElement findElement(SearchContext context) {
+            return by.findElement(context);
+        }
+    };
+}
+```
+
+That hooks into Angular's internals, and will block until requests have completed. Use it like so:
+
+```java
+fwd.div(id("foo")).button(ngWait(id("bar"))).click();
+```
+Instead of:
+
+```java
+fwd.div(id("foo")).within(secs(5)).button(id("bar")).click();
+```
+
+Other frameworks may have similar tricks, that you can use 'executeScript' to invoke.
+
+The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriver (but is in JavaScript rather than Java).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js). 
 
 ### Stale Elements
 
@@ -362,7 +414,7 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.12</version>
+   <version>1.13</version>
    <scope>test</scope>
 </dependency>
 
