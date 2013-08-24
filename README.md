@@ -78,10 +78,9 @@ public static By ngWait(final By by) {
     return new FluentBy() {
         @Override
         public void beforeFindElement(WebDriver driver) {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("var callback = arguments[arguments.length - 1];\n" +
-                    "  angular.element(document.body).injector().get('$browser').\n" +
-                    "      notifyWhenNoOutstandingRequests(callback);");
+            driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+            ((JavascriptExecutor) driver).executeAsyncScript("var callback = arguments[arguments.length - 1];" +
+                "angular.element(document.body).injector().get('$browser').notifyWhenNoOutstandingRequests(callback);");
             super.beforeFindElement(driver);
         }
 
@@ -98,12 +97,12 @@ public static By ngWait(final By by) {
 }
 ```
 
-That hooks into Angular's internals, and will block until requests have completed. Use it like so:
+That hooks into Angular's internals, and will block until requests have completed. You may want to parameterize the script timeout, or execute it at the start of the test suite long before use. Use it in a fluent expression by wapping a locator like so:
 
 ```java
 fwd.div(id("foo")).button(ngWait(id("bar"))).click();
 ```
-Instead of:
+Instead of this type of thing:
 
 ```java
 fwd.div(id("foo")).within(secs(5)).button(id("bar")).click();
@@ -440,7 +439,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.12</version>
+  <version>1.13</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
@@ -464,7 +463,7 @@ For non Maven build systems, [download it yourself](http://search.maven.org/#sea
 Here's what else you might need in your classpath, depending on your needs:
 
 ```
-org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.13-SNAPSHOT
+org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.13
 +- junit:junit:jar:4.11:test
 +- org.hamcrest:hamcrest-all:jar:1.3:compile
 +- org.mockito:mockito-core:jar:1.9.5:test
