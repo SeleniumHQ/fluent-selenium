@@ -69,6 +69,8 @@ fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
 
 ### Advanced JavaScript Frameworks
 
+#### AngularJS
+
 AngularJS is an example of framework that does a huge amount of the heavy lifting in browser.  While it's doing its magic, you are going to encounter timing issues. If you prefer, the 'within' and 'without' fluent methods above will help you overcome those issues, but there is a way of being smarter about waiting for Angular's magic to stop:
 
 Somewhere in your code, define the following static method:
@@ -108,9 +110,11 @@ Instead of this type of thing:
 fwd.div(id("foo")).within(secs(5)).button(id("bar")).click();
 ```
 
-Other frameworks may have similar tricks, that you can use 'executeScript' to invoke.
+The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriverJS (a JavaScript rather than Java driver Selenium 2.0).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js). 
 
-The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriver (but is in JavaScript rather than Java).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js). 
+#### Other frameworks 
+
+Backbone, Knockout (etc) may have similar tricks, that you can use 'executeScript' to invoke, but we've not done the research to hook into them.
 
 ### Stale Elements
 
