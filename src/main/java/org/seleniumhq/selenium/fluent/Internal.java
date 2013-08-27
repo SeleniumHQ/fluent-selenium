@@ -1160,46 +1160,60 @@ public class Internal {
         }
 
         public void baseShouldBe(final T shouldBe) {
-            Context ctx = Context.singular(context, "shouldBe", null, shouldBe);
-
-            validateWrapRethrow(new Internal.Validation() {
-                @Override
-                public void validate(long start) {
-                    if (!shouldBe.equals(is)) {
-                        if (within != null) {
-                            boolean passed;
-                            long endMillis = calcEndMillis();
-                            do {
-                                is = execution.doExecution();
-                                passed = is != null && is.equals(shouldBe);
-                            } while (System.currentTimeMillis() < endMillis && !passed);
-                        } else {
-                            assignValueIfNeeded();
-                        }
-                    }
-                    assertThat(durationIfNotZero(start), (T) is, equalTo(shouldBe));
-                }
-            }, ctx);
+            validateWrapRethrow(new ShouldBeValidation<T>(shouldBe),
+                    Context.singular(context, "shouldBe", null, shouldBe));
         }
 
         public void baseShouldNotBe(final T shouldNotBe) {
-            Context ctx = Context.singular(context, "shouldNotBe", null, shouldNotBe);
-            validateWrapRethrow(new Internal.Validation() {
-                @Override
-                public void validate(long start) {
-                    assignValueIfNeeded();
-                    if (shouldNotBe.equals(is) && within != null) {
+            validateWrapRethrow(new ShouldNotBeValidation<T>(shouldNotBe),
+                    Context.singular(context, "shouldNotBe", null, shouldNotBe));
+        }
+
+        private class ShouldNotBeValidation<T> extends Validation {
+            private final T shouldNotBe;
+
+            public ShouldNotBeValidation(T shouldNotBe) {
+                this.shouldNotBe = shouldNotBe;
+            }
+
+            @Override
+            public void validate(long start) {
+                assignValueIfNeeded();
+                if (shouldNotBe.equals(is) && within != null) {
+                    boolean passed;
+                    long endMillis = calcEndMillis();
+                    do {
+                        is = execution.doExecution();
+                        passed = is != null && !is.equals(shouldNotBe);
+                    } while (System.currentTimeMillis() < endMillis && !passed);
+                }
+                assertThat(durationIfNotZero(start), (T) is, not(equalTo(shouldNotBe)));
+            }
+        }
+
+        private class ShouldBeValidation<T> extends Validation {
+            private final T shouldBe;
+
+            public ShouldBeValidation(T shouldBe) {
+                this.shouldBe = shouldBe;
+            }
+
+            @Override
+            public void validate(long start) {
+                if (!shouldBe.equals(is)) {
+                    if (within != null) {
                         boolean passed;
                         long endMillis = calcEndMillis();
                         do {
                             is = execution.doExecution();
-                            passed = is != null && !is.equals(shouldNotBe);
+                            passed = is != null && is.equals(shouldBe);
                         } while (System.currentTimeMillis() < endMillis && !passed);
+                    } else {
+                        assignValueIfNeeded();
                     }
-                    assertThat(durationIfNotZero(start), (T) is, not(equalTo(shouldNotBe)));
                 }
-            }, ctx);
-
+                assertThat(durationIfNotZero(start), (T) is, equalTo(shouldBe));
+            }
         }
     }
 

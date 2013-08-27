@@ -43,17 +43,18 @@ public class TestableValue<T> extends Internal.BaseTestableObject {
     }
 
     public T value() {
-        Context ctx = Context.singular(context, "getValue", null, "");
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                if (is != null) {
-                    return;
-                }
-                is = execution.doExecution();
-            }
-        }, ctx);
+        validateWrapRethrow(new GetValueValidation(),
+                Context.singular(context, "getValue", null, ""));
         return (T) is;
     }
 
+    private class GetValueValidation extends Internal.Validation {
+        @Override
+        public void validate(long start) {
+            if (is != null) {
+                return;
+            }
+            is = execution.doExecution();
+        }
+    }
 }

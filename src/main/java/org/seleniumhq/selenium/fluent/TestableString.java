@@ -53,100 +53,32 @@ public class TestableString extends Internal.BaseTestableObject<String> {
     }
 
     public TestableString shouldContain(final String shouldContain) {
-        Context ctx = Context.singular(context, "shouldContain", null, shouldContain);
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                assignValueIfNeeded();
-                if (is.indexOf(shouldContain) == -1 && within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.doExecution();
-                        passed = is != null && is.indexOf(shouldContain) > -1;
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                }
-                assertThat(durationIfNotZero(start), is, containsString(shouldContain));
-            }
-        }, ctx);
+        validateWrapRethrow(new ShouldContainValidation(shouldContain), Context.singular(context, "shouldContain", null, shouldContain));
         return this;
     }
 
     public TestableString shouldNotContain(final String shouldNotContain) {
-        Context ctx = Context.singular(context, "shouldNotContain", null, shouldNotContain);
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                assignValueIfNeeded();
-                if (is.indexOf(shouldNotContain) > -1 && within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.doExecution();
-                        passed = is != null && is.indexOf(shouldNotContain) == -1;
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                }
-                assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
-            }
-        }, ctx);
+        validateWrapRethrow(new ShouldNotContainValidation(shouldNotContain),
+                Context.singular(context, "shouldNotContain", null, shouldNotContain));
         return this;
     }
 
     @Override
     public String toString() {
-        Context ctx = Context.singular(context, "toString", null, "");
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                if (is != null) {
-                    return;
-                }
-                is = execution.doExecution();
-            }
-        }, ctx);
+        validateWrapRethrow(new ToStringValidation(),
+                Context.singular(context, "toString", null, ""));
         return is;
     }
 
     public TestableString shouldMatch(String regex) {
-        Context ctx = Context.singular(context, "shouldMatch", null, regex);
-        final MatchesRegex matcher = new MatchesRegex(regex);
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                assignValueIfNeeded();
-
-                if ((is != null && !matcher.matches(is)) && within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.doExecution();
-                        passed = is != null && matcher.matches(is);
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                }
-                assertThat(durationIfNotZero(start), is, matcher);
-            }
-        }, ctx);
+        validateWrapRethrow(new ShouldMatchValidation(new MatchesRegex(regex)),
+                Context.singular(context, "shouldMatch", null, regex));
         return this;
     }
 
     public TestableString shouldNotMatch(final String regex) {
-        Context ctx = Context.singular(context, "shouldNotMatch", null, regex);
-        final MatchesRegex matcher = new MatchesRegex(regex);
-        validateWrapRethrow(new Internal.Validation() {
-            @Override
-            public void validate(long start) {
-                assignValueIfNeeded();
-                if ((is != null && matcher.matches(is)) && within != null) {
-                    boolean passed;
-                    long endMillis = calcEndMillis();
-                    do {
-                        is = execution.doExecution();
-                        passed = is != null && !matcher.matches(is);
-                    } while (System.currentTimeMillis() < endMillis && !passed);
-                }
-                assertThat(durationIfNotZero(start), is, not(matcher));
-            }
-        }, ctx);
+        validateWrapRethrow(new ShouldNotMatchValidation(new MatchesRegex(regex)),
+                Context.singular(context, "shouldNotMatch", null, regex));
         return this;
     }
 
@@ -170,6 +102,105 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         public final boolean matches(Object item) {
 
             return pattern.matcher((String) item).find();
+        }
+    }
+
+    private class ShouldContainValidation extends Internal.Validation {
+        private final String shouldContain;
+
+        public ShouldContainValidation(String shouldContain) {
+            this.shouldContain = shouldContain;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+            if (is.indexOf(shouldContain) == -1 && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && is.indexOf(shouldContain) > -1;
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, containsString(shouldContain));
+        }
+    }
+
+    private class ShouldMatchValidation extends Internal.Validation {
+        private final MatchesRegex matcher;
+
+        public ShouldMatchValidation(MatchesRegex matcher) {
+            this.matcher = matcher;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+
+            if ((is != null && !matcher.matches(is)) && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && matcher.matches(is);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, matcher);
+        }
+    }
+
+    private class ShouldNotMatchValidation extends Internal.Validation {
+        private final MatchesRegex matcher;
+
+        public ShouldNotMatchValidation(MatchesRegex matcher) {
+            this.matcher = matcher;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+            if ((is != null && matcher.matches(is)) && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && !matcher.matches(is);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, not(matcher));
+        }
+    }
+
+    private class ShouldNotContainValidation extends Internal.Validation {
+        private final String shouldNotContain;
+
+        public ShouldNotContainValidation(String shouldNotContain) {
+            this.shouldNotContain = shouldNotContain;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+            if (is.indexOf(shouldNotContain) > -1 && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && is.indexOf(shouldNotContain) == -1;
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, not(containsString(shouldNotContain)));
+        }
+    }
+
+    private class ToStringValidation extends Internal.Validation {
+        @Override
+        public void validate(long start) {
+            if (is != null) {
+                return;
+            }
+            is = execution.doExecution();
         }
     }
 }
