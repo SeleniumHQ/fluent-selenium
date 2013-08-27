@@ -37,8 +37,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 import static org.seleniumhq.selenium.fluent.FluentBy.composite;
-import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateAssertionError;
-import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.decorateRuntimeException;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.wrapAssertionError;
+import static org.seleniumhq.selenium.fluent.Internal.BaseFluentWebDriver.wrapRuntimeException;
 
 public class Internal {
 
@@ -795,7 +795,7 @@ public class Internal {
             try {
                 changeTimeout();
                 FindIt execution = new FindIt(by2, tagName, ctx);
-                WebElement found = decorateExecution(execution, ctx, true);
+                WebElement found = executeAndWrapReThrowIfNeeded(execution, ctx, true);
                 result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
                 resetTimeout();
@@ -883,7 +883,7 @@ public class Internal {
             try {
                 changeTimeout();
                 FindThem execution = new FindThem(by2, tagName, ctx);
-                result = decorateExecution(execution, ctx, true);
+                result = executeAndWrapReThrowIfNeeded(execution, ctx, true);
             } finally {
                 resetTimeout();
             }
@@ -927,7 +927,7 @@ public class Internal {
             }
         }
 
-        protected static FluentExecutionStopped decorateRuntimeException(Context ctx, RuntimeException e) {
+        protected static FluentExecutionStopped wrapRuntimeException(Context ctx, RuntimeException e) {
             FluentExecutionStopped rv = null;
             if (e instanceof StaleElementReferenceException) {
                 rv =  new FluentExecutionStopped.BecauseOfStaleElement(replacePkgNames(e) + ctx, e);
@@ -946,12 +946,11 @@ public class Internal {
                     + " during invocation of: ";
         }
 
-        protected static FluentExecutionStopped decorateAssertionError(Context ctx, AssertionError e) {
-            FluentExecutionStopped rv = new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
-            return rv;
+        protected static FluentExecutionStopped wrapAssertionError(Context ctx, AssertionError e) {
+            return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
         }
 
-        protected <T> T decorateExecution(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
+        protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
 
             Monitor.Timer timer = monitor.start(ctx.toString().substring(2));
             boolean success = false;
@@ -962,14 +961,14 @@ public class Internal {
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                FluentExecutionStopped ex = decorateRuntimeException(ctx, e);
+                FluentExecutionStopped ex = wrapRuntimeException(ctx, e);
                 if (expectedToBeThere) {
                     throw monitor.exceptionDuringExecution(ex);
                 } else {
                     throw ex;
                 }
             } catch (AssertionError e) {
-                FluentExecutionStopped ex = decorateAssertionError(ctx, e);
+                FluentExecutionStopped ex = wrapAssertionError(ctx, e);
                 if (expectedToBeThere) {
                     throw monitor.exceptionDuringExecution(ex);
                 } else {
@@ -1137,9 +1136,9 @@ public class Internal {
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                throw monitor.exceptionDuringExecution(decorateRuntimeException(ctx, e));
+                throw monitor.exceptionDuringExecution(wrapRuntimeException(ctx, e));
             } catch (AssertionError e) {
-                throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, e));
+                throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, e));
             }
         }
 

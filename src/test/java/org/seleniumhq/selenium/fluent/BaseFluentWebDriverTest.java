@@ -68,7 +68,7 @@ public class BaseFluentWebDriverTest {
 
         try {
             Context dummy_context = Context.singular(null, "dummy");
-            fc.decorateExecution(new Execution() {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new AssertionError("Oops");
                 }
@@ -85,7 +85,7 @@ public class BaseFluentWebDriverTest {
     public void runtimeException_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.decorateExecution(new Execution() {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
@@ -102,7 +102,7 @@ public class BaseFluentWebDriverTest {
     public void staleElementException_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.decorateExecution(new Execution() {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new StaleElementReferenceException("Oops");
                 }
@@ -119,7 +119,7 @@ public class BaseFluentWebDriverTest {
     public void unsupportedOperationException_should_not_be_wrapped() {
 
         try {
-            fc.decorateExecution(new Execution() {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }

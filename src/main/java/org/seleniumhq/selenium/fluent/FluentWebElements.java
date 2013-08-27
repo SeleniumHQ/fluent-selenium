@@ -48,7 +48,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements click() {
         Context ctx = Context.singular(context, "click");
-        decorateExecution(new Click(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Click(), ctx, true);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
@@ -57,13 +57,13 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
      */
     public FluentWebElements clearField() {
         Context ctx = Context.singular(context, "clearField");
-        decorateExecution(new Clear(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Clear(), ctx, true);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
     public FluentWebElements submit() {
         Context ctx = Context.singular(context, "submit");
-        decorateExecution(new Submit(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Submit(), ctx, true);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
@@ -71,23 +71,23 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         Context ctx = Context.singular(context, "sendKeys", charSeqArrayAsHumanString(keysToSend));
-        decorateExecution(new SendKeys(keysToSend), ctx, true);
+        executeAndWrapReThrowIfNeeded(new SendKeys(keysToSend), ctx, true);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
     public boolean isSelected() {
         Context ctx = Context.singular(context, "isSelected");
-        return decorateExecution(new IsSelected(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsSelected(), ctx, true);
     }
 
     public boolean isEnabled() {
         Context ctx = Context.singular(context, "isEnabled");
-        return decorateExecution(new IsEnabled(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsEnabled(), ctx, true);
     }
 
     public boolean isDisplayed() {
         Context ctx = Context.singular(context, "isDisplayed");
-        return decorateExecution(new IsDisplayed(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsDisplayed(), ctx, true);
     }
 
     public TestableString getText() {
@@ -117,12 +117,12 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "filter", null, matcher);
-        return makeFluentWebElements(decorateExecution(new FilterMatches(matcher), ctx, true), ctx, monitor);
+        return makeFluentWebElements(executeAndWrapReThrowIfNeeded(new FilterMatches(matcher), ctx, true), ctx, monitor);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "first", null, matcher);
-        return decorateExecution(new MatchesFirst(matcher), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new MatchesFirst(matcher), ctx, true);
     }
 
 

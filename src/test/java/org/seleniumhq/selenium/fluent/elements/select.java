@@ -137,7 +137,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -197,7 +197,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -257,7 +257,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -316,7 +316,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -375,7 +375,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -434,7 +434,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -493,7 +493,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -552,7 +552,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -611,7 +611,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -670,7 +670,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -731,7 +731,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void decorateExecution(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");

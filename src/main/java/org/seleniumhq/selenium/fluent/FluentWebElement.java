@@ -72,7 +72,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
-        decorateExecution(new Click(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Click(), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -82,13 +82,13 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
-        decorateExecution(new Clear(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Clear(), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
 
     public FluentWebElement submit() {
-        decorateExecution(new Submit(), Context.singular(context, "submit"), true);
+        executeAndWrapReThrowIfNeeded(new Submit(), Context.singular(context, "submit"), true);
         return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -96,7 +96,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement sendKeys(final CharSequence... keysToSend) {
 
-        decorateExecution(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)), true);
+        executeAndWrapReThrowIfNeeded(new SendKeys(keysToSend), Context.singular(context, "sendKeys", null, charSeqArrayAsHumanString(keysToSend)), true);
         return new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -121,7 +121,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement ifInvisibleWaitUpTo(Period period) {
         Context ifInvisibleWaitUpTo = Context.singular(context, "ifInvisibleWaitUpTo", period);
-        decorateExecution(new IfInvisibleWait(period), ifInvisibleWaitUpTo, true);
+        executeAndWrapReThrowIfNeeded(new IfInvisibleWait(period), ifInvisibleWaitUpTo, true);
         return new FluentWebElement(delegate, currentElement, ifInvisibleWaitUpTo, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -910,12 +910,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
             this.delegate = new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement) {
-                protected <T> T decorateExecution(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
+                protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
                     final T successfullyAbsent = null;
                     while (!durationHasElapsed(startedAt)) {
                         try {
                             // ignore the passed in boolean-----------↴-----------------------↗
-                            super.decorateExecution(execution, ctx, false);
+                            super.executeAndWrapReThrowIfNeeded(execution, ctx, false);
                         } catch (FluentExecutionStopped executionStopped) {
                             final boolean elementGone = executionStopped.getCause() instanceof NotFoundException;
 
@@ -924,7 +924,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
                             }
                         }
                     }
-                    throw monitor.exceptionDuringExecution(decorateAssertionError(ctx, new AssertionError("Element never disappeared")));
+                    throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")));
                 }
             };
             this.duration = duration;
