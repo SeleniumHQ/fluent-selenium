@@ -803,28 +803,6 @@ public class Internal {
             return new SingleResult(result, ctx);
         }
 
-        public static class WebElementHolder {
-            private final SearchContext parent;
-            protected WebElement foundElement;
-            private final By locator;
-
-            public WebElementHolder(SearchContext parent, WebElement found, By locator) {
-                this.parent = parent;
-                this.foundElement = found;
-                this.locator = locator;
-            }
-
-            public WebElement getFound() {
-                return foundElement;
-            }
-
-            public void reFindElement() {
-                if (parent != null) {
-                    foundElement = parent.findElement(locator);
-                }
-            }
-        }
-
         public static class SingleResult {
             private final WebElementHolder result;
             private final Context ctx;
@@ -848,7 +826,9 @@ public class Internal {
             private final Context ctx;
             private final SearchContext searchContext;
 
+
             public FindIt(By by2, String tagName, Context ctx, SearchContext searchContext) {
+                super(null);
                 this.by2 = by2;
                 this.tagName = tagName;
                 this.ctx = ctx;
@@ -915,6 +895,7 @@ public class Internal {
             private final Context ctx;
 
             public FindThem(By by2, String tagName, Context ctx) {
+                super(null);
                 this.by2 = by2;
                 this.tagName = tagName;
                 this.ctx = ctx;
@@ -965,14 +946,14 @@ public class Internal {
             } catch (RuntimeException e) {
                 FluentExecutionStopped ex = wrapRuntimeException(ctx, e);
                 if (expectedToBeThere) {
-                    throw monitor.exceptionDuringExecution(ex);
+                    throw monitor.exceptionDuringExecution(ex, execution.getWebElement());
                 } else {
                     throw ex;
                 }
             } catch (AssertionError e) {
                 FluentExecutionStopped ex = wrapAssertionError(ctx, e);
                 if (expectedToBeThere) {
-                    throw monitor.exceptionDuringExecution(ex);
+                    throw monitor.exceptionDuringExecution(ex, execution.getWebElement());
                 } else {
                     throw ex;
                 }
@@ -1029,14 +1010,43 @@ public class Internal {
         protected abstract List<WebElement> actualFindThem(By by, Context ctx);
 
         private class CurrentUrl extends Execution<String> {
+            private CurrentUrl() {
+                super(null);
+            }
+
             public String execute() {
                 return delegate.getCurrentUrl();
             }
         }
 
         private class GetTitle extends Execution<String> {
+            private GetTitle() {
+                super(null);
+            }
             public String execute() {
                 return delegate.getTitle();
+            }
+        }
+    }
+
+    public static class WebElementHolder {
+        private final SearchContext parent;
+        protected WebElement foundElement;
+        private final By locator;
+
+        public WebElementHolder(SearchContext parent, WebElement found, By locator) {
+            this.parent = parent;
+            this.foundElement = found;
+            this.locator = locator;
+        }
+
+        public WebElement getFound() {
+            return foundElement;
+        }
+
+        public void reFindElement() {
+            if (parent != null) {
+                foundElement = parent.findElement(locator);
             }
         }
     }
@@ -1138,9 +1148,9 @@ public class Internal {
             } catch (UnsupportedOperationException e) {
                 throw e;
             } catch (RuntimeException e) {
-                throw monitor.exceptionDuringExecution(wrapRuntimeException(ctx, e));
+                throw monitor.exceptionDuringExecution(wrapRuntimeException(ctx, e), execution.getWebElement());
             } catch (AssertionError e) {
-                throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, e));
+                throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, e), execution.getWebElement());
             }
         }
 

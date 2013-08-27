@@ -12,19 +12,19 @@ import static org.seleniumhq.selenium.fluent.Period.secs;
 
 public class TestableStringTest {
 
-    private static final Execution<String> FOO_EXECUTION = new Execution<String>() {
+    private static final Execution<String> FOO_EXECUTION = new Execution<String>(null) {
         public String execute() {
             return "foo";
         }
     };
 
-    private static final Execution<String> MARY_EXECUTION = new Execution<String>() {
+    private static final Execution<String> MARY_EXECUTION = new Execution<String>(null) {
         public String execute() {
             return "Mary Has 12 Little Lambs";
         }
     };
 
-    private static final Execution<String> MARY_EXECUTION_WITH_NEWLINES = new Execution<String>() {
+    private static final Execution<String> MARY_EXECUTION_WITH_NEWLINES = new Execution<String>(null) {
         public String execute() {
             return "Mary Has \n12\n Little Lambs";
         }
@@ -60,7 +60,7 @@ public class TestableStringTest {
     public void unsupportedOperationExceptionShouldBeReThrownAsIs() {
         Context ctx = Context.singular(null, "dummy2");
         try {
-            new TestableString(new Execution<String>() {
+            new TestableString(new Execution<String>(null) {
                 public String execute() {
                     throw new UnsupportedOperationException("oops");
                 }
@@ -76,7 +76,7 @@ public class TestableStringTest {
     public void runtimeExceptionShouldBeWrappedAndReThrown() {
         Context ctx = Context.singular(null, "dummy2");
         try {
-            new TestableString(new Execution<String>() {
+            new TestableString(new Execution<String>(null) {
                 public String execute() {
                     throw new RuntimeException("oops");
                 }

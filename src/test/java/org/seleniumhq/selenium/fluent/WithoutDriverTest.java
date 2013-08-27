@@ -35,9 +35,9 @@ public class WithoutDriverTest {
 
     private class ExceptionCounter extends Monitor.NULL {
         @Override
-        public RuntimeException exceptionDuringExecution(RuntimeException ex) {
+        public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
             count++;
-            return super.exceptionDuringExecution(ex);
+            return super.exceptionDuringExecution(ex, webElement);
         }
     }
 

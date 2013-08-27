@@ -362,7 +362,7 @@ public class NegatingFluentWebDriver {
                     }
                 }
             }
-            throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")));
+            throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")), execution.getWebElement());
         }
     }
 }

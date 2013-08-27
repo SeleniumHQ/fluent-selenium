@@ -31,11 +31,11 @@ public class FluentSelect extends FluentWebElement {
     private Select currentSelect;
 
     protected FluentSelect(WebDriver delegate, WebElement currentElement, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
-        super(delegate, new WebElementHolder(null, currentElement, null), context, monitor, booleanInsteadOfNoSuchElement);
+        super(delegate, new Internal.WebElementHolder(null, currentElement, null), context, monitor, booleanInsteadOfNoSuchElement);
     }
 
     protected FluentSelect(WebDriver delegate, Select currentSelect, WebElement currentElement, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
-        super(delegate, new WebElementHolder(null, currentElement, null), context, monitor, booleanInsteadOfNoSuchElement);
+        super(delegate, new Internal.WebElementHolder(null, currentElement, null), context, monitor, booleanInsteadOfNoSuchElement);
         this.currentSelect = currentSelect;
     }
 
@@ -209,6 +209,10 @@ public class FluentSelect extends FluentWebElement {
 
 
     private class DeselectAll extends Execution<Boolean> {
+        private DeselectAll() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             getSelect().deselectAll();
             return true;
@@ -219,6 +223,7 @@ public class FluentSelect extends FluentWebElement {
         private final String value;
 
         public SelectByValue(String value) {
+            super(currentElement);
             this.value = value;
         }
 
@@ -233,6 +238,7 @@ public class FluentSelect extends FluentWebElement {
         private final int index;
 
         public SelectByIndex(int index) {
+            super(currentElement);
             this.index = index;
         }
 
@@ -246,6 +252,7 @@ public class FluentSelect extends FluentWebElement {
         private final String text;
 
         public SelectByVisibleText(String text) {
+            super(currentElement);
             this.text = text;
         }
 
@@ -256,24 +263,40 @@ public class FluentSelect extends FluentWebElement {
     }
 
     private class GetFirstSelectedOption extends Execution<WebElement> {
+        private GetFirstSelectedOption() {
+            super(currentElement);
+        }
+
         public WebElement execute() {
             return getSelect().getFirstSelectedOption();
         }
     }
 
     private class GetAllSelectedOptions extends Execution<List<WebElement>> {
+        private GetAllSelectedOptions() {
+            super(currentElement);
+        }
+
         public List<WebElement> execute() {
             return getSelect().getAllSelectedOptions();
         }
     }
 
     private class GetOptions extends Execution<List<WebElement>> {
+        private GetOptions() {
+            super(currentElement);
+        }
+
         public List<WebElement> execute() {
             return getSelect().getOptions();
         }
     }
 
     private class IsMultiple extends Execution<Boolean> {
+        private IsMultiple() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             return getSelect().isMultiple();
         }
@@ -283,6 +306,7 @@ public class FluentSelect extends FluentWebElement {
         private final String value;
 
         public DeselectByValue(String value) {
+            super(currentElement);
             this.value = value;
         }
 
@@ -296,6 +320,7 @@ public class FluentSelect extends FluentWebElement {
         private final int index;
 
         public DeselectByIndex(int index) {
+            super(currentElement);
             this.index = index;
         }
 
@@ -309,6 +334,7 @@ public class FluentSelect extends FluentWebElement {
         private final String text;
 
         public DeselectByVisibleText(String text) {
+            super(currentElement);
             this.text = text;
         }
 

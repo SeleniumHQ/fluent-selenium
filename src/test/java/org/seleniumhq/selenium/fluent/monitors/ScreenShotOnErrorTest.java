@@ -28,7 +28,7 @@ public class ScreenShotOnErrorTest {
         ScreenShotOnError ssoe = new ScreenShotOnError(ts, ScreenShotOnErrorTest.class, "target/test-classes/", "target/");
         ssoe.setContext("baz");
         RuntimeException boo = new RuntimeException("boo");
-        RuntimeException bar = ssoe.exceptionDuringExecution(boo);
+        RuntimeException bar = ssoe.exceptionDuringExecution(boo, null);
         assertThat(bar, equalTo(boo));
 
         assertThat(new File("target/baz_screenshot.png").exists(), equalTo(true));

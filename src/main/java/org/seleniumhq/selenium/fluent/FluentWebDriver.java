@@ -81,7 +81,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
+            elems.add(new FluentWebElement(delegate, new Internal.WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
         }
         return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
     }
@@ -850,7 +850,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
             bfwd = new FluentWebDriver(webDriver, monitor, context, true);
         }
 
-        public BooleanResultsAdapter(WebDriver webDriver, WebElementHolder elementHolder, Monitor monitor, Context context) {
+        public BooleanResultsAdapter(WebDriver webDriver, Internal.WebElementHolder elementHolder, Monitor monitor, Context context) {
             bfwd = new FluentWebElement(webDriver, elementHolder, context, monitor, true);
         }
 

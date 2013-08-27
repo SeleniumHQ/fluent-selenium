@@ -42,7 +42,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         Context ctx = multiple.getCtx();
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
         for (WebElement aResult : result) {
-            elems.add(new FluentWebElement(delegate, new WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
+            elems.add(new FluentWebElement(delegate, new Internal.WebElementHolder(null, aResult, null), ctx, monitor, booleanInsteadOfNotFoundException));
         }
         return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
     }
@@ -198,6 +198,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Clear extends Execution<Boolean> {
+        private Clear() {
+            super(null);
+        }
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.clearField();
@@ -207,6 +210,10 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Click extends Execution<Boolean> {
+        private Click() {
+            super(null);
+        }
+
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.click();
@@ -219,6 +226,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final FluentMatcher matcher;
 
         public MatchesFirst(FluentMatcher matcher) {
+            super(null);
             this.matcher = matcher;
         }
 
@@ -242,6 +250,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final FluentMatcher matcher;
 
         public FilterMatches(FluentMatcher matcher) {
+            super(null);
             this.matcher = matcher;
         }
 
@@ -260,6 +269,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class GetText extends Execution<String> {
+        private GetText() {
+            super(null);
+        }
         public String execute() {
             String text = "";
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -270,6 +282,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsDisplayed extends Execution<Boolean> {
+        private IsDisplayed() {
+            super(null);
+        }
         public Boolean execute() {
             boolean areDisplayed = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -280,6 +295,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsEnabled extends Execution<Boolean> {
+        private IsEnabled() {
+            super(null);
+        }
         public Boolean execute() {
             boolean areEnabled = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -290,6 +308,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsSelected extends Execution<Boolean> {
+        private IsSelected() {
+            super(null);
+        }
         public Boolean execute() {
             boolean areSelected = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -303,6 +324,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
+            super(null);
             this.keysToSend = keysToSend;
         }
 
@@ -315,6 +337,10 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Submit extends Execution<Boolean> {
+        private Submit() {
+            super(null);
+        }
+
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.submit();

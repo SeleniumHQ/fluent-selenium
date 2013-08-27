@@ -1,10 +1,12 @@
 package org.seleniumhq.selenium.fluent;
 
+import org.openqa.selenium.WebElement;
+
 public interface Monitor {
 
     Timer start(String item);
 
-    RuntimeException exceptionDuringExecution(RuntimeException ex);
+    RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement);
 
     public interface Timer {
         void end(boolean success);
@@ -20,7 +22,7 @@ public interface Monitor {
             return new Timer.NULL();
         }
 
-        public RuntimeException exceptionDuringExecution(RuntimeException ex) {
+        public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
             return ex;
         }
     }

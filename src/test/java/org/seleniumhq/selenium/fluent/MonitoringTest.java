@@ -147,7 +147,7 @@ public class MonitoringTest {
 
         when(webDriver.findElement(By.tagName("div"))).thenThrow(new NoSuchElementException("boo"));
         when(monitor.start("div()")).thenReturn(timer);
-        when(monitor.exceptionDuringExecution(any(FluentExecutionStopped.class))).thenReturn(fes);
+        when(monitor.exceptionDuringExecution(any(FluentExecutionStopped.class), any(WebElement.class))).thenReturn(fes);
 
         try {
             fluentWebDriver.div().sendKeys("abc");
@@ -157,7 +157,7 @@ public class MonitoringTest {
         }
 
         verify(monitor).start("div()");
-        verify(monitor).exceptionDuringExecution(any(FluentExecutionStopped.class));
+        verify(monitor).exceptionDuringExecution(any(FluentExecutionStopped.class), any(WebElement.class));
         verify(timer).end(false);
     }
 

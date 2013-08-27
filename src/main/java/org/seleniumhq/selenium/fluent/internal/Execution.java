@@ -15,7 +15,25 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent.internal;
 
+import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.Internal;
+
 public abstract class Execution<T> {
+
+    private final Internal.WebElementHolder webElementHolder;
+
+    protected Execution(Internal.WebElementHolder webElementHolder) {
+        this.webElementHolder = webElementHolder;
+    }
+
+    public WebElement getWebElement() {
+        if (webElementHolder == null) {
+            return null;
+        }
+        return webElementHolder.getFound();
+    }
+
+    // See StaleElementRecoveringExecution subclass for alternate impl
     public T doExecution() {
         return execute();
     }

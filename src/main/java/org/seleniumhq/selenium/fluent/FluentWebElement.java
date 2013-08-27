@@ -32,9 +32,9 @@ import java.util.concurrent.TimeUnit;
 
 public class FluentWebElement extends Internal.BaseFluentWebElement {
 
-    protected final WebElementHolder currentElement;
+    protected final Internal.WebElementHolder currentElement;
 
-    protected FluentWebElement(WebDriver delegate, WebElementHolder currentElement, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+    protected FluentWebElement(WebDriver delegate, Internal.WebElementHolder currentElement, Context context, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
         super(delegate, context, monitor, booleanInsteadOfNoSuchElement);
         this.currentElement = currentElement;
     }
@@ -872,7 +872,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         private final Period period;
 
-        public RetryingFluentWebElement(WebDriver webDriver, WebElementHolder currentElement, Context context, Period period, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
+        public RetryingFluentWebElement(WebDriver webDriver, Internal.WebElementHolder currentElement, Context context, Period period, Monitor monitor, boolean booleanInsteadOfNoSuchElement) {
             super(webDriver, currentElement, context, monitor, booleanInsteadOfNoSuchElement);
             this.period = period;
         }
@@ -909,7 +909,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final Period duration;
         private final Long startedAt;
 
-        protected NegatingFluentWebElement(WebDriver delegate, WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
+        protected NegatingFluentWebElement(WebDriver delegate, Internal.WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
             this.delegate = new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement) {
                 protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
                     final T successfullyAbsent = null;
@@ -925,7 +925,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
                             }
                         }
                     }
-                    throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")));
+                    throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")), execution.getWebElement());
                 }
             };
             this.duration = duration;
@@ -1274,6 +1274,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class Clear extends StaleElementRecoveringExecution<Boolean> {
+        private Clear() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             currentElement.getFound().clear();
             return true;
@@ -1281,12 +1285,19 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class GetTagName extends StaleElementRecoveringExecution<String> {
+        public GetTagName() {
+            super(currentElement);
+        }
         public String execute() {
             return currentElement.getFound().getTagName();
         }
     }
 
     private class Click extends StaleElementRecoveringExecution<Boolean> {
+        public Click() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             currentElement.getFound().click();
             return true;
@@ -1294,6 +1305,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private abstract class StaleElementRecoveringExecution<T> extends Execution<T> {
+
+        protected StaleElementRecoveringExecution(Internal.WebElementHolder webElementHolder) {
+            super(webElementHolder);
+        }
 
         @Override
         public T doExecution() {
@@ -1319,6 +1334,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final String attr;
 
         public GetAttribute(String attr) {
+            super(currentElement);
             this.attr = attr;
         }
 
@@ -1340,6 +1356,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final String cssName;
 
         public GetCssValue(String cssName) {
+            super(currentElement);
             this.cssName = cssName;
         }
 
@@ -1349,24 +1366,39 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class GetText extends StaleElementRecoveringExecution<String> {
+        private GetText() {
+            super(currentElement);
+        }
         public String execute() {
             return currentElement.getFound().getText();
         }
     }
 
     private class GetSize extends StaleElementRecoveringExecution<Dimension> {
+        private GetSize() {
+            super(currentElement);
+        }
+
         public Dimension execute() {
             return currentElement.getFound().getSize();
         }
     }
 
     private class GetLocation extends StaleElementRecoveringExecution<Point> {
+        private GetLocation() {
+            super(currentElement);
+        }
+
         public Point execute() {
             return currentElement.getFound().getLocation();
         }
     }
 
     private class IsDisplayed extends StaleElementRecoveringExecution<Boolean> {
+        private IsDisplayed() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             return currentElement.getFound().isDisplayed();
         }
@@ -1376,6 +1408,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private Period period;
 
         IfInvisibleWait(Period period) {
+            super(currentElement);
             this.period = period;
         }
 
@@ -1394,12 +1427,20 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class IsEnabled extends StaleElementRecoveringExecution<Boolean> {
+        public IsEnabled() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             return currentElement.getFound().isEnabled();
         }
     }
 
     private class IsSelected extends StaleElementRecoveringExecution<Boolean> {
+        public IsSelected() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             return currentElement.getFound().isSelected();
         }
@@ -1409,6 +1450,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
+            super(currentElement);
             this.keysToSend = keysToSend;
         }
 
@@ -1419,6 +1461,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class Submit extends StaleElementRecoveringExecution<Boolean> {
+        public Submit() {
+            super(currentElement);
+        }
+
         public Boolean execute() {
             currentElement.getFound().submit();
             return true;

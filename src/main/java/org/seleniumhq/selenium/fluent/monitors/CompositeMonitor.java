@@ -1,5 +1,6 @@
 package org.seleniumhq.selenium.fluent.monitors;
 
+import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.Monitor;
 
 public class CompositeMonitor implements Monitor {
@@ -22,10 +23,10 @@ public class CompositeMonitor implements Monitor {
         return monitors[0].start(item);
     }
 
-    public RuntimeException exceptionDuringExecution(RuntimeException ex) {
+    public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
         RuntimeException rv = ex;
         for (Monitor monitor : monitors) {
-            rv = monitor.exceptionDuringExecution(rv);
+            rv = monitor.exceptionDuringExecution(rv, webElement);
         }
         return rv;
     }

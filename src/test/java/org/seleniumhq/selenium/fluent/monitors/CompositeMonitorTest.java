@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent.monitors;
 
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.Monitor;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -32,20 +33,22 @@ public class CompositeMonitorTest {
         RuntimeException boo = new RuntimeException("boo");
         RuntimeException boo2 = new RuntimeException("boo2");
 
+        WebElement we = mock(WebElement.class);
+
         Monitor m1 = mock(Monitor.class);
-        when(m1.exceptionDuringExecution(boo)).thenReturn(boo);
+        when(m1.exceptionDuringExecution(boo, we)).thenReturn(boo);
         Monitor m2 = mock(Monitor.class);
-        when(m2.exceptionDuringExecution(boo)).thenReturn(boo);
+        when(m2.exceptionDuringExecution(boo, we)).thenReturn(boo);
         Monitor m3 = mock(Monitor.class);
-        when(m3.exceptionDuringExecution(boo)).thenReturn(boo2);
+        when(m3.exceptionDuringExecution(boo, we)).thenReturn(boo2);
 
         CompositeMonitor monitor = new CompositeMonitor(m1, m2, m3);
-        RuntimeException newException = monitor.exceptionDuringExecution(boo);
+        RuntimeException newException = monitor.exceptionDuringExecution(boo, we);
 
         assertThat(newException, equalTo(boo2));
 
-        verify(m1).exceptionDuringExecution(boo);
-        verify(m2).exceptionDuringExecution(boo);
-        verify(m3).exceptionDuringExecution(boo);
+        verify(m1).exceptionDuringExecution(boo, we);
+        verify(m2).exceptionDuringExecution(boo, we);
+        verify(m3).exceptionDuringExecution(boo, we);
     }
 }
