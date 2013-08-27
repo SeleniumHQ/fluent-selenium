@@ -16,6 +16,7 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -180,8 +181,8 @@ public class FluentSelect extends FluentWebElement {
         }
 
         @Override
-        protected WebElement findIt(By by, Context ctx) {
-            return retryingFindIt(by);
+        protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+            return retryingFindIt(by, searchContext);
         }
 
         @Override

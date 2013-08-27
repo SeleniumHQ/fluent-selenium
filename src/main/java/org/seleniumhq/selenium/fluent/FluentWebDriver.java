@@ -16,6 +16,7 @@ limitations under the License.
 package org.seleniumhq.selenium.fluent;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
@@ -48,8 +49,8 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNotFoundException);
     }
 
-    protected WebElement findIt(By by, Context ctx) {
-        return actualFindIt(by, ctx);
+    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+        return actualFindIt(by, ctx, searchContext);
     }
 
     @Override
@@ -57,9 +58,9 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return actualFindThem(by, ctx);
     }
 
-    protected final WebElement actualFindIt(By by, Context ctx) {
+    protected final WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
         beforeFindElement(by);
-        return delegate.findElement(by);
+        return searchContext.findElement(by);
     }
 
     protected final List<WebElement> actualFindThem(By by, Context ctx) {

@@ -784,7 +784,7 @@ public class Internal {
             }
         }
 
-        protected abstract WebElement findIt(By by, Context ctx);
+        protected abstract WebElement findIt(By by, Context ctx, SearchContext searchContext);
 
         protected abstract List<WebElement> findThem(By by, Context ctx);
 
@@ -794,7 +794,7 @@ public class Internal {
             final WebElementHolder result;
             try {
                 changeTimeout();
-                FindIt execution = new FindIt(by2, tagName, ctx);
+                FindIt execution = new FindIt(by2, tagName, ctx, getSearchContext());
                 WebElement found = executeAndWrapReThrowIfNeeded(execution, ctx, true);
                 result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
@@ -846,23 +846,25 @@ public class Internal {
             private final By by2;
             private final String tagName;
             private final Context ctx;
+            private final SearchContext searchContext;
 
-            public FindIt(By by2, String tagName, Context ctx) {
+            public FindIt(By by2, String tagName, Context ctx, SearchContext searchContext) {
                 this.by2 = by2;
                 this.tagName = tagName;
                 this.ctx = ctx;
+                this.searchContext = searchContext;
             }
 
             public WebElement execute() {
                 if (booleanInsteadOfNotFoundException) {
                     try {
-                        findIt(by2, ctx);
+                        findIt(by2, ctx, searchContext);
                         return new FoundOrNotFound(true);
                     } catch (NotFoundException e) {
                         return new FoundOrNotFound(false);
                     }
                 } else {
-                    WebElement it = findIt(by2, ctx);
+                    WebElement it = findIt(by2, ctx, searchContext);
                     assertTagIs(it.getTagName(), tagName);
                     return it;
                 }
@@ -985,14 +987,14 @@ public class Internal {
         protected void resetTimeout() {
         }
 
-        protected final WebElement retryingFindIt(By by) {
+        protected final WebElement retryingFindIt(By by, SearchContext searchContext) {
             long endMillis = getPeriod().getEndMillis(System.currentTimeMillis());
             RuntimeException exceptionCausingRetry = null;
             boolean toRetry = true;
             WebElement it = null;
             while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
-                    it = actualFindIt(by, context);
+                    it = actualFindIt(by, context, searchContext);
                     toRetry = false;
                     return it;
                 } catch (WebDriverException e) {
@@ -1022,7 +1024,7 @@ public class Internal {
             return them;
         }
 
-        protected abstract WebElement actualFindIt(By by, Context ctx);
+        protected abstract WebElement actualFindIt(By by, Context ctx, SearchContext searchContext);
 
         protected abstract List<WebElement> actualFindThem(By by, Context ctx);
 

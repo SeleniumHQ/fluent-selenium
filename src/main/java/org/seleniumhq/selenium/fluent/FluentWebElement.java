@@ -49,8 +49,8 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
-    protected WebElement findIt(By by, Context ctx) {
-        return actualFindIt(by, ctx);
+    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+        return actualFindIt(by, ctx, searchContext);
     }
 
     @Override
@@ -59,9 +59,10 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
-    protected WebElement actualFindIt(By by, Context ctx) {
+    protected WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
         beforeFindElement(by);
-        return currentElement.getFound().findElement(by);
+        //return currentElement.getFound().findElement(by);
+        return searchContext.findElement(by);
     }
 
     @Override
@@ -882,8 +883,8 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
 
         @Override
-        protected WebElement findIt(By by, Context ctx) {
-            return retryingFindIt(by);
+        protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+            return retryingFindIt(by, searchContext);
         }
 
         @Override

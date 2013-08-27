@@ -1,6 +1,7 @@
 package org.seleniumhq.selenium.fluent.internal;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
@@ -20,8 +21,8 @@ public class RetryingFluentWebDriver extends FluentWebDriver {
     }
 
     @Override
-    protected WebElement findIt(By by, Context ctx) {
-        return retryingFindIt(by);
+    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+        return retryingFindIt(by, searchContext);
     }
 
     @Override

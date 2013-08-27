@@ -3,6 +3,7 @@ package org.seleniumhq.selenium.fluent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,7 +33,7 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement findIt(By by, Context ctx) {
+            protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
                 return null;
             }
 
@@ -50,7 +51,7 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement actualFindIt(By by, Context ctx) {
+            protected WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
                 return null;
             }
 
