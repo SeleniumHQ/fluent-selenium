@@ -27,7 +27,7 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
 
     private class ExceptionCounter extends Monitor.NULL {
         @Override
-        public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
+        public FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement) {
             count++;
             return super.exceptionDuringExecution(ex, webElement);
         }

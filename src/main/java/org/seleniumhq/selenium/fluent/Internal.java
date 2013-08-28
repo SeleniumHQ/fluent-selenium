@@ -784,9 +784,9 @@ public class Internal {
             }
         }
 
-        protected abstract WebElement findIt(By by, Context ctx, SearchContext searchContext);
+        protected abstract WebElement findElement(By by, Context ctx, SearchContext searchContext);
 
-        protected abstract List<WebElement> findThem(By by, Context ctx);
+        protected abstract List<WebElement> findElements(By by, Context ctx);
 
         private SingleResult single(final By by, final String tagName) {
             final By by2 = fixupBy(by, tagName);
@@ -794,8 +794,8 @@ public class Internal {
             final WebElementHolder result;
             try {
                 changeTimeout();
-                FindIt execution = new FindIt(by2, tagName, ctx, getSearchContext());
-                WebElement found = executeAndWrapReThrowIfNeeded(execution, ctx, true);
+                FindElement execution = new FindElement(by2, tagName, ctx, getSearchContext());
+                WebElement found = executeAndWrapReThrowIfNeeded(execution, null, ctx, true);
                 result = new WebElementHolder(getSearchContext(), found, by2);
             } finally {
                 resetTimeout();
@@ -820,15 +820,14 @@ public class Internal {
             }
         }
 
-        private class FindIt extends Execution<WebElement> {
+        private class FindElement extends Execution<WebElement> {
             private final By by2;
             private final String tagName;
             private final Context ctx;
             private final SearchContext searchContext;
 
 
-            public FindIt(By by2, String tagName, Context ctx, SearchContext searchContext) {
-                super(null);
+            public FindElement(By by2, String tagName, Context ctx, SearchContext searchContext) {
                 this.by2 = by2;
                 this.tagName = tagName;
                 this.ctx = ctx;
@@ -838,13 +837,13 @@ public class Internal {
             public WebElement execute() {
                 if (booleanInsteadOfNotFoundException) {
                     try {
-                        findIt(by2, ctx, searchContext);
+                        findElement(by2, ctx, searchContext);
                         return new FoundOrNotFound(true);
                     } catch (NotFoundException e) {
                         return new FoundOrNotFound(false);
                     }
                 } else {
-                    WebElement it = findIt(by2, ctx, searchContext);
+                    WebElement it = findElement(by2, ctx, searchContext);
                     assertTagIs(it.getTagName(), tagName);
                     return it;
                 }
@@ -864,8 +863,8 @@ public class Internal {
             Context ctx = Context.plural(context, tagName, by);
             try {
                 changeTimeout();
-                FindThem execution = new FindThem(by2, tagName, ctx);
-                result = executeAndWrapReThrowIfNeeded(execution, ctx, true);
+                FindElements execution = new FindElements(by2, tagName, ctx);
+                result = executeAndWrapReThrowIfNeeded(execution, null, ctx, true);
             } finally {
                 resetTimeout();
             }
@@ -889,20 +888,19 @@ public class Internal {
             }
         }
 
-        private class FindThem extends Execution<List<WebElement>> {
+        private class FindElements extends Execution<List<WebElement>> {
             private final By by2;
             private final String tagName;
             private final Context ctx;
 
-            public FindThem(By by2, String tagName, Context ctx) {
-                super(null);
+            public FindElements(By by2, String tagName, Context ctx) {
                 this.by2 = by2;
                 this.tagName = tagName;
                 this.ctx = ctx;
             }
 
             public List<WebElement> execute() {
-                List<WebElement> results = findThem(by2, ctx);
+                List<WebElement> results = findElements(by2, ctx);
                 for (WebElement webElement : results) {
                     assertTagIs(webElement.getTagName(), tagName);
                 }
@@ -933,8 +931,9 @@ public class Internal {
             return new FluentExecutionStopped(replacePkgNames(e) + ctx, e);
         }
 
-        protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
+        protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
 
+            execution.withWebElementHolder(currentElement);
             Monitor.Timer timer = monitor.start(ctx.toString().substring(2));
             boolean success = false;
             try {
@@ -946,20 +945,31 @@ public class Internal {
             } catch (RuntimeException e) {
                 FluentExecutionStopped ex = wrapRuntimeException(ctx, e);
                 if (expectedToBeThere) {
-                    throw monitor.exceptionDuringExecution(ex, execution.getWebElement());
+                    throw monitor.exceptionDuringExecution(ex, currentWebElement(execution));
                 } else {
                     throw ex;
                 }
             } catch (AssertionError e) {
                 FluentExecutionStopped ex = wrapAssertionError(ctx, e);
                 if (expectedToBeThere) {
-                    throw monitor.exceptionDuringExecution(ex, execution.getWebElement());
+                    throw monitor.exceptionDuringExecution(ex, currentWebElement(execution));
                 } else {
                     throw ex;
                 }
             } finally {
                 timer.end(success);
             }
+        }
+
+        private <T> WebElement currentWebElement(Execution<T> execution) {
+            WebElement webElement = execution.getWebElement();
+            if (webElement == null && execution instanceof FindElement) {
+                SearchContext searchContext = ((FindElement) execution).searchContext;
+                if (searchContext instanceof WebElement) {
+                    webElement = (WebElement) searchContext;
+                }
+            }
+            return webElement;
         }
 
         protected void changeTimeout() {
@@ -975,7 +985,7 @@ public class Internal {
             WebElement it = null;
             while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
-                    it = actualFindIt(by, context, searchContext);
+                    it = actualFindElement(by, context, searchContext);
                     toRetry = false;
                     return it;
                 } catch (WebDriverException e) {
@@ -992,7 +1002,7 @@ public class Internal {
             List<WebElement> them = null;
             while (toRetry && endMillis - System.currentTimeMillis() > 0) {
                 try {
-                    them = actualFindThem(by, context);
+                    them = actualFindElements(by, context);
                     toRetry = false;
                     return them;
                 } catch (WebDriverException e) {
@@ -1005,24 +1015,17 @@ public class Internal {
             return them;
         }
 
-        protected abstract WebElement actualFindIt(By by, Context ctx, SearchContext searchContext);
+        protected abstract WebElement actualFindElement(By by, Context ctx, SearchContext searchContext);
 
-        protected abstract List<WebElement> actualFindThem(By by, Context ctx);
+        protected abstract List<WebElement> actualFindElements(By by, Context ctx);
 
         private class CurrentUrl extends Execution<String> {
-            private CurrentUrl() {
-                super(null);
-            }
-
             public String execute() {
                 return delegate.getCurrentUrl();
             }
         }
 
         private class GetTitle extends Execution<String> {
-            private GetTitle() {
-                super(null);
-            }
             public String execute() {
                 return delegate.getTitle();
             }
@@ -1128,7 +1131,7 @@ public class Internal {
         protected final Execution<T> execution;
         protected final Context context;
         protected T is;
-        protected Monitor monitor;
+        protected final Monitor monitor;
 
 
         public BaseTestableObject(Period within, Execution<T> execution, Context context, Monitor monitor) {

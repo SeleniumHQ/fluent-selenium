@@ -5,6 +5,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.Internal;
 import org.seleniumhq.selenium.fluent.Monitor;
 import org.seleniumhq.selenium.fluent.Period;
 
@@ -348,12 +349,12 @@ public class NegatingFluentWebDriver {
             return duration.getEndMillis(startMillis) <= System.currentTimeMillis();
         }
 
-        protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean willBeIgnored) {
+        protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Internal.WebElementHolder currentElement, Context ctx, boolean willBeIgnored) {
             final T successfullyAbsent = null;
             while (!durationHasElapsed(startedAt)) {
                 try {
                     // ignore the passed in boolean-----------↴-----------------------↗
-                    super.executeAndWrapReThrowIfNeeded(execution, ctx, false);
+                    super.executeAndWrapReThrowIfNeeded(execution, currentElement, ctx, false);
                 } catch (FluentExecutionStopped executionStopped) {
                     final boolean elementGone = executionStopped.getCause() instanceof NotFoundException;
 

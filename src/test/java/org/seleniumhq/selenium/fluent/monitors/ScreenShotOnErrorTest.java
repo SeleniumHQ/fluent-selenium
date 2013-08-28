@@ -3,6 +3,7 @@ package org.seleniumhq.selenium.fluent.monitors;
 import org.junit.Test;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,12 +24,10 @@ public class ScreenShotOnErrorTest {
         file.deleteOnExit();
         when(ts.getScreenshotAs(OutputType.FILE)).thenReturn(file);
 
-        ///scm/oss/fluent-selenium/baz_screenshot.png
-
         ScreenShotOnError ssoe = new ScreenShotOnError(ts, ScreenShotOnErrorTest.class, "target/test-classes/", "target/");
         ssoe.setContext("baz");
-        RuntimeException boo = new RuntimeException("boo");
-        RuntimeException bar = ssoe.exceptionDuringExecution(boo, null);
+        FluentExecutionStopped boo = new FluentExecutionStopped("boo", null);
+        FluentExecutionStopped bar = ssoe.exceptionDuringExecution(boo, null);
         assertThat(bar, equalTo(boo));
 
         assertThat(new File("target/baz_screenshot.png").exists(), equalTo(true));

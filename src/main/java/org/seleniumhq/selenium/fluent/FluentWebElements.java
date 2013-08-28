@@ -49,8 +49,12 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements click() {
         Context ctx = Context.singular(context, "click");
-        executeAndWrapReThrowIfNeeded(new Click(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Click(), ctx);
         return makeFluentWebElements(this, ctx, monitor);
+    }
+
+    private <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx) {
+        return executeAndWrapReThrowIfNeeded(execution, null, ctx, true);
     }
 
     /**
@@ -58,13 +62,13 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
      */
     public FluentWebElements clearField() {
         Context ctx = Context.singular(context, "clearField");
-        executeAndWrapReThrowIfNeeded(new Clear(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Clear(), ctx);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
     public FluentWebElements submit() {
         Context ctx = Context.singular(context, "submit");
-        executeAndWrapReThrowIfNeeded(new Submit(), ctx, true);
+        executeAndWrapReThrowIfNeeded(new Submit(), ctx);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
@@ -72,23 +76,23 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
     public FluentWebElements sendKeys(final CharSequence... keysToSend) {
         Context ctx = Context.singular(context, "sendKeys", charSeqArrayAsHumanString(keysToSend));
-        executeAndWrapReThrowIfNeeded(new SendKeys(keysToSend), ctx, true);
+        executeAndWrapReThrowIfNeeded(new SendKeys(keysToSend), ctx);
         return makeFluentWebElements(this, ctx, monitor);
     }
 
     public boolean isSelected() {
         Context ctx = Context.singular(context, "isSelected");
-        return executeAndWrapReThrowIfNeeded(new IsSelected(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsSelected(), ctx);
     }
 
     public boolean isEnabled() {
         Context ctx = Context.singular(context, "isEnabled");
-        return executeAndWrapReThrowIfNeeded(new IsEnabled(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsEnabled(), ctx);
     }
 
     public boolean isDisplayed() {
         Context ctx = Context.singular(context, "isDisplayed");
-        return executeAndWrapReThrowIfNeeded(new IsDisplayed(), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new IsDisplayed(), ctx);
     }
 
     public TestableString getText() {
@@ -97,33 +101,33 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     @Override
-    protected final WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+    protected final WebElement findElement(By by, Context ctx, SearchContext searchContext) {
         return null;
     }
 
     @Override
-    protected final List<WebElement> findThem(By by, Context ctx) {
+    protected final List<WebElement> findElements(By by, Context ctx) {
         return null;
     }
 
     @Override
-    protected final WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
+    protected final WebElement actualFindElement(By by, Context ctx, SearchContext searchContext) {
         return null;
     }
 
     @Override
-    protected final List<WebElement> actualFindThem(By by, Context ctx) {
+    protected final List<WebElement> actualFindElements(By by, Context ctx) {
         return null;
     }
 
     public FluentWebElements filter(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "filter", null, matcher);
-        return makeFluentWebElements(executeAndWrapReThrowIfNeeded(new FilterMatches(matcher), ctx, true), ctx, monitor);
+        return makeFluentWebElements(executeAndWrapReThrowIfNeeded(new FilterMatches(matcher), ctx), ctx, monitor);
     }
 
     public FluentWebElement first(final FluentMatcher matcher) {
         Context ctx = Context.singular(context, "first", null, matcher);
-        return executeAndWrapReThrowIfNeeded(new MatchesFirst(matcher), ctx, true);
+        return executeAndWrapReThrowIfNeeded(new MatchesFirst(matcher), ctx);
     }
 
 
@@ -198,9 +202,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Clear extends Execution<Boolean> {
-        private Clear() {
-            super(null);
-        }
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.clearField();
@@ -210,10 +211,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Click extends Execution<Boolean> {
-        private Click() {
-            super(null);
-        }
-
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.click();
@@ -226,7 +223,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final FluentMatcher matcher;
 
         public MatchesFirst(FluentMatcher matcher) {
-            super(null);
             this.matcher = matcher;
         }
 
@@ -250,7 +246,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final FluentMatcher matcher;
 
         public FilterMatches(FluentMatcher matcher) {
-            super(null);
             this.matcher = matcher;
         }
 
@@ -269,9 +264,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class GetText extends Execution<String> {
-        private GetText() {
-            super(null);
-        }
         public String execute() {
             String text = "";
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -282,9 +274,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsDisplayed extends Execution<Boolean> {
-        private IsDisplayed() {
-            super(null);
-        }
         public Boolean execute() {
             boolean areDisplayed = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -295,9 +284,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsEnabled extends Execution<Boolean> {
-        private IsEnabled() {
-            super(null);
-        }
         public Boolean execute() {
             boolean areEnabled = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -308,9 +294,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class IsSelected extends Execution<Boolean> {
-        private IsSelected() {
-            super(null);
-        }
         public Boolean execute() {
             boolean areSelected = true;
             for (FluentWebElement fwe : FluentWebElements.this) {
@@ -324,7 +307,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
-            super(null);
             this.keysToSend = keysToSend;
         }
 
@@ -337,10 +319,6 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class Submit extends Execution<Boolean> {
-        private Submit() {
-            super(null);
-        }
-
         public Boolean execute() {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 fwe.submit();

@@ -301,30 +301,46 @@ Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/sr
 
 You specify a monitor choice by using the right constructor for FluentWebDriver (and pass in a Monitor instance). There's a default monitor that does nothing, so you don't have to choose a constructor that uses a monitor.
 
-We have three implementations presently:
+We have three implementations presently, and if you want to use more than one, wrap them in a <code>CompositeMonitor</code>:
 
-## TakesScreenshot 
+```java
+new FluentWebDriver(new FirefoxDriver(), new CompositeMonitor(one, two, three));
+```
+
+## Takes a Screenshot (on error) 
 
 When a 'FluentExecutionStopped' failure happens, you can get automatic screenshots.  In the case of running from JUnit or TestNG under Maven control do the following, to get automatic Test-Class name & Method name in the file-name of the PNG:
 
 ```java
 ffd = new FirefoxDriver();
-ssoe = new ScreenShotOnError.WithUnitTestFrameWorkContext(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
-fwd = new FluentWebDriver(ffd, ssoe);
+myScreenShotOnError = new ScreenShotOnError.WithUnitTestFrameWorkContext(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
+fwd = new FluentWebDriver(ffd, myScreenShotOnError);
 ```
 
 If you're not wanting that JUnit/TestNG automatic file naming, do this instead:
 
 ```java
 ffd = new FirefoxDriver();
-ssoe = new ScreenShotOnError(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
-fwd = new FluentWebDriver(ffd, ssoe);
+myScreenShotOnError = new ScreenShotOnError(ffd, OneOfYourClasses.class, "test-classes", "surefire-reports/");
+fwd = new FluentWebDriver(ffd, myScreenShotOnError);
 
-ssoe.setContext("something_that_has_meaning_in_a_file_name")
+myScreenShotOnError.setContext("something_that_has_meaning_in_a_file_name")
 div(id("foo")).click();
-ssoe.setContext("something_else_that_has_meaning_in_a_file_name")
+myScreenShotOnError.setContext("something_else_that_has_meaning_in_a_file_name")
 input(id("bar")).sendKeys("abc");
 ```
+
+## Highlights on error
+
+This draws a red dotted two-pixel line around the relevant part of the page, when an FluentExecutionStopped is thrown.  You'd use it in conjunction with <code>ScreenShotOnError</code> above:
+
+```java
+ffd = new FirefoxDriver();
+myScreenShotOnError = ...
+fwd = new FluentWebDriver(ffd, new CompositeMonitor(new HighlightOnError(ffd), myScreenShotOnError));
+```
+
+If you don't want a red dashed two-pixel line, subclass HighlightOnError and override one of executeScript(), highlightOperation() or highlightValue().
 
 ## Coda Hale's Metrics library
 
@@ -417,7 +433,7 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.13</version>
+   <version>1.14</version>
    <scope>test</scope>
 </dependency>
 
@@ -443,7 +459,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.13</version>
+  <version>1.14</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
@@ -467,7 +483,7 @@ For non Maven build systems, [download it yourself](http://search.maven.org/#sea
 Here's what else you might need in your classpath, depending on your needs:
 
 ```
-org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.13
+org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.14
 +- junit:junit:jar:4.11:test
 +- org.hamcrest:hamcrest-all:jar:1.3:compile
 +- org.mockito:mockito-core:jar:1.9.5:test

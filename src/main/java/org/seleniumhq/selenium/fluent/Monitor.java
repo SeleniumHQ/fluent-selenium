@@ -6,7 +6,7 @@ public interface Monitor {
 
     Timer start(String item);
 
-    RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement);
+    FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement);
 
     public interface Timer {
         void end(boolean success);
@@ -22,7 +22,7 @@ public interface Monitor {
             return new Timer.NULL();
         }
 
-        public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
+        public FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement) {
             return ex;
         }
     }

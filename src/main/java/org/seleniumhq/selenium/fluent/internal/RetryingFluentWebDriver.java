@@ -21,12 +21,12 @@ public class RetryingFluentWebDriver extends FluentWebDriver {
     }
 
     @Override
-    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+    protected WebElement findElement(By by, Context ctx, SearchContext searchContext) {
         return retryingFindIt(by, searchContext);
     }
 
     @Override
-    protected List<WebElement> findThem(By by, Context ctx) {
+    protected List<WebElement> findElements(By by, Context ctx) {
         return retryingFindThem(by);
     }
 

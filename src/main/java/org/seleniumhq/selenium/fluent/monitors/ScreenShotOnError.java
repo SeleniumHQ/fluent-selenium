@@ -5,6 +5,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.Monitor;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class ScreenShotOnError extends Monitor.NULL {
     }
 
     @Override
-    public RuntimeException exceptionDuringExecution(RuntimeException ex, WebElement webElement) {
+    public FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement) {
         String pathname = path + getContext() + "_screenshot.png";
         try {
             File scrFile = webDriver.getScreenshotAs(OutputType.FILE);

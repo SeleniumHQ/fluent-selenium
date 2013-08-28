@@ -2,6 +2,7 @@ package org.seleniumhq.selenium.fluent.monitors;
 
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.Monitor;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -30,8 +31,8 @@ public class CompositeMonitorTest {
 
     @Test
     public void allAreVisitedWithExceptionAndLastExceptionIsReturned() {
-        RuntimeException boo = new RuntimeException("boo");
-        RuntimeException boo2 = new RuntimeException("boo2");
+        FluentExecutionStopped boo = new FluentExecutionStopped("boo", null);
+        FluentExecutionStopped boo2 = new FluentExecutionStopped("boo2", null);
 
         WebElement we = mock(WebElement.class);
 
@@ -43,7 +44,7 @@ public class CompositeMonitorTest {
         when(m3.exceptionDuringExecution(boo, we)).thenReturn(boo2);
 
         CompositeMonitor monitor = new CompositeMonitor(m1, m2, m3);
-        RuntimeException newException = monitor.exceptionDuringExecution(boo, we);
+        FluentExecutionStopped newException = monitor.exceptionDuringExecution(boo, we);
 
         assertThat(newException, equalTo(boo2));
 

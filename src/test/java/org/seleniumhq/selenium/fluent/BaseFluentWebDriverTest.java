@@ -33,12 +33,12 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+            protected WebElement findElement(By by, Context ctx, SearchContext searchContext) {
                 return null;
             }
 
             @Override
-            protected List<WebElement> findThem(By by, Context ctx) {
+            protected List<WebElement> findElements(By by, Context ctx) {
                 return null;
             }
 
@@ -51,12 +51,12 @@ public class BaseFluentWebDriverTest {
             }
 
             @Override
-            protected WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
+            protected WebElement actualFindElement(By by, Context ctx, SearchContext searchContext) {
                 return null;
             }
 
             @Override
-            protected List<WebElement> actualFindThem(By by, Context ctx) {
+            protected List<WebElement> actualFindElements(By by, Context ctx) {
                 return null;
             }
 
@@ -69,11 +69,11 @@ public class BaseFluentWebDriverTest {
 
         try {
             Context dummy_context = Context.singular(null, "dummy");
-            fc.executeAndWrapReThrowIfNeeded(new Execution(null) {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new AssertionError("Oops");
                 }
-            }, dummy_context, true);
+            }, null, dummy_context, true);
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy()"));
@@ -86,11 +86,11 @@ public class BaseFluentWebDriverTest {
     public void runtimeException_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.executeAndWrapReThrowIfNeeded(new Execution(null) {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new RuntimeException("Oops");
                 }
-            }, Context.singular(null, "dummy"), true);
+            }, null, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("RuntimeException during invocation of: ?.dummy()"));
@@ -103,11 +103,11 @@ public class BaseFluentWebDriverTest {
     public void staleElementException_should_be_wrapped_in_context_exception() {
 
         try {
-            fc.executeAndWrapReThrowIfNeeded(new Execution(null) {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new StaleElementReferenceException("Oops");
                 }
-            }, Context.singular(null, "dummy"), true);
+            }, null, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (FluentExecutionStopped.BecauseOfStaleElement e) {
             assertThat(e.getMessage(), equalTo("StaleElementReferenceException during invocation of: ?.dummy()"));
@@ -120,11 +120,11 @@ public class BaseFluentWebDriverTest {
     public void unsupportedOperationException_should_not_be_wrapped() {
 
         try {
-            fc.executeAndWrapReThrowIfNeeded(new Execution(null) {
+            fc.executeAndWrapReThrowIfNeeded(new Execution() {
                 public Void execute() {
                     throw new UnsupportedOperationException("Oops");
                 }
-            }, Context.singular(null, "dummy"), true);
+            }, null, Context.singular(null, "dummy"), true);
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Oops"));

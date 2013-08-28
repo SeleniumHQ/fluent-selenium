@@ -18,7 +18,7 @@ package org.seleniumhq.selenium.fluent;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
-public class TestableValue<T> extends Internal.BaseTestableObject {
+public class TestableValue<T> extends Internal.BaseTestableObject<T> {
 
     protected TestableValue(Execution<T> execution, Context context, Monitor monitor) {
         this(null, execution, context, monitor);

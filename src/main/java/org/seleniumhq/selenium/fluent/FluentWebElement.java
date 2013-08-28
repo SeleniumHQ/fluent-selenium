@@ -49,31 +49,34 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
-    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
-        return actualFindIt(by, ctx, searchContext);
+    protected WebElement findElement(By by, Context ctx, SearchContext searchContext) {
+        return actualFindElement(by, ctx, searchContext);
     }
 
     @Override
-    protected List<WebElement> findThem(By by, Context ctx) {
-        return actualFindThem(by, ctx);
+    protected List<WebElement> findElements(By by, Context ctx) {
+        return actualFindElements(by, ctx);
     }
 
     @Override
-    protected WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
+    protected WebElement actualFindElement(By by, Context ctx, SearchContext searchContext) {
         beforeFindElement(by);
-        //return currentElement.getFound().findElement(by);
         return searchContext.findElement(by);
     }
 
     @Override
-    protected List<WebElement> actualFindThem(By by, Context ctx) {
+    protected List<WebElement> actualFindElements(By by, Context ctx) {
         beforeFindElement(by);
         return currentElement.getFound().findElements(by);
     }
 
+    private <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
+        return executeAndWrapReThrowIfNeeded(execution, currentElement, ctx, expectedToBeThere);
+    }
+
     public FluentWebElement click() {
         Context ctx = Context.singular(context, "click");
-        executeAndWrapReThrowIfNeeded(new Click(), ctx, true);
+        executeAndWrapReThrowIfNeeded(setCurrentElement(new Click()), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -83,7 +86,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
     public FluentWebElement clearField() {
         Context ctx = Context.singular(context, "clearField");
-        executeAndWrapReThrowIfNeeded(new Clear(), ctx, true);
+        executeAndWrapReThrowIfNeeded(setCurrentElement(new Clear()), ctx, true);
         return new FluentWebElement(delegate, currentElement, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
@@ -102,51 +105,56 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public TestableString getTagName() {
-        return new TestableString(new GetTagName(), Context.singular(context, "getTagName"), monitor);
+        return new TestableString(setCurrentElement(new GetTagName()), Context.singular(context, "getTagName"), monitor);
     }
 
     public TestableValue<Boolean> isSelected() {
         Context isSelected = Context.singular(context, "isSelected");
-        return new TestableValue<Boolean>(new IsSelected(), isSelected, monitor);
+        return new TestableValue<Boolean>(setCurrentElement(new IsSelected()), isSelected, monitor);
     }
 
     public TestableValue<Boolean> isEnabled() {
         Context isEnabled = Context.singular(context, "isEnabled");
-        return new TestableValue<Boolean>(new IsEnabled(), isEnabled, monitor);
+        return new TestableValue<Boolean>(setCurrentElement(new IsEnabled()), isEnabled, monitor);
     }
 
     public TestableValue<Boolean> isDisplayed() {
         Context isDisplayed = Context.singular(context, "isDisplayed");
-        return new TestableValue<Boolean>(new IsDisplayed(), isDisplayed, monitor);
+        return new TestableValue<Boolean>(setCurrentElement(new IsDisplayed()), isDisplayed, monitor);
     }
 
     public FluentWebElement ifInvisibleWaitUpTo(Period period) {
         Context ifInvisibleWaitUpTo = Context.singular(context, "ifInvisibleWaitUpTo", period);
-        executeAndWrapReThrowIfNeeded(new IfInvisibleWait(period), ifInvisibleWaitUpTo, true);
+        executeAndWrapReThrowIfNeeded(setCurrentElement(new IfInvisibleWait(period)), currentElement, ifInvisibleWaitUpTo, true);
         return new FluentWebElement(delegate, currentElement, ifInvisibleWaitUpTo, monitor, booleanInsteadOfNotFoundException);
     }
 
     public TestableValue<Point> getLocation() {
         final Context getLocation = Context.singular(context, "getLocation");
-        return new TestableValue<Point>(new GetLocation(), getLocation, monitor);
+        return new TestableValue<Point>(setCurrentElement(new GetLocation()), getLocation, monitor);
+    }
+
+    private Execution setCurrentElement(Execution execution) {
+        return execution.withWebElementHolder(currentElement);
     }
 
     public TestableValue<Dimension> getSize() {
         Context getSize = Context.singular(context, "getSize");
-        return new TestableValue<Dimension>(new GetSize(), getSize, monitor);
+        return new TestableValue<Dimension>(setCurrentElement(new GetSize()), getSize, monitor);
     }
 
     public TestableString getCssValue(final String cssName) {
-        return new TestableString(new GetCssValue(cssName), Context.singular(context, "getCssValue", null, cssName), monitor).within(getPeriod());
+        return new TestableString(setCurrentElement(new GetCssValue(cssName)), Context.singular(context, "getCssValue", null, cssName), monitor).within(getPeriod());
     }
 
     public TestableString getAttribute(final String attr) {
-        return new TestableString(new GetAttribute(attr), Context.singular(context, "getAttribute", null, attr), monitor).within(getPeriod());
+        return new TestableString(setCurrentElement(new GetAttribute(attr)), Context.singular(context, "getAttribute", null, attr), monitor).within(getPeriod());
     }
 
     public TestableString getText() {
-        return new TestableString(new GetText(), Context.singular(context, "getText"), monitor);
+        return new TestableString(setCurrentElement(new GetText()), Context.singular(context, "getText"), monitor);
     }
+
 
     public FluentWebElement within(Period period) {
         return new RetryingFluentWebElement(delegate, currentElement, Context.singular(context, "within", null, period), period, monitor, booleanInsteadOfNotFoundException);
@@ -883,12 +891,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         }
 
         @Override
-        protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
+        protected WebElement findElement(By by, Context ctx, SearchContext searchContext) {
             return retryingFindIt(by, searchContext);
         }
 
         @Override
-        protected List<WebElement> findThem(By by, Context ctx) {
+        protected List<WebElement> findElements(By by, Context ctx) {
             return retryingFindThem(by);
         }
 
@@ -911,12 +919,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         protected NegatingFluentWebElement(WebDriver delegate, Internal.WebElementHolder currentElement, Period duration, Context context, final Monitor monitor, final boolean booleanInsteadOfNoSuchElement) {
             this.delegate = new FluentWebElement(delegate, currentElement, context, monitor, booleanInsteadOfNoSuchElement) {
-                protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Context ctx, boolean expectedToBeThere) {
+                protected <T> T executeAndWrapReThrowIfNeeded(Execution<T> execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                     final T successfullyAbsent = null;
                     while (!durationHasElapsed(startedAt)) {
                         try {
                             // ignore the passed in boolean-----------↴-----------------------↗
-                            super.executeAndWrapReThrowIfNeeded(execution, ctx, false);
+                            super.executeAndWrapReThrowIfNeeded(execution, currentElement, ctx, false);
                         } catch (FluentExecutionStopped executionStopped) {
                             final boolean elementGone = executionStopped.getCause() instanceof NotFoundException;
 
@@ -1274,10 +1282,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class Clear extends StaleElementRecoveringExecution<Boolean> {
-        private Clear() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             currentElement.getFound().clear();
             return true;
@@ -1285,19 +1289,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class GetTagName extends StaleElementRecoveringExecution<String> {
-        public GetTagName() {
-            super(currentElement);
-        }
         public String execute() {
             return currentElement.getFound().getTagName();
         }
     }
 
     private class Click extends StaleElementRecoveringExecution<Boolean> {
-        public Click() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             currentElement.getFound().click();
             return true;
@@ -1305,10 +1302,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private abstract class StaleElementRecoveringExecution<T> extends Execution<T> {
-
-        protected StaleElementRecoveringExecution(Internal.WebElementHolder webElementHolder) {
-            super(webElementHolder);
-        }
 
         @Override
         public T doExecution() {
@@ -1334,7 +1327,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final String attr;
 
         public GetAttribute(String attr) {
-            super(currentElement);
             this.attr = attr;
         }
 
@@ -1356,7 +1348,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final String cssName;
 
         public GetCssValue(String cssName) {
-            super(currentElement);
             this.cssName = cssName;
         }
 
@@ -1366,39 +1357,24 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class GetText extends StaleElementRecoveringExecution<String> {
-        private GetText() {
-            super(currentElement);
-        }
         public String execute() {
             return currentElement.getFound().getText();
         }
     }
 
     private class GetSize extends StaleElementRecoveringExecution<Dimension> {
-        private GetSize() {
-            super(currentElement);
-        }
-
         public Dimension execute() {
             return currentElement.getFound().getSize();
         }
     }
 
     private class GetLocation extends StaleElementRecoveringExecution<Point> {
-        private GetLocation() {
-            super(currentElement);
-        }
-
         public Point execute() {
             return currentElement.getFound().getLocation();
         }
     }
 
     private class IsDisplayed extends StaleElementRecoveringExecution<Boolean> {
-        private IsDisplayed() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             return currentElement.getFound().isDisplayed();
         }
@@ -1408,7 +1384,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private Period period;
 
         IfInvisibleWait(Period period) {
-            super(currentElement);
             this.period = period;
         }
 
@@ -1427,20 +1402,12 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class IsEnabled extends StaleElementRecoveringExecution<Boolean> {
-        public IsEnabled() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             return currentElement.getFound().isEnabled();
         }
     }
 
     private class IsSelected extends StaleElementRecoveringExecution<Boolean> {
-        public IsSelected() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             return currentElement.getFound().isSelected();
         }
@@ -1450,7 +1417,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         private final CharSequence[] keysToSend;
 
         public SendKeys(CharSequence... keysToSend) {
-            super(currentElement);
             this.keysToSend = keysToSend;
         }
 
@@ -1461,10 +1427,6 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class Submit extends StaleElementRecoveringExecution<Boolean> {
-        public Submit() {
-            super(currentElement);
-        }
-
         public Boolean execute() {
             currentElement.getFound().submit();
             return true;

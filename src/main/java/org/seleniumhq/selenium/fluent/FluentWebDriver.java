@@ -49,21 +49,21 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return new FluentWebElements(super.delegate, results, context, monitor, booleanInsteadOfNotFoundException);
     }
 
-    protected WebElement findIt(By by, Context ctx, SearchContext searchContext) {
-        return actualFindIt(by, ctx, searchContext);
+    protected WebElement findElement(By by, Context ctx, SearchContext searchContext) {
+        return actualFindElement(by, ctx, searchContext);
     }
 
     @Override
-    protected List<WebElement> findThem(By by, Context ctx) {
-        return actualFindThem(by, ctx);
+    protected List<WebElement> findElements(By by, Context ctx) {
+        return actualFindElements(by, ctx);
     }
 
-    protected final WebElement actualFindIt(By by, Context ctx, SearchContext searchContext) {
+    protected final WebElement actualFindElement(By by, Context ctx, SearchContext searchContext) {
         beforeFindElement(by);
         return searchContext.findElement(by);
     }
 
-    protected final List<WebElement> actualFindThem(By by, Context ctx) {
+    protected final List<WebElement> actualFindElements(By by, Context ctx) {
         beforeFindElement(by);
         return delegate.findElements(by);
     }

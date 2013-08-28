@@ -20,10 +20,11 @@ import org.seleniumhq.selenium.fluent.Internal;
 
 public abstract class Execution<T> {
 
-    private final Internal.WebElementHolder webElementHolder;
+    private Internal.WebElementHolder webElementHolder;
 
-    protected Execution(Internal.WebElementHolder webElementHolder) {
+    public Execution<T> withWebElementHolder(Internal.WebElementHolder webElementHolder) {
         this.webElementHolder = webElementHolder;
+        return this;
     }
 
     public WebElement getWebElement() {

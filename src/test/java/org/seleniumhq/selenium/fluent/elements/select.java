@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.seleniumhq.selenium.fluent.BaseTest;
 import org.seleniumhq.selenium.fluent.FluentSelect;
 import org.seleniumhq.selenium.fluent.FluentWebElements;
+import org.seleniumhq.selenium.fluent.Internal;
 import org.seleniumhq.selenium.fluent.Monitor;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
@@ -137,7 +138,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -197,7 +198,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -257,7 +258,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -316,7 +317,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -375,7 +376,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -434,7 +435,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -493,7 +494,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -552,7 +553,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -611,7 +612,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -670,7 +671,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
@@ -731,7 +732,7 @@ public class select extends BaseTest {
             }
 
             @Override
-            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Context ctx, boolean expectedToBeThere) {
+            protected Void executeAndWrapReThrowIfNeeded(Execution execution, Internal.WebElementHolder currentElement, Context ctx, boolean expectedToBeThere) {
                 try {
                     execution.execute();
                     fail("should have barfed");
