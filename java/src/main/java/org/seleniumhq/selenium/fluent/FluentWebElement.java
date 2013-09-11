@@ -44,7 +44,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
         return currentElement.getFound();
     }
 
-    protected WebElement getWebElement() {
+    public WebElement getWebElement() {
         return currentElement.getFound();
     }
 
