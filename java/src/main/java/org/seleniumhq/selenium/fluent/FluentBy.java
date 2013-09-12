@@ -23,6 +23,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.FindsByClassName;
 import org.openqa.selenium.internal.FindsByXPath;
 
+import java.lang.Override;
+import java.lang.String;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -89,7 +91,18 @@ public abstract class FluentBy extends By {
                     "Cannot find elements when the attribute name is null");
 
         return new ByAttribute(name, value);
+    }
 
+    /**
+     * Finds elements by an named attribute not being present in the element,
+     * irrespective of element name. Currently implemented via XPath.
+     */
+    public static ByAttribute notAttribute(final String name) {
+        if (name == null)
+            throw new IllegalArgumentException(
+                    "Cannot find elements when the attribute name is null");
+
+        return new NotByAttribute(name);
     }
 
     /**
@@ -231,8 +244,24 @@ public abstract class FluentBy extends By {
         }
     }
 
+    public static class NotByAttribute extends ByAttribute {
+        public NotByAttribute(String name) {
+            super(name, null);
+        }
+
+        @Override
+        protected String nameAndValue() {
+            return "not(" + super.nameAndValue() + ")";
+        }
+
+        public String toString() {
+            return "FluentBy.notAttribute: " + name ;
+        }
+
+    }
+
     public static class ByAttribute extends FluentBy {
-        private final String name;
+        protected final String name;
         private final String value;
 
         public ByAttribute(String name, String value) {
@@ -253,7 +282,7 @@ public abstract class FluentBy extends By {
             return ".//*[" + nameAndValue() + "]";
         }
 
-        private String nameAndValue() {
+        protected String nameAndValue() {
             return "@" + name + val();
         }
 

@@ -48,6 +48,29 @@ public class FluentByTest {
     }
 
     @Test
+    public void not_attribute() throws IllegalAccessException {
+        By notFoo = FluentBy.notAttribute("foo");
+        String actual = notFoo.toString();
+        assertThat(actual, is("FluentBy.notAttribute: foo"));
+
+        FindsByXPathSearchContext context = mock(FindsByXPathSearchContext.class);
+        WebElement we = mock(WebElement.class);
+        when(context.findElementByXPath(".//*[not(@foo)]")).thenReturn(we);
+        WebElement bar = notFoo.findElement(context);
+
+        assertThat(bar, is(we));
+
+        // last of ..
+
+        By lastFooBar = FluentBy.last(notFoo);
+        assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.notAttribute: foo)"));
+
+        when(context.findElementByXPath(".//*[@foo = 'bar' and position() = last()]")).thenReturn(we);
+        WebElement lastBar = notFoo.findElement(context);
+        assertThat(lastBar, is(we));
+    }
+
+    @Test
     public void attribute_without_value() throws IllegalAccessException {
         By fooBar = FluentBy.attribute("foo");
         assertThat(fooBar.toString(), is("FluentBy.attribute: foo"));
