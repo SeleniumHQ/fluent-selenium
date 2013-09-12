@@ -2,7 +2,7 @@ commit b45864fa1d5b2edacf723047430cdb3e0680b950
 Author: Paul Hammant <paul@hammant.org>
 Date:   Sun Aug 11 13:06:41 2013 -0500
 
-    add 'pre' and 'b'
+    add 'tbody' and 'nav'
 
 diff --git a/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java b/src/main/java/org/seleniumhq/selenium/fluent/FluentWebDriver.java
 index a1fec07..93cf3b0 100644
@@ -13,43 +13,43 @@ index a1fec07..93cf3b0 100644
          return (FluentWebElements) super.ps(by);
      }
 +    @Override
-+    public FluentWebElement blockquote() {
-+        return (FluentWebElement) super.blockquote();
++    public FluentWebElement nav() {
++        return (FluentWebElement) super.nav();
 +    }
 +
 +    @Override
-+    public FluentWebElements blockquotes() {
-+        return (FluentWebElements) super.blockquotes();
++    public FluentWebElements navs() {
++        return (FluentWebElements) super.navs();
 +    }
 +
 +    @Override
-+    public FluentWebElement blockquote(By by) {
-+        return (FluentWebElement) super.blockquote(by);
++    public FluentWebElement nav(By by) {
++        return (FluentWebElement) super.nav(by);
 +    }
 +
 +    @Override
-+    public FluentWebElements blockquotes(By by) {
-+        return (FluentWebElements) super.blockquotes(by);
++    public FluentWebElements navs(By by) {
++        return (FluentWebElements) super.navs(by);
 +    }
 +
 +    @Override
-+    public FluentWebElement area() {
-+        return (FluentWebElement) super.area();
++    public FluentWebElement tbody() {
++        return (FluentWebElement) super.tbody();
 +    }
 +
 +    @Override
-+    public FluentWebElements areas() {
-+        return (FluentWebElements) super.areas();
++    public FluentWebElements tbodys() {
++        return (FluentWebElements) super.tbodys();
 +    }
 +
 +    @Override
-+    public FluentWebElement area(By by) {
-+        return (FluentWebElement) super.area(by);
++    public FluentWebElement tbody(By by) {
++        return (FluentWebElement) super.tbody(by);
 +    }
 +
 +    @Override
-+    public FluentWebElements areas(By by) {
-+        return (FluentWebElements) super.areas(by);
++    public FluentWebElements tbodys(By by) {
++        return (FluentWebElements) super.tbodys(by);
 +    }
  
      @Override
@@ -58,22 +58,22 @@ index a1fec07..93cf3b0 100644
              return returnBool(bfwd.p(by));
          }
  
-+        public boolean blockquote() {
-+            return returnBool(bfwd.blockquote());
++        public boolean nav() {
++            return returnBool(bfwd.nav());
 +        }
 +
 +
-+        public boolean blockquote(By by) {
-+            return returnBool(bfwd.blockquote(by));
++        public boolean nav(By by) {
++            return returnBool(bfwd.nav(by));
 +        }
 +
-+        public boolean area() {
-+            return returnBool(bfwd.area());
++        public boolean tbody() {
++            return returnBool(bfwd.tbody());
 +        }
 +
 +
-+        public boolean area(By by) {
-+            return returnBool(bfwd.area(by));
++        public boolean tbody(By by) {
++            return returnBool(bfwd.tbody(by));
 +        }
 +
          public boolean img() {
@@ -88,43 +88,43 @@ index f8a04e1..640919d 100644
      }
  
 +    @Override
-+    public FluentWebElement blockquote() {
-+        return (FluentWebElement) super.blockquote();
++    public FluentWebElement nav() {
++        return (FluentWebElement) super.nav();
 +    }
 +
 +    @Override
-+    public FluentWebElement blockquote(By by) {
-+        return (FluentWebElement) super.blockquote(by);
++    public FluentWebElement nav(By by) {
++        return (FluentWebElement) super.nav(by);
 +    }
 +
 +    @Override
-+    public FluentWebElements blockquotes() {
-+        return (FluentWebElements) super.blockquotes();
++    public FluentWebElements navs() {
++        return (FluentWebElements) super.navs();
 +    }
 +
 +    @Override
-+    public FluentWebElements blockquotes(By by) {
-+        return (FluentWebElements) super.blockquotes(by);
++    public FluentWebElements navs(By by) {
++        return (FluentWebElements) super.navs(by);
 +    }
 +
 +    @Override
-+    public FluentWebElement area() {
-+        return (FluentWebElement) super.area();
++    public FluentWebElement tbody() {
++        return (FluentWebElement) super.tbody();
 +    }
 +
 +    @Override
-+    public FluentWebElement area(By by) {
-+        return (FluentWebElement) super.area(by);
++    public FluentWebElement tbody(By by) {
++        return (FluentWebElement) super.tbody(by);
 +    }
 +
 +    @Override
-+    public FluentWebElements areas() {
-+        return (FluentWebElements) super.areas();
++    public FluentWebElements tbodys() {
++        return (FluentWebElements) super.tbodys();
 +    }
 +
 +    @Override
-+    public FluentWebElements areas(By by) {
-+        return (FluentWebElements) super.areas(by);
++    public FluentWebElements tbodys(By by) {
++        return (FluentWebElements) super.tbodys(by);
 +    }
 +
  
@@ -134,22 +134,22 @@ index f8a04e1..640919d 100644
              delegate.p(by);
          }
  
-+        public void blockquote() {
-+            delegate.blockquote();
++        public void nav() {
++            delegate.nav();
 +        }
 +
 +
-+        public void blockquote(By by) {
-+            delegate.blockquote(by);
++        public void nav(By by) {
++            delegate.nav(by);
 +        }
 +
-+        public void area() {
-+            delegate.area();
++        public void tbody() {
++            delegate.tbody();
 +        }
 +
 +
-+        public void area(By by) {
-+            delegate.area(by);
++        public void tbody(By by) {
++            delegate.tbody(by);
 +        }
 +
  
@@ -163,40 +163,40 @@ index 6e819fb..7d8d663 100644
          protected BaseFluentWebElements ps(By by) {
              return newFluentWebElements(multiple(by, "p"));
          }
-+        protected BaseFluentWebElement blockquote() {
-+            SingleResult single = single(tagName("blockquote"), "blockquote");
++        protected BaseFluentWebElement nav() {
++            SingleResult single = single(tagName("nav"), "nav");
 +            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
 +        }
 +
-+        protected BaseFluentWebElements blockquotes() {
-+            return newFluentWebElements(multiple(tagName("blockquote"), "blockquote"));
++        protected BaseFluentWebElements navs() {
++            return newFluentWebElements(multiple(tagName("nav"), "nav"));
 +        }
 +
-+        protected BaseFluentWebElement blockquote(By by) {
-+            SingleResult single = single(by, "blockquote");
++        protected BaseFluentWebElement nav(By by) {
++            SingleResult single = single(by, "nav");
 +            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
 +        }
 +
-+        protected BaseFluentWebElements blockquotes(By by) {
-+            return newFluentWebElements(multiple(by, "blockquote"));
++        protected BaseFluentWebElements navs(By by) {
++            return newFluentWebElements(multiple(by, "nav"));
 +        }
 +
-+        protected BaseFluentWebElement area() {
-+            SingleResult single = single(tagName("area"), "area");
++        protected BaseFluentWebElement tbody() {
++            SingleResult single = single(tagName("tbody"), "tbody");
 +            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
 +        }
 +
-+        protected BaseFluentWebElements areas() {
-+            return newFluentWebElements(multiple(tagName("area"), "area"));
++        protected BaseFluentWebElements tbodys() {
++            return newFluentWebElements(multiple(tagName("tbody"), "tbody"));
 +        }
 +
-+        protected BaseFluentWebElement area(By by) {
-+            SingleResult single = single(by, "area");
++        protected BaseFluentWebElement tbody(By by) {
++            SingleResult single = single(by, "tbody");
 +            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
 +        }
 +
-+        protected BaseFluentWebElements areas(By by) {
-+            return newFluentWebElements(multiple(by, "area"));
++        protected BaseFluentWebElements tbodys(By by) {
++            return newFluentWebElements(multiple(by, "tbody"));
 +        }
  
          protected BaseFluentWebElement img() {
@@ -209,32 +209,32 @@ index 31ec6d1..faff2ce 100644
          delegate.p(by);
      }
  
-+    public void blockquote() {
-+        delegate.blockquote();
++    public void nav() {
++        delegate.nav();
 +    }
 +
 +
-+    public void blockquote(By by) {
-+        delegate.blockquote(by);
++    public void nav(By by) {
++        delegate.nav(by);
 +    }
 +
-+    public void area() {
-+        delegate.area();
++    public void tbody() {
++        delegate.tbody();
 +    }
 +
 +
-+    public void area(By by) {
-+        delegate.area(by);
++    public void tbody(By by) {
++        delegate.tbody(by);
 +    }
 +
      public void img() {
          delegate.img();
      }
-diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java
+diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/nav.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/nav.java
 new file mode 100644
 index 0000000..b427e4c
 --- /dev/null
-+++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/blockquote.java
++++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/nav.java
 @@ -0,0 +1,63 @@
 +package org.seleniumhq.selenium.fluent.elements;
 +
@@ -250,60 +250,60 @@ index 0000000..b427e4c
 +import static org.junit.Assert.fail;
 +import static org.mockito.Mockito.when;
 +
-+public class blockquote extends BaseTest {
++public class nav extends BaseTest {
 +
 +    @Test
-+    public void blockquote_functionality() {
++    public void nav_functionality() {
 +
-+        setupExpecations("blockquote");
++        setupExpecations("nav");
 +
-+        FluentWebElements fe = fwd.blockquote()
-+                .blockquote(By.xpath("@foo = 'bar'"))
-+                .blockquote(By.cssSelector("baz"))
-+                .blockquotes();
++        FluentWebElements fe = fwd.nav()
++                .nav(By.xpath("@foo = 'bar'"))
++                .nav(By.cssSelector("baz"))
++                .navs();
 +
 +        assertThat(fe, notNullValue());
-+        verifications("blockquote");
++        verifications("nav");
 +    }
 +
 +    @Test
-+    public void blockquotes_functionality() {
++    public void navs_functionality() {
 +
-+        setupExpecations2("blockquote");
++        setupExpecations2("nav");
 +
-+        FluentWebElements fe = fwd.blockquote()
-+                .blockquotes(By.name("qux"));
++        FluentWebElements fe = fwd.nav()
++                .navs(By.name("qux"));
 +
 +        assertThat(fe, notNullValue());
 +
-+        verifications2("blockquote");
++        verifications2("nav");
 +
 +    }
 +
 +    @Test
-+    public void blockquote_mismatched() {
++    public void nav_mismatched() {
 +
 +        when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
 +        when(we.getTagName()).thenReturn("boo");
 +
 +        try {
-+            fwd.blockquote(By.linkText("mismatching_tag_name"))
++            fwd.nav(By.linkText("mismatching_tag_name"))
 +                    .clearField();
 +            fail("should have barfed");
 +        } catch (FluentExecutionStopped e) {
-+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.blockquote(By.linkText: mismatching_tag_name)"));
-+            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been blockquote but was boo"));
++            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.nav(By.linkText: mismatching_tag_name)"));
++            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been nav but was boo"));
 +        }
 +
 +    }
 +
 +
 +}
-diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java
+diff --git a/src/test/java/org/seleniumhq/selenium/fluent/elements/tbody.java b/src/test/java/org/seleniumhq/selenium/fluent/elements/tbody.java
 new file mode 100644
 index 0000000..cccaadd
 --- /dev/null
-+++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/area.java
++++ b/src/test/java/org/seleniumhq/selenium/fluent/elements/tbody.java
 @@ -0,0 +1,63 @@
 +package org.seleniumhq.selenium.fluent.elements;
 +
@@ -319,49 +319,49 @@ index 0000000..cccaadd
 +import static org.junit.Assert.fail;
 +import static org.mockito.Mockito.when;
 +
-+public class area extends BaseTest {
++public class tbody extends BaseTest {
 +
 +    @Test
-+    public void area_functionality() {
++    public void tbody_functionality() {
 +
-+        setupExpecations("area");
++        setupExpecations("tbody");
 +
-+        FluentWebElements fe = fwd.area()
-+                .area(By.xpath("@foo = 'bar'"))
-+                .area(By.cssSelector("baz"))
-+                .areas();
++        FluentWebElements fe = fwd.tbody()
++                .tbody(By.xpath("@foo = 'bar'"))
++                .tbody(By.cssSelector("baz"))
++                .tbodys();
 +
 +        assertThat(fe, notNullValue());
-+        verifications("area");
++        verifications("tbody");
 +    }
 +
 +    @Test
 +    public void adresss_functionality() {
 +
-+        setupExpecations2("area");
++        setupExpecations2("tbody");
 +
-+        FluentWebElements fe = fwd.area()
-+                .areas(By.name("qux"));
++        FluentWebElements fe = fwd.tbody()
++                .tbodys(By.name("qux"));
 +
 +        assertThat(fe, notNullValue());
 +
-+        verifications2("area");
++        verifications2("tbody");
 +
 +    }
 +
 +    @Test
-+    public void area_mismatched() {
++    public void tbody_mismatched() {
 +
 +        when(wd.findElement(By.linkText("mismatching_tag_name"))).thenReturn(we);
 +        when(we.getTagName()).thenReturn("boo");
 +
 +        try {
-+            fwd.area(By.linkText("mismatching_tag_name"))
++            fwd.tbody(By.linkText("mismatching_tag_name"))
 +                    .clearField();
 +            fail("should have barfed");
 +        } catch (FluentExecutionStopped e) {
-+            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.area(By.linkText: mismatching_tag_name)"));
-+            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been area but was boo"));
++            assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.tbody(By.linkText: mismatching_tag_name)"));
++            assertThat(e.getCause().getMessage(), equalTo("tag was incorrect, should have been tbody but was boo"));
 +        }
 +
 +    }
@@ -376,19 +376,19 @@ index 5121639..28f4c62 100644
      }
  
      @Test
-+    public void testblockquote() throws Exception {
-+        when(wd.findElement(tagName("blockquote"))).thenThrow(new NotFoundException());
-+        nfwd.blockquote();
++    public void testnav() throws Exception {
++        when(wd.findElement(tagName("nav"))).thenThrow(new NotFoundException());
++        nfwd.nav();
 +        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
-+        nfwd.blockquote(BYID);
++        nfwd.nav(BYID);
 +    }
 +
 +    @Test
-+    public void testarea() throws Exception {
-+        when(wd.findElement(tagName("area"))).thenThrow(new NotFoundException());
-+        nfwd.area();
++    public void testtbody() throws Exception {
++        when(wd.findElement(tagName("tbody"))).thenThrow(new NotFoundException());
++        nfwd.tbody();
 +        when(wd.findElement(BYID)).thenThrow(new NotFoundException());
-+        nfwd.area(BYID);
++        nfwd.tbody(BYID);
 +    }
 +
 +    @Test

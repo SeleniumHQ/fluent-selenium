@@ -223,6 +223,24 @@ public class NegatingFluentWebDriver {
         delegate.object(by);
     }
 
+    public void nav() {
+        delegate.nav();
+    }
+
+
+    public void nav(By by) {
+        delegate.nav(by);
+    }
+
+    public void tbody() {
+        delegate.tbody();
+    }
+
+
+    public void tbody(By by) {
+        delegate.tbody(by);
+    }
+
     public void img() {
         delegate.img();
     }
