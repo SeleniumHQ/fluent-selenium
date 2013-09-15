@@ -806,9 +806,10 @@ public class Internal {
         protected final By fixupBy(By by, String tagName) {
             if (by.getClass().getName().equals("org.openqa.selenium.By$ByXPath")) {
                 by = xpath(".//" + tagName + "[" + by.toString().substring(by.toString().indexOf(":") + 1).trim() + "]");
-            }
-            if (by.getClass().getName().equals("org.openqa.selenium.By$ByClassName")) {
+            } else if (by.getClass().getName().equals("org.openqa.selenium.By$ByClassName")) {
                 by = composite(new By.ByTagName(tagName), (By.ByClassName) by);
+            } else if (by instanceof FluentBy.NotByAttribute) {
+                by = xpath(".//" + tagName + "[" + ((FluentBy.NotByAttribute) by).nameAndValue() + "]");
             }
             return by;
         }
