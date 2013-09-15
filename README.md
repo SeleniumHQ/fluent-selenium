@@ -433,7 +433,7 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.14</version>
+   <version>1.14.2</version>
    <scope>test</scope>
 </dependency>
 
@@ -459,7 +459,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.14</version>
+  <version>1.14.2</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
