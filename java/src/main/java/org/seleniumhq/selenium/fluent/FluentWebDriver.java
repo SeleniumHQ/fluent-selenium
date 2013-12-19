@@ -87,6 +87,26 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
+    public FluentWebElement element() {
+        return (FluentWebElement) super.element();
+    }
+
+    @Override
+    public FluentWebElement element(By by) {
+        return (FluentWebElement) super.element(by);
+    }
+
+    @Override
+    public FluentWebElements elements() {
+        return (FluentWebElements) super.elements();
+    }
+
+    @Override
+    public FluentWebElements elements(By by) {
+        return (FluentWebElements) super.elements(by);
+    }
+
+    @Override
     public FluentWebElement span() {
         return (FluentWebElement) super.span();
     }
@@ -896,6 +916,14 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         public BooleanResultsAdapter invert(boolean b) {
             this.invert = b;
             return this;
+        }
+
+        public boolean element() {
+            return returnBool(bfwd.element());
+        }
+
+        public boolean element(By by) {
+            return returnBool(bfwd.element(by));
         }
 
         public boolean span() {

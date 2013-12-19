@@ -17,7 +17,7 @@ public class input extends BaseTest {
     @Test
     public void input_functionality() {
 
-        setupExpecations("input");
+        setupExpectationsSingle("input");
 
         FluentWebElements fe = fwd.input()
                 .input(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class input extends BaseTest {
                 .inputs();
 
         assertThat(fe, notNullValue());
-        verifications("input");
+        verificationsSingle("input");
     }
 
     @Test
     public void inputs_functionality() {
 
-        setupExpecations2("input");
+        setupExpectationsMultiple("input");
 
         FluentWebElements fe = fwd.input()
                 .inputs(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("input");
+        verificationsMultiple("input");
 
     }
 

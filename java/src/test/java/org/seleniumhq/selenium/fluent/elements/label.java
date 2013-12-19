@@ -17,7 +17,7 @@ public class label extends BaseTest {
     @Test
     public void label_functionality() {
 
-        setupExpecations("label");
+        setupExpectationsSingle("label");
 
         FluentWebElements fe = fwd.label()
                 .label(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class label extends BaseTest {
                 .labels();
 
         assertThat(fe, notNullValue());
-        verifications("label");
+        verificationsSingle("label");
     }
 
     @Test
     public void labels_functionality() {
 
-        setupExpecations2("label");
+        setupExpectationsMultiple("label");
 
         FluentWebElements fe = fwd.label()
                 .labels(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("label");
+        verificationsMultiple("label");
 
     }
 

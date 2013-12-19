@@ -17,7 +17,7 @@ public class acronym extends BaseTest {
     @Test
     public void acronym_functionality() {
 
-        setupExpecations("acronym");
+        setupExpectationsSingle("acronym");
 
         FluentWebElements fe = fwd.acronym()
                 .acronym(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class acronym extends BaseTest {
                 .acronyms();
 
         assertThat(fe, notNullValue());
-        verifications("acronym");
+        verificationsSingle("acronym");
     }
 
     @Test
     public void acronyms_functionality() {
 
-        setupExpecations2("acronym");
+        setupExpectationsMultiple("acronym");
 
         FluentWebElements fe = fwd.acronym()
                 .acronyms(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("acronym");
+        verificationsMultiple("acronym");
 
     }
 

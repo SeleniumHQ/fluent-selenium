@@ -17,7 +17,7 @@ public class td extends BaseTest {
     @Test
     public void td_functionality() {
 
-        setupExpecations("td");
+        setupExpectationsSingle("td");
 
         Internal.BaseFluentWebElements fe = fwd.td()
                 .td(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class td extends BaseTest {
                 .tds();
 
         assertThat(fe, notNullValue());
-        verifications("td");
+        verificationsSingle("td");
     }
 
     @Test
     public void tds_functionality() {
 
-        setupExpecations2("td");
+        setupExpectationsMultiple("td");
 
         Internal.BaseFluentWebElements fe = fwd.td()
                 .tds(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("td");
+        verificationsMultiple("td");
 
     }
 

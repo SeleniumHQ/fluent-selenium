@@ -17,7 +17,7 @@ public class footer extends BaseTest {
     @Test
     public void footer_functionality() {
 
-        setupExpecations("footer");
+        setupExpectationsSingle("footer");
 
         FluentWebElements fe = fwd.footer()
                 .footer(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class footer extends BaseTest {
                 .footers();
 
         assertThat(fe, notNullValue());
-        verifications("footer");
+        verificationsSingle("footer");
     }
 
     @Test
     public void footers_functionality() {
 
-        setupExpecations2("footer");
+        setupExpectationsMultiple("footer");
 
         FluentWebElements fe = fwd.footer()
                 .footers(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("footer");
+        verificationsMultiple("footer");
 
     }
 

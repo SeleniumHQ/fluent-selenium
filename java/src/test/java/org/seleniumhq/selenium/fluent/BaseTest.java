@@ -32,7 +32,8 @@ public class BaseTest {
         fwd = new FluentWebDriver(wd);
     }
 
-    protected void setupExpecations(String name) {
+    protected void setupExpectationsSingle(String name) {
+        when(wd.findElement(By.cssSelector("*"))).thenReturn(we);
         when(wd.findElement(By.tagName(name))).thenReturn(we);
         when(we.getTagName()).thenReturn(name);
         when(we.findElement(By.xpath(".//"+name+"[@foo = 'bar']"))).thenReturn(we2);
@@ -44,7 +45,11 @@ public class BaseTest {
         when(we5.getTagName()).thenReturn(name);
     }
 
-    protected void verifications(String name) {
+    protected void setupExpectationsSingleGeneric() {
+        setupExpectationsSingle("*");
+    }
+
+    protected void verificationsSingle(String name) {
         verify(wd).findElement(By.tagName(name));
         verify(we).getTagName();
         verify(we).findElement(By.xpath(".//"+name+"[@foo = 'bar']"));
@@ -57,7 +62,16 @@ public class BaseTest {
         verifyNoMoreInteractions(wd, we, we2, we3, we4, we5);
     }
 
-    protected void setupExpecations2(String button) {
+    protected void verificationsSingleGeneric() {
+        String name = "*";
+        verify(wd).findElement(By.tagName(name));
+        verify(we).findElement(By.xpath(".//"+name+"[@foo = 'bar']"));
+        verify(we2).findElement(By.cssSelector("baz"));
+        verify(we3).findElements(By.tagName(name));
+        verifyNoMoreInteractions(wd, we, we2, we3, we4, we5);
+    }
+
+    protected void setupExpectationsMultiple(String button) {
         when(wd.findElement(By.tagName(button))).thenReturn(we);
         when(we.getTagName()).thenReturn(button);
         when(we.findElements(By.name("qux"))).thenReturn(newArrayList(we2, we3));
@@ -65,7 +79,11 @@ public class BaseTest {
         when(we3.getTagName()).thenReturn(button);
     }
 
-    protected void verifications2(String name) {
+    protected void setupExpectationsMultipleGeneric() {
+        setupExpectationsMultiple("*");
+    }
+
+    protected void verificationsMultiple(String name) {
         verify(wd).findElement(By.tagName(name));
         verify(we).getTagName();
         verify(we).findElements(By.name("qux"));
@@ -73,4 +91,12 @@ public class BaseTest {
         verify(we3).getTagName();
         verifyNoMoreInteractions(wd, we, we2, we3);
     }
+
+    protected void verificationsMultipleGeneric() {
+        String name = "*";
+        verify(wd).findElement(By.tagName(name));
+        verify(we).findElements(By.name("qux"));
+        verifyNoMoreInteractions(wd, we, we2, we3);
+    }
+
 }

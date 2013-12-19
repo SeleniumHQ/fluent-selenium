@@ -17,7 +17,7 @@ public class img extends BaseTest {
     @Test
     public void img_functionality() {
 
-        setupExpecations("img");
+        setupExpectationsSingle("img");
 
         FluentWebElements fe = fwd.img()
                 .img(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class img extends BaseTest {
                 .imgs();
 
         assertThat(fe, notNullValue());
-        verifications("img");
+        verificationsSingle("img");
     }
 
     @Test
     public void imgs_functionality() {
 
-        setupExpecations2("img");
+        setupExpectationsMultiple("img");
 
         FluentWebElements fe = fwd.img()
                 .imgs(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("img");
+        verificationsMultiple("img");
 
     }
 

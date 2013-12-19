@@ -17,7 +17,7 @@ public class tr extends BaseTest {
     @Test
     public void tr_functionality() {
 
-        setupExpecations("tr");
+        setupExpectationsSingle("tr");
 
         FluentWebElements fe = fwd.tr()
                 .tr(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class tr extends BaseTest {
                 .trs();
 
         assertThat(fe, notNullValue());
-        verifications("tr");
+        verificationsSingle("tr");
     }
 
     @Test
     public void trs_functionality() {
 
-        setupExpecations2("tr");
+        setupExpectationsMultiple("tr");
 
         FluentWebElements fe = fwd.tr()
                 .trs(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("tr");
+        verificationsMultiple("tr");
 
     }
 

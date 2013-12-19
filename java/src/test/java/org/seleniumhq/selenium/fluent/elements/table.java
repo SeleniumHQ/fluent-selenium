@@ -17,7 +17,7 @@ public class table extends BaseTest {
     @Test
     public void table_functionality() {
 
-        setupExpecations("table");
+        setupExpectationsSingle("table");
 
         FluentWebElements fe = fwd.table()
                 .table(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class table extends BaseTest {
                 .tables();
 
         assertThat(fe, notNullValue());
-        verifications("table");
+        verificationsSingle("table");
     }
 
     @Test
     public void tables_functionality() {
 
-        setupExpecations2("table");
+        setupExpectationsMultiple("table");
 
         FluentWebElements fe = fwd.table()
                 .tables(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("table");
+        verificationsMultiple("table");
 
     }
 

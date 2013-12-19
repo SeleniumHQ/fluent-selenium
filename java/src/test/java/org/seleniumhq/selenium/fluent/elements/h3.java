@@ -17,7 +17,7 @@ public class h3 extends BaseTest {
     @Test
     public void h3_functionality() {
 
-        setupExpecations("h3");
+        setupExpectationsSingle("h3");
 
         FluentWebElements fe = fwd.h3()
                 .h3(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class h3 extends BaseTest {
                 .h3s();
 
         assertThat(fe, notNullValue());
-        verifications("h3");
+        verificationsSingle("h3");
     }
 
     @Test
     public void h3s_functionality() {
 
-        setupExpecations2("h3");
+        setupExpectationsMultiple("h3");
 
         FluentWebElements fe = fwd.h3()
                 .h3s(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("h3");
+        verificationsMultiple("h3");
 
     }
 

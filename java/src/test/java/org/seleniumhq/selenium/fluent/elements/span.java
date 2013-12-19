@@ -17,7 +17,7 @@ public class span extends BaseTest {
     @Test
     public void span_functionality() {
 
-        setupExpecations("span");
+        setupExpectationsSingle("span");
 
         FluentWebElements fe = fwd.span()
                 .span(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class span extends BaseTest {
                 .spans();
 
         assertThat(fe, notNullValue());
-        verifications("span");
+        verificationsSingle("span");
     }
 
     @Test
     public void spans_functionality() {
 
-        setupExpecations2("span");
+        setupExpectationsMultiple("span");
 
         FluentWebElements fe = fwd.span()
                 .spans(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("span");
+        verificationsMultiple("span");
 
     }
 

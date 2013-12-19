@@ -17,7 +17,7 @@ public class tbody extends BaseTest {
     @Test
     public void tbody_functionality() {
 
-        setupExpecations("tbody");
+        setupExpectationsSingle("tbody");
 
         FluentWebElements fe = fwd.tbody()
                 .tbody(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class tbody extends BaseTest {
                 .tbodys();
 
         assertThat(fe, notNullValue());
-        verifications("tbody");
+        verificationsSingle("tbody");
     }
 
     @Test
     public void adresss_functionality() {
 
-        setupExpecations2("tbody");
+        setupExpectationsMultiple("tbody");
 
         FluentWebElements fe = fwd.tbody()
                 .tbodys(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("tbody");
+        verificationsMultiple("tbody");
 
     }
 
