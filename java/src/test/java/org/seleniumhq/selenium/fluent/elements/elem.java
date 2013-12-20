@@ -13,9 +13,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-/**
- * @author t5e
- */
 public class elem extends BaseTest {
 
     @Test
