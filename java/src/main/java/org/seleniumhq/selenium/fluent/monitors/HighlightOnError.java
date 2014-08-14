@@ -38,4 +38,25 @@ public class HighlightOnError extends Monitor.NULL {
     protected String highlightOperation() {
         return "arguments[0].setAttribute('style', arguments[1]);";
     }
+
+    public static class ForDisabledElements extends HighlightOnError{
+
+        public ForDisabledElements(WebDriver delegate) {
+            super(delegate);
+        }
+
+        @Override
+        public void executeScript(WebElement webElement) {
+            boolean elementWasDisplayed = webElement.isDisplayed();
+            super.executeScript(webElement);
+
+            if( !elementWasDisplayed ) {
+                ((JavascriptExecutor) driver).executeScript(
+                        "arguments[0].innerHTML=arguments[1]+arguments[0].innerHTML",
+                        webElement,
+                        "<span style=\"color: darkred; background: lightpink;\" >This element was not being displayed</span>");
+            }
+        }
+    }
+
 }
