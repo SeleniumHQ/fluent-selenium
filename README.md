@@ -73,6 +73,8 @@ fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
 
 AngularJS is an example of framework that does a huge amount of the heavy lifting in browser.  While it's doing its magic, you are going to encounter timing issues. If you prefer, the 'within' and 'without' fluent methods above will help you overcome those issues, but there is a way of being smarter about waiting for Angular's magic to stop:
 
+There's another library you can use in conjunction with Selenium/WebDriver and/or FluentSelenium - [ngWebDriver](https://github.com/paul-hammant/ngWebDriver).  This below is a more informal way interacting with Angular's runtime in the browser.
+
 Somewhere in your code, define the following static method:
 
 ```java
