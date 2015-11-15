@@ -17,7 +17,7 @@ public class nav extends BaseTest {
     @Test
     public void nav_functionality() {
 
-        setupExpecations("nav");
+        setupExpectationsSingle("nav");
 
         FluentWebElements fe = fwd.nav()
                 .nav(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class nav extends BaseTest {
                 .navs();
 
         assertThat(fe, notNullValue());
-        verifications("nav");
+        verificationsSingle("nav");
     }
 
     @Test
     public void navs_functionality() {
 
-        setupExpecations2("nav");
+        setupExpectationsMultiple("nav");
 
         FluentWebElements fe = fwd.nav()
                 .navs(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("nav");
+        verificationsMultiple("nav");
 
     }
 

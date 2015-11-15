@@ -165,6 +165,26 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
+    public FluentWebElement element() {
+        return (FluentWebElement) super.element();
+    }
+
+    @Override
+    public FluentWebElement element(By by) {
+        return (FluentWebElement) super.element(by);
+    }
+
+    @Override
+    public FluentWebElements elements() {
+        return (FluentWebElements) super.elements();
+    }
+
+    @Override
+    public FluentWebElements elements(By by) {
+        return (FluentWebElements) super.elements(by);
+    }
+
+    @Override
     public FluentWebElement span() {
         return (FluentWebElement) super.span();
     }
@@ -982,6 +1002,22 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
 
         protected Boolean durationHasElapsed(Long startMillis) {
             return duration.getEndMillis(startMillis) <= System.currentTimeMillis();
+        }
+
+        public void element() {
+            delegate.element();
+        }
+
+        public void element(By by) {
+            delegate.element(by);
+        }
+
+        public void elements() {
+            delegate.elements();
+        }
+
+        public void elements(By by) {
+            delegate.elements(by);
         }
 
         public void span() {

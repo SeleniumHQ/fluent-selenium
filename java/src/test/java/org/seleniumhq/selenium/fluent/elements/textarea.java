@@ -17,7 +17,7 @@ public class textarea extends BaseTest {
     @Test
     public void textarea_functionality() {
 
-        setupExpecations("textarea");
+        setupExpectationsSingle("textarea");
 
         FluentWebElements fe = fwd.textarea()
                 .textarea(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class textarea extends BaseTest {
                 .textareas();
 
         assertThat(fe, notNullValue());
-        verifications("textarea");
+        verificationsSingle("textarea");
     }
 
     @Test
     public void textareas_functionality() {
 
-        setupExpecations2("textarea");
+        setupExpectationsMultiple("textarea");
 
         FluentWebElements fe = fwd.textarea()
                 .textareas(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("textarea");
+        verificationsMultiple("textarea");
 
     }
 

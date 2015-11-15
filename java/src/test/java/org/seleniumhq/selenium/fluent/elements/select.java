@@ -33,7 +33,7 @@ public class select extends BaseTest {
     @Test
     public void select_functionality() {
 
-        setupExpecations("select");
+        setupExpectationsSingle("select");
 
         FluentWebElements fe = fwd.select()
                 .select(By.xpath("@foo = 'bar'"))
@@ -41,7 +41,7 @@ public class select extends BaseTest {
                 .selects();
 
         assertThat(fe, notNullValue());
-        verifications("select");
+        verificationsSingle("select");
     }
 
     @Test
@@ -74,14 +74,14 @@ public class select extends BaseTest {
     @Test
     public void selects_functionality() {
 
-        setupExpecations2("select");
+        setupExpectationsMultiple("select");
 
         FluentWebElements fe = fwd.select()
                 .selects(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("select");
+        verificationsMultiple("select");
 
     }
 

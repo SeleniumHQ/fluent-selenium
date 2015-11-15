@@ -17,7 +17,7 @@ public class li extends BaseTest {
     @Test
     public void li_functionality() {
 
-        setupExpecations("li");
+        setupExpectationsSingle("li");
 
         FluentWebElements fe = fwd.li()
                 .li(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class li extends BaseTest {
                 .lis();
 
         assertThat(fe, notNullValue());
-        verifications("li");
+        verificationsSingle("li");
     }
 
     @Test
     public void lis_functionality() {
 
-        setupExpecations2("li");
+        setupExpectationsMultiple("li");
 
         FluentWebElements fe = fwd.li()
                 .lis(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("li");
+        verificationsMultiple("li");
 
     }
 

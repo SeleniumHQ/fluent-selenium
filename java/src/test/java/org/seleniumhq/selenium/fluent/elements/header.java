@@ -17,7 +17,7 @@ public class header extends BaseTest {
     @Test
     public void header_functionality() {
 
-        setupExpecations("header");
+        setupExpectationsSingle("header");
 
         FluentWebElements fe = fwd.header()
                 .header(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class header extends BaseTest {
                 .headers();
 
         assertThat(fe, notNullValue());
-        verifications("header");
+        verificationsSingle("header");
     }
 
     @Test
     public void headers_functionality() {
 
-        setupExpecations2("header");
+        setupExpectationsMultiple("header");
 
         FluentWebElements fe = fwd.header()
                 .headers(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("header");
+        verificationsMultiple("header");
 
     }
 

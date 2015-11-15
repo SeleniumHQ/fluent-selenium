@@ -25,6 +25,14 @@ public class NegatingFluentWebDriver {
 
     // We are deliberately returning void here, to halt fluency.
 
+    public void element() {
+        delegate.element();
+    }
+
+    public void element(By by) {
+        delegate.element(by);
+    }
+
     public void span() {
         delegate.span();
     }

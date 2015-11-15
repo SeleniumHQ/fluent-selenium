@@ -17,7 +17,7 @@ public class figure extends BaseTest {
     @Test
     public void figure_functionality() {
 
-        setupExpecations("figure");
+        setupExpectationsSingle("figure");
 
         FluentWebElements fe = fwd.figure()
                 .figure(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class figure extends BaseTest {
                 .figures();
 
         assertThat(fe, notNullValue());
-        verifications("figure");
+        verificationsSingle("figure");
     }
 
     @Test
     public void figures_functionality() {
 
-        setupExpecations2("figure");
+        setupExpectationsMultiple("figure");
 
         FluentWebElements fe = fwd.figure()
                 .figures(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("figure");
+        verificationsMultiple("figure");
 
     }
 

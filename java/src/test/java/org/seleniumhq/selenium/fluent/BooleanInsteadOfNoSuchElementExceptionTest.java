@@ -133,7 +133,8 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
             String name = method.getName();
             if (method.getReturnType().equals(Boolean.TYPE) && !name.equals("returnBool")) {
                 if (method.getParameterTypes().length == 0) {
-                    when(wd.findElement(tagName(name.replace("link","a")))).thenThrow(new NoSuchElementException("boo"));
+                    String tagName = name.replace("link", "a").replace("element", "*");
+                    when(wd.findElement(tagName(tagName))).thenThrow(new NoSuchElementException("boo"));
                     assertFalse((Boolean) method.invoke(bwa));
                 } else {
                     assertFalse((Boolean) method.invoke(bwa, byID));
@@ -141,7 +142,7 @@ public class BooleanInsteadOfNoSuchElementExceptionTest {
                 count++;
             }
         }
-        assertThat(count, equalTo(78));
+        assertThat(count, equalTo(80));
     }
 
 }

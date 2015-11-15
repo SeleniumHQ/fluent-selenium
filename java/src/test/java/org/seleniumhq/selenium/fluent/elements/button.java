@@ -19,7 +19,7 @@ public class button extends BaseTest {
     @Test
     public void button_functionality() {
 
-        setupExpecations("button");
+        setupExpectationsSingle("button");
 
         FluentWebElements fe = fwd.button()
                 .button(By.xpath("@foo = 'bar'"))
@@ -27,7 +27,7 @@ public class button extends BaseTest {
                 .buttons(); // very artificial, sure.
 
         assertThat(fe, notNullValue());
-        verifications("button");
+        verificationsSingle("button");
 
 
     }
@@ -35,13 +35,13 @@ public class button extends BaseTest {
     @Test
     public void buttons_functionality() {
 
-        setupExpecations2("button");
+        setupExpectationsMultiple("button");
 
         FluentWebElements fe = fwd.button().buttons(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("button");
+        verificationsMultiple("button");
 
     }
 

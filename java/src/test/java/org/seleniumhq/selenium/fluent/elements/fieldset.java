@@ -17,7 +17,7 @@ public class fieldset extends BaseTest {
     @Test
     public void fieldset_functionality() {
 
-        setupExpecations("fieldset");
+        setupExpectationsSingle("fieldset");
 
         FluentWebElements fe = fwd.fieldset()
                 .fieldset(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class fieldset extends BaseTest {
                 .fieldsets();
 
         assertThat(fe, notNullValue());
-        verifications("fieldset");
+        verificationsSingle("fieldset");
     }
 
     @Test
     public void fieldsets_functionality() {
 
-        setupExpecations2("fieldset");
+        setupExpectationsMultiple("fieldset");
 
         FluentWebElements fe = fwd.fieldset()
                 .fieldsets(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("fieldset");
+        verificationsMultiple("fieldset");
 
     }
 

@@ -44,6 +44,8 @@ public class Internal {
 
     public abstract static class BaseFluentWebDriver {
 
+        protected static final String GENERIC_TAG = "*";
+
         protected final WebDriver delegate;
         protected final Context context;
         protected final Monitor monitor;
@@ -66,20 +68,6 @@ public class Internal {
             return delegate;
         }
 
-        protected BaseFluentWebElement span() {
-            SingleResult single = single(tagName("span"), "span");
-            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
-        }
-
-        protected BaseFluentWebElement span(By by) {
-            SingleResult single = single(by, "span");
-            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
-        }
-
-        protected BaseFluentWebElements spans() {
-            return newFluentWebElements(multiple(tagName("span"), "span"));
-        }
-
         protected BaseFluentWebElements newFluentWebElements(MultipleResult multiple) {
             List<WebElement> result = multiple.getResult();
             Context ctx = multiple.getCtx();
@@ -96,6 +84,38 @@ public class Internal {
                 elems.add(new FluentSelect(delegate, aResult, ctx, monitor, booleanInsteadOfNotFoundException));
             }
             return new FluentSelects(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
+        }
+
+        protected BaseFluentWebElement element() {
+            SingleResult single = single(tagName(GENERIC_TAG), GENERIC_TAG);
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElement element(By by) {
+            SingleResult single = single(by, GENERIC_TAG);
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements elements() {
+            return newFluentWebElements(multiple(tagName(GENERIC_TAG), GENERIC_TAG));
+        }
+
+        protected BaseFluentWebElements elements(By by) {
+            return newFluentWebElements(multiple(by, GENERIC_TAG));
+        }
+
+        protected BaseFluentWebElement span() {
+            SingleResult single = single(tagName("span"), "span");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElement span(By by) {
+            SingleResult single = single(by, "span");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements spans() {
+            return newFluentWebElements(multiple(tagName("span"), "span"));
         }
 
         protected BaseFluentWebElements spans(By by) {
@@ -826,7 +846,7 @@ public class Internal {
 
         private SingleResult single(final By by, final String tagName) {
             final By by2 = fixupBy(by, tagName);
-            Context ctx = contextualize(by, tagName);
+            Context ctx = contextualize(by2, tagName);
             final WebElementHolder result;
             try {
                 changeTimeout();
@@ -862,7 +882,6 @@ public class Internal {
             private final Context ctx;
             private final SearchContext searchContext;
 
-
             public FindElement(By by2, String tagName, Context ctx, SearchContext searchContext) {
                 this.by2 = by2;
                 this.tagName = tagName;
@@ -880,7 +899,9 @@ public class Internal {
                     }
                 } else {
                     WebElement it = findElement(by2, ctx, searchContext);
-                    assertTagIs(it.getTagName(), tagName);
+                    if (!GENERIC_TAG.equals(tagName)) {
+                        assertTagIs(it.getTagName(), tagName);
+                    }
                     return it;
                 }
             }
@@ -937,8 +958,10 @@ public class Internal {
 
             public List<WebElement> execute() {
                 List<WebElement> results = findElements(by2, ctx);
-                for (WebElement webElement : results) {
-                    assertTagIs(webElement.getTagName(), tagName);
+                if (!GENERIC_TAG.equals(tagName)) {
+                    for (WebElement webElement : results) {
+                        assertTagIs(webElement.getTagName(), tagName);
+                    }
                 }
                 return results;
             }

@@ -17,7 +17,7 @@ public class legend extends BaseTest {
     @Test
     public void legend_functionality() {
 
-        setupExpecations("legend");
+        setupExpectationsSingle("legend");
 
         Internal.BaseFluentWebElements fe = fwd.legend()
                 .legend(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class legend extends BaseTest {
                 .legends();
 
         assertThat(fe, notNullValue());
-        verifications("legend");
+        verificationsSingle("legend");
     }
 
     @Test
     public void legends_functionality() {
 
-        setupExpecations2("legend");
+        setupExpectationsMultiple("legend");
 
         Internal.BaseFluentWebElements fe = fwd.legend()
                 .legends(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("legend");
+        verificationsMultiple("legend");
 
     }
 
