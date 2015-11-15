@@ -15,15 +15,7 @@ limitations under the License.
 */
 package org.seleniumhq.selenium.fluent;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
@@ -1345,5 +1337,8 @@ public class Internal {
         public String getCssValue(String propertyName) {
             throw new UnsupportedOperationException();
         }
+
+        public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException { throw new UnsupportedOperationException(); }
+
     }
 }

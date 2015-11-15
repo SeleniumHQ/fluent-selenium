@@ -1,11 +1,7 @@
 package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.List;
@@ -138,6 +134,8 @@ public class StaleRecoveringTest {
                 public String getCssValue(String propertyName) {
                     return we.getCssValue(propertyName);
                 }
+
+                public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException { return we.getScreenshotAs(outputType); }
             };
         }
     }
