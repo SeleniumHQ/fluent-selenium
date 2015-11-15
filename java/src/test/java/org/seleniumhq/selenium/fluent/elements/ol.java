@@ -17,7 +17,7 @@ public class ol extends BaseTest {
     @Test
     public void ol_functionality() {
 
-        setupExpecations("ol");
+        setupExpectationsSingle("ol");
 
         FluentWebElements fe = fwd.ol()
                 .ol(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class ol extends BaseTest {
                 .ols();
 
         assertThat(fe, notNullValue());
-        verifications("ol");
+        verificationsSingle("ol");
     }
 
     @Test
     public void ols_functionality() {
 
-        setupExpecations2("ol");
+        setupExpectationsMultiple("ol");
 
         FluentWebElements fe = fwd.ol()
                 .ols(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("ol");
+        verificationsMultiple("ol");
 
     }
 

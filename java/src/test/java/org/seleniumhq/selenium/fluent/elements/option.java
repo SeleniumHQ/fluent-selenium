@@ -17,7 +17,7 @@ public class option extends BaseTest {
     @Test
     public void option_functionality() {
 
-        setupExpecations("option");
+        setupExpectationsSingle("option");
 
         FluentWebElements fe = fwd.option()
                 .option(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class option extends BaseTest {
                 .options();
 
         assertThat(fe, notNullValue());
-        verifications("option");
+        verificationsSingle("option");
     }
 
     @Test
     public void options_functionality() {
 
-        setupExpecations2("option");
+        setupExpectationsMultiple("option");
 
         FluentWebElements fe = fwd.option()
                 .options(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("option");
+        verificationsMultiple("option");
 
     }
 

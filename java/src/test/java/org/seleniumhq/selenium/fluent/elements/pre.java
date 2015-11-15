@@ -17,7 +17,7 @@ public class pre extends BaseTest {
     @Test
     public void pre_functionality() {
 
-        setupExpecations("pre");
+        setupExpectationsSingle("pre");
 
         FluentWebElements fe = fwd.pre()
                 .pre(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class pre extends BaseTest {
                 .pres();
 
         assertThat(fe, notNullValue());
-        verifications("pre");
+        verificationsSingle("pre");
     }
 
     @Test
     public void pres_functionality() {
 
-        setupExpecations2("pre");
+        setupExpectationsMultiple("pre");
 
         FluentWebElements fe = fwd.pre()
                 .pres(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("pre");
+        verificationsMultiple("pre");
 
     }
 

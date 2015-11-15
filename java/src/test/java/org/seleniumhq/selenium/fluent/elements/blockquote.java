@@ -17,7 +17,7 @@ public class blockquote extends BaseTest {
     @Test
     public void blockquote_functionality() {
 
-        setupExpecations("blockquote");
+        setupExpectationsSingle("blockquote");
 
         FluentWebElements fe = fwd.blockquote()
                 .blockquote(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class blockquote extends BaseTest {
                 .blockquotes();
 
         assertThat(fe, notNullValue());
-        verifications("blockquote");
+        verificationsSingle("blockquote");
     }
 
     @Test
     public void blockquotes_functionality() {
 
-        setupExpecations2("blockquote");
+        setupExpectationsMultiple("blockquote");
 
         FluentWebElements fe = fwd.blockquote()
                 .blockquotes(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("blockquote");
+        verificationsMultiple("blockquote");
 
     }
 

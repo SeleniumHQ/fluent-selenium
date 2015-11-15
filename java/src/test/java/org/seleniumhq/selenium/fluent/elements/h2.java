@@ -17,7 +17,7 @@ public class h2 extends BaseTest {
     @Test
     public void h2_functionality() {
 
-        setupExpecations("h2");
+        setupExpectationsSingle("h2");
 
         Internal.BaseFluentWebElements fe = fwd.h2()
                 .h2(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class h2 extends BaseTest {
                 .h2s();
 
         assertThat(fe, notNullValue());
-        verifications("h2");
+        verificationsSingle("h2");
     }
 
     @Test
     public void h2s_functionality() {
 
-        setupExpecations2("h2");
+        setupExpectationsMultiple("h2");
 
         Internal.BaseFluentWebElements fe = fwd.h2()
                 .h2s(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("h2");
+        verificationsMultiple("h2");
 
     }
 

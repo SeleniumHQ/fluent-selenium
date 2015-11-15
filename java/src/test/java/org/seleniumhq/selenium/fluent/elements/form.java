@@ -17,7 +17,7 @@ public class form extends BaseTest {
     @Test
     public void form_functionality() {
 
-        setupExpecations("form");
+        setupExpectationsSingle("form");
 
         FluentWebElements fe = fwd.form()
                 .form(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class form extends BaseTest {
                 .forms();
 
         assertThat(fe, notNullValue());
-        verifications("form");
+        verificationsSingle("form");
     }
 
     @Test
     public void forms_functionality() {
 
-        setupExpecations2("form");
+        setupExpectationsMultiple("form");
 
         FluentWebElements fe = fwd.form()
                 .forms(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("form");
+        verificationsMultiple("form");
 
     }
 

@@ -17,7 +17,7 @@ public class map extends BaseTest {
     @Test
     public void map_functionality() {
 
-        setupExpecations("map");
+        setupExpectationsSingle("map");
 
         Internal.BaseFluentWebElements fe = fwd.map()
                 .map(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class map extends BaseTest {
                 .maps();
 
         assertThat(fe, notNullValue());
-        verifications("map");
+        verificationsSingle("map");
     }
 
     @Test
     public void maps_functionality() {
 
-        setupExpecations2("map");
+        setupExpectationsMultiple("map");
 
         Internal.BaseFluentWebElements fe = fwd.map()
                 .maps(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("map");
+        verificationsMultiple("map");
 
     }
 

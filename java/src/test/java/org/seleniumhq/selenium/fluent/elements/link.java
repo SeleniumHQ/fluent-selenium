@@ -17,7 +17,7 @@ public class link extends BaseTest {
     @Test
     public void link_functionality() {
 
-        setupExpecations("a");
+        setupExpectationsSingle("a");
 
         FluentWebElements fe = fwd.link()
                 .link(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class link extends BaseTest {
                 .links();
 
         assertThat(fe, notNullValue());
-        verifications("a");
+        verificationsSingle("a");
     }
 
     @Test
     public void links_functionality() {
 
-        setupExpecations2("a");
+        setupExpectationsMultiple("a");
 
         FluentWebElements fe = fwd.link()
                 .links(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("a");
+        verificationsMultiple("a");
 
     }
 

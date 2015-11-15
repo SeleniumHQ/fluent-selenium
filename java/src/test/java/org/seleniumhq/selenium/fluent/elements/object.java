@@ -17,7 +17,7 @@ public class object extends BaseTest {
     @Test
     public void object_functionality() {
 
-        setupExpecations("object");
+        setupExpectationsSingle("object");
 
         FluentWebElements fe = fwd.object()
                 .object(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class object extends BaseTest {
                 .objects();
 
         assertThat(fe, notNullValue());
-        verifications("object");
+        verificationsSingle("object");
     }
 
     @Test
     public void adresss_functionality() {
 
-        setupExpecations2("object");
+        setupExpectationsMultiple("object");
 
         FluentWebElements fe = fwd.object()
                 .objects(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("object");
+        verificationsMultiple("object");
 
     }
 

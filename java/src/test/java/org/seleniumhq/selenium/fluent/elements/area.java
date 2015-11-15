@@ -17,7 +17,7 @@ public class area extends BaseTest {
     @Test
     public void area_functionality() {
 
-        setupExpecations("area");
+        setupExpectationsSingle("area");
 
         FluentWebElements fe = fwd.area()
                 .area(By.xpath("@foo = 'bar'"))
@@ -25,20 +25,20 @@ public class area extends BaseTest {
                 .areas();
 
         assertThat(fe, notNullValue());
-        verifications("area");
+        verificationsSingle("area");
     }
 
     @Test
     public void adresss_functionality() {
 
-        setupExpecations2("area");
+        setupExpectationsMultiple("area");
 
         FluentWebElements fe = fwd.area()
                 .areas(By.name("qux"));
 
         assertThat(fe, notNullValue());
 
-        verifications2("area");
+        verificationsMultiple("area");
 
     }
 
