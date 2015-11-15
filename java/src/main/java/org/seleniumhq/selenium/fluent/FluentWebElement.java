@@ -615,6 +615,18 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
+    public FluentWebElement ul() { return (FluentWebElement) super.ul(); }
+
+    @Override
+    public FluentWebElement ul(By by) { return (FluentWebElement) super.ul(by); }
+
+    @Override
+    public FluentWebElements uls() { return (FluentWebElements) super.uls(); }
+
+    @Override
+    public FluentWebElements uls(By by) { return (FluentWebElements) super.uls(by); }
+
+    @Override
     public FluentWebElements lis() {
         return (FluentWebElements) super.lis();
     }
