@@ -27,11 +27,39 @@ public class form extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("form");
     }
+    
+    @Test
+    public void form_case_functionality() {
+
+        setupExpectationsSingle("form", "FORM");
+
+        FluentWebElements fe = fwd.form()
+                .form(By.xpath("@foo = 'bar'"))
+                .form(By.cssSelector("baz"))
+                .forms();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("form");
+    }
 
     @Test
     public void forms_functionality() {
 
         setupExpectationsMultiple("form");
+
+        FluentWebElements fe = fwd.form()
+                .forms(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("form");
+
+    }
+    
+    @Test
+    public void forms_case_functionality() {
+
+        setupExpectationsMultiple("form", "FORM");
 
         FluentWebElements fe = fwd.form()
                 .forms(By.name("qux"));
