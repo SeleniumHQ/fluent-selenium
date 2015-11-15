@@ -27,11 +27,38 @@ public class div extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("div");
     }
+    
+    @Test
+    public void div_case_functionality() {
+
+        setupExpectationsSingle("div","DIV");
+
+        FluentWebElements fe = fwd.div()
+                .div(By.xpath("@foo = 'bar'"))
+                .div(By.cssSelector("baz"))
+                .divs();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("div");
+    }
 
     @Test
     public void divs_functionality() {
 
         setupExpectationsMultiple("div");
+
+        FluentWebElements fe = fwd.div().divs(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("div");
+
+    }
+    
+    @Test
+    public void divs_case_functionality() {
+
+        setupExpectationsMultiple("div", "DIV");
 
         FluentWebElements fe = fwd.div().divs(By.name("qux"));
 

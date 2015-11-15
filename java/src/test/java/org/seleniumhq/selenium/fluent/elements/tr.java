@@ -27,11 +27,39 @@ public class tr extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("tr");
     }
+    
+    @Test
+    public void tr_case_functionality() {
+
+        setupExpectationsSingle("tr", "TR");
+
+        FluentWebElements fe = fwd.tr()
+                .tr(By.xpath("@foo = 'bar'"))
+                .tr(By.cssSelector("baz"))
+                .trs();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("tr");
+    }
 
     @Test
     public void trs_functionality() {
 
         setupExpectationsMultiple("tr");
+
+        FluentWebElements fe = fwd.tr()
+                .trs(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("tr");
+
+    }
+    
+    @Test
+    public void trs_case_functionality() {
+
+        setupExpectationsMultiple("tr", "TR");
 
         FluentWebElements fe = fwd.tr()
                 .trs(By.name("qux"));

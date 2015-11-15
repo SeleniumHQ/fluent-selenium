@@ -827,7 +827,7 @@ public class Internal {
         }
 
         protected final void assertTagIs(String is, String shouldBe) {
-            if (!is.toLowerCase().equals(shouldBe)) {
+            if (!is.equalsIgnoreCase(shouldBe)) {
                 throw new AssertionError("tag was incorrect, should have been " + shouldBe + " but was " + is);
             }
         }

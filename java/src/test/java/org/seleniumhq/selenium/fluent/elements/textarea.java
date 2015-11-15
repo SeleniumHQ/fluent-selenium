@@ -27,11 +27,39 @@ public class textarea extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("textarea");
     }
+    
+    @Test
+    public void textarea_case_functionality() {
+
+        setupExpectationsSingle("textarea", "TEXTAREA");
+
+        FluentWebElements fe = fwd.textarea()
+                .textarea(By.xpath("@foo = 'bar'"))
+                .textarea(By.cssSelector("baz"))
+                .textareas();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("textarea");
+    }
 
     @Test
     public void textareas_functionality() {
 
         setupExpectationsMultiple("textarea");
+
+        FluentWebElements fe = fwd.textarea()
+                .textareas(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("textarea");
+
+    }
+    
+    @Test
+    public void textareas_case_functionality() {
+
+        setupExpectationsMultiple("textarea", "TEXTAREA");
 
         FluentWebElements fe = fwd.textarea()
                 .textareas(By.name("qux"));

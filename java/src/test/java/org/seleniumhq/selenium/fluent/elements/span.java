@@ -27,11 +27,39 @@ public class span extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("span");
     }
+    
+    @Test
+    public void span_case_functionality() {
+
+        setupExpectationsSingle("span", "SPAN");
+
+        FluentWebElements fe = fwd.span()
+                .span(By.xpath("@foo = 'bar'"))
+                .span(By.cssSelector("baz"))
+                .spans();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("span");
+    }
 
     @Test
     public void spans_functionality() {
 
         setupExpectationsMultiple("span");
+
+        FluentWebElements fe = fwd.span()
+                .spans(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("span");
+
+    }
+    
+    @Test
+    public void spans_case_functionality() {
+
+        setupExpectationsMultiple("span", "SPAN");
 
         FluentWebElements fe = fwd.span()
                 .spans(By.name("qux"));

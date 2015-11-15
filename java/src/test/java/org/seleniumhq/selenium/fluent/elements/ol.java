@@ -27,11 +27,39 @@ public class ol extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("ol");
     }
+    
+    @Test
+    public void ol_case_functionality() {
+
+        setupExpectationsSingle("ol", "OL");
+
+        FluentWebElements fe = fwd.ol()
+                .ol(By.xpath("@foo = 'bar'"))
+                .ol(By.cssSelector("baz"))
+                .ols();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("ol");
+    }
 
     @Test
     public void ols_functionality() {
 
         setupExpectationsMultiple("ol");
+
+        FluentWebElements fe = fwd.ol()
+                .ols(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("ol");
+
+    }
+    
+    @Test
+    public void ols_case_functionality() {
+
+        setupExpectationsMultiple("ol", "OL");
 
         FluentWebElements fe = fwd.ol()
                 .ols(By.name("qux"));

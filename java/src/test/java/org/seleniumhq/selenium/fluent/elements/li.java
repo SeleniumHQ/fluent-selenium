@@ -27,11 +27,39 @@ public class li extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("li");
     }
+    
+    @Test
+    public void li_case_functionality() {
+
+        setupExpectationsSingle("li", "LI");
+
+        FluentWebElements fe = fwd.li()
+                .li(By.xpath("@foo = 'bar'"))
+                .li(By.cssSelector("baz"))
+                .lis();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("li");
+    }
 
     @Test
     public void lis_functionality() {
 
         setupExpectationsMultiple("li");
+
+        FluentWebElements fe = fwd.li()
+                .lis(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("li");
+
+    }
+    
+    @Test
+    public void lis_case_functionality() {
+
+        setupExpectationsMultiple("li", "LI");
 
         FluentWebElements fe = fwd.li()
                 .lis(By.name("qux"));

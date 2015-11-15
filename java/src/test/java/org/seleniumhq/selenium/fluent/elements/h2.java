@@ -27,11 +27,39 @@ public class h2 extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("h2");
     }
+    
+    @Test
+    public void h2_case_functionality() {
+
+        setupExpectationsSingle("h2", "H2");
+
+        Internal.BaseFluentWebElements fe = fwd.h2()
+                .h2(By.xpath("@foo = 'bar'"))
+                .h2(By.cssSelector("baz"))
+                .h2s();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("h2");
+    }
 
     @Test
     public void h2s_functionality() {
 
         setupExpectationsMultiple("h2");
+
+        Internal.BaseFluentWebElements fe = fwd.h2()
+                .h2s(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("h2");
+
+    }
+    
+    @Test
+    public void h2s_case_functionality() {
+
+        setupExpectationsMultiple("h2","H2");
 
         Internal.BaseFluentWebElements fe = fwd.h2()
                 .h2s(By.name("qux"));

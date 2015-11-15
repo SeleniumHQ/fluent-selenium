@@ -27,11 +27,39 @@ public class option extends BaseTest {
         assertThat(fe, notNullValue());
         verificationsSingle("option");
     }
+    
+    @Test
+    public void option_case_functionality() {
+
+        setupExpectationsSingle("option", "OPTION");
+
+        FluentWebElements fe = fwd.option()
+                .option(By.xpath("@foo = 'bar'"))
+                .option(By.cssSelector("baz"))
+                .options();
+
+        assertThat(fe, notNullValue());
+        verificationsSingle("option");
+    }
 
     @Test
     public void options_functionality() {
 
         setupExpectationsMultiple("option");
+
+        FluentWebElements fe = fwd.option()
+                .options(By.name("qux"));
+
+        assertThat(fe, notNullValue());
+
+        verificationsMultiple("option");
+
+    }
+    
+    @Test
+    public void options_case_functionality() {
+
+        setupExpectationsMultiple("option", "OPTION");
 
         FluentWebElements fe = fwd.option()
                 .options(By.name("qux"));

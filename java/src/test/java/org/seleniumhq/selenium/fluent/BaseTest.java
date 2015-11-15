@@ -33,15 +33,19 @@ public class BaseTest {
     }
 
     protected void setupExpectationsSingle(String name) {
-        when(wd.findElement(By.tagName(name))).thenReturn(we);
-        when(we.getTagName()).thenReturn(name);
-        when(we.findElement(By.xpath(".//"+name+"[@foo = 'bar']"))).thenReturn(we2);
-        when(we2.getTagName()).thenReturn(name);
+        setupExpectationsSingle(name, name);
+    }
+
+    protected void setupExpectationsSingle(String byName, String tagName) {
+        when(wd.findElement(By.tagName(byName))).thenReturn(we);
+        when(we.getTagName()).thenReturn(tagName);
+        when(we.findElement(By.xpath(".//"+byName+"[@foo = 'bar']"))).thenReturn(we2);
+        when(we2.getTagName()).thenReturn(tagName);
         when(we2.findElement(By.cssSelector("baz"))).thenReturn(we3);
-        when(we3.getTagName()).thenReturn(name);
-        when(we3.findElements(By.tagName(name))).thenReturn(newArrayList(we4, we5));
-        when(we4.getTagName()).thenReturn(name);
-        when(we5.getTagName()).thenReturn(name);
+        when(we3.getTagName()).thenReturn(tagName);
+        when(we3.findElements(By.tagName(byName))).thenReturn(newArrayList(we4, we5));
+        when(we4.getTagName()).thenReturn(tagName);
+        when(we5.getTagName()).thenReturn(tagName);
     }
 
     protected void setupExpectationsSingleGeneric() {
@@ -71,12 +75,16 @@ public class BaseTest {
         verifyNoMoreInteractions(wd, we, we2, we3, we4, we5);
     }
 
-    protected void setupExpectationsMultiple(String button) {
-        when(wd.findElement(By.tagName(button))).thenReturn(we);
-        when(we.getTagName()).thenReturn(button);
+    protected void setupExpectationsMultiple(String name) {
+        setupExpectationsMultiple(name, name);
+    }
+
+    protected void setupExpectationsMultiple(String byName, String tagName) {
+        when(wd.findElement(By.tagName(byName))).thenReturn(we);
+        when(we.getTagName()).thenReturn(tagName);
         when(we.findElements(By.name("qux"))).thenReturn(newArrayList(we2, we3));
-        when(we2.getTagName()).thenReturn(button);
-        when(we3.getTagName()).thenReturn(button);
+        when(we2.getTagName()).thenReturn(tagName);
+        when(we3.getTagName()).thenReturn(tagName);
     }
 
     protected void setupExpectationsMultipleGeneric() {
