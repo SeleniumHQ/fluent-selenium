@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-public class elem extends BaseTest {
+public class element extends BaseTest {
 
     @Test
     public void element_functionality() {

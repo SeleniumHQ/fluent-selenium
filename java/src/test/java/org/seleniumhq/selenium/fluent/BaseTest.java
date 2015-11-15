@@ -33,7 +33,6 @@ public class BaseTest {
     }
 
     protected void setupExpectationsSingle(String name) {
-        when(wd.findElement(By.cssSelector("*"))).thenReturn(we);
         when(wd.findElement(By.tagName(name))).thenReturn(we);
         when(we.getTagName()).thenReturn(name);
         when(we.findElement(By.xpath(".//"+name+"[@foo = 'bar']"))).thenReturn(we2);
@@ -46,6 +45,7 @@ public class BaseTest {
     }
 
     protected void setupExpectationsSingleGeneric() {
+        when(wd.findElement(By.cssSelector("*"))).thenReturn(we);
         setupExpectationsSingle("*");
     }
 
