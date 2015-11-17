@@ -58,7 +58,7 @@ Selenium 1.0 had an API function isElementPresent. The 'without' functionality i
 
 ### Elements in the DOM, but not visible 'yet'
 
-Sometimes elements are within the DOM, buy they are invisible for a period of 
+Sometimes elements are within the DOM, buy they are invisible for a period of
 time after an action of some sort. You can wait for elements to become visible,
 before fluently progressing:
 
@@ -69,7 +69,7 @@ fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
 
 ### Advanced JavaScript Frameworks
 
-#### AngularJS
+#### AngularJS 1.x
 
 AngularJS is an example of framework that does a huge amount of the heavy lifting in browser.  While it's doing its magic, you are going to encounter timing issues. If you prefer, the 'within' and 'without' fluent methods above will help you overcome those issues, but there is a way of being smarter about waiting for Angular's magic to stop:
 
@@ -112,9 +112,9 @@ Instead of this type of thing:
 fwd.div(id("foo")).within(secs(5)).button(id("bar")).click();
 ```
 
-The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriverJS (a JavaScript rather than Java driver Selenium 2.0).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js). 
+The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriverJS (a JavaScript rather than Java driver Selenium 2.0).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js).
 
-#### Other frameworks 
+#### Other frameworks
 
 Backbone, Knockout (etc) may have similar tricks, that you can use 'executeScript' to invoke, but we've not done the research to hook into them.
 
@@ -147,7 +147,7 @@ new RetryAfterStaleElement() {
 ```
 Use of the one element array is the dirty trick, because of the need for final.   
 
-FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations. 
+FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations.
 If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it persistent in its staleness after recovery, then the exception is throw. Recovery means finding it again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
 
 ## Built-in Assertions
@@ -298,7 +298,7 @@ As mentioned before, Selenium 1.0 had an API function called 'isElementPresent'.
 
 # Monitoring
 
-Fluent Selenium can generate monitors failing interactions with the browser. It can also see what fluent operation were started/ended. 
+Fluent Selenium can generate monitors failing interactions with the browser. It can also see what fluent operation were started/ended.
 Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
 
 You specify a monitor choice by using the right constructor for FluentWebDriver (and pass in a Monitor instance). There's a default monitor that does nothing, so you don't have to choose a constructor that uses a monitor.
@@ -309,7 +309,7 @@ We have three implementations presently, and if you want to use more than one, w
 new FluentWebDriver(new FirefoxDriver(), new CompositeMonitor(one, two, three));
 ```
 
-## Takes a Screenshot (on error) 
+## Takes a Screenshot (on error)
 
 When a 'FluentExecutionStopped' failure happens, you can get automatic screenshots.  In the case of running from JUnit or TestNG under Maven control do the following, to get automatic Test-Class name & Method name in the file-name of the PNG:
 
@@ -461,7 +461,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.14.2</version>
+  <version>1.14.6</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
@@ -475,68 +475,75 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
   <artifactId>selenium-java</artifactId>
   <version>2.99.3</version>
   <scope>test</scope>
-</dependency> 
+</dependency>
 ```
 
 ## Non-Maven
 
-For non Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22).
+For non-Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22).
 
 Here's what else you might need in your classpath, depending on your needs:
 
 ```
-org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.14
 +- junit:junit:jar:4.11:test
 +- org.hamcrest:hamcrest-all:jar:1.3:compile
-+- org.mockito:mockito-core:jar:1.9.5:test
++- org.mockito:mockito-core:jar:1.10.19:test
 |  +- org.hamcrest:hamcrest-core:jar:1.1:test
-|  \- org.objenesis:objenesis:jar:1.0:test
-+- org.seleniumhq.selenium:selenium-java:jar:2.35.0:compile
-|  +- org.seleniumhq.selenium:selenium-android-driver:jar:2.35.0:compile
-|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.35.0:compile
+|  \- org.objenesis:objenesis:jar:2.1:test
++- org.seleniumhq.selenium:selenium-java:jar:2.48.2:compile
+|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.48.2:compile
+|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.48.2:compile
 |  |     +- cglib:cglib-nodep:jar:2.1_3:compile
-|  |     +- org.json:json:jar:20080701:compile
-|  |     \- com.google.guava:guava:jar:14.0:compile
-|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.35.0:compile
-|  +- org.seleniumhq.selenium:selenium-htmlunit-driver:jar:2.35.0:compile
-|  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.12:compile
-|  |  |  +- xalan:xalan:jar:2.7.1:compile
-|  |  |  |  \- xalan:serializer:jar:2.7.1:compile
+|  |     +- com.google.code.gson:gson:jar:2.3.1:compile
+|  |     +- org.seleniumhq.selenium:selenium-api:jar:2.48.2:compile
+|  |     \- com.google.guava:guava:jar:18.0:compile
+|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:2.48.2:compile
+|  |  +- commons-io:commons-io:jar:2.4:compile
+|  |  \- org.apache.commons:commons-exec:jar:1.3:compile
+|  +- org.seleniumhq.selenium:selenium-htmlunit-driver:jar:2.48.2:compile
+|  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.18:compile
+|  |  |  +- xalan:xalan:jar:2.7.2:compile
+|  |  |  |  \- xalan:serializer:jar:2.7.2:compile
 |  |  |  +- commons-collections:commons-collections:jar:3.2.1:compile
-|  |  |  +- org.apache.commons:commons-lang3:jar:3.1:compile
-|  |  |  +- org.apache.httpcomponents:httpmime:jar:4.2.3:compile
-|  |  |  +- commons-codec:commons-codec:jar:1.7:compile
-|  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.12:compile
-|  |  |  +- xerces:xercesImpl:jar:2.10.0:compile
+|  |  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
+|  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5:compile
+|  |  |  +- commons-codec:commons-codec:jar:1.10:compile
+|  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.17:compile
+|  |  |  +- xerces:xercesImpl:jar:2.11.0:compile
 |  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
-|  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.18:compile
-|  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.9:compile
+|  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.22:compile
+|  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.16:compile
 |  |  |  |  \- org.w3c.css:sac:jar:1.3:compile
-|  |  |  +- commons-logging:commons-logging:jar:1.1.1:compile
-|  |  |  \- org.eclipse.jetty:jetty-websocket:jar:8.1.9.v20130131:compile
-|  |  |     +- org.eclipse.jetty:jetty-util:jar:8.1.9.v20130131:compile
-|  |  |     +- org.eclipse.jetty:jetty-io:jar:8.1.9.v20130131:compile
-|  |  |     \- org.eclipse.jetty:jetty-http:jar:8.1.9.v20130131:compile
-|  |  \- org.apache.httpcomponents:httpclient:jar:4.2.1:compile
-|  |     \- org.apache.httpcomponents:httpcore:jar:4.2.1:compile
-|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.35.0:compile
-|  |  +- commons-io:commons-io:jar:2.2:compile
-|  |  \- org.apache.commons:commons-exec:jar:1.1:compile
-|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.35.0:compile
-|  |  +- net.java.dev.jna:jna:jar:3.4.0:compile
-|  |  \- net.java.dev.jna:platform:jar:3.4.0:compile
-|  +- org.seleniumhq.selenium:selenium-iphone-driver:jar:2.35.0:compile
-|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.35.0:compile
-|  +- org.seleniumhq.selenium:selenium-support:jar:2.35.0:compile
-|  |  \- org.seleniumhq.selenium:selenium-api:jar:2.35.0:compile
-|  \- org.webbitserver:webbit:jar:0.4.14:compile
-|     \- io.netty:netty:jar:3.5.2.Final:compile
+|  |  |  +- commons-logging:commons-logging:jar:1.2:compile
+|  |  |  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.12.v20150709:compile
+|  |  |     +- org.eclipse.jetty:jetty-util:jar:9.2.12.v20150709:compile
+|  |  |     +- org.eclipse.jetty:jetty-io:jar:9.2.12.v20150709:compile
+|  |  |     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.12.v20150709:compile
+|  |  |        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.12.v20150709:compile
+|  |  \- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
+|  |     \- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
+|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.48.2:compile
+|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.48.2:compile
+|  |  +- net.java.dev.jna:jna:jar:4.1.0:compile
+|  |  \- net.java.dev.jna:jna-platform:jar:4.1.0:compile
+|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.48.2:compile
+|  +- org.seleniumhq.selenium:selenium-support:jar:2.48.2:compile
+|  +- org.webbitserver:webbit:jar:0.4.14:compile
+|  |  \- io.netty:netty:jar:3.5.2.Final:compile
+|  \- org.seleniumhq.selenium:selenium-leg-rc:jar:2.48.2:compile
+\- com.codahale.metrics:metrics-core:jar:3.0.2:compile
+   \- org.slf4j:slf4j-api:jar:1.7.5:compile
 ```
 
+# Changes
+
+## 1.14.6
+
+* Selenium upgrade to v2.48.2
+* Support for unordered lists (ul elements)
+* FluentWebDriver.element(..) method for finding generic elements (or ones outside the HTML spec)
 
 # More Reading
 
 Refer Paul Hammant's [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples)
 about this, or the project that showcases Fluent Selenium - [Fluent Selenium Examples](https://github.com/paul-hammant/fluent-selenium-examples).
-
-
