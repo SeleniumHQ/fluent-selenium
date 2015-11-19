@@ -1005,7 +1005,7 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
                             }
                         }
                     }
-                    throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared")), execution.getWebElement());
+                    throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared after: " + (System.currentTimeMillis() - startedAt))), execution.getWebElement());
                 }
             };
             this.duration = duration;

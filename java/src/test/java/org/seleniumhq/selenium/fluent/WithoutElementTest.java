@@ -13,11 +13,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.Mock;
 import static org.seleniumhq.selenium.fluent.Period.secs;
+import static org.seleniumhq.selenium.fluent.WithoutDriverTest.exceptionSaysDidntDisappearInTwoSeconds;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WithoutElementTest {
@@ -33,12 +36,12 @@ public class WithoutElementTest {
 
     FluentWebElement fluentWebElement;
 
-    int count = 0;
+    int exceptionsThrown = 0;
 
     private class ExceptionCounter extends Monitor.NULL {
         @Override
         public FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement) {
-            count++;
+            exceptionsThrown++;
             return super.exceptionDuringExecution(ex, webElement);
         }
     }
@@ -57,7 +60,7 @@ public class WithoutElementTest {
         when(rootDiv.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
 
         fluentWebElement.without(secs(2)).div();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -65,7 +68,7 @@ public class WithoutElementTest {
         when(rootDiv.findElement(By.tagName("div"))).thenAnswer(new DisappearingElement(divElement, secs(1)));
 
         fluentWebElement.without(secs(2)).div();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -77,8 +80,8 @@ public class WithoutElementTest {
             fail();
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.div().without(secs(2)).div()"));
-            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
-            Assert.assertThat(count, equalTo(1));
+            exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
+            Assert.assertThat(exceptionsThrown, equalTo(1));
         }
     }
 
@@ -87,7 +90,7 @@ public class WithoutElementTest {
         when(rootDiv.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
 
         fluentWebElement.without(secs(2)).span();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -95,7 +98,7 @@ public class WithoutElementTest {
         when(rootDiv.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebElement.without(secs(2)).span();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -107,8 +110,8 @@ public class WithoutElementTest {
             fail();
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.div().without(secs(2)).span()"));
-            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
-            Assert.assertThat(count, equalTo(1));
+            exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
+            Assert.assertThat(exceptionsThrown, equalTo(1));
         }
     }
 
@@ -127,7 +130,7 @@ public class WithoutElementTest {
             long now = System.currentTimeMillis();
             boolean durationHasElapsed = duration.getEndMillis(startedAt()) <= now;
             if (durationHasElapsed) {
-                throw new NotFoundException("");
+                throw new NotFoundException("DisappearingElement: elem artificially disappeared after " + (now - startedAt()) + " millis");
             }
             return webElement;
         }

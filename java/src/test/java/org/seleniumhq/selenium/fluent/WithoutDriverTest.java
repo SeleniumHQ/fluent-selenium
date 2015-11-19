@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
@@ -31,12 +33,12 @@ public class WithoutDriverTest {
     WebElement spanElement;
 
     FluentWebDriver fluentWebDriver;
-    int count = 0;
+    int exceptionsThrown = 0;
 
     private class ExceptionCounter extends Monitor.NULL {
         @Override
         public FluentExecutionStopped exceptionDuringExecution(FluentExecutionStopped ex, WebElement webElement) {
-            count++;
+            exceptionsThrown++;
             return super.exceptionDuringExecution(ex, webElement);
         }
     }
@@ -54,7 +56,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
 
         fluentWebDriver.without(secs(2)).div();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -62,7 +64,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("div"))).thenAnswer(new DisappearingElement(divElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).div();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -74,9 +76,16 @@ public class WithoutDriverTest {
             fail();
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).div()"));
-            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
-            Assert.assertThat(count, equalTo(1));
+            exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
+            Assert.assertThat(exceptionsThrown, equalTo(1));
         }
+    }
+
+    public static void exceptionSaysDidntDisappearInTwoSeconds(FluentExecutionStopped executionStopped) {
+        String msg = executionStopped.getCause().getMessage();
+        assertThat(msg, startsWith("Element never disappeared after:"));
+        String howLong = msg.split(":")[1].trim();
+        Assert.assertThat(Integer.parseInt(howLong), greaterThan(1999));
     }
 
     @Test
@@ -84,7 +93,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
 
         fluentWebDriver.without(secs(2)).span();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -92,7 +101,7 @@ public class WithoutDriverTest {
         By id = id("id");
         when(webDriver.findElement(id)).thenThrow(new NotFoundException("span"));
         fluentWebDriver.without(secs(2)).span(id);
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -100,7 +109,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).span();
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -109,7 +118,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(id)).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).span(id);
-        Assert.assertThat(count, equalTo(0));
+        Assert.assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -121,8 +130,8 @@ public class WithoutDriverTest {
             fail();
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).span()"));
-            assertThat(executionStopped.getCause().getMessage(), equalTo("Element never disappeared"));
-            Assert.assertThat(count, equalTo(1));
+            exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
+            Assert.assertThat(exceptionsThrown, equalTo(1));
         }
     }
 
