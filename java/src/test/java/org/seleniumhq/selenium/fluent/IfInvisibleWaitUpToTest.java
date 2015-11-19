@@ -27,12 +27,17 @@ public class IfInvisibleWaitUpToTest {
             FluentWebElement div5 = fwd.div(By.id("div5")).ifInvisibleWaitUpTo(millis(500));
             boolean displayed = div5.isDisplayed().value();
             assertThat(displayed, equalTo(false));
-            assertThat((int) (System.currentTimeMillis() - start), lessThan(799));
-            assertThat((int) (System.currentTimeMillis() - start), greaterThan(500));
+            assertNotInstantaneousButAlsoNotTooLong(start, 1100L, 500L);
 
         } finally {
             driver.quit();
         }
+    }
+
+    private void assertNotInstantaneousButAlsoNotTooLong(long start, long lessThanThis, long greaterThatThis) {
+        long howLong = System.currentTimeMillis() - start;
+        assertThat(howLong, lessThan(lessThanThis));
+        assertThat(howLong, greaterThan(greaterThatThis));
     }
 
     @Test
@@ -48,8 +53,7 @@ public class IfInvisibleWaitUpToTest {
         try {
             boolean displayed = fwd.div(By.id("div3")).ifInvisibleWaitUpTo(millis(900)).isDisplayed().value();
             assertThat(displayed, equalTo(true));
-            assertThat((int) (System.currentTimeMillis() - start), lessThan(950));
-            assertThat((int) (System.currentTimeMillis() - start), greaterThan(800));
+            assertNotInstantaneousButAlsoNotTooLong(start, 1100L, 700L);
         } finally {
             driver.quit();
         }
