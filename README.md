@@ -58,7 +58,7 @@ Selenium 1.0 had an API function isElementPresent. The 'without' functionality i
 
 ### Elements in the DOM, but not visible 'yet'
 
-Sometimes elements are within the DOM, buy they are invisible for a period of
+Sometimes elements are within the DOM, but they are invisible for a period of
 time after an action of some sort. You can wait for elements to become visible,
 before fluently progressing:
 
