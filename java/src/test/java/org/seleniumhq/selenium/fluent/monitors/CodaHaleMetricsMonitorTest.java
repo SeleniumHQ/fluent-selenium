@@ -105,6 +105,7 @@ public class CodaHaleMetricsMonitorTest {
         // ... for assertion
 
         String result = baos.toString()
+                .replace("= 0.46 calls", "= 0.50 calls")
                 .replace("= 0.47 calls", "= 0.50 calls")
                 .replace("= 0.48 calls", "= 0.50 calls")
                 .replace("= 0.49 calls", "= 0.50 calls");
