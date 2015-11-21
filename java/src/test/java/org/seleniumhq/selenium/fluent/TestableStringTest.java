@@ -114,7 +114,9 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotBe('foo')"));
-            assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\nExpected: not \"foo\"\n     but: was \"foo\""));
+            assertThat(getCauseMessage(e), startsWith("(after "));
+            assertThat(Integer.parseInt(getCauseMessage(e).split(" ")[1]), greaterThan(999));
+            assertThat(getCauseMessage(e), endsWith(" ms)\nExpected: not \"foo\"\n     but: was \"foo\""));
         }
     }
     
