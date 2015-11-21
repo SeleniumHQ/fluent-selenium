@@ -51,6 +51,7 @@ public class StaleRecoveringTest {
         FirstGetAttributeIsStaleDriver driver = new FirstGetAttributeIsStaleDriver();
 
         driver.get("http://seleniumhq.github.io/fluent-selenium/7753/index.html");
+        assertEquals(false, driver.staleElementThrown[0]);
 
         FluentWebDriver fwd = new FluentWebDriver(driver);
 
@@ -69,11 +70,13 @@ public class StaleRecoveringTest {
         }
 
         assertEquals(2, driver.countOfGetAttribute[0]);
+        assertEquals(true, driver.staleElementThrown[0]);
 
     }
 
     private static class FirstGetAttributeIsStaleDriver extends FirefoxDriver {
         public final int[] countOfGetAttribute = {0};
+        public final boolean[] staleElementThrown = {false};
 
         @Override
         public WebElement findElementById(String using) {
@@ -102,10 +105,12 @@ public class StaleRecoveringTest {
                 public String getAttribute(String name) {
                     if (countOfGetAttribute[0] == 0) {
                         countOfGetAttribute[0]++;
+                        staleElementThrown[0] = true;
                         throw new StaleElementReferenceException("boop");
+                    } else {
+                        countOfGetAttribute[0]++;
+                        return we.getAttribute(name);
                     }
-                    countOfGetAttribute[0]++;
-                    return we.getAttribute(name);
                 }
 
                 public boolean isSelected() {
