@@ -35,7 +35,7 @@ import static java.util.Arrays.asList;
  * mechanisms, it is possible to subclass this class and override the protected methods as required,
  * though it is expected that that all subclasses rely on the basic finding mechanisms provided
  * through static methods of this class:
- * <p/>
+ * </p>
  * <code>
  * public WebElement findElement(WebDriver driver) {
  * WebElement element = driver.findElement(By.id(getSelector()));
