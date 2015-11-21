@@ -77,6 +77,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     /**
+     * <p>
      * Select all options that display text matching the argument. That is, when given "Bar" this
      * would select an option like:
      * <p/>
@@ -101,6 +102,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     /**
+     * <p>
      * Select all options that have a value matching the argument. That is, when given "foo" this
      * would select an option like:
      * <p/>
@@ -124,6 +126,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     /**
+     * <p>
      * Deselect all options that have a value matching the argument. That is, when given "foo" this
      * would deselect an option like:
      * <p/>
@@ -152,6 +155,7 @@ public class FluentSelect extends FluentWebElement {
     }
 
     /**
+     * <p>
      * Deselect all options that display text matching the argument. That is, when given "Bar" this
      * would deselect an option like:
      * <p/>

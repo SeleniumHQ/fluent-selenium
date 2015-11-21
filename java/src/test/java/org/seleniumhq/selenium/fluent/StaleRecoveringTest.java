@@ -21,26 +21,33 @@ public class StaleRecoveringTest {
         FirstGetAttributeIsStaleDriver driver = new FirstGetAttributeIsStaleDriver();
 
         driver.get("http://seleniumhq.github.io/fluent-selenium/7753/index.html");
+        assertEquals(false, driver.staleElementThrown[0]);
+
         WebElement elem;
         try {
             elem = driver.findElement(By.id("cheddarCheeseLoginPassword"));
             elem.sendKeys("bar");
-            getAndVerify(elem);
+            getAttrAndVerify(elem); // causes staleness - see FirstGetAttributeIsStaleDriver
             fail("should have barfed");
         } catch(StaleElementReferenceException sere) {
             elem = driver.findElement(By.id("cheddarCheeseLoginPassword"));
-            getAndVerify(elem);
+            getAttrAndVerify(elem);
         } finally {
             driver.quit();
         }
 
         assertEquals(2, driver.countOfGetAttribute[0]);
+        assertEquals(true, driver.staleElementThrown[0]);
 
     }
 
-    private void getAndVerify(WebElement elem) {
+    private void getAttrAndVerify(WebElement elem) {
         String val = elem.getAttribute("value");
-        assertEquals("bar", val);
+        try {
+            assertEquals("bar", val);
+        } catch (AssertionError e) {
+            assertEquals("I can Haz Passwordbar", val);
+        }
     }
 
     @Test
