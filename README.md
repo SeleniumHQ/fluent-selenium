@@ -537,7 +537,7 @@ Here's what else you might need in your classpath, depending on your needs:
 
 # Changes
 
-## 1.14.6
+## 1.15
 
 * Selenium upgrade to v2.48.2
 * Support for unordered lists (ul elements)
