@@ -127,6 +127,10 @@ public class WithoutElementTest {
         }
 
         public WebElement answer(InvocationOnMock invocation) throws Throwable {
+            try {
+                Thread.sleep(25);
+            } catch (InterruptedException e) {
+            }
             long now = System.currentTimeMillis();
             boolean durationHasElapsed = duration.getEndMillis(startedAt()) <= now;
             if (durationHasElapsed) {

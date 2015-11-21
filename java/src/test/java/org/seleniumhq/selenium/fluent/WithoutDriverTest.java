@@ -56,7 +56,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("div"))).thenThrow(new NotFoundException("div"));
 
         fluentWebDriver.without(secs(2)).div();
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("div"))).thenAnswer(new DisappearingElement(divElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).div();
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class WithoutDriverTest {
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).div()"));
             exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
-            Assert.assertThat(exceptionsThrown, equalTo(1));
+            assertThat(exceptionsThrown, equalTo(1));
         }
     }
 
@@ -85,7 +85,7 @@ public class WithoutDriverTest {
         String msg = executionStopped.getCause().getMessage();
         assertThat(msg, startsWith("Element never disappeared after:"));
         String howLong = msg.split(":")[1].trim();
-        Assert.assertThat(Integer.parseInt(howLong), greaterThan(1999));
+        assertThat(Integer.parseInt(howLong), greaterThan(1999));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("span"))).thenThrow(new NotFoundException("span"));
 
         fluentWebDriver.without(secs(2)).span();
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class WithoutDriverTest {
         By id = id("id");
         when(webDriver.findElement(id)).thenThrow(new NotFoundException("span"));
         fluentWebDriver.without(secs(2)).span(id);
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(By.tagName("span"))).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).span();
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class WithoutDriverTest {
         when(webDriver.findElement(id)).thenAnswer(new DisappearingElement(spanElement, secs(1)));
 
         fluentWebDriver.without(secs(2)).span(id);
-        Assert.assertThat(exceptionsThrown, equalTo(0));
+        assertThat(exceptionsThrown, equalTo(0));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class WithoutDriverTest {
         } catch (FluentExecutionStopped executionStopped) {
             assertThat(executionStopped.getMessage(), equalTo("AssertionError during invocation of: ?.without(secs(2)).span()"));
             exceptionSaysDidntDisappearInTwoSeconds(executionStopped);
-            Assert.assertThat(exceptionsThrown, equalTo(1));
+            assertThat(exceptionsThrown, equalTo(1));
         }
     }
 

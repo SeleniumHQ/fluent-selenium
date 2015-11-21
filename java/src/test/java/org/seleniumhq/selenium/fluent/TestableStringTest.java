@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -163,7 +166,9 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotContain('o')"));
-            assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\nExpected: not a string containing \"o\"\n     but: was \"foo\""));
+            assertThat(getCauseMessage(e), startsWith("(after "));
+            assertThat(Integer.parseInt(getCauseMessage(e).split(" ")[1]), greaterThan(999));
+            assertThat(getCauseMessage(e), endsWith("ms)\nExpected: not a string containing \"o\"\n     but: was \"foo\""));
         }
     }
 
@@ -224,7 +229,9 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldMatch('.* blort \\d\\d.*')"));
-            assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\nExpected: a string matching /.* blort \\d\\d.*/\n     but: was \"Mary Has 12 Little Lambs\""));
+            assertThat(getCauseMessage(e), startsWith("(after "));
+            assertThat(Integer.parseInt(getCauseMessage(e).split(" ")[1]), greaterThan(999));
+            assertThat(getCauseMessage(e), endsWith("ms)\nExpected: a string matching /.* blort \\d\\d.*/\n     but: was \"Mary Has 12 Little Lambs\""));
         }
     }
 
@@ -237,7 +244,9 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldNotMatch('.* Has \\d\\d.*')"));
-            assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\n" +
+            assertThat(getCauseMessage(e), startsWith("(after "));
+            assertThat(Integer.parseInt(getCauseMessage(e).split(" ")[1]), greaterThan(999));
+            assertThat(getCauseMessage(e), endsWith(" ms)\n" +
                     "Expected: not a string matching /.* Has \\d\\d.*/\n" +
                     "     but: was \"Mary Has 12 Little Lambs\""));
         }

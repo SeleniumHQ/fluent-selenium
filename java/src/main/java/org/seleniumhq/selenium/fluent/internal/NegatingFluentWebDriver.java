@@ -388,6 +388,10 @@ public class NegatingFluentWebDriver {
                         return successfullyAbsent;
                     }
                 }
+                try {
+                    Thread.sleep(30);
+                } catch (InterruptedException e) {
+                }
             }
             throw monitor.exceptionDuringExecution(wrapAssertionError(ctx, new AssertionError("Element never disappeared after: " + (System.currentTimeMillis() - startedAt))), execution.getWebElement());
         }

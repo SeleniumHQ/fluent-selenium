@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 import static org.seleniumhq.selenium.fluent.Period.secs;
@@ -33,8 +35,8 @@ public class RetryAfterStaleElementTest {
         rase.stopAfter(secs(8));
         long elapsed = System.currentTimeMillis() - start;
 
-        assertTrue(elapsed > 999);
-        assertTrue(elapsed < 1010);
+        assertThat(elapsed, greaterThan(999L));
+        assertThat(elapsed, lessThan(1030L));
 
     }
 
