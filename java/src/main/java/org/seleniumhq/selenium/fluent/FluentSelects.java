@@ -57,6 +57,11 @@ public class FluentSelects extends FluentWebElements {
     }
 
     @Override
+    public FluentSelect last(FluentMatcher matcher) {
+        return (FluentSelect) super.last(matcher);
+    }
+
+    @Override
     public FluentSelect get(int i) {
         return (FluentSelect) super.get(i);
     }

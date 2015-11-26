@@ -106,6 +106,19 @@ public class FluentSelectsTest {
     }
 
     @Test
+    public void testLast() throws Exception {
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
+
+        FluentSelect el = fs.last(new FluentMatcher() {
+            public boolean matches(WebElement webElement) {
+                return true;
+            }
+        });
+
+        assertThat(el, sameInstance(fs1));
+    }
+
+    @Test
     public void testGet() throws Exception {
         FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 

@@ -130,6 +130,11 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return executeAndWrapReThrowIfNeeded(new MatchesFirst(matcher), ctx);
     }
 
+    public FluentWebElement last(final FluentMatcher matcher) {
+        Context ctx = Context.singular(context, "last", null, matcher);
+        return executeAndWrapReThrowIfNeeded(new MatchesLast(matcher), ctx);
+    }
+
 
     // From java.util.List
 
@@ -231,7 +236,9 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
             for (FluentWebElement fwe : FluentWebElements.this) {
                 if (matcher.matches(fwe.getWebElement())) {
                     result = fwe;
-                    break;
+                    if (shouldBreak()) {
+                        break;
+                    }
                 }
             }
             if (result == null) {
@@ -239,6 +246,22 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
             } else {
                 return result;
             }
+        }
+
+        protected boolean shouldBreak() {
+            return true;
+        }
+    }
+
+    private class MatchesLast extends MatchesFirst {
+
+        public MatchesLast(FluentMatcher matcher) {
+            super(matcher);
+        }
+
+        @Override
+        protected boolean shouldBreak() {
+            return false;
         }
     }
 

@@ -219,6 +219,23 @@ public class FluentWebDriverTest extends BaseTest {
 
     }
 
+    @Test
+    public void last_element_matched_from_larger_list() {
+
+        when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
+        when(we.getTagName()).thenReturn("div");
+        when(we.getText()).thenReturn("Lamb(s) a plenty");
+        when(we2.getTagName()).thenReturn("div");
+        when(we2.getText()).thenReturn("Mary had 3 little lamb(s).");
+
+        FluentWebElement fe = fwd.divs().last(new TextContainsWord("little lamb(s)")).click();
+
+        assertThat(fe, notNullValue());
+
+        verify(we2).click();
+
+    }
+
     public static class TextContainsWord implements FluentMatcher {
 
         private String word;
