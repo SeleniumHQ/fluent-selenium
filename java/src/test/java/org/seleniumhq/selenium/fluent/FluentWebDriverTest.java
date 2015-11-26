@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -244,7 +241,11 @@ public class FluentWebDriverTest extends BaseTest {
             this.word = word;
         }
 
-        public boolean matches(WebElement webElement) {
+        private int i = -1;
+
+        public boolean matches(WebElement webElement, int ix) {
+            i++;
+            assertThat(ix, is(i));
             return webElement.getText().indexOf(word) > -1;
         }
 
@@ -271,7 +272,7 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
     public static class FourLambFilter implements FluentMatcher {
-        public boolean matches(WebElement webElement) {
+        public boolean matches(WebElement webElement, int ix) {
             return webElement.getText().contains("4 little lamb(s)");
         }
     }
@@ -560,7 +561,7 @@ public class FluentWebDriverTest extends BaseTest {
 
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
-            public boolean matches(WebElement webElement) {
+            public boolean matches(WebElement webElement, int ix) {
                 return webElement.getText().equals("it does not matter, as an exception will be thrown");
             }
             @Override

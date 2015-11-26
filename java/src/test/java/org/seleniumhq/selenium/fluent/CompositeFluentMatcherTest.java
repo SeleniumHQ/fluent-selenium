@@ -17,32 +17,32 @@ public class CompositeFluentMatcherTest {
 
         WebElement elem = mock(WebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
-        when(one.matches(elem)).thenReturn(true);
+        when(one.matches(elem, 1)).thenReturn(true);
         FluentMatcher two = mock(FluentMatcher.class);
-        when(two.matches(elem)).thenReturn(true);
-        boolean result = CompositeFluentMatcher.both(one, two).matches(elem);
+        when(two.matches(elem, 1)).thenReturn(true);
+        boolean result = CompositeFluentMatcher.both(one, two).matches(elem, 1);
         assertThat(result, is(true));
 
         // one true, one false
 
-        when(one.matches(elem)).thenReturn(true);
-        when(two.matches(elem)).thenReturn(false);
-        result = CompositeFluentMatcher.both(one, two).matches(elem);
+        when(one.matches(elem, 1)).thenReturn(true);
+        when(two.matches(elem, 1)).thenReturn(false);
+        result = CompositeFluentMatcher.both(one, two).matches(elem, 1);
         assertThat(result, is(false));
 
         // other permutation
 
-        when(one.matches(elem)).thenReturn(false);
-        when(two.matches(elem)).thenReturn(true);
+        when(one.matches(elem, 1)).thenReturn(false);
+        when(two.matches(elem, 1)).thenReturn(true);
 
-        result = CompositeFluentMatcher.both(one, two).matches(elem);
+        result = CompositeFluentMatcher.both(one, two).matches(elem, 1);
         assertThat(result, is(false));
 
         // neither true
 
-        when(one.matches(elem)).thenReturn(false);
-        when(two.matches(elem)).thenReturn(false);
-        result = CompositeFluentMatcher.both(one, two).matches(elem);
+        when(one.matches(elem, 1)).thenReturn(false);
+        when(two.matches(elem, 1)).thenReturn(false);
+        result = CompositeFluentMatcher.both(one, two).matches(elem, 1);
         assertThat(result, is(false));
     }
 
@@ -53,34 +53,34 @@ public class CompositeFluentMatcherTest {
 
         WebElement elem = mock(WebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
-        when(one.matches(elem)).thenReturn(true);
+        when(one.matches(elem, 1)).thenReturn(true);
         FluentMatcher two = mock(FluentMatcher.class);
-        when(two.matches(elem)).thenReturn(false);
-        boolean result = CompositeFluentMatcher.either(one, two).matches(elem);
+        when(two.matches(elem, 1)).thenReturn(false);
+        boolean result = CompositeFluentMatcher.either(one, two).matches(elem, 1);
         assertThat(result, is(true));
 
         // other permutation
 
-        when(one.matches(elem)).thenReturn(true);
-        when(two.matches(elem)).thenReturn(false);
+        when(one.matches(elem, 1)).thenReturn(true);
+        when(two.matches(elem, 1)).thenReturn(false);
 
-        result = CompositeFluentMatcher.either(one, two).matches(elem);
+        result = CompositeFluentMatcher.either(one, two).matches(elem, 1);
         assertThat(result, is(true));
 
         // both
 
-        when(one.matches(elem)).thenReturn(true);
-        when(two.matches(elem)).thenReturn(true);
+        when(one.matches(elem, 1)).thenReturn(true);
+        when(two.matches(elem, 1)).thenReturn(true);
 
-        result = CompositeFluentMatcher.either(one, two).matches(elem);
+        result = CompositeFluentMatcher.either(one, two).matches(elem, 1);
         assertThat(result, is(true));
 
         // neither
 
-        when(one.matches(elem)).thenReturn(false);
-        when(two.matches(elem)).thenReturn(false);
+        when(one.matches(elem, 1)).thenReturn(false);
+        when(two.matches(elem, 1)).thenReturn(false);
 
-        result = CompositeFluentMatcher.either(one, two).matches(elem);
+        result = CompositeFluentMatcher.either(one, two).matches(elem, 11);
         assertThat(result, is(false));
     }
 
@@ -91,12 +91,12 @@ public class CompositeFluentMatcherTest {
 
         WebElement elem = mock(WebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
-        when(one.matches(elem)).thenReturn(false);
+        when(one.matches(elem, 1)).thenReturn(false);
         FluentMatcher two = mock(FluentMatcher.class);
-        when(two.matches(elem)).thenReturn(false);
+        when(two.matches(elem, 1)).thenReturn(false);
         FluentMatcher three = mock(FluentMatcher.class);
-        when(two.matches(elem)).thenReturn(true);
-        boolean result = CompositeFluentMatcher.any(one, two, three).matches(elem);
+        when(two.matches(elem, 1)).thenReturn(true);
+        boolean result = CompositeFluentMatcher.any(one, two, three).matches(elem, 1);
         assertThat(result, is(true));
 
     }
@@ -108,20 +108,20 @@ public class CompositeFluentMatcherTest {
 
         WebElement elem = mock(WebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
-        when(one.matches(elem)).thenReturn(false);
+        when(one.matches(elem, 1)).thenReturn(false);
         FluentMatcher two = mock(FluentMatcher.class);
-        when(two.matches(elem)).thenReturn(false);
+        when(two.matches(elem, 1)).thenReturn(false);
         FluentMatcher three = mock(FluentMatcher.class);
-        when(three.matches(elem)).thenReturn(true);
-        boolean result = CompositeFluentMatcher.all(one, two, three).matches(elem);
+        when(three.matches(elem, 1)).thenReturn(true);
+        boolean result = CompositeFluentMatcher.all(one, two, three).matches(elem, 1);
         assertThat(result, is(false));
 
         // one three true
 
-        when(one.matches(elem)).thenReturn(true);
-        when(two.matches(elem)).thenReturn(true);
-        when(three.matches(elem)).thenReturn(true);
-        result = CompositeFluentMatcher.all(one, two, three).matches(elem);
+        when(one.matches(elem, 1)).thenReturn(true);
+        when(two.matches(elem, 1)).thenReturn(true);
+        when(three.matches(elem, 1)).thenReturn(true);
+        result = CompositeFluentMatcher.all(one, two, three).matches(elem, 1);
         assertThat(result, is(true));
 
     }

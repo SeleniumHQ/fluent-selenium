@@ -233,8 +233,10 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
         public FluentWebElement execute() {
             FluentWebElement result = null;
+            int ix = -1;
             for (FluentWebElement fwe : FluentWebElements.this) {
-                if (matcher.matches(fwe.getWebElement())) {
+                ix++;
+                if (matcher.matches(fwe.getWebElement(), ix)) {
                     result = fwe;
                     if (shouldBreak()) {
                         break;
@@ -274,8 +276,10 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
 
         public List<FluentWebElement> execute() {
             List<FluentWebElement> results = new ArrayList<FluentWebElement>();
+            int ix = -1;
             for (FluentWebElement fwe : FluentWebElements.this) {
-                if (matcher.matches(fwe.getWebElement())) {
+                ix++;
+                if (matcher.matches(fwe.getWebElement(), ix)) {
                     results.add(fwe);
                 }
             }

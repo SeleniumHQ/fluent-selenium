@@ -27,10 +27,10 @@ public class CompositeFluentMatcher implements FluentMatcher {
         this.matchers = matchers;
     }
 
-    public boolean matches(WebElement webElement) {
+    public boolean matches(WebElement webElement, int ix) {
         Boolean matched = null;
         for (FluentMatcher matcher : matchers) {
-            matched = logicalOperator.invoke(webElement, matched, matcher);
+            matched = logicalOperator.invoke(webElement, matched, matcher, ix);
         }
         return matched;
     }
@@ -52,24 +52,24 @@ public class CompositeFluentMatcher implements FluentMatcher {
     }
 
     private static interface LogicalOperator {
-        boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher);        
+        boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher, int ix);
     }
     
     private static class And implements LogicalOperator {
-        public boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher) {
+        public boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher, int ix) {
             if (matched == null) {
                 matched = true;
             }
-            return matched && matcher.matches(webElement);
+            return matched && matcher.matches(webElement, ix);
         }
     }
 
     private static class Or implements LogicalOperator {
-        public boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher) {
+        public boolean invoke(WebElement webElement, Boolean matched, FluentMatcher matcher, int ix) {
             if (matched == null) {
                 matched = false;
             }
-            return matched || matcher.matches(webElement);
+            return matched || matcher.matches(webElement, ix);
         }
     }
 }

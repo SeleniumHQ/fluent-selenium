@@ -81,7 +81,7 @@ public class FluentSelectsTest {
         FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects els = fs.filter(new FluentMatcher() {
-            public boolean matches(WebElement webElement) {
+            public boolean matches(WebElement webElement, int ix) {
                 return true;
             }
         });
@@ -96,8 +96,13 @@ public class FluentSelectsTest {
     public void testFirst() throws Exception {
         FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
+        final int[] i = new int[1];
+        i[0] = -1;
+
         FluentSelect el = fs.first(new FluentMatcher() {
-            public boolean matches(WebElement webElement) {
+            public boolean matches(WebElement webElement, int ix) {
+                i[0]++;
+                assertThat(ix, is(i[0]));
                 return true;
             }
         });
@@ -109,8 +114,13 @@ public class FluentSelectsTest {
     public void testLast() throws Exception {
         FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
+        final int[] i = new int[1];
+        i[0] = -1;
+
         FluentSelect el = fs.last(new FluentMatcher() {
-            public boolean matches(WebElement webElement) {
+            public boolean matches(WebElement webElement, int ix) {
+                i[0]++;
+                assertThat(ix, is(i[0]));
                 return true;
             }
         });
