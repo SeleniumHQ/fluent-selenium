@@ -22,11 +22,7 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class FluentWebElements extends Internal.BaseFluentWebElements {
 
@@ -98,6 +94,14 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     public TestableString getText() {
         Context ctx = Context.singular(context, "getText");
         return new TestableString(new GetText(), ctx, monitor).within(getPeriod());
+    }
+
+    public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapFunction) {
+        int ix = -1;
+        for (FluentWebElement next : currentElements) {
+            mapFunction.map(next, ++ix);
+        }
+        return mapFunction;
     }
 
     @Override

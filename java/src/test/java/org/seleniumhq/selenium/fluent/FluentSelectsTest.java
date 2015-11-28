@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -126,6 +127,22 @@ public class FluentSelectsTest {
         });
 
         assertThat(el, sameInstance(fs1));
+    }
+
+    @Test
+    public void map() throws Exception {
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
+
+        Map<Integer, FluentSelect> m = fs.map(new FluentWebElementMap<Integer, FluentSelect>() {
+            @Override
+            public void map(FluentWebElement elem, int ix) {
+                put(ix, (FluentSelect) elem);
+            }
+       });
+
+        assertThat(m.size(), is(2));
+        assertThat(m.get(0), equalTo(fs0));
+        assertThat(m.get(1), equalTo(fs1));
     }
 
     @Test
