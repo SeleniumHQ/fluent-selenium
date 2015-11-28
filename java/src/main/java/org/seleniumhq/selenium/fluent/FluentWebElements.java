@@ -96,12 +96,20 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return new TestableString(new GetText(), ctx, monitor).within(getPeriod());
     }
 
-    public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapFunction) {
+    public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapper) {
         int ix = -1;
         for (FluentWebElement next : currentElements) {
-            mapFunction.map(next, ++ix);
+            mapper.map(next, ++ix);
         }
-        return mapFunction;
+        return mapper;
+    }
+
+    public FluentWebElements each(FluentWebElementVistor visitor) {
+        int ix = -1;
+        for (FluentWebElement next : currentElements) {
+            visitor.visit(next, ++ix);
+        }
+        return this;
     }
 
     @Override
@@ -240,7 +248,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
             int ix = -1;
             for (FluentWebElement fwe : FluentWebElements.this) {
                 ix++;
-                if (matcher.matches(fwe.getWebElement(), ix)) {
+                if (matcher.matches(fwe, ix)) {
                     result = fwe;
                     if (shouldBreak()) {
                         break;
@@ -283,7 +291,7 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
             int ix = -1;
             for (FluentWebElement fwe : FluentWebElements.this) {
                 ix++;
-                if (matcher.matches(fwe.getWebElement(), ix)) {
+                if (matcher.matches(fwe, ix)) {
                     results.add(fwe);
                 }
             }

@@ -19,6 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.internal.Context;
 
 import java.util.List;
+import java.util.Map;
 
 public class FluentSelects extends FluentWebElements {
 
@@ -59,6 +60,11 @@ public class FluentSelects extends FluentWebElements {
     @Override
     public FluentSelect last(FluentMatcher matcher) {
         return (FluentSelect) super.last(matcher);
+    }
+
+    @Override
+    public FluentSelects each(FluentWebElementVistor visitor) {
+        return (FluentSelects) super.each(visitor);
     }
 
     @Override

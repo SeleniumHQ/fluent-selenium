@@ -243,10 +243,10 @@ public class FluentWebDriverTest extends BaseTest {
 
         private int i = -1;
 
-        public boolean matches(WebElement webElement, int ix) {
+        public boolean matches(FluentWebElement webElement, int ix) {
             i++;
             assertThat(ix, is(i));
-            return webElement.getText().indexOf(word) > -1;
+            return webElement.getWebElement().getText().indexOf(word) > -1;
         }
 
         @Override
@@ -272,8 +272,8 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
     public static class FourLambFilter implements FluentMatcher {
-        public boolean matches(WebElement webElement, int ix) {
-            return webElement.getText().contains("4 little lamb(s)");
+        public boolean matches(FluentWebElement webElement, int ix) {
+            return webElement.getWebElement().getText().contains("4 little lamb(s)");
         }
     }
 
@@ -561,8 +561,8 @@ public class FluentWebDriverTest extends BaseTest {
 
     private FluentMatcher makeMatcherThatUsesWebDriver(final String toString) {
         return new FluentMatcher() {
-            public boolean matches(WebElement webElement, int ix) {
-                return webElement.getText().equals("it does not matter, as an exception will be thrown");
+            public boolean matches(FluentWebElement webElement, int ix) {
+                return webElement.getWebElement().getText().equals("it does not matter, as an exception will be thrown");
             }
             @Override
             public String toString() {

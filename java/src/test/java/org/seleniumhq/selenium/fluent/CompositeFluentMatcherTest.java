@@ -15,7 +15,7 @@ public class CompositeFluentMatcherTest {
 
         // both true
 
-        WebElement elem = mock(WebElement.class);
+        FluentWebElement elem = mock(FluentWebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
         when(one.matches(elem, 1)).thenReturn(true);
         FluentMatcher two = mock(FluentMatcher.class);
@@ -51,7 +51,7 @@ public class CompositeFluentMatcherTest {
 
         // one true one false
 
-        WebElement elem = mock(WebElement.class);
+        FluentWebElement elem = mock(FluentWebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
         when(one.matches(elem, 1)).thenReturn(true);
         FluentMatcher two = mock(FluentMatcher.class);
@@ -89,7 +89,7 @@ public class CompositeFluentMatcherTest {
 
         // one true, two false
 
-        WebElement elem = mock(WebElement.class);
+        FluentWebElement elem = mock(FluentWebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
         when(one.matches(elem, 1)).thenReturn(false);
         FluentMatcher two = mock(FluentMatcher.class);
@@ -106,7 +106,7 @@ public class CompositeFluentMatcherTest {
 
         // one true, two false
 
-        WebElement elem = mock(WebElement.class);
+        FluentWebElement elem = mock(FluentWebElement.class);
         FluentMatcher one = mock(FluentMatcher.class);
         when(one.matches(elem, 1)).thenReturn(false);
         FluentMatcher two = mock(FluentMatcher.class);

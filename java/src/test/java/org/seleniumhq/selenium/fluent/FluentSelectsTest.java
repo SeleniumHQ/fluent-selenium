@@ -7,8 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.internal.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,6 +20,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FluentSelectsTest {
 
@@ -82,7 +86,7 @@ public class FluentSelectsTest {
         FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
 
         FluentSelects els = fs.filter(new FluentMatcher() {
-            public boolean matches(WebElement webElement, int ix) {
+            public boolean matches(FluentWebElement webElement, int ix) {
                 return true;
             }
         });
@@ -101,7 +105,7 @@ public class FluentSelectsTest {
         i[0] = -1;
 
         FluentSelect el = fs.first(new FluentMatcher() {
-            public boolean matches(WebElement webElement, int ix) {
+            public boolean matches(FluentWebElement webElement, int ix) {
                 i[0]++;
                 assertThat(ix, is(i[0]));
                 return true;
@@ -119,7 +123,7 @@ public class FluentSelectsTest {
         i[0] = -1;
 
         FluentSelect el = fs.last(new FluentMatcher() {
-            public boolean matches(WebElement webElement, int ix) {
+            public boolean matches(FluentWebElement webElement, int ix) {
                 i[0]++;
                 assertThat(ix, is(i[0]));
                 return true;
@@ -143,6 +147,27 @@ public class FluentSelectsTest {
         assertThat(m.size(), is(2));
         assertThat(m.get(0), equalTo(fs0));
         assertThat(m.get(1), equalTo(fs1));
+    }
+
+    @Test
+    public void each() throws Exception {
+        FluentSelects fs = new FluentSelects(wd, wes, ctx, new Monitor.NULL(), false);
+        when(fs0.getPeriod()).thenReturn(Period.secs(0));
+        when(fs1.getPeriod()).thenReturn(Period.secs(1));
+
+        final Map<Integer, Period> periods = new HashMap<Integer, Period>();
+
+        FluentSelects fs2 = fs.each(new FluentWebElementVistor() {
+            public void visit(FluentWebElement webElement, int ix) {
+                periods.put(ix, webElement.getPeriod());
+            }
+        });
+
+        assertThat(fs2, is(fs));
+        assertThat(periods.entrySet().toString(), equalTo(new HashMap<Integer, Period>() {{
+            put(0, Period.secs(0));
+            put(1, Period.secs(1));
+        }}.entrySet().toString()));
     }
 
     @Test
