@@ -15,7 +15,7 @@ fwd.div(id("foo")).div(className("bar")).button().click();
 fwd.span(id("results")).getText().shouldBe("1 result");
 ```
 
-Hyperlinks are marked as 'a' in HTML, but we've represented those as <code>link()</code> in the fluent API.  
+Hyperlinks are marked as 'a' (anchor) in HTML, but we've represented those as <code>link()</code> in the fluent API.  
 
 As with all fluent interfaces, there is no point looking at strict API documentation (JavaDoc for Java), and you're better looking at example code (this page is it).
 
@@ -239,7 +239,6 @@ for many classes for an element, with the one specified amongst them.
 
 If an locator cannot find the element in the DOM, then an exception - 'FluentExecutionStopped' - is thrown (see below).
 
-
 # Multiple elements
 
 Just like WebDriver, FluentSelenium can return a collection of Elements matching a locator:
@@ -253,20 +252,62 @@ elems = fwd.divs(id("foo");
 Look at the pluralization of the methods above, and that it only makes sense if
 it's the last in the fluent expression.
 
-## Fluently traversing through multiple elements:
+# Fluently matching/filtering over multiple elements
 
 Use a FluentMatcher instance (which is just a predicate)
 
 ```java
+class MyIntricateFluentMatcher implements FluentMatcher {
+  public boolean matches(FluentWebElement webElement, int ix) {
+    // do what you like here as long as it return true/false.
+  }
+}
+
+
 FluentMatcher fm = new MyIntricateFluentMatcher();
 // click on first matching one...
 fwd.inputs(className("bar").first(fm).click();
 
+// click on last matching one...
+fwd.inputs(className("bar").last(fm).click();
+
 // click on all matching matching ones...
-fwd.inputs(className("bar").filter(fm).click();
+listofMatching elements = fwd.inputs(className("bar").filter(fm)
+listofMatching.click() // click them all
 ```
 
-There are no instances of FluentMatcher built in, other than CompositeFluentMatcher.
+There are no instances of FluentMatcher built in, other than CompositeFluentMatcher which allows you to build up a larger matcher, and has 'both', 'any', 'all', 'either' functionality.  There's also 'and' & 'or' cabailities to CompositeFluentMatcher.
+
+## Visit each element to do something custom
+
+```java
+class MyFluentWebElementVistor implements FluentWebElementVistor {
+  public void visit(FluentWebElement webElement, int ix) {
+    // do what you like here
+  }
+}
+
+FluentWebElementVistor v = new MyFluentWebElementVistor();
+// do something on each element in a list, then click on them
+fwd.inputs(className("bar").each(v).click();
+```
+
+## Make a map from the matching elements
+
+```java
+class MyFluentWebElementMap<String,String> implements FluentWebElementMap<String,String> {
+  public void map(FluentWebElement webElement, int ix) {
+    // note: <String,String> is only an example
+    String key == webElement. // something
+    String value == webElement. // something
+    put(key,value);
+  }
+}
+
+MyFluentWebElementMap m = new MyFluentWebElementMap();
+Map<String,String> myMap = fwd.inputs(className("bar").map(m);
+// map() effectively stops fluency, here.
+```
 
 # Exceptions
 
@@ -277,7 +318,7 @@ debugging (before or after a developer commit that may have broken the build).
 Fluent-Selenium throws 'FluentExecutionStopped' like so:
 
 ```
-      "WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
+"WebDriver exception during invocation of : ?.div(By.className: item-treasury-info-box')).h3()"
 ```
 
 That exception's <code>getCause()</code> will be the WebDriverException derivative that happened during
