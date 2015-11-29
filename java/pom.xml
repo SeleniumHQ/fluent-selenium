@@ -8,7 +8,7 @@
     <groupId>org.seleniumhq.selenium.fluent</groupId>
     <artifactId>fluent-selenium</artifactId>
     <packaging>jar</packaging>
-    <version>1.16</version>
+    <version>1.16.1-SNAPSHOT</version>
     <name>fluent-selenium</name>
     <description>A Fluent API on top of Selenium's WebDriver API</description>
     <url>http://github.com/SeleniumHQ/fluent-selenium</url>
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:SeleniumHQ/fluent-selenium.git</connection>
         <developerConnection>scm:git:git@github.com:SeleniumHQ/fluent-selenium.git</developerConnection>
         <url>git@github.com:SeleniumHQ/fluent-selenium.git</url>
-      <tag>fluent-selenium-1.16</tag>
+      <tag>HEAD</tag>
   </scm>
     <dependencies>
         <dependency>
