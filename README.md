@@ -15,16 +15,16 @@ fwd.div(id("foo")).div(className("bar")).button().click();
 fwd.span(id("results")).getText().shouldBe("1 result");
 ```
 
-Hyperlinks are marked as 'a' (anchor) in HTML, but we've represented those as <code>link()</code> in the fluent API.  
+Hyperlinks are marked as 'a' (anchor) in HTML, but we have represented those as <code>link()</code> in the fluent API.  
 
-As with all fluent interfaces, there is no point looking at strict API documentation (JavaDoc for Java), and you're better looking at example code (this page is it).
+As with all fluent interfaces, there is no point looking at strict API documentation (JavaDoc for Java), and you're better looking at example code, and this page is it (perhaps the blog entries of others too).
 
 ## Situations where the DOM is changing slowly
 
 ### within()
 
-There's a "within" capability in the fluent language. It will retry for an advised period,
-giving the fluent expression a chance to get past a slowly appearing node:
+There's a "within" capability in the fluent language. It will keep retrying a locator for a given period of time.
+The fluent expression (the locator) is given a chance to get past a slowly appearing element in the page:
 
 ```java
 fwd.div(id("foo")).div(className("bar")).within(secs(5)).button().click();
@@ -32,12 +32,12 @@ fwd.div(id("foo")).div(className("bar")).within(secs(5)).button().click();
 fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
 
-This will throw an exception **after** the elapsed time, if it still hasn't appeared in the DOM.
+This will throw an exception **after** the elapsed time, if the element still hasn't appeared in the page's DOM.
 
 ### without()
 
-There's a "without" capability in the fluent language. It will retry for an advised period,
-giving the fluent expression observe that something in the page should disappear:
+The opposite of "within", the "without" capability is going to wait for something to disappear. If the element is still in the page, it will keep waiting upto a given period of time, for it to disappear:
+
 
 ```java
 fwd.div(id("foo")).div(className("bar")).without(secs(5)).button();
@@ -45,14 +45,14 @@ fwd.div(id("foo")).div(className("bar")).without(secs(5)).button();
 
 The element disappearing in the page means that the fluent expression stops
 there. Also, disappear means that the locator used to find the element does
-not find it, thus the following does not mean that there's no span element,
+not find it. Thus the following does not mean that there's no span element,
 it just means that there is no span element with a class of "baz":
 
 ```java
 fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"));
 ```
 
-This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the DOM.
+This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the page's DOM.
 
 Selenium 1.0 had an API function isElementPresent. The 'without' functionality is akin to isElementNotPresent, or rather waitForElementToNotBePresent.
 
@@ -67,52 +67,13 @@ fwd.input(id("textArea")).sendKeys("Mary Had A Little Lamb...");
 fwd.div(id("discardChanges")).ifInvisibleWaitUpTo(millis(500)).click();
 ```
 
-### Advanced JavaScript Frameworks
+### Locators for Advanced JavaScript Frameworks
 
 #### AngularJS 1.x
 
 AngularJS is an example of framework that does a huge amount of the heavy lifting in browser.  While it's doing its magic, you are going to encounter timing issues. If you prefer, the 'within' and 'without' fluent methods above will help you overcome those issues, but there is a way of being smarter about waiting for Angular's magic to stop:
 
-There's another library you can use in conjunction with Selenium/WebDriver and/or FluentSelenium - [ngWebDriver](https://github.com/paul-hammant/ngWebDriver).  This below is a more informal way interacting with Angular's runtime in the browser.
-
-Somewhere in your code, define the following static method:
-
-```java
-public static By ngWait(final By by) {
-    return new FluentBy() {
-        @Override
-        public void beforeFindElement(WebDriver driver) {
-            driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-            ((JavascriptExecutor) driver).executeAsyncScript("var callback = arguments[arguments.length - 1];" +
-                "angular.element(document.body).injector().get('$browser').notifyWhenNoOutstandingRequests(callback);");
-            super.beforeFindElement(driver);
-        }
-
-        @Override
-        public List<WebElement> findElements(SearchContext context) {
-            return by.findElements(context);
-        }
-
-        @Override
-        public WebElement findElement(SearchContext context) {
-            return by.findElement(context);
-        }
-    };
-}
-```
-
-That hooks into Angular's internals, and will block until requests have completed. You may want to parameterize the script timeout, or execute it at the start of the test suite long before use. Use it in a fluent expression by wapping a locator like so:
-
-```java
-fwd.div(id("foo")).button(ngWait(id("bar"))).click();
-```
-Instead of this type of thing:
-
-```java
-fwd.div(id("foo")).within(secs(5)).button(id("bar")).click();
-```
-
-The code fragment above was copied from the Angular team's [Protractor framework](https://github.com/angular/protractor) which itself is based on top of WebDriverJS (a JavaScript rather than Java driver Selenium 2.0).  Source [here](https://github.com/angular/protractor/blob/master/lib/protractor.js).
+There's another library you can use in conjunction with Selenium/WebDriver and/or FluentSelenium called [ngWebDriver](https://github.com/paul-hammant/ngWebDriver) that makes it far easier to test Angular applications.
 
 #### Other frameworks
 
