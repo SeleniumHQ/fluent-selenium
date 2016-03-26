@@ -301,7 +301,7 @@ As mentioned before, Selenium 1.0 had an API function called 'isElementPresent'.
 # Monitoring
 
 Fluent Selenium can generate monitors failing interactions with the browser. It can also see what fluent operation were started/ended.
-Refer the [Monitor](https://github.com/SeleniumHQ/fluent-selenium/blob/master/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
+Refer the [Monitor](./java/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
 
 You specify a monitor choice by using the right constructor for FluentWebDriver (and pass in a Monitor instance). There's a default monitor that does nothing, so you don't have to choose a constructor that uses a monitor.
 
