@@ -278,6 +278,24 @@ public class Internal {
             return newFluentWebElements(multiple(by, "h4"));
         }
 
+        protected BaseFluentWebElement h5(){
+            SingleResult single = single(tagName("h5"), "h5");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements h5s() {
+            return newFluentWebElements(multiple(tagName("h5"), "h5"));
+        }
+
+        protected BaseFluentWebElement h5(By by) {
+            SingleResult single = single(by, "h5");
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElements h5s(By by) {
+            return newFluentWebElements(multiple(by, "h5"));
+        }
+
         protected BaseFluentWebElement p() {
             SingleResult single = single(tagName("p"), "p");
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());

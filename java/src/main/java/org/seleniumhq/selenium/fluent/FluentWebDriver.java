@@ -307,6 +307,26 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
+    public FluentWebElement h5() {
+        return (FluentWebElement) super.h5();
+    }
+
+    @Override
+    public FluentWebElements h5s() {
+        return (FluentWebElements) super.h5s();
+    }
+
+    @Override
+    public FluentWebElement h5(By by) {
+        return (FluentWebElement) super.h5(by);
+    }
+
+    @Override
+    public FluentWebElements h5s(By by) {
+        return (FluentWebElements) super.h5s(by);
+    }
+
+    @Override
     public FluentWebElement p() {
         return (FluentWebElement) super.p();
     }
