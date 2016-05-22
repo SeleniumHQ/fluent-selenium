@@ -487,52 +487,33 @@ For non-Maven build systems, [download it yourself](http://search.maven.org/#sea
 Here's what else you might need in your classpath, depending on your needs:
 
 ```
-+- junit:junit:jar:4.11:test
++- junit:junit:jar:4.12:test
 +- org.hamcrest:hamcrest-all:jar:1.3:compile
 +- org.mockito:mockito-core:jar:1.10.19:test
 |  +- org.hamcrest:hamcrest-core:jar:1.1:test
 |  \- org.objenesis:objenesis:jar:2.1:test
-+- org.seleniumhq.selenium:selenium-java:jar:2.48.2:compile
-|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.48.2:compile
-|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.48.2:compile
++- org.seleniumhq.selenium:selenium-java:jar:2.53.0:compile
+|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.53.0:compile
+|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.53.0:compile
 |  |     +- cglib:cglib-nodep:jar:2.1_3:compile
 |  |     +- com.google.code.gson:gson:jar:2.3.1:compile
-|  |     +- org.seleniumhq.selenium:selenium-api:jar:2.48.2:compile
-|  |     \- com.google.guava:guava:jar:18.0:compile
-|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:2.48.2:compile
+|  |     +- org.seleniumhq.selenium:selenium-api:jar:2.53.0:compile
+|  |     +- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
+|  |     |  +- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
+|  |     |  +- commons-logging:commons-logging:jar:1.2:compile
+|  |     |  \- commons-codec:commons-codec:jar:1.9:compile
+|  |     \- com.google.guava:guava:jar:19.0:compile
+|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:2.53.0:compile
 |  |  +- commons-io:commons-io:jar:2.4:compile
 |  |  \- org.apache.commons:commons-exec:jar:1.3:compile
-|  +- org.seleniumhq.selenium:selenium-htmlunit-driver:jar:2.48.2:compile
-|  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.18:compile
-|  |  |  +- xalan:xalan:jar:2.7.2:compile
-|  |  |  |  \- xalan:serializer:jar:2.7.2:compile
-|  |  |  +- commons-collections:commons-collections:jar:3.2.1:compile
-|  |  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
-|  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5:compile
-|  |  |  +- commons-codec:commons-codec:jar:1.10:compile
-|  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.17:compile
-|  |  |  +- xerces:xercesImpl:jar:2.11.0:compile
-|  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
-|  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.22:compile
-|  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.16:compile
-|  |  |  |  \- org.w3c.css:sac:jar:1.3:compile
-|  |  |  +- commons-logging:commons-logging:jar:1.2:compile
-|  |  |  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.12.v20150709:compile
-|  |  |     +- org.eclipse.jetty:jetty-util:jar:9.2.12.v20150709:compile
-|  |  |     +- org.eclipse.jetty:jetty-io:jar:9.2.12.v20150709:compile
-|  |  |     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.12.v20150709:compile
-|  |  |        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.12.v20150709:compile
-|  |  \- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
-|  |     \- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
-|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.48.2:compile
-|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.48.2:compile
+|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.53.0:compile
+|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.53.0:compile
 |  |  +- net.java.dev.jna:jna:jar:4.1.0:compile
 |  |  \- net.java.dev.jna:jna-platform:jar:4.1.0:compile
-|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.48.2:compile
-|  +- org.seleniumhq.selenium:selenium-support:jar:2.48.2:compile
-|  +- org.webbitserver:webbit:jar:0.4.14:compile
-|  |  \- io.netty:netty:jar:3.5.2.Final:compile
-|  \- org.seleniumhq.selenium:selenium-leg-rc:jar:2.48.2:compile
+|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.53.0:compile
+|  |  \- io.netty:netty:jar:3.5.7.Final:compile
+|  +- org.seleniumhq.selenium:selenium-support:jar:2.53.0:compile
+|  \- org.seleniumhq.selenium:selenium-leg-rc:jar:2.53.0:compile
 \- com.codahale.metrics:metrics-core:jar:3.0.2:compile
    \- org.slf4j:slf4j-api:jar:1.7.5:compile
 ```
