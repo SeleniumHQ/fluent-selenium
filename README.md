@@ -520,16 +520,16 @@ Here's what else you might need in your classpath, depending on your needs:
 
 # Changes
 
-## 1.16.1
+## 1.16.1 (May 22, 2016)
 
 * Selenium upgrade to v2.53.0 - incl. the new getRect() from WebElement
 * Support for h5 and h6
 
-## 1.16
+## 1.16 (Nov 29, 2015)
 
 * map function and visitor added
 
-## 1.15
+## 1.15 (Nov 21, 2015)
 
 * Selenium upgrade to v2.48.2
 * Support for unordered lists (ul elements)
