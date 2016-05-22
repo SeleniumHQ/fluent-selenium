@@ -157,6 +157,10 @@ public class StaleRecoveringTest {
                 }
 
                 public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException { return we.getScreenshotAs(outputType); }
+
+                public Rectangle getRect() {
+                    return we.getRect();
+                }
             };
         }
     }

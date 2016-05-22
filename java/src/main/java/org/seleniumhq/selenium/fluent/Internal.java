@@ -1398,5 +1398,8 @@ public class Internal {
 
         public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException { throw new UnsupportedOperationException(); }
 
+        public Rectangle getRect() {
+            throw new UnsupportedOperationException();
+        }
     }
 }
