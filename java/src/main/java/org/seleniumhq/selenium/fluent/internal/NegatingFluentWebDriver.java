@@ -121,6 +121,15 @@ public class NegatingFluentWebDriver {
         delegate.h5(by);
     }
 
+    public void h6() {
+        delegate.h6();
+    }
+
+    public void h6(By by) {
+        delegate.h6(by);
+    }
+    
+    
     public void p() {
         delegate.p();
     }
