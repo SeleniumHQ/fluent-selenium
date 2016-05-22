@@ -425,6 +425,25 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
+    public FluentWebElement h6() {
+        return (FluentWebElement) super.h6();
+    }
+
+    @Override
+    public FluentWebElement h6(By by) {
+        return (FluentWebElement) super.h6(by);
+    }
+
+    @Override
+    public FluentWebElements h6s() {
+        return (FluentWebElements) super.h6s();
+    }
+
+    @Override
+    public FluentWebElements h6s(By by) {
+        return (FluentWebElements) super.h6s(by);
+    }
+    @Override
     public FluentWebElement td() {
         return (FluentWebElement) super.td();
     }
