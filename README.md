@@ -40,12 +40,13 @@ The opposite of "within", the "without" capability is going to wait for somethin
 
 
 ```java
+// No button in the div after 5 seconds:
 fwd.div(id("foo")).div(className("bar")).without(secs(5)).button();
 ```
 
 The element disappearing in the page means that the fluent expression stops
 there. Also, disappear means that the locator used to find the element does
-not find it. Thus the following does not mean that there's no span element,
+not find it. Thus the following does not mean that there is no span element,
 it just means that there is no span element with a class of "baz":
 
 ```java
@@ -135,10 +136,20 @@ fwd.div(id("foo")).getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 ```
 
-As shown above, you can transparently wait for the thing to become true:
+Hamcrest mactchers, similarly:
+
+```java
+fwd.div(id("foo")).getText().shouldMatch(IsEqual<String>("1 bar"));
+fwd.div(id("formErrors")).getText().shouldNotMatch(IsEqual<String>("aardvark"));
+```
+
+As shown above, you can transparently wait for the thing to become
+true (within/without to the right of the TestableString, and the shouldXxx rightmost):
 
 ```java
 fwd.div(id("foo")).getText().within(secs(10)).shouldBe("1 bar");
+// text is '1 bar' to start, but within 10 secs is not:
+fwd.div(id("foo")).getText().without(secs(10)).shouldBe("1 bar");
 ```
 
 The assertion is retried for the advised period.
@@ -149,7 +160,7 @@ Any element has a location via getLocation(), which yields a Point
 Any element has a size via getSize(), which yields a Dimension
 Some elements have boolean from isDisplayed(), isEnabled() and isSelected()
 
-All of these have assertions:
+All of those have assertions:
 
 ```java
 fwd.div(id("foo")).getLocation().shouldBe(new Point(1, 1));

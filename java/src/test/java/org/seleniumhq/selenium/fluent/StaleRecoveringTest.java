@@ -2,7 +2,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
 import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class StaleRecoveringTest {
 
     }
 
-    private static class FirstGetAttributeIsStaleDriver extends FirefoxDriver {
+    private static class FirstGetAttributeIsStaleDriver extends ChromeDriver {
         public final int[] countOfGetAttribute = {0};
         public final boolean[] staleElementThrown = {false};
 

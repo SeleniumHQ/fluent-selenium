@@ -2,7 +2,7 @@ package org.seleniumhq.selenium.fluent;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -14,7 +14,7 @@ public class IfInvisibleWaitUpToTest {
 
     @Test
     public void ifInvisibleWaitUpTo_can_time_out_before_actually_visible() {
-        FirefoxDriver driver = new FirefoxDriver();
+        ChromeDriver driver = new ChromeDriver();
 
         // fork of http://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_eff_delay
         driver.get("http://seleniumhq.github.io/fluent-selenium/slowlyVisible.html");
@@ -42,7 +42,7 @@ public class IfInvisibleWaitUpToTest {
 
     @Test
     public void ifInvisibleWaitUpTo_can_wait_long_enough() {
-        FirefoxDriver driver = new FirefoxDriver();
+        ChromeDriver driver = new ChromeDriver();
 
         driver.get("http://seleniumhq.github.io/fluent-selenium/slowlyVisible.html");
 

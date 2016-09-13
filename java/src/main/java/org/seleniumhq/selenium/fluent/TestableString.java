@@ -17,6 +17,8 @@ package org.seleniumhq.selenium.fluent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsEqual;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
@@ -79,6 +81,18 @@ public class TestableString extends Internal.BaseTestableObject<String> {
     public TestableString shouldNotMatch(final String regex) {
         validateWrapRethrow(new ShouldNotMatchValidation(new MatchesRegex(regex)),
                 Context.singular(context, "shouldNotMatch", null, regex));
+        return this;
+    }
+
+    public TestableString shouldMatch(Matcher<String> hamcrestMatcher) {
+        validateWrapRethrow(new ShouldHamcrestMatchValidation(hamcrestMatcher),
+                Context.singular(context, "shouldMatch", null, hamcrestMatcher));
+        return this;
+    }
+
+    public TestableString shouldNotMatch(Matcher<String> hamcrestMatcher) {
+        validateWrapRethrow(new ShouldNotHamcrestMatchValidation(hamcrestMatcher),
+                Context.singular(context, "shouldNotMatch", null, hamcrestMatcher));
         return this;
     }
 
@@ -149,6 +163,51 @@ public class TestableString extends Internal.BaseTestableObject<String> {
             assertThat(durationIfNotZero(start), is, matcher);
         }
     }
+    private class ShouldHamcrestMatchValidation extends Internal.Validation {
+        private final Matcher<String> hamcrestMatcher;
+
+        public ShouldHamcrestMatchValidation(Matcher<String> hamcrestMatcher) {
+            this.hamcrestMatcher = hamcrestMatcher;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+
+            if ((is != null && !hamcrestMatcher.matches(is)) && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && hamcrestMatcher.matches(is);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, hamcrestMatcher);
+        }
+    }
+
+    private class ShouldNotHamcrestMatchValidation extends Internal.Validation {
+        private final Matcher<String> hamcrestMatcher;
+
+        public ShouldNotHamcrestMatchValidation(Matcher<String> hamcrestMatcher) {
+            this.hamcrestMatcher = hamcrestMatcher;
+        }
+
+        @Override
+        public void validate(long start) {
+            assignValueIfNeeded();
+            if ((is != null && hamcrestMatcher.matches(is)) && within != null) {
+                boolean passed;
+                long endMillis = calcEndMillis();
+                do {
+                    is = execution.doExecution();
+                    passed = is != null && !hamcrestMatcher.matches(is);
+                } while (System.currentTimeMillis() < endMillis && !passed);
+            }
+            assertThat(durationIfNotZero(start), is, not(hamcrestMatcher));
+        }
+    }
+
 
     private class ShouldNotMatchValidation extends Internal.Validation {
         private final MatchesRegex matcher;
