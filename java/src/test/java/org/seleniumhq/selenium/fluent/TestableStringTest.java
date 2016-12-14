@@ -282,14 +282,30 @@ public class TestableStringTest {
         }
     }
 
-
-
     private String getCauseMessage(FluentExecutionStopped e) {
         return e.getCause().getMessage()
                 .replace("1001", "1000")
                 .replace("1002", "1000")
                 .replace("(after 1 ms)", "")
                 .replace("(after 2 ms)", "");
+    }
+
+    @Test
+    public void trimmerShouldTrimStrings() {
+        TestableString.Munger trimmer = TestableString.trimmer();
+        assertThat(trimmer.munge("  a  "), equalTo("a"));
+    }
+
+    @Test
+    public void testCRstoChars() {
+        TestableString.Munger crToChars = TestableString.crToChars(";");
+        assertThat(crToChars.munge("a\nb\nc"), equalTo("a;b;c"));
+    }
+
+    @Test
+    public void testMultiSpaceEliminator() {
+        TestableString.Munger multiSpaceEliminator = TestableString.multiSpaceEliminator();
+        assertThat(multiSpaceEliminator.munge("  a          b     c  "), equalTo(" a b c "));
     }
 
 }

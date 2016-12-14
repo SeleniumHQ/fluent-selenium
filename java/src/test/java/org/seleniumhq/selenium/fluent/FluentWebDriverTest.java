@@ -447,7 +447,11 @@ public class FluentWebDriverTest extends BaseTest {
 
         assertThat(elems.getText(fredNotMary()).toString(), equalTo("Fred had 3 little lamb(s).Fred had 4 little lamb(s)."));
 
+        assertThat(elems.getText(fredNotMary(), noTrailingDot()).toString(), equalTo("Fred had 3 little lamb(s)Fred had 4 little lamb(s)"));
+
         assertThat(elems.getText(delimitWithChars("<<>>"), fredNotMary()).toString(), equalTo("Fred had 3 little lamb(s).<<>>Fred had 4 little lamb(s)."));
+
+        assertThat(elems.getText(delimitWithChars("<<>>"), fredNotMary(), noTrailingDot()).toString(), equalTo("Fred had 3 little lamb(s)<<>>Fred had 4 little lamb(s)"));
 
     }
 
@@ -455,6 +459,13 @@ public class FluentWebDriverTest extends BaseTest {
         return new TestableString.Munger() {
             public String munge(String text) {
                 return text.replace("Mary", "Fred");
+            }
+        };
+    }
+    private TestableString.Munger noTrailingDot() {
+        return new TestableString.Munger() {
+            public String munge(String text) {
+                return text.endsWith(".") ? text.substring(0, text.length()-1) : text;
             }
         };
     }

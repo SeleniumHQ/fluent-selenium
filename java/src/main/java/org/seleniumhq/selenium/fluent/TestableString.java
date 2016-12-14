@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.containsString;
 
 public class TestableString extends Internal.BaseTestableObject<String> {
 
+
     public interface Concatenator {
         void start(String text);
         void concat(TestableString text);
@@ -42,6 +43,36 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         public String munge(String text) {
             return text;
         }
+    }
+
+    public static Munger trimmer() {
+        return new Munger() {
+            public String munge(String text) {
+                return text.trim();
+            }
+        };
+    }
+
+    public static Munger multiSpaceEliminator() {
+        return new Munger() {
+            public String munge(String text) {
+                StringBuilder sb = new StringBuilder(text);
+                int ix = sb.indexOf("  ");
+                while (ix >= 0) {
+                    sb.replace(ix, ix +2, " ");
+                    ix = sb.indexOf("  ");
+                }
+                return sb.toString();
+            }
+        };
+    }
+
+    public static Munger crToChars(final String chars) {
+        return new Munger() {
+            public String munge(String text) {
+                return text.replaceAll("\n", chars);
+            }
+        };
     }
 
     public static class DelimitWithChars implements Concatenator {
