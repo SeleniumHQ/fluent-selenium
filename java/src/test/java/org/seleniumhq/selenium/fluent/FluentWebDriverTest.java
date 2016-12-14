@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.seleniumhq.selenium.fluent.TestableString.charDelimitor;
+import static org.seleniumhq.selenium.fluent.TestableString.delimitWithChars;
 
 public class FluentWebDriverTest extends BaseTest {
 
@@ -442,7 +442,7 @@ public class FluentWebDriverTest extends BaseTest {
 
         //assertThat(elems.getText().toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
 
-        assertThat(elems.getText(charDelimitor("|")).toString(), equalTo("Mary had 3 little lamb(s).|Mary had 4 little lamb(s)."));
+        assertThat(elems.getText(delimitWithChars("|")).toString(), equalTo("Mary had 3 little lamb(s).|Mary had 4 little lamb(s)."));
 
     }
 

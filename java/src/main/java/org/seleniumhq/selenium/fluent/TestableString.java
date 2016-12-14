@@ -34,13 +34,13 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         void concat(TestableString text);
     }
 
-    public static class CharConcatenator implements Concatenator {
+    public static class DelimitWithChars implements Concatenator {
 
         private String delimChar;
         private String text = null;
         private boolean delimitNow = false;
 
-        public CharConcatenator(String delimChar) {
+        public DelimitWithChars(String delimChar) {
             this.delimChar = delimChar;
         }
 
@@ -62,14 +62,14 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         }
     }
 
-    public static class DefaultConcatenator extends CharConcatenator {
+    public static class DefaultConcatenator extends DelimitWithChars {
         public DefaultConcatenator() {
             super("");
         }
     }
 
-    public static Concatenator charDelimitor(String charToDelimitWith) {
-        return new CharConcatenator(charToDelimitWith);
+    public static Concatenator delimitWithChars(String charToDelimitWith) {
+        return new DelimitWithChars(charToDelimitWith);
     }
 
     protected TestableString(Execution<String> execution, Context ctx, Monitor monitor) {
