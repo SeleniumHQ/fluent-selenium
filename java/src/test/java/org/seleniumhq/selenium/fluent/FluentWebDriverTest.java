@@ -1,5 +1,6 @@
 package org.seleniumhq.selenium.fluent;
 
+import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.openqa.selenium.By;
@@ -440,11 +441,24 @@ public class FluentWebDriverTest extends BaseTest {
         when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
         when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
 
-        //assertThat(elems.getText().toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+        assertThat(elems.getText().toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
 
         assertThat(elems.getText(delimitWithChars("|")).toString(), equalTo("Mary had 3 little lamb(s).|Mary had 4 little lamb(s)."));
 
+        assertThat(elems.getText(fredNotMary()).toString(), equalTo("Fred had 3 little lamb(s).Fred had 4 little lamb(s)."));
+
+        assertThat(elems.getText(delimitWithChars("<<>>"), fredNotMary()).toString(), equalTo("Fred had 3 little lamb(s).<<>>Fred had 4 little lamb(s)."));
+
     }
+
+    private TestableString.Munger fredNotMary() {
+        return new TestableString.Munger() {
+            public String munge(String text) {
+                return text.replace("Mary", "Fred");
+            }
+        };
+    }
+
 
     @Test
     public void runtime_exceptions_decorated_for_first() {

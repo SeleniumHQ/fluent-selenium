@@ -34,6 +34,16 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         void concat(TestableString text);
     }
 
+    public interface Munger {
+        String munge(String text);
+    }
+
+    public static class UnMunger implements Munger {
+        public String munge(String text) {
+            return text;
+        }
+    }
+
     public static class DelimitWithChars implements Concatenator {
 
         private String delimChar;

@@ -96,9 +96,19 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return new TestableString(new GetText(), ctx, monitor).within(getPeriod());
     }
 
-    public TestableString getText(TestableString.Concatenator delim) {
+    public TestableString getText(TestableString.Concatenator concator) {
         Context ctx = Context.singular(context, "getText");
-        return new TestableString(new GetText(delim), ctx, monitor).within(getPeriod());
+        return new TestableString(new GetText(concator), ctx, monitor).within(getPeriod());
+    }
+
+    public TestableString getText(TestableString.Munger munger) {
+        Context ctx = Context.singular(context, "getText");
+        return new TestableString(new GetText(munger), ctx, monitor).within(getPeriod());
+    }
+
+    public TestableString getText(TestableString.Concatenator concator, TestableString.Munger munger) {
+        Context ctx = Context.singular(context, "getText");
+        return new TestableString(new GetText(concator, munger), ctx, monitor).within(getPeriod());
     }
 
     public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapper) {
@@ -308,20 +318,29 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class GetText extends Execution<String> {
-        private TestableString.Concatenator concatenator;
+        private TestableString.Concatenator concatenator = new TestableString.DefaultConcatenator();
+        private TestableString.Munger munger = new TestableString.UnMunger();
 
         public GetText() {
-            this(new TestableString.DefaultConcatenator());
         }
 
-        public GetText(TestableString.Concatenator delimitor) {
-            this.concatenator = delimitor;
+        public GetText(TestableString.Concatenator concatenator) {
+            this.concatenator = concatenator;
+        }
+
+        public GetText(TestableString.Munger munger) {
+            this.munger = munger;
+        }
+
+        public GetText(TestableString.Concatenator concatenator, TestableString.Munger munger) {
+            this.munger = munger;
+            this.concatenator = concatenator;
         }
 
         public String execute() {
             concatenator.start("");
             for (FluentWebElement fwe : FluentWebElements.this) {
-                concatenator.concat(fwe.getText());
+                concatenator.concat(fwe.getText(munger));
             }
             return concatenator.toString();
         }

@@ -152,7 +152,11 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     public TestableString getText() {
-        return new TestableString(setCurrentElement(new GetText()), Context.singular(context, "getText"), monitor);
+        return new TestableString(setCurrentElement(new GetText(new TestableString.UnMunger())), Context.singular(context, "getText"), monitor);
+    }
+
+    public TestableString getText(TestableString.Munger munger) {
+        return new TestableString(setCurrentElement(new GetText(munger)), Context.singular(context, "getText"), monitor);
     }
 
 
@@ -1502,8 +1506,15 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     private class GetText extends StaleElementRecoveringExecution<String> {
+        private TestableString.Munger munger;
+
+        public GetText(TestableString.Munger munger) {
+
+            this.munger = munger;
+        }
+
         public String execute() {
-            return currentElement.getFound().getText();
+            return munger.munge(currentElement.getFound().getText());
         }
     }
 
