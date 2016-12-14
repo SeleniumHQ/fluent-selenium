@@ -23,6 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.seleniumhq.selenium.fluent.TestableString.charDelimitor;
 
 public class FluentWebDriverTest extends BaseTest {
 
@@ -438,8 +439,10 @@ public class FluentWebDriverTest extends BaseTest {
 
         when(we.getText()).thenReturn("Mary had 3 little lamb(s).");
         when(we2.getText()).thenReturn("Mary had 4 little lamb(s).");
-        CharSequence text = elems.getText().toString();
-        assertThat(text.toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+
+        //assertThat(elems.getText().toString(), equalTo("Mary had 3 little lamb(s).Mary had 4 little lamb(s)."));
+
+        assertThat(elems.getText(charDelimitor("|")).toString(), equalTo("Mary had 3 little lamb(s).|Mary had 4 little lamb(s)."));
 
     }
 

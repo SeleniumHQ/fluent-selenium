@@ -18,7 +18,6 @@ package org.seleniumhq.selenium.fluent;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.core.IsEqual;
 import org.seleniumhq.selenium.fluent.internal.Context;
 import org.seleniumhq.selenium.fluent.internal.Execution;
 
@@ -29,6 +28,49 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 public class TestableString extends Internal.BaseTestableObject<String> {
+
+    public interface Concatenator {
+        void start(String text);
+        void concat(TestableString text);
+    }
+
+    public static class CharConcatenator implements Concatenator {
+
+        private String delimChar;
+        private String text = null;
+        private boolean delimitNow = false;
+
+        public CharConcatenator(String delimChar) {
+            this.delimChar = delimChar;
+        }
+
+        public void start(String text) {
+            this.text = text;
+            if (!text.equals("")) {
+                delimitNow = true;
+            }
+        }
+
+        public void concat(TestableString text) {
+            this.text = this.text + (delimitNow ? this.delimChar : "") + text;
+            delimitNow = true;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
+    public static class DefaultConcatenator extends CharConcatenator {
+        public DefaultConcatenator() {
+            super("");
+        }
+    }
+
+    public static Concatenator charDelimitor(String charToDelimitWith) {
+        return new CharConcatenator(charToDelimitWith);
+    }
 
     protected TestableString(Execution<String> execution, Context ctx, Monitor monitor) {
         this(null, execution, ctx, monitor);

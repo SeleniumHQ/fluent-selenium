@@ -96,6 +96,11 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return new TestableString(new GetText(), ctx, monitor).within(getPeriod());
     }
 
+    public TestableString getText(TestableString.Concatenator delim) {
+        Context ctx = Context.singular(context, "getText");
+        return new TestableString(new GetText(delim), ctx, monitor).within(getPeriod());
+    }
+
     public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapper) {
         int ix = -1;
         for (FluentWebElement next : currentElements) {
@@ -303,12 +308,22 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
     }
 
     private class GetText extends Execution<String> {
+        private TestableString.Concatenator concatenator;
+
+        public GetText() {
+            this(new TestableString.DefaultConcatenator());
+        }
+
+        public GetText(TestableString.Concatenator delimitor) {
+            this.concatenator = delimitor;
+        }
+
         public String execute() {
-            String text = "";
+            concatenator.start("");
             for (FluentWebElement fwe : FluentWebElements.this) {
-                text = text + fwe.getText();
+                concatenator.concat(fwe.getText());
             }
-            return text;
+            return concatenator.toString();
         }
     }
 
