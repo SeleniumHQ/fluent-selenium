@@ -486,6 +486,11 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
+    public FluentWebElement body() {
+        return (FluentWebElement) super.body();
+    }
+
+    @Override
     public FluentWebElements abbrs() {
         return (FluentWebElements) super.abbrs();
     }
