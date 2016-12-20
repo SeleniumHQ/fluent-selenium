@@ -292,20 +292,26 @@ public class TestableStringTest {
 
     @Test
     public void trimmerShouldTrimStrings() {
-        TestableString.Munger trimmer = TestableString.trimmer();
-        assertThat(trimmer.munge("  a  "), equalTo("a"));
+        TestableString.StringChanger trimmer = TestableString.trimmer();
+        assertThat(trimmer.chg("  a  "), equalTo("a"));
     }
 
     @Test
     public void testCRstoChars() {
-        TestableString.Munger crToChars = TestableString.crToChars(";");
-        assertThat(crToChars.munge("a\nb\nc"), equalTo("a;b;c"));
+        TestableString.StringChanger crToChars = TestableString.crToChars(";");
+        assertThat(crToChars.chg("a\nb\nc"), equalTo("a;b;c"));
     }
 
     @Test
     public void testMultiSpaceEliminator() {
-        TestableString.Munger multiSpaceEliminator = TestableString.multiSpaceEliminator();
-        assertThat(multiSpaceEliminator.munge("  a          b     c  "), equalTo(" a b c "));
+        TestableString.StringChanger multiSpaceEliminator = TestableString.multiSpaceEliminator();
+        assertThat(multiSpaceEliminator.chg("  a          b     c  "), equalTo(" a b c "));
+    }
+
+    @Test
+    public void testTabsToSpacesChanger() {
+        TestableString.StringChanger multiSpaceEliminator = TestableString.tabsToSpaces();
+        assertThat(multiSpaceEliminator.chg(" a \t b\tc "), equalTo(" a   b c "));
     }
 
 }

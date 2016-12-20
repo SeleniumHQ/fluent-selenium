@@ -1,6 +1,5 @@
 package org.seleniumhq.selenium.fluent;
 
-import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.openqa.selenium.By;
@@ -455,16 +454,16 @@ public class FluentWebDriverTest extends BaseTest {
 
     }
 
-    private TestableString.Munger fredNotMary() {
-        return new TestableString.Munger() {
-            public String munge(String text) {
+    private TestableString.StringChanger fredNotMary() {
+        return new TestableString.StringChanger() {
+            public String chg(String text) {
                 return text.replace("Mary", "Fred");
             }
         };
     }
-    private TestableString.Munger noTrailingDot() {
-        return new TestableString.Munger() {
-            public String munge(String text) {
+    private TestableString.StringChanger noTrailingDot() {
+        return new TestableString.StringChanger() {
+            public String chg(String text) {
                 return text.endsWith(".") ? text.substring(0, text.length()-1) : text;
             }
         };

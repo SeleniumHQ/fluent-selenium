@@ -35,28 +35,28 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         void concat(TestableString text);
     }
 
-    public interface Munger {
-        String munge(String text);
+    public interface StringChanger {
+        String chg(String text);
     }
 
-    public static class UnMunger implements Munger {
-        public String munge(String text) {
+    public static class NoopStringChanger implements StringChanger {
+        public String chg(String text) {
             return text;
         }
     }
 
-    public static Munger trimmer() {
-        return new Munger() {
-            public String munge(String text) {
+    public static StringChanger trimmer() {
+        return new StringChanger() {
+            public String chg(String text) {
                 return text.trim();
             }
         };
     }
 
-    public static Munger multiSpaceEliminator() {
-        return new Munger() {
-            public String munge(String text) {
-                StringBuilder sb = new StringBuilder(text);
+    public static StringChanger multiSpaceEliminator() {
+        return new StringChanger() {
+            public String chg(String text) {
+                StringBuilder sb = new StringBuilder(text.replaceAll("\t", " "));
                 int ix = sb.indexOf("  ");
                 while (ix >= 0) {
                     sb.replace(ix, ix +2, " ");
@@ -67,9 +67,17 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         };
     }
 
-    public static Munger crToChars(final String chars) {
-        return new Munger() {
-            public String munge(String text) {
+    public static StringChanger tabsToSpaces() {
+        return new StringChanger() {
+            public String chg(String text) {
+                return text.replaceAll("\t", " ");
+            }
+        };
+    }
+
+    public static StringChanger crToChars(final String chars) {
+        return new StringChanger() {
+            public String chg(String text) {
                 return text.replaceAll("\n", chars);
             }
         };
