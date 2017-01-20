@@ -111,6 +111,11 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
         return new TestableString(new GetText(concator, stringChangers), ctx, monitor).within(getPeriod());
     }
 
+    public TestableValue<Integer> getSize() {
+        Context ctx = Context.singular(context, "getSize");
+        return new TestableValue<Integer>(new GetSize(), ctx, monitor).within(getPeriod());
+    }
+
     public <K, V> Map<K,V> map(FluentWebElementMap<K,V> mapper) {
         int ix = -1;
         for (FluentWebElement next : currentElements) {
@@ -344,6 +349,13 @@ public class FluentWebElements extends Internal.BaseFluentWebElements {
             }
             return concatenator.toString();
         }
+    }
+    
+    private class GetSize extends Execution<Integer> {
+    	public Integer execute() {
+    		Integer theSize = FluentWebElements.this.size();
+    		return theSize;
+    	}
     }
 
     private class IsDisplayed extends Execution<Boolean> {

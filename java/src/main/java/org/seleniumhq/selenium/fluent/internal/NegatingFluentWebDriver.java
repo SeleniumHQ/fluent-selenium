@@ -3,8 +3,11 @@ package org.seleniumhq.selenium.fluent.internal;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
+import org.seleniumhq.selenium.fluent.FluentBy;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.FluentWebElement;
+import org.seleniumhq.selenium.fluent.FluentWebElements;
 import org.seleniumhq.selenium.fluent.Internal;
 import org.seleniumhq.selenium.fluent.Monitor;
 import org.seleniumhq.selenium.fluent.Period;
@@ -25,6 +28,14 @@ public class NegatingFluentWebDriver {
 
     // We are deliberately returning void here, to halt fluency.
 
+    public void elementByXTitle(String xTitle) {
+        delegate.elementByXTitle(xTitle);
+    }
+    
+    public void elementByXID(String xID) {
+    	delegate.elementByXID(xID);
+    }
+    
     public void element() {
         delegate.element();
     }
