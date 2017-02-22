@@ -128,6 +128,8 @@ fwd.div(id("foo")).getText().shouldContain("bar");
 fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
 
+#### Regex
+
 Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\\n)
 
 ```java
@@ -136,12 +138,16 @@ fwd.div(id("foo")).getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 ```
 
+#### Hamcrest mactchers
+
 Hamcrest mactchers, similarly:
 
 ```java
 fwd.div(id("foo")).getText().shouldMatch(IsEqual<String>("1 bar"));
 fwd.div(id("formErrors")).getText().shouldNotMatch(IsEqual<String>("aardvark"));
 ```
+
+#### Within a period of time
 
 As shown above, you can transparently wait for the thing to become
 true (within/without to the right of the TestableString, and the shouldXxx rightmost):
@@ -153,6 +159,10 @@ fwd.div(id("foo")).getText().without(secs(10)).shouldBe("1 bar");
 ```
 
 The assertion is retried for the advised period.
+
+#### Changing text before assertions
+
+Sometimes FluentWebWlement TODO
 
 ### Non-String Assertions
 
@@ -530,6 +540,13 @@ Here's what else you might need in your classpath, depending on your needs:
 ```
 
 # Changes
+
+## 1.17 (Dev 20, 2016)
+
+* Selenium upgrade to v3.0.1
+* Support for 'body'
+* FluentWebElement getText() can varargs of 'TextChanger' now
+* FluentWebElements getText() can too, but also a means to control the between elements chars (CR by default)
 
 ## 1.16.1 (May 22, 2016)
 
