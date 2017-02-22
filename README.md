@@ -520,7 +520,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 ```
 ### Jetty
 
-Also be aware that Selenium depends on Jetty. If you are too in your prod code, you may need to exclude the Selenium's choice of Jetty (v9.2.15.v20160210 - see below), and include your own instead. Jetty v9.4.0.v20161208 is where the Eclipse foundation are at, and v9.2 is some way behind with incompatible enough methods.
+Also be aware that Selenium depends on Jetty. If you are too in your prod code, you may need to exclude the Selenium's choice of Jetty (v9.2.15.v20160210 - see below), and include your own instead. Jetty v9.4.0.v20161208 is where the Eclipse foundation are at, and v9.2.x is some way behind with incompatible enough methods.
 
 ## Non-Maven
 
@@ -579,7 +579,7 @@ Here's what else you might need in your classpath, depending on your needs:
 
 # Changes
 
-## 1.17 (Dev 20, 2016)
+## 1.17 (Dec 20, 2016)
 
 * Selenium upgrade to v3.0.1
 * Support for 'body' element
