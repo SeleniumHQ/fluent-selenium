@@ -127,6 +127,24 @@ fwd.div(id("foo")).getText().shouldNotBe("0 bars");
 fwd.div(id("foo")).getText().shouldContain("bar");
 fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
+#### Text Changers
+
+The `getText()` method can also take one or more `TextChanger` implementations now. These can change the value of getText() before
+handing it rightwards to an assertion, like so:
+
+```java
+fwd.div(id("foo")).getText(new MyToUppperCase()).shouldBe("1 BAR");
+```
+There are supplied ones too: `multiSpaceEliminator()`, `trimmer()`, `tabsToSpaces()` and `crToChars("|")`
+
+There is also a `Concatenator` that is available for getText() where that was implicitly a findElements (plural). There is one
+supplied concatenator, `delimitWithChars(..)` used like so:
+
+```java
+fwd.buttons(class("dialog_button")).getText(delimitWithChars("|")).shouldBe("OK|CANCEL");
+```
+
+
 
 #### Regex
 
@@ -458,7 +476,7 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.14.2</version>
+   <version>1.17</version>
    <scope>test</scope>
 </dependency>
 
@@ -484,7 +502,7 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.14.6</version>
+  <version>1.17</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
@@ -544,8 +562,8 @@ Here's what else you might need in your classpath, depending on your needs:
 ## 1.17 (Dev 20, 2016)
 
 * Selenium upgrade to v3.0.1
-* Support for 'body'
-* FluentWebElement getText() can varargs of 'TextChanger' now
+* Support for 'body' element
+* FluentWebElement getText() can take a varargs of 'TextChanger' now
 * FluentWebElements getText() can too, but also a means to control the between elements chars (CR by default)
 
 ## 1.16.1 (May 22, 2016)
