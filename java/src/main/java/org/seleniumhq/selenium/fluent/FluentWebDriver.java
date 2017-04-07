@@ -86,6 +86,22 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
         return new FluentWebElements(delegate, elems, ctx, monitor, booleanInsteadOfNotFoundException);
     }
 
+    public FluentWebElement elementByXTitle(String xTitle) {
+        return element(FluentBy.xtitle(xTitle));
+    }
+    
+    public FluentWebElements elementsByXTitle(String xTitle) {
+        return elements(FluentBy.xtitle(xTitle));
+    }
+    
+    public FluentWebElement elementByXID(String xID) {
+    	return element(FluentBy.xid(xID));
+    }
+    
+    public FluentWebElements elementsByXID(String xID) {
+    	return elements(FluentBy.xid(xID));
+    }
+    
     @Override
     public FluentWebElement element() {
         return (FluentWebElement) super.element();

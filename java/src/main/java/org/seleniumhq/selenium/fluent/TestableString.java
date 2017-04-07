@@ -150,6 +150,11 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         return this;
     }
 
+    public TestableString shouldContainIncasesensitive(final String shouldContain) {
+        validateWrapRethrow(new ShouldContainValidation(shouldContain, false), Context.singular(context, "shouldContain", null, shouldContain));
+        return this;
+    }
+
     public TestableString shouldNotContain(final String shouldNotContain) {
         validateWrapRethrow(new ShouldNotContainValidation(shouldNotContain),
                 Context.singular(context, "shouldNotContain", null, shouldNotContain));
@@ -193,7 +198,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
 
         public MatchesRegex(String regex) {
             this.regex = regex;
-            pattern = Pattern.compile(regex, Pattern.MULTILINE);
+            pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
         }
 
         public void describeTo(Description description) {
@@ -211,15 +216,25 @@ public class TestableString extends Internal.BaseTestableObject<String> {
     }
 
     private class ShouldContainValidation extends Internal.Validation {
-        private final String shouldContain;
+        private String shouldContain;
+        private final boolean isCasesensitive;
 
         public ShouldContainValidation(String shouldContain) {
+        	this(shouldContain, true);
+        }
+
+        public ShouldContainValidation(String shouldContain, boolean caseSensitive) {
             this.shouldContain = shouldContain;
+            this.isCasesensitive = caseSensitive;
         }
 
         @Override
         public void validate(long start) {
             assignValueIfNeeded();
+            if (!this.isCasesensitive) {
+            	is = is.toLowerCase();
+            	shouldContain = shouldContain.toLowerCase();
+            }
             if (is.indexOf(shouldContain) == -1 && within != null) {
                 boolean passed;
                 long endMillis = calcEndMillis();

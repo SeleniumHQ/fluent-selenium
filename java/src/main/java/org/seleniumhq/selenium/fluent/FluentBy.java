@@ -25,6 +25,7 @@ import org.openqa.selenium.internal.FindsByXPath;
 
 import java.lang.Override;
 import java.lang.String;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -126,6 +127,130 @@ public abstract class FluentBy extends By {
     public static ByLast last() {
         return new ByLast();
     }
+	public static ByXTitle xtitle(final String xTitle) {
+		return new ByXTitle(xTitle, "");
+	}
+
+	public static ByXTitle xtitle(final String xTitle, final String xPathPrefixSelector) {
+		return new ByXTitle(xTitle, xPathPrefixSelector);
+	}
+
+	public static ByXTitle xtitle(final String xTitles[]) {
+		return new ByXTitle(xTitles, "");
+	}
+	
+	public static ByXTitle xtitle(final String xTitles[], final String xPathPrefixSelector) {
+		return new ByXTitle(xTitles, xPathPrefixSelector);
+	}
+	
+	public static ByXID xid(String xID) {
+		return new ByXID(xID, "");
+	}
+
+	public static ByXID xid(String xID, final String xPathPrefixSelector) {
+		return new ByXID(xID, xPathPrefixSelector);
+	}
+
+	public static ByXID xid(String xIDs[]) {
+		return new ByXID(xIDs, "");
+	}
+
+	public static ByXID xid(final String xIDs[], final String xPathPrefixSelector) {
+		return new ByXID(xIDs, xPathPrefixSelector);
+	}	
+
+	public static class ByXID extends FluentBy {
+		protected final String[] xIDs;
+		protected final String xPathPrefixSelector;
+
+		public ByXID(String xID[], String xPathPrefixSelector) {
+			this.xIDs = xID;
+			this.xPathPrefixSelector = xPathPrefixSelector;
+		}
+
+		public ByXID(String xID, String xPathPrefixSelector) {
+			this.xIDs = new String[1];
+			this.xIDs[0] = xID;
+			this.xPathPrefixSelector = xPathPrefixSelector;
+		}
+
+		private By makeByXPath() {
+			return By.xpath(this.makeXPath());
+		}
+
+		private String makeXPath() {
+			String xpath = ".";
+
+			for (String xid : this.xIDs) {
+				xpath += "//*[@data-xtest-id='" + xid + "']";
+			}
+
+			if (this.xPathPrefixSelector.length() > 0) {
+				xpath = this.xPathPrefixSelector + xpath;
+			}
+
+			return xpath;
+		}
+
+		@Override
+		public List<WebElement> findElements(SearchContext context) {
+			return makeByXPath().findElements(context);
+		}
+
+		@Override
+		public String toString() {
+			return "FluentBy.xtest-id: " + Arrays.toString(this.xIDs) + " with prefix: " + this.xPathPrefixSelector;
+		}
+	}
+
+	public static class ByXTitle extends FluentBy {
+		protected final String[] xTitles;
+		protected final String xPathPrefixSelector;
+
+		public ByXTitle(String xTitle[], String xPathPrefixSelector) {
+			this.xTitles = xTitle;
+			this.xPathPrefixSelector = xPathPrefixSelector;
+		}
+
+		public ByXTitle(String xTitle, String xPathPrefixSelector) {
+			this.xTitles = new String[1];
+			this.xTitles[0] = xTitle;
+			this.xPathPrefixSelector = xPathPrefixSelector;
+		}
+
+		private By makeByXPath() {
+			return By.xpath(this.makeXPath());
+		}
+
+		private String makeXPath() {
+			String xpath = ".";
+
+			for (String xtitle : this.xTitles) {
+				if (xtitle.endsWith("*")) {
+					xtitle = xtitle.replace("*", "");
+					xpath += "//*[starts-with(@data-xtest-title, '" + xtitle + "')]";
+				} else {
+					xpath += "//*[contains(@data-xtest-title, '" + xtitle + "')]";
+				}
+			}
+
+			if (this.xPathPrefixSelector.length() > 0) {
+				xpath = this.xPathPrefixSelector + xpath;
+			}
+
+			return xpath;
+		}
+
+		@Override
+		public List<WebElement> findElements(SearchContext context) {
+			return makeByXPath().findElements(context);
+		}
+
+		@Override
+		public String toString() {
+			return "FluentBy.xtest-title: " + Arrays.toString(this.xTitles) + " and prefix: " + this.xPathPrefixSelector;
+		}
+	}
 
     private static class ByLast extends FluentBy {
         
