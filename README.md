@@ -127,6 +127,26 @@ fwd.div(id("foo")).getText().shouldNotBe("0 bars");
 fwd.div(id("foo")).getText().shouldContain("bar");
 fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
+#### Text Changers
+
+The `getText()` method can also take one or more `TextChanger` implementations now. These can change the value of getText() before
+handing it rightwards to an assertion, like so:
+
+```java
+fwd.div(id("foo")).getText(new MyToUppperCase()).shouldBe("1 BAR");
+```
+There are supplied ones too: `multiSpaceEliminator()`, `trimmer()`, `tabsToSpaces()` and `crToChars("|")`
+
+There is also a `Concatenator` that is available for getText() where that was implicitly a findElements (plural). There is one
+supplied concatenator, `delimitWithChars(..)` used like so:
+
+```java
+fwd.buttons(class("dialog_button")).getText(delimitWithChars("|")).shouldBe("OK|CANCEL");
+```
+
+
+
+#### Regex
 
 Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\\n)
 
@@ -136,12 +156,16 @@ fwd.div(id("foo")).getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 ```
 
+#### Hamcrest mactchers
+
 Hamcrest mactchers, similarly:
 
 ```java
 fwd.div(id("foo")).getText().shouldMatch(IsEqual<String>("1 bar"));
 fwd.div(id("formErrors")).getText().shouldNotMatch(IsEqual<String>("aardvark"));
 ```
+
+#### Within a period of time
 
 As shown above, you can transparently wait for the thing to become
 true (within/without to the right of the TestableString, and the shouldXxx rightmost):
@@ -153,6 +177,10 @@ fwd.div(id("foo")).getText().without(secs(10)).shouldBe("1 bar");
 ```
 
 The assertion is retried for the advised period.
+
+#### Changing text before assertions
+
+Sometimes FluentWebWlement TODO
 
 ### Non-String Assertions
 
@@ -448,7 +476,7 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 <dependency>
    <groupId>org.seleniumhq.selenium.fluent</groupId>
    <artifactId>fluent-selenium</artifactId>
-   <version>1.14.2</version>
+   <version>1.17</version>
    <scope>test</scope>
 </dependency>
 
@@ -468,13 +496,13 @@ Coda Hale's Metrics library has other [reporters you could attach](http://metric
 </dependency>
 ```
 
-Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 2.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 2.x. ...
+Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 3.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 3.x. ...
 
 ```xml
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.14.6</version>
+  <version>1.17</version>
   <scope>test</scope>
   <exclusions>
     <exclusion>
@@ -486,10 +514,13 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
 <dependency>
   <groupId>org.seleniumhq.selenium</groupId>
   <artifactId>selenium-java</artifactId>
-  <version>2.99.3</version>
+  <version>3.99.3</version>
   <scope>test</scope>
 </dependency>
 ```
+### Jetty
+
+Also be aware that Selenium depends on Jetty. If you are too in your prod code, you may need to exclude the Selenium's choice of Jetty (v9.2.15.v20160210 - see below), and include your own instead. Jetty v9.4.0.v20161208 is where the Eclipse foundation are at, and v9.2.x is some way behind with incompatible enough methods.
 
 ## Non-Maven
 
@@ -503,33 +534,58 @@ Here's what else you might need in your classpath, depending on your needs:
 +- org.mockito:mockito-core:jar:1.10.19:test
 |  +- org.hamcrest:hamcrest-core:jar:1.1:test
 |  \- org.objenesis:objenesis:jar:2.1:test
-+- org.seleniumhq.selenium:selenium-java:jar:2.53.0:compile
-|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:2.53.0:compile
-|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:2.53.0:compile
-|  |     +- cglib:cglib-nodep:jar:2.1_3:compile
++- org.seleniumhq.selenium:selenium-java:jar:3.0.1:compile
+|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.0.1:compile
+|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:3.0.1:compile
+|  |     +- org.seleniumhq.selenium:selenium-api:jar:3.0.1:compile
+|  |     +- cglib:cglib-nodep:jar:3.2.4:compile
+|  |     +- org.apache.commons:commons-exec:jar:1.3:compile
 |  |     +- com.google.code.gson:gson:jar:2.3.1:compile
-|  |     +- org.seleniumhq.selenium:selenium-api:jar:2.53.0:compile
-|  |     +- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
-|  |     |  +- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
-|  |     |  +- commons-logging:commons-logging:jar:1.2:compile
-|  |     |  \- commons-codec:commons-codec:jar:1.9:compile
-|  |     \- com.google.guava:guava:jar:19.0:compile
-|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:2.53.0:compile
-|  |  +- commons-io:commons-io:jar:2.4:compile
-|  |  \- org.apache.commons:commons-exec:jar:1.3:compile
-|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:2.53.0:compile
-|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:2.53.0:compile
-|  |  +- net.java.dev.jna:jna:jar:4.1.0:compile
-|  |  \- net.java.dev.jna:jna-platform:jar:4.1.0:compile
-|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:2.53.0:compile
+|  |     +- com.google.guava:guava:jar:19.0:compile
+|  |     \- net.java.dev.jna:jna-platform:jar:4.1.0:compile
+|  |        \- net.java.dev.jna:jna:jar:4.1.0:compile
+|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.0.1:compile
+|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.0.1:compile
+|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.0.1:compile
+|  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.0.1:compile
+|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.0.1:compile
 |  |  \- io.netty:netty:jar:3.5.7.Final:compile
-|  +- org.seleniumhq.selenium:selenium-support:jar:2.53.0:compile
-|  \- org.seleniumhq.selenium:selenium-leg-rc:jar:2.53.0:compile
+|  +- org.seleniumhq.selenium:selenium-support:jar:3.0.1:compile
+|  +- net.sourceforge.htmlunit:htmlunit:jar:2.23:compile
+|  |  +- xalan:xalan:jar:2.7.2:compile
+|  |  |  \- xalan:serializer:jar:2.7.2:compile
+|  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
+|  |  +- org.apache.httpcomponents:httpclient:jar:4.5.2:compile
+|  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.4:compile
+|  |  +- org.apache.httpcomponents:httpmime:jar:4.5.2:compile
+|  |  +- commons-codec:commons-codec:jar:1.10:compile
+|  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.23:compile
+|  |  +- net.sourceforge.htmlunit:neko-htmlunit:jar:2.23:compile
+|  |  |  \- xerces:xercesImpl:jar:2.11.0:compile
+|  |  |     \- xml-apis:xml-apis:jar:1.4.01:compile
+|  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.20:compile
+|  |  |  \- org.w3c.css:sac:jar:1.3:compile
+|  |  +- commons-io:commons-io:jar:2.5:compile
+|  |  \- commons-logging:commons-logging:jar:1.2:compile
+|  +- com.codeborne:phantomjsdriver:jar:1.3.0:compile
+|  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.15.v20160210:compile
+|     +- org.eclipse.jetty:jetty-util:jar:9.2.15.v20160210:compile
+|     +- org.eclipse.jetty:jetty-io:jar:9.2.15.v20160210:compile
+|     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.15.v20160210:compile
+|        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.15.v20160210:compile
 \- com.codahale.metrics:metrics-core:jar:3.0.2:compile
    \- org.slf4j:slf4j-api:jar:1.7.5:compile
 ```
 
 # Changes
+
+## 1.17 (Dec 20, 2016)
+
+* Selenium upgrade to v3.0.1
+* Support for 'body' element
+* New TestableString method shouldMatch(hamcrestMatcher) in addition to the same method that took a regex previously.
+* FluentWebElement getText() can take a varargs of 'TextChanger' now
+* FluentWebElements getText() can too, but also a means to control the between elements chars (CR by default)
 
 ## 1.16.1 (May 22, 2016)
 
