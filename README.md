@@ -2,6 +2,8 @@
 
 FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser.  For now, it is for the Java binding to WebDriver.
 
+Of many benefits, Fluen Selenium will attempt to transparently get past the stale element exception business.
+
 ## Basic Use
 
 HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set:
