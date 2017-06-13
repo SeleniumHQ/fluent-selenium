@@ -158,9 +158,9 @@ fwd.div(id("foo")).getText().shouldMatch("[1-9] bar");
 fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 ```
 
-#### Hamcrest mactchers
+#### Hamcrest matchers
 
-Hamcrest mactchers, similarly:
+Hamcrest matchers, similarly:
 
 ```java
 fwd.div(id("foo")).getText().shouldMatch(IsEqual<String>("1 bar"));
