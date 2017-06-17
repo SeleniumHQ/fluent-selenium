@@ -88,12 +88,30 @@ public class Internal {
             return newFluentWebElement(delegate, single.getResult(), single.getCtx());
         }
 
+        protected BaseFluentWebElement element(String name) {
+            SingleResult single = single(tagName(name), name);
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
+        protected BaseFluentWebElement element(String name, By by) {
+            SingleResult single = single(by, name);
+            return newFluentWebElement(delegate, single.getResult(), single.getCtx());
+        }
+
         protected BaseFluentWebElements elements() {
             return newFluentWebElements(multiple(tagName(GENERIC_TAG), GENERIC_TAG));
         }
 
         protected BaseFluentWebElements elements(By by) {
             return newFluentWebElements(multiple(by, GENERIC_TAG));
+        }
+
+        protected BaseFluentWebElements elements(String name) {
+            return newFluentWebElements(multiple(tagName(name), name));
+        }
+
+        protected BaseFluentWebElements elements(String name, By by) {
+            return newFluentWebElements(multiple(by, name));
         }
 
         protected BaseFluentWebElement span() {

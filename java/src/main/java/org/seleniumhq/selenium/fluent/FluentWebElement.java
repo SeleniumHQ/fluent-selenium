@@ -179,6 +179,16 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     }
 
     @Override
+    public FluentWebElement element(String name) {
+        return (FluentWebElement) super.element(name);
+    }
+
+    @Override
+    public FluentWebElement element(String name, By by) {
+        return (FluentWebElement) super.element(name, by);
+    }
+
+    @Override
     public FluentWebElements elements() {
         return (FluentWebElements) super.elements();
     }
@@ -186,6 +196,16 @@ public class FluentWebElement extends Internal.BaseFluentWebElement {
     @Override
     public FluentWebElements elements(By by) {
         return (FluentWebElements) super.elements(by);
+    }
+
+    @Override
+    public FluentWebElements elements(String name) {
+        return (FluentWebElements) super.elements(name);
+    }
+
+    @Override
+    public FluentWebElements elements(String name, By by) {
+        return (FluentWebElements) super.elements(name, by);
     }
 
     @Override

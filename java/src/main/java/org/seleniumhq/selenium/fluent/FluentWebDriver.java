@@ -97,6 +97,16 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
     }
 
     @Override
+    public FluentWebElement element(String name) {
+        return (FluentWebElement) super.element(name);
+    }
+
+    @Override
+    public FluentWebElement element(String name, By by) {
+        return (FluentWebElement) super.element(name, by);
+    }
+
+    @Override
     public FluentWebElements elements() {
         return (FluentWebElements) super.elements();
     }
