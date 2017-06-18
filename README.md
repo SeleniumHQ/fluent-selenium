@@ -592,6 +592,11 @@ Here's what else you might need in your classpath, depending on your needs:
 
 # Changes
 
+## 1.18 (Jun 18, 2017)
+
+* Selenium upgrade to v3.4.0
+* Fluent menthod .element(name) exapanded a little
+
 ## 1.17 (Dec 20, 2016)
 
 * Selenium upgrade to v3.0.1
