@@ -6,7 +6,7 @@ Of many benefits, Fluen Selenium will attempt to transparently get past the stal
 
 ## Basic Use
 
-HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set:
+Regular HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set:
 
 ```java
 WebDriver wd = new FirefoxDriver();
@@ -21,7 +21,18 @@ Hyperlinks are marked as 'a' (anchor) in HTML, but we have represented those as 
 
 As with all fluent interfaces, there is no point looking at strict API documentation (JavaDoc for Java), and you're better looking at example code, and this page is it (perhaps the blog entries of others too).
 
-## Situations where the DOM is changing slowly
+These days frameworks (and people) are making their own elements, and there is way to address those too:
+
+```java
+WebDriver wd = new FirefoxDriver();
+FluentWebDriver fwd = new FluentWebDriver(wd);
+
+fwd.element("fooelementname")).element("barelementname", className("bar")).button().click();
+
+fwd.element("bazelementname", id("results")).getText().shouldBe("1 result");
+```
+
+## Situations where the DOM is slowly changing
 
 ### within()
 
@@ -59,7 +70,7 @@ This will throw an exception **after** the elapsed time, if it still hasn't **di
 
 Selenium 1.0 had an API function isElementPresent. The 'without' functionality is akin to isElementNotPresent, or rather waitForElementToNotBePresent.
 
-### Elements in the DOM, but not visible 'yet'
+### Elements in the DOM, but not visible immediately
 
 Sometimes elements are within the DOM, but they are invisible for a period of
 time after an action of some sort. You can wait for elements to become visible,
