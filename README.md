@@ -103,24 +103,26 @@ capability:
 ```java
 new RetryAfterStaleElement() {
     public void toRetry() {
-        div(id("thirdAddress")).div(className("fromto-column")).getText().toString();
+        # will keep retrying from that fist div, if StaleElementReferenceException is encountered (up to 8 seconds)    
+        System.out.println(div(id("thirdAddress")).div(className("fromto-column")).getText().toString());
     }
 }.stopAfter(secs(8));
 ```
 
 In this example, the element can go stale any amount of times in eight seconds, and the whole
 traversal is restarted again and again.  If you're trying to store values, you'll have a
-problem with Java's inner-class rules, and have to **use member fields** or do dirty tricks like:
+problem with Java's inner-class rules, and have to **use member variables/fields** or do dirty tricks like:
 
 ```java
 final String selectedFlight[] = new String[1];
-new RetryAfterStaleElement() {
+new RetryAfterStaleElement() {    
     public void toRetry() {
+        # will keep retrying from that fist div, if StaleElementReferenceException is encountered (up to 8 seconds)
         selectedFlight[0] = div(className("fromto-column")).getText().toString();
     }
 }.stopAfter(secs(8));
 ```
-Use of the one element array is the dirty trick, because of the need for final.   
+Use of the one element array is the dirty trick, because of the need for **final** with Java.   
 
 FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations.
 If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it persistent in its staleness after recovery, then the exception is throw. Recovery means finding it again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
