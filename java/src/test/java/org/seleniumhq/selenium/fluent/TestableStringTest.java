@@ -309,6 +309,12 @@ public class TestableStringTest {
     }
 
     @Test
+    public void testMultiCREliminator() {
+        TestableString.StringChanger multiCREliminator = TestableString.multiCREliminator();
+        assertThat(multiCREliminator.chg("  a \n\n\n b  \n   c\n\n"), equalTo("  a \n b  \n   c\n"));
+    }
+
+    @Test
     public void testTabsToSpacesChanger() {
         TestableString.StringChanger multiSpaceEliminator = TestableString.tabsToSpaces();
         assertThat(multiSpaceEliminator.chg(" a \t b\tc "), equalTo(" a   b c "));

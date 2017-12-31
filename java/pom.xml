@@ -52,12 +52,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>[3.4.0,)</version>
+            <version>[3.8.0,)</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>
                     <artifactId>hamcrest-core</artifactId>
-                </exclusion>                <exclusion>
+                </exclusion>
+                <exclusion>
                     <groupId>org.hamcrest</groupId>
                     <artifactId>hamcrest-library</artifactId>
                 </exclusion>
@@ -78,8 +79,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.6.1</version>
                     <configuration>
-                        <source>1.5</source>
-                        <target>1.5</target>
+                        <source>1.7</source>
+                        <target>1.7</target>
                         <encoding>UTF-8</encoding>
                         <optimize>false</optimize>
                         <debug>true</debug>
@@ -94,8 +95,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <mavenExecutorId>forked-path</mavenExecutorId>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
