@@ -594,6 +594,14 @@ Here's what else you might need in your classpath, depending on your needs:
 
 # Changes
 
+## 1.19 (Dec 31, 2017)
+
+* Selenium upgrade to v3.8.0
+* TestableString opened up a little
+* New TestableString.multiCREliminator() added to change \n\n sequences in getText() to \n
+* Transitive use of FileUtils from Apache-Commons eliminated.
+* Java 7 is a requirement now (facilitated the above)
+
 ## 1.18 (Jun 18, 2017)
 
 * Selenium upgrade to v3.4.0

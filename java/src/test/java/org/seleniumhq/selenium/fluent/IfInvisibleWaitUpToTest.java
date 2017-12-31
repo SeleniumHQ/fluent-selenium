@@ -53,7 +53,7 @@ public class IfInvisibleWaitUpToTest {
         try {
             boolean displayed = fwd.div(By.id("div3")).ifInvisibleWaitUpTo(millis(900)).isDisplayed().value();
             assertThat(displayed, equalTo(true));
-            assertNotInstantaneousButAlsoNotTooLong(start, 1100L, 700L);
+            assertNotInstantaneousButAlsoNotTooLong(start, 1500L, 700L);
         } finally {
             driver.quit();
         }

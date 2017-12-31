@@ -67,6 +67,21 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         };
     }
 
+    public static StringChanger multiCREliminator() {
+        return new StringChanger() {
+            public String chg(String text) {
+                StringBuilder sb = new StringBuilder(text.replaceAll("\t", " "));
+                int ix = sb.indexOf("\n\n");
+                while (ix >= 0) {
+                    sb.replace(ix, ix + 2, "\n");
+                    ix = sb.indexOf("\n\n");
+                }
+                return sb.toString();
+            }
+        };
+    }
+
+
     public static StringChanger tabsToSpaces() {
         return new StringChanger() {
             public String chg(String text) {
@@ -121,7 +136,7 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         return new DelimitWithChars(charToDelimitWith);
     }
 
-    protected TestableString(Execution<String> execution, Context ctx, Monitor monitor) {
+    public TestableString(Execution<String> execution, Context ctx, Monitor monitor) {
         this(null, execution, ctx, monitor);
     }
 

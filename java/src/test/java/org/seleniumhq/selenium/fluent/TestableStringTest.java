@@ -56,7 +56,9 @@ public class TestableStringTest {
             fail("should have barfed");
         } catch (FluentExecutionStopped e) {
             assertThat(e.getMessage(), equalTo("AssertionError during invocation of: ?.dummy2().within(secs(1)).shouldBe('bar')"));
-            assertThat(getCauseMessage(e), equalTo("(after 1000 ms)\nExpected: \"bar\"\n     but: was \"foo\""));
+            String causeMessage = getCauseMessage(e);
+            causeMessage = causeMessage.replaceAll("\\d{4}", "1000");
+            assertThat(causeMessage, equalTo("(after 1000 ms)\nExpected: \"bar\"\n     but: was \"foo\""));
         }
     }
 
@@ -306,6 +308,12 @@ public class TestableStringTest {
     public void testMultiSpaceEliminator() {
         TestableString.StringChanger multiSpaceEliminator = TestableString.multiSpaceEliminator();
         assertThat(multiSpaceEliminator.chg("  a          b     c  "), equalTo(" a b c "));
+    }
+
+    @Test
+    public void testMultiCREliminator() {
+        TestableString.StringChanger multiCREliminator = TestableString.multiCREliminator();
+        assertThat(multiCREliminator.chg("  a \n\n\n b  \n   c\n\n"), equalTo("  a \n b  \n   c\n"));
     }
 
     @Test

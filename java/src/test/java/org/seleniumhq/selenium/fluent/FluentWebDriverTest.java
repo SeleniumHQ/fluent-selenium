@@ -32,7 +32,7 @@ public class FluentWebDriverTest extends BaseTest {
     static final By CLASS_C = By.className("classC");
 
 
-    @Test
+    @Test(timeout=60000)
     public void reference_test_with_mockito() {
         WebDriver wd = mock(WebDriver.class);
         WebElement we = mock(WebElement.class);
@@ -57,7 +57,7 @@ public class FluentWebDriverTest extends BaseTest {
         verifyNoMoreInteractions(wd, we, we2);
     }
 
-    @Test
+    @Test(timeout=60000)
     public void lengthier_expression_with_late_runtime_exception() {
 
         when(wd.findElement(ID_A)).thenReturn(we);
@@ -77,7 +77,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void lengthier_expression_with_late_assertion_error() {
         when(wd.findElement(ID_A)).thenReturn(we);
         when(we.getTagName()).thenReturn("div");
@@ -98,7 +98,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void assertions_against_otherwise_non_ongoing() {
 
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
@@ -181,7 +181,7 @@ public class FluentWebDriverTest extends BaseTest {
         assertThat(fwe.getText().shouldBe("Mary had 2 little lamb(s)."), notNullValue());
     }
 
-    @Test
+    @Test(timeout=60000)
     public void first_can_find_nothing() {
 
         when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
@@ -201,7 +201,7 @@ public class FluentWebDriverTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(timeout=60000)
     public void first_element_matched_from_larger_list() {
 
         when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
@@ -217,7 +217,7 @@ public class FluentWebDriverTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(timeout=60000)
     public void last_element_matched_from_larger_list() {
 
         when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
@@ -256,7 +256,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void filtering() {
 
         when(wd.findElements(By.tagName("div"))).thenReturn(newArrayList(we, we2));
@@ -278,7 +278,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void is_a_list() {
 
         List<FluentWebElement> elems = new ArrayList<FluentWebElement>();
@@ -383,7 +383,7 @@ public class FluentWebDriverTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(timeout=60000)
     public void multiple_hits_from_the_outset_and_operations_on_the_resulting_list() {
 
 
@@ -470,12 +470,12 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(timeout=60000)
     public void runtime_exceptions_decorated_for_first() {
         first_exception_handling(RuntimeException.class);
     }
 
-    @Test
+    @Test(timeout=60000)
     public void assertion_error_decorated_for_first() {
         first_exception_handling(AssertionError.class);
     }
@@ -500,12 +500,12 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void runtime_exceptions_decorated_for_multiple_element() {
         multiple_elem_exception_handling(RuntimeException.class);
     }
 
-    @Test
+    @Test(timeout=60000)
     public void assertion_error_decorated_for_multiple_element() {
         multiple_elem_exception_handling(AssertionError.class);
     }
@@ -598,7 +598,7 @@ public class FluentWebDriverTest extends BaseTest {
         };
     }
 
-    @Test
+    @Test(timeout=60000)
     public void xPaths_and_non_ongoing() {
 
         when(wd.findElement(By.tagName("div"))).thenReturn(we);
@@ -635,12 +635,12 @@ public class FluentWebDriverTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(timeout=60000)
     public void runtime_exceptions_decorated_for_single_element() {
         wrap_exceptions_tests(RuntimeException.class);
     }
 
-    @Test
+    @Test(timeout=60000)
     public void assertion_errors_decorated_for_single_element() {
         wrap_exceptions_tests(AssertionError.class);
     }
@@ -710,12 +710,12 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void exceptions_decorated_for_filter() {
         filter_exception_handling(RuntimeException.class);
     }
 
-    @Test
+    @Test(timeout=60000)
     public void assertion_errors_decorated_for_filter() {
         filter_exception_handling(AssertionError.class);
     }
@@ -740,7 +740,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void nothing_matching_in_filter_exception_handling() {
 
         when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
@@ -762,7 +762,7 @@ public class FluentWebDriverTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(timeout=60000)
     public void nothing_matching_in_first_exception_handling() {
 
         when(wd.findElements(By.id("foo"))).thenReturn(newArrayList(we, we2));
