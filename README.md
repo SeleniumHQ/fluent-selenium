@@ -27,7 +27,7 @@ These days frameworks (and people) are making their own elements, and there is w
 WebDriver wd = new FirefoxDriver();
 FluentWebDriver fwd = new FluentWebDriver(wd);
 
-fwd.element("fooelementname")).element("barelementname", className("bar")).button().click();
+fwd.element("fooelementname").element("barelementname", className("bar")).button().click();
 
 fwd.element("bazelementname", id("results")).getText().shouldBe("1 result");
 ```
