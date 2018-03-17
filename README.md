@@ -234,25 +234,28 @@ by = By.className("name")
 by = By.tagName("table")
 ```
 
-Class FluentBy adds a few more:
+New class FluentBy adds a few more locators:
 
 ```java
 by = FluentBy.attribute("ng-model")
-by = FluentBy.attribute("ng-model", "shopperSelection.payPalPreferred") {
+by = FluentBy.attribute("ng-model", "shopperSelection.payPalPreferred")
 by = FluentBy.composite(tagName("table"), className("paymentType"))
-by = FluentBy.composite(tagName("table"), attribute("ng-click")) {
+by = FluentBy.composite(tagName("table"), attribute("ng-click"))
 ```
 
-One more strictClassName is used like so:
+One new one, `strictClassName()`, is where there is only one name in the class attribute for that element:
 
 ```java
 by = FluentBy.strictClassName("name")
 ```
 
-Strict is where there is only one class for that element. The built-in WebDriver one allows
-for many classes for an element, with the one specified amongst them.
+The built-in WebDriver `By.className()` one allows
+for many names for the class attribute of an element, with the one specified being amongst them. For 
+your app, `strictClassName` may be faster.
 
-If an locator cannot find the element in the DOM, then an exception - 'FluentExecutionStopped' - is thrown (see below).
+### Elements not located
+
+If WebDriver cannot find the element in the DOM for that locator, then an exception `FluentExecutionStopped` is thrown (see below).
 
 # Multiple elements
 
