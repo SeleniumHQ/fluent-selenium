@@ -65,7 +65,7 @@
             </exclusions>
         </dependency>
         <dependency>
-          <groupId>com.codahale.metrics</groupId>
+          <groupId>io.dropwizard.metrics</groupId>
           <artifactId>metrics-core</artifactId>
           <version>3.2.6</version>
           <optional>true</optional>
