@@ -596,6 +596,10 @@ Here's what else you might need in your classpath, depending on your needs:
 ```
 
 # Changes
+## 1.20 (Apr 28, 2018)
+
+* Coda Hale's Metrics library updated to 3.2.6 (maven group:artifact change with that)
+* This release is tested as compatible with Selenium 3.12 and 3.13
 
 ## 1.19 (Dec 31, 2017)
 
