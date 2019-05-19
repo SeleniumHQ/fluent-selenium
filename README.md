@@ -1,6 +1,6 @@
 # FluentSelenium
 
-FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser.  For now, it is for the Java binding to WebDriver.
+FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser.  For now, it is for the Java binding to WebDriver, and works with Java versions 5, 6, 7, 8, 9, 10, 12, 12 & 13.
 
 Of many benefits, FluentSelenium will attempt to transparently get past the stale element exception business.
 
@@ -485,6 +485,21 @@ package.MyClass.aMethod:div(By.className: aClassName)
 [There's a fuller example of stats in the 'Fluent Selenium Examples' project](https://github.com/paul-hammant/fluent-selenium-examples/blob/master/metrics.out)
 
 Coda Hale's Metrics library has other [reporters you could attach](http://metrics.codahale.com/manual/core/#reporters).
+
+# Java 8 (and onwards) - more fluency
+
+Since both `FluentMatcher` and `FluentWebElementVistor` are single function interfaces, they can be used with Java 8 lambda functions.
+
+Example:
+
+```
+listofMatching elements = fwd.inputs(className("bar").filter(
+    (FluentWebElement el, int ix) -> true
+);
+// Replace "true" wit a statement that uses "el" and "ix"
+```
+
+And similarly for FluentWebElementVisitor.
 
 # Including it in your project
 
