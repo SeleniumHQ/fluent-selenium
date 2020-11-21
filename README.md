@@ -93,7 +93,7 @@ AngularJS is an example of framework that does a huge amount of the heavy liftin
 
 There's another library you can use in conjunction with Selenium/WebDriver and/or FluentSelenium called [ngWebDriver](https://github.com/paul-hammant/ngWebDriver) that makes it far easier to test Angular applications.
 
-#### Other frameworks
+#### Other Web Frameworks
 
 Backbone, Knockout (etc) may have similar tricks, that you can use 'executeScript' to invoke, but we've not done the research to hook into them.
 
@@ -308,7 +308,7 @@ File src = wd.getScreenshotAs(OutputType.FILE);
 FileUtils.copyFile(src, new File(pathname));
 ```
 
-As you can creenshots and any functions on the sub-classes of WebDriver are possible.
+As you can creenshots and any functions on the sub-classes of WebDriver are possible. There's no need to subclass FluentWebDriver to get access to WebDriver, you had it already.
 
 # Fluently matching/filtering over multiple elements
 
