@@ -6,6 +6,8 @@ Of many benefits, FluentSelenium will attempt to transparently get past the stal
 
 FluentSelenium works with JUnit, TestNG, ScalaTest, JBehave, Cucumber for Java, or whatever JDK language you prefer.  FluentSelenium works with Java (5+), Groovy, Scala, Clojure, and Kotlin.
 
+[![javadoc](https://javadoc.io/badge2/org.seleniumhq.selenium.fluent/fluent-selenium/javadoc.svg)](https://javadoc.io/doc/org.seleniumhq.selenium.fluent/fluent-selenium)
+
 ## Basic Use
 
 Regular HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set (by id, by css selector, by tag name, by xpath):
