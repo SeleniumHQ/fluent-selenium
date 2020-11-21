@@ -1,12 +1,14 @@
 # FluentSelenium
 
-FluentSelenium is a layer on top of Selenium 2.0 (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser.  For now, it is for the Java binding to WebDriver, and works with Java versions 5, 6, 7, 8, 9, 10, 12, 12 & 13.
+FluentSelenium is a wrapper for Selenium 2+ (WebDriver) that adds a [fluent interface](http://martinfowler.com/bliki/FluentInterface.html) style for working with the browser. It allows you easier and faster writing of Web UI Tests. Test code using FluentSelenium is terser and more elegant.
 
 Of many benefits, FluentSelenium will attempt to transparently get past the stale element exception business.
 
+FluentSelenium works with JUnit, TestNG, ScalaTest, JBehave, Cucumber for Java, or whatever JDK language you prefer.  FluentSelenium works with Java (5+), Groovy, Scala, Clojure, and Kotlin.
+
 ## Basic Use
 
-Regular HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set:
+Regular HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set (by id, by css selector, by tag name, by xpath):
 
 ```java
 WebDriver wd = new FirefoxDriver();
@@ -46,6 +48,8 @@ fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
 ```
 
 This will throw an exception **after** the elapsed time, if the element still hasn't appeared in the page's DOM.
+
+As well as `millis(..)` and `secs(..)`, there is also `mins(..)`
 
 ### without()
 
@@ -142,26 +146,34 @@ fwd.div(id("foo")).getText().shouldNotBe("0 bars");
 fwd.div(id("foo")).getText().shouldContain("bar");
 fwd.div(id("foo")).getText().shouldNotContain("error");
 ```
+
+See hamcrest matcher support below for more string assertions.
+
 #### Text Changers
 
-The `getText()` method can also take one or more `TextChanger` implementations now. These can change the value of getText() before
+The `getText()` method can also take one or more `TextChanger` implementations. These can change the value of getText() before
 handing it rightwards to an assertion, like so:
 
-```java
-fwd.div(id("foo")).getText(new MyToUppperCase()).shouldBe("1 BAR");
-```
-There are supplied ones too: `multiSpaceEliminator()`, `trimmer()`, `tabsToSpaces()` and `crToChars("|")`
+There are supplied ones too: `multiSpaceEliminator()`, `multiCREliminator()`, `trimmer()`, `tabsToSpaces()`, `toLowerCase()`, `toUpperCase()`, `crToChars("|")`
 
-There is also a `Concatenator` that is available for getText() where that was implicitly a findElements (plural). There is one
+Make your own too: 
+
+```java
+fwd.div(id("foo")).getText(new MyTextChanger()).shouldBe("1 BAR");
+```
+
+**Concatenators**
+
+There is also a `Concatenator` that is available for getText() where that was implicitly a findElements (PLURAL). There is one
 supplied concatenator, `delimitWithChars(..)` used like so:
 
 ```java
 fwd.buttons(class("dialog_button")).getText(delimitWithChars("|")).shouldBe("OK|CANCEL");
 ```
 
+Specifically we found TWO buttons, one with OK and one with CANCEL and we want to confirm we had both in one operation.
 
-
-#### Regex
+#### Regular Expressions
 
 Regex is possible too, and it will ignore carriage returns (which Java pre-processes like so \n -> \\\n)
 
@@ -173,12 +185,15 @@ fwd.div(id("formErrors")).getText().shouldNotMatch("\d errors");
 
 #### Hamcrest matchers
 
-Hamcrest matchers, similarly:
+Any Hamcrest matchers are supported:
 
 ```java
-fwd.div(id("foo")).getText().shouldMatch(IsEqual<String>("1 bar"));
-fwd.div(id("formErrors")).getText().shouldNotMatch(IsEqual<String>("aardvark"));
+// requires static import of equalTo() from Hamcrest.	
+fwd.div(id("foo")).getText().shouldMatch(equalTo("1 bar"));
+fwd.div(id("formErrors")).getText().shouldNotMatch(equalTo("aardvark"));
 ```
+
+Note: shouldMatch(..) and shouldNotMatch(..) work with regexes (above) and hamcrest matchers
 
 #### Within a period of time
 
@@ -191,11 +206,21 @@ fwd.div(id("foo")).getText().within(secs(10)).shouldBe("1 bar");
 fwd.div(id("foo")).getText().without(secs(10)).shouldBe("1 bar");
 ```
 
-The assertion is retried for the advised period.
+Div with ID of 'small' is in the DOM, and within 5 seconds its text changes to something that starts with 'start' -
 
-#### Changing text before assertions
+```java
+// requires static import of startsWith() from Hamcrest.	
+fwd.div(id("small")).getText().within(secs(5)).shouldMatch(startsWith("start"));	
+```
 
-Sometimes FluentWebWlement TODO
+Div with ID of 'small' is not in the DOM initially, but within 5 seconds it is and its text starts with 'start' -
+
+```java
+// requires static import of startsWith() from Hamcrest.	
+fwd.div(id("small")).within(secs(5)).getText().shouldMatch(startsWith("start"));	
+```
+
+The assertion is retried for the advised period and no longer. If not found an exception is thrown
 
 ### Non-String Assertions
 
@@ -232,6 +257,7 @@ WebDriver's own "By" locator mechanism is what is used. Here are examples using 
 by = By.id("id")
 by = By.className("name")
 by = By.tagName("table")
+by = By.xpath("@foo = 'bar'") // XPath should always be your last choice for locating elements
 ```
 
 New class FluentBy adds a few more locators:
@@ -269,6 +295,20 @@ elems = fwd.divs(id("foo");
 
 Look at the pluralization of the methods above, and that it only makes sense if
 it's the last in the fluent expression.
+
+# Using WebDriver and FluentWebDriver at the same time
+
+Keep a hold of the `wd` instance you made as you instantiated everything and use it as you would expect. 
+
+```java
+RemoteWebDriver wd = new FirefoxDriver();
+FluentWebDriver fwd = new FluentWebDriver(wd);
+fwd.button(id("showHandOfCards")).click();
+File src = wd.getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src, new File(pathname));
+```
+
+As you can creenshots and any functions on the sub-classes of WebDriver are possible.
 
 # Fluently matching/filtering over multiple elements
 

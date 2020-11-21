@@ -299,6 +299,20 @@ public class TestableStringTest {
     }
 
     @Test
+    public void upperCaseShouldUpperStrings() {
+        TestableString.StringChanger upperCase = TestableString.upperCase();
+        assertThat(upperCase.chg(" a B c "), equalTo(" A B C "));
+    }
+
+
+    @Test
+    public void lowerCaseShouldLowerStrings() {
+        TestableString.StringChanger lowerCase = TestableString.lowerCase();
+        assertThat(lowerCase.chg(" a B c "), equalTo(" a b c "));
+    }
+
+
+    @Test
     public void testCRstoChars() {
         TestableString.StringChanger crToChars = TestableString.crToChars(";");
         assertThat(crToChars.chg("a\nb\nc"), equalTo("a;b;c"));

@@ -53,6 +53,22 @@ public class TestableString extends Internal.BaseTestableObject<String> {
         };
     }
 
+    public static StringChanger upperCase() {
+        return new StringChanger() {
+            public String chg(String text) {
+                return text.toUpperCase();
+            }
+        };
+    }
+
+    public static StringChanger lowerCase() {
+        return new StringChanger() {
+            public String chg(String text) {
+                return text.toLowerCase();
+            }
+        };
+    }
+
     public static StringChanger multiSpaceEliminator() {
         return new StringChanger() {
             public String chg(String text) {
