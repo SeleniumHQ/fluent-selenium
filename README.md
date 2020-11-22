@@ -8,6 +8,53 @@ FluentSelenium works with JUnit, TestNG, ScalaTest, JBehave, Cucumber for Java, 
 
 [![javadoc](https://javadoc.io/badge2/org.seleniumhq.selenium.fluent/fluent-selenium/javadoc.svg)](https://javadoc.io/doc/org.seleniumhq.selenium.fluent/fluent-selenium)
 
+## Table of Contents
+
+1. [Table of Contents](#table-of-contents)
+2. [Basic Use](#basic-use)
+3. [Situations where the DOM is slowly changing](#situations-where-the-dom-is-slowly-changing)
+    * [within()](#within)
+    * [without()](#without)
+    * [Elements in the DOM, but not visible immediately](#elements-in-the-dom-but-not-visible-immediately)
+    * [Locators for Advanced JavaScript Frameworks](#locators-for-advanced-javascript-frameworks)
+        - [AngularJS 1.x](#angularjs-1x)
+        - [Other Web Frameworks](#other-web-frameworks)
+    * [Stale Elements](#stale-elements)
+4. [Built-in Assertions](#built-in-assertions)
+    * [String Assertions](#string-assertions)
+        - [Text Changers](#text-changers)
+        - [Regular Expressions](#regular-expressions)
+        - [Hamcrest matchers](#hamcrest-matchers)
+        - [Within a period of time](#within-a-period-of-time)
+    * [Non-String Assertions](#non-string-assertions)
+5. [Locating Elements](#locating-elements)
+    * [Elements not located](#elements-not-located)
+6. [Multiple elements](#multiple-elements)
+7. [Using WebDriver and FluentWebDriver at the same time](#using-webdriver-and-fluentwebdriver-at-the-same-time)
+8. [Fluently matching/filtering over multiple elements](#fluently-matchingfiltering-over-multiple-elements)
+9. [Visit each element to do something custom](#visit-each-element-to-do-something-custom)
+10. [Make a map from the matching elements](#make-a-map-from-the-matching-elements)
+11. [Exceptions](#exceptions)
+    * [Alternate boolean handling of missing elements.](#alternate-boolean-handling-of-missing-elements)
+12. [Monitoring](#monitoring)
+    * [Take a Screenshot on error](#take-a-screenshot-on-error)
+    * [Highlights on error](#highlights-on-error)
+    * [Coda Hale's Metrics library](#coda-hales-metrics-library)
+13. [Java 8 (and onwards) - more fluency](#java-8-and-onwards---more-fluency)
+14. [Including it in your project](#including-it-in-your-project)
+    * [Maven](#maven)
+        - [Jetty Note](#jetty-note)
+    * [Non-Maven](#non-maven)
+15. [Changes](#changes)
+    * [1.20 (Apr 28, 2018)](#120-apr-28-2018)
+    * [1.19 (Dec 31, 2017)](#119-dec-31-2017)
+    * [1.18 (Jun 18, 2017)](#118-jun-18-2017)
+    * [1.17 (Dec 20, 2016)](#117-dec-20-2016)
+    * [1.16.1 (May 22, 2016)](#1161-may-22-2016)
+    * [1.16 (Nov 29, 2015)](#116-nov-29-2015)
+    * [1.15 (Nov 21, 2015)](#115-nov-21-2015)
+16. [More Reading](#more-reading)
+
 ## Basic Use
 
 Regular HTML elements have Java methods that are named for them. Locators are optional, and are from WebDriver's regular set (by id, by css selector, by tag name, by xpath):
@@ -285,7 +332,7 @@ your app, `strictClassName` may be faster.
 
 If WebDriver cannot find the element in the DOM for that locator, then an exception `FluentExecutionStopped` is thrown (see below).
 
-# Multiple elements
+## Multiple elements
 
 Just like WebDriver, FluentSelenium can return a collection of Elements matching a locator:
 
@@ -298,7 +345,7 @@ elems = fwd.divs(id("foo");
 Look at the pluralization of the methods above, and that it only makes sense if
 it's the last in the fluent expression.
 
-# Using WebDriver and FluentWebDriver at the same time
+## Using WebDriver and FluentWebDriver at the same time
 
 Keep a hold of the `wd` instance you made as you instantiated everything and use it as you would expect. 
 
@@ -312,7 +359,7 @@ FileUtils.copyFile(src, new File(pathname));
 
 As you can creenshots and any functions on the sub-classes of WebDriver are possible. There's no need to subclass FluentWebDriver to get access to WebDriver, you had it already.
 
-# Fluently matching/filtering over multiple elements
+## Fluently matching/filtering over multiple elements
 
 Use a FluentMatcher instance (which is just a predicate)
 
@@ -369,7 +416,7 @@ Map<String,String> myMap = fwd.inputs(className("bar").map(m);
 // map() effectively stops fluency, here.
 ```
 
-# Exceptions
+## Exceptions
 
 Obviously you want tests using FluentSelenium to pass. Getting tests to be stable has also been a
 historical challenge for the Selenium world, but a real failure of previously working test, is worth
@@ -384,7 +431,7 @@ Fluent-Selenium throws 'FluentExecutionStopped' like so:
 That exception's <code>getCause()</code> will be the WebDriverException derivative that happened during
 the <code>h3()</code> invocation -  implicitly before any subsequent operation like click().  That could well be 'NoSuchElementException' for when an element was not found.
 
-## Alternate boolean handling of missing elements.
+### Alternate boolean handling of missing elements.
 
 Normal operation is for FluentSelenium to throw 'FluentExecutionStopped' wrapping WebDriver's 'NoSuchElementException' for the root cause.
 
@@ -397,7 +444,7 @@ boolean isPresent = fwd.has().div(id("foo"))
 
 As mentioned before, Selenium 1.0 had an API function called 'isElementPresent'. With FluentSelenium we're getting close to that again, as 'has' and 'hasMissing' preceding a thing that should or should not be there, are functionally equivalent.
 
-# Monitoring
+## Monitoring
 
 Fluent Selenium can generate monitors failing interactions with the browser. It can also see what fluent operation were started/ended.
 Refer the [Monitor](./java/src/main/java/org/seleniumhq/selenium/fluent/Monitor.java) interface.
@@ -410,7 +457,7 @@ We have three implementations presently, and if you want to use more than one, w
 new FluentWebDriver(new FirefoxDriver(), new CompositeMonitor(one, two, three));
 ```
 
-## Takes a Screenshot (on error)
+### Take a Screenshot on error
 
 When a 'FluentExecutionStopped' failure happens, you can get automatic screenshots.  In the case of running from JUnit or TestNG under Maven control do the following, to get automatic Test-Class name & Method name in the file-name of the PNG:
 
@@ -433,7 +480,7 @@ myScreenShotOnError.setContext("something_else_that_has_meaning_in_a_file_name")
 input(id("bar")).sendKeys("abc");
 ```
 
-## Highlights on error
+### Highlights on error
 
 This draws a red dotted two-pixel line around the relevant part of the page, when an FluentExecutionStopped is thrown.  You'd use it in conjunction with <code>ScreenShotOnError</code> above:
 
@@ -445,7 +492,7 @@ fwd = new FluentWebDriver(ffd, new CompositeMonitor(new HighlightOnError(ffd), m
 
 If you don't want a red dashed two-pixel line, subclass HighlightOnError and override one of executeScript(), highlightOperation() or highlightValue().
 
-## Coda Hale's Metrics library
+### Coda Hale's Metrics library
 
 Also shown here is how to hook that up to a JUnit4 suite running under Maven.
 
@@ -528,7 +575,7 @@ package.MyClass.aMethod:div(By.className: aClassName)
 
 Coda Hale's Metrics library has other [reporters you could attach](http://metrics.codahale.com/manual/core/#reporters).
 
-# Java 8 (and onwards) - more fluency
+## Java 8 (and onwards) - more fluency
 
 Since both `FluentMatcher` and `FluentWebElementVistor` are single function interfaces, they can be used with Java 8 lambda functions.
 
@@ -543,9 +590,9 @@ listofMatching elements = fwd.inputs(className("bar").filter(
 
 And similarly for FluentWebElementVisitor.
 
-# Including it in your project
+## Including it in your project
 
-## Maven
+### Maven
 
 ```xml
 <dependency>
@@ -593,11 +640,11 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
   <scope>test</scope>
 </dependency>
 ```
-### Jetty
+#### Jetty Note
 
 Also be aware that Selenium depends on Jetty. If you are too in your prod code, you may need to exclude the Selenium's choice of Jetty (v9.2.15.v20160210 - see below), and include your own instead. Jetty v9.4.0.v20161208 is where the Eclipse foundation are at, and v9.2.x is some way behind with incompatible enough methods.
 
-## Non-Maven
+### Non-Maven
 
 For non-Maven build systems, [download it yourself](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22fluent-selenium%22).
 
@@ -652,13 +699,13 @@ Here's what else you might need in your classpath, depending on your needs:
    \- org.slf4j:slf4j-api:jar:1.7.5:compile
 ```
 
-# Changes
-## 1.20 (Apr 28, 2018)
+## Changes
+### 1.20 (Apr 28, 2018)
 
 * Coda Hale's Metrics library updated to 3.2.6 (maven group:artifact change with that)
 * This release is tested as compatible with Selenium 3.12 and 3.13
 
-## 1.19 (Dec 31, 2017)
+### 1.19 (Dec 31, 2017)
 
 * Selenium upgrade to v3.8.0
 * TestableString opened up a little
@@ -666,12 +713,12 @@ Here's what else you might need in your classpath, depending on your needs:
 * Transitive use of FileUtils from Apache-Commons eliminated.
 * Java 7 is a requirement now (facilitated the above)
 
-## 1.18 (Jun 18, 2017)
+### 1.18 (Jun 18, 2017)
 
 * Selenium upgrade to v3.4.0
 * Fluent menthod .element(name) exapanded a little
 
-## 1.17 (Dec 20, 2016)
+### 1.17 (Dec 20, 2016)
 
 * Selenium upgrade to v3.0.1
 * Support for 'body' element
@@ -679,22 +726,22 @@ Here's what else you might need in your classpath, depending on your needs:
 * FluentWebElement getText() can take a varargs of 'TextChanger' now
 * FluentWebElements getText() can too, but also a means to control the between elements chars (CR by default)
 
-## 1.16.1 (May 22, 2016)
+### 1.16.1 (May 22, 2016)
 
 * Selenium upgrade to v2.53.0 - incl. the new getRect() from WebElement
 * Support for h5 and h6
 
-## 1.16 (Nov 29, 2015)
+### 1.16 (Nov 29, 2015)
 
 * map function and visitor added
 
-## 1.15 (Nov 21, 2015)
+### 1.15 (Nov 21, 2015)
 
 * Selenium upgrade to v2.48.2
 * Support for unordered lists (ul elements)
 * FluentWebDriver.element(..) method for finding generic elements (or ones outside the HTML spec)
 
-# More Reading
+## More Reading
 
 Refer Paul Hammant's [Fluent Selenium Examples Blog Entry](http://paulhammant.com/2013/05/19/fluent-selenium-examples)
 about this, or the project that showcases Fluent Selenium - [Fluent Selenium Examples](https://github.com/paul-hammant/fluent-selenium-examples).
