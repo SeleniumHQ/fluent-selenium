@@ -10,6 +10,8 @@ FluentSelenium works with JUnit, TestNG, ScalaTest, JBehave, Cucumber for Java, 
 
 ## Table of Contents
 
+<!--  mdtoc.rb README.md  -->
+
 1. [Table of Contents](#table-of-contents)
 2. [Basic Use](#basic-use)
 3. [Situations where the DOM is slowly changing](#situations-where-the-dom-is-slowly-changing)
@@ -700,6 +702,11 @@ Here's what else you might need in your classpath, depending on your needs:
 ```
 
 ## Changes
+
+### 1.21 (Feb 22, 2020)
+
+* Upgrade Selenium to 3.141.59 from 3.8.x
+
 ### 1.20 (Apr 28, 2018)
 
 * Coda Hale's Metrics library updated to 3.2.6 (maven group:artifact change with that)
