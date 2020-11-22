@@ -954,6 +954,10 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
                 .invert(false);
     }
 
+    public FluentWebElement fluentize(WebElement delegate) {
+        return (FluentWebElement) super.fluentize(delegate);
+    }
+
     public static class BooleanResultsAdapter {
 
         private Internal.BaseFluentWebDriver bfwd;
@@ -1316,6 +1320,7 @@ public class FluentWebDriver extends Internal.BaseFluentWebDriver {
                 return found;
             }
         }
+
 
     }
 }

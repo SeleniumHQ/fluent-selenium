@@ -703,6 +703,12 @@ Here's what else you might need in your classpath, depending on your needs:
 
 ## Changes
 
+### 1.22 (Nov 22, 2020)
+
+* Add upperCase() and lowerCase() text changer
+
+[Compared to last release on GitHub](https://github.com/SeleniumHQ/fluent-selenium/compare/fluent-selenium-1.21...fluent-selenium-1.22)
+
 ### 1.21 (Feb 22, 2020)
 
 * Upgrade Selenium to 3.141.59 from 3.8.x

@@ -909,6 +909,12 @@ public class Internal {
             return new SingleResult(result, ctx);
         }
 
+        protected BaseFluentWebElement fluentize(WebElement element) {
+            return newFluentWebElement(delegate,
+                    new WebElementHolder(getSearchContext(), element, null),
+                    null);
+        }
+
         public static class SingleResult {
             private final WebElementHolder result;
             private final Context ctx;
