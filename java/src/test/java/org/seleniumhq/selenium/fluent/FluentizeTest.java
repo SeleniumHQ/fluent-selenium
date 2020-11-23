@@ -11,7 +11,6 @@ public class FluentizeTest {
     public void findElementViaWebDriverCanBeFluentized() {
         ChromeDriver driver = new ChromeDriver();
 
-        // fork of http://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_eff_delay
         driver.get("http://seleniumhq.github.io/fluent-selenium/basic.html");
 
         FluentWebDriver fwd = new FluentWebDriver(driver);

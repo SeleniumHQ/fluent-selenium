@@ -361,6 +361,25 @@ FileUtils.copyFile(src, new File(pathname));
 
 As you can creenshots and any functions on the sub-classes of WebDriver are possible. There's no need to subclass FluentWebDriver to get access to WebDriver, you had it already.
 
+### Turning a WebDriver WebElement into a FluentWebElement
+
+```
+ChromeDriver driver = new ChromeDriver();
+
+driver.get("http://seleniumhq.github.io/fluent-selenium/basic.html");
+
+FluentWebDriver fwd = new FluentWebDriver(driver);
+
+// Classic WebDriver
+WebElement div = driver.findElement(By.tagName("div"));
+
+// carry on with FluentSelenium
+fwd.fluentize(div).span().getText().shouldBe("Hello");
+
+driver.close();
+
+```
+
 ## Fluently matching/filtering over multiple elements
 
 Use a FluentMatcher instance (which is just a predicate)
