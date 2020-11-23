@@ -722,6 +722,14 @@ Here's what else you might need in your classpath, depending on your needs:
 
 ## Changes
 
+### 1.23 (Nov 23, 2020)
+
+* fluentize() added
+
+[Compared to last release on GitHub](https://github.com/SeleniumHQ/fluent-selenium/compare/fluent-selenium-1.22...fluent-selenium-1.23)
+
+
+
 ### 1.22 (Nov 22, 2020)
 
 * Add upperCase() and lowerCase() text changer
