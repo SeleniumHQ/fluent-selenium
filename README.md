@@ -102,7 +102,7 @@ The `within()` operation will throw an exception **after** the elapsed time, if 
 
 As well as `secs(..)`, there is also `millis(..)` and `mins(..)` for time periods.
 
-Also see "String Assertions / within" [link](https://github.com/SeleniumHQ/fluent-selenium#within-a-period-of-time) below.
+Also see "String Assertions / within" ([link](https://github.com/SeleniumHQ/fluent-selenium#within-a-period-of-time)) below.
 
 ### without()
 
