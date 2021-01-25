@@ -90,17 +90,19 @@ fwd.element("bazelementname", id("results")).getText().shouldBe("1 result");
 ### within()
 
 There's a "within" capability in the fluent language. It will keep retrying a locator for a given period of time.
-The fluent expression (the locator) is given a chance to get past a slowly appearing element in the page:
+The fluent expression (the locator) is given a chance find a slowly appearing element in the page, and do so in the minimum amount of elapsed time needed. Then when found, the fluent expression continues:
 
 ```java
 fwd.div(id("foo")).div(className("bar")).within(secs(5)).button().click();
 
-fwd.span(id("results").within(millis(200)).getText().shouldBe("123");
+fwd.within(secs(5)).div(id("foo")).span(className("baz")).button(className("ok")).click();
 ```
 
-This will throw an exception **after** the elapsed time, if the element still hasn't appeared in the page's DOM.
+The `within()` operation will throw an exception **after** the elapsed time, if the element still hasn't appeared in the page's DOM.
 
-As well as `millis(..)` and `secs(..)`, there is also `mins(..)`
+As well as `secs(..)`, there is also `millis(..)` and `mins(..)` for time periods.
+
+Also see "String Assertions / within" below.
 
 ### without()
 
