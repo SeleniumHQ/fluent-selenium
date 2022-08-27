@@ -86,8 +86,8 @@ public class StaleRecoveringTest {
         public final boolean[] staleElementThrown = {false};
 
         @Override
-        public WebElement findElementById(String using) {
-            final WebElement we = super.findElementById(using);
+        public WebElement findElement(By by) {
+            final WebElement we = super.findElement(by);
             return new WebElement() {
                 public void click() {
                     we.click();

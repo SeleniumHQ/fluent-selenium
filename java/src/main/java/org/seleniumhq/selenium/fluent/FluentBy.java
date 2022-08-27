@@ -15,16 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidSelectorException;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.FindsByClassName;
-import org.openqa.selenium.internal.FindsByXPath;
+import org.openqa.selenium.*;
 
-import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -225,18 +217,14 @@ public abstract class FluentBy extends By {
 
         @Override
         public List<WebElement> findElements(SearchContext context) {
-            if (context instanceof FindsByClassName)
-                return ((FindsByClassName) context).findElementsByClassName(className);
-            return ((FindsByXPath) context).findElementsByXPath(".//*["
-                    + "@class = '" + className + "']");
+            return context.findElements(By.className(className));
+//            return context.findElements(By.xpath(".//*["
+//                    + "@class = '" + className + "']"));
         }
 
         @Override
         public WebElement findElement(SearchContext context) {
-            if (context instanceof FindsByClassName)
-                return ((FindsByClassName) context).findElementByClassName(className);
-            return ((FindsByXPath) context).findElementByXPath(".//*["
-                    + "@class = '" + className + "']");
+            return context.findElement(By.className(className));
         }
 
         @Override

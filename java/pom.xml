@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>4.3.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>
@@ -95,8 +95,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <mavenExecutorId>forked-path</mavenExecutorId>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.FindsByXPath;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,8 +12,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FluentByTest {
 
@@ -33,7 +31,7 @@ public class FluentByTest {
 
         FindsByXPathSearchContext context = mock(FindsByXPathSearchContext.class);
         WebElement we = mock(WebElement.class);
-        when(context.findElementByXPath(".//*[@foo = 'bar']")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[@foo = 'bar']"))).thenReturn(we);
         WebElement bar = fooBar.findElement(context);
         assertThat(bar, is(we));
 
@@ -42,7 +40,7 @@ public class FluentByTest {
         By lastFooBar = FluentBy.last(fooBar);
         assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.attribute: foo = 'bar')"));
 
-        when(context.findElementByXPath(".//*[@foo = 'bar' and position() = last()]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[@foo = 'bar' and position() = last()]"))).thenReturn(we);
         WebElement lastBar = fooBar.findElement(context);
         assertThat(lastBar, is(we));
     }
@@ -55,7 +53,7 @@ public class FluentByTest {
 
         FindsByXPathSearchContext context = mock(FindsByXPathSearchContext.class);
         WebElement we = mock(WebElement.class);
-        when(context.findElementByXPath(".//*[not(@foo)]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[not(@foo)]"))).thenReturn(we);
         WebElement bar = notFoo.findElement(context);
 
         assertThat(bar, is(we));
@@ -65,7 +63,7 @@ public class FluentByTest {
         By lastFooBar = FluentBy.last(notFoo);
         assertThat(lastFooBar.toString(), is("FluentBy.last(FluentBy.notAttribute: foo)"));
 
-        when(context.findElementByXPath(".//*[@foo = 'bar' and position() = last()]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[@foo = 'bar' and position() = last()]"))).thenReturn(we);
         WebElement lastBar = notFoo.findElement(context);
         assertThat(lastBar, is(we));
     }
@@ -79,11 +77,11 @@ public class FluentByTest {
         WebElement we = mock(WebElement.class);
         WebElement we2 = mock(WebElement.class);
 
-        when(context.findElementByXPath(".//*[@foo]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[@foo]"))).thenReturn(we);
         WebElement bar = fooBar.findElement(context);
         assertThat(bar, is(we));
 
-        when(context.findElementsByXPath(".//*[@foo]")).thenReturn(newArrayList(we, we2));
+        when(context.findElements(By.xpath(".//*[@foo]"))).thenReturn(newArrayList(we, we2));
         List<WebElement> bars = fooBar.findElements(context);
         assertThat(bars.get(0), is(we));
 
@@ -97,7 +95,7 @@ public class FluentByTest {
         By lastFooBar = FluentBy.last();
         assertThat(lastFooBar.toString(), is("FluentBy.last()"));
 
-        when(context.findElementByXPath(".//*[position() = last()]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//*[position() = last()]"))).thenReturn(we);
         WebElement lastBar = lastFooBar.findElement(context);
         assertThat(lastBar, is(we));
     }
@@ -111,12 +109,13 @@ public class FluentByTest {
         By scn = FluentBy.strictClassName("blort");
         assertThat(scn.toString(), is("FluentBy.strictClassName: blort"));
 
-        when(context.findElementByXPath(".//*[@class = 'blort']")).thenReturn(we);
+        when(context.findElement(By.className("blort"))).thenReturn(we);
         WebElement blort = scn.findElement(context);
         assertThat(blort, is(we));
 
-        when(context.findElementsByXPath(".//*[@class = 'blort']")).thenReturn(newArrayList(we, we2));
+        when(context.findElements(By.className("blort"))).thenReturn(newArrayList(we, we2));
         List<WebElement> blorts = scn.findElements(context);
+        //verifyNoMoreInteractions(we,we2, context);
         assertThat(blorts.get(0), is(we));
 
     }
@@ -130,11 +129,11 @@ public class FluentByTest {
         By aB = FluentBy.composite(new By.ByTagName("a"), new By.ByClassName("b"));
         assertThat(aB.toString(), is("FluentBy.composite([By.tagName: a, By.className: b])"));
 
-        when(context.findElementByXPath(".//a[contains(concat(' ',normalize-space(@class),' '),' b ')]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//a[contains(concat(' ',normalize-space(@class),' '),' b ')]"))).thenReturn(we);
         WebElement blort = aB.findElement(context);
         assertThat(blort, is(we));
 
-        when(context.findElementsByXPath(".//a[contains(concat(' ',normalize-space(@class),' '),' b ')]")).thenReturn(newArrayList(we, we2));
+        when(context.findElements(By.xpath(".//a[contains(concat(' ',normalize-space(@class),' '),' b ')]"))).thenReturn(newArrayList(we, we2));
         List<WebElement> blorts = aB.findElements(context);
         assertThat(blorts.get(0), is(we));
     }
@@ -148,17 +147,17 @@ public class FluentByTest {
         By aB = FluentBy.composite(new By.ByTagName("a"), new FluentBy.ByAttribute("b", null));
         assertThat(aB.toString(), is("FluentBy.composite([By.tagName: a, FluentBy.attribute: b])"));
 
-        when(context.findElementByXPath(".//a[@b]")).thenReturn(we);
+        when(context.findElement(By.xpath(".//a[@b]"))).thenReturn(we);
         WebElement blort = aB.findElement(context);
         //verifyNoMoreInteractions(context);
         assertThat(blort, is(we));
 
-        when(context.findElementsByXPath(".//a[@b]")).thenReturn(newArrayList(we, we2));
+        when(context.findElements(By.xpath(".//a[@b]"))).thenReturn(newArrayList(we, we2));
         List<WebElement> blorts = aB.findElements(context);
         assertThat(blorts.get(0), is(we));
 
     }
 
-    private static interface FindsByXPathSearchContext extends FindsByXPath, SearchContext {
+    private static interface FindsByXPathSearchContext extends SearchContext {
     }
 }

@@ -64,7 +64,7 @@ public class select extends BaseTest {
         when(wd.findElement(By.tagName("select"))).thenReturn(we);
         when(we.getTagName()).thenReturn("select");
         when(we.getTagName()).thenReturn("select");
-        when(we.getAttribute("multiple")).thenReturn("true");
+        when(we.getDomAttribute("multiple")).thenReturn("true");
         when(we.findElements(By.xpath(".//option[@value = \"bar\"]"))).thenReturn(newArrayList(we2, we3));
         when(we2.isSelected()).thenReturn(true);
         when(we3.isSelected()).thenReturn(false);
@@ -75,7 +75,7 @@ public class select extends BaseTest {
 
         verify(wd).findElement(By.tagName("select"));
         verify(we, times(2)).getTagName();
-        verify(we).getAttribute("multiple");
+        verify(we).getDomAttribute("multiple");
         verify(we).findElements(By.xpath(".//option[@value = \"bar\"]"));
         verify(we2).isSelected();
         verify(we3).isSelected();

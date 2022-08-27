@@ -10,7 +10,6 @@ import org.seleniumhq.selenium.fluent.Monitor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class ScreenShotOnError extends Monitor.NULL {
 
@@ -63,7 +62,9 @@ public class ScreenShotOnError extends Monitor.NULL {
                 if (elemClassName.startsWith("org.junit.runners") || elemClassName.startsWith("org.testng.internal")) {
                     return lastNonReflectionElem.getClassName() + "." + lastNonReflectionElem.getMethodName();
                 }
-                if (!elemClassName.startsWith("sun.reflect.") && !elemClassName.startsWith("java.lang.reflect")) {
+                if (!elemClassName.startsWith("sun.reflect.")
+                        && !elemClassName.startsWith("java.lang.reflect")
+                        && !elemClassName.startsWith("jdk.internal.reflect")) {
                     lastNonReflectionElem = elem;
                 }
 
