@@ -724,13 +724,16 @@ Here's what else you might need in your classpath, depending on your needs:
 
 ## Changes
 
+### 1.3 (Aug ?, 2022)
+
+* upgrade to Selenium 4.3.0
+* Minimum Java Version is now 8
+
 ### 1.23 (Nov 23, 2020)
 
 * fluentize() added
 
 [Compared to last release on GitHub](https://github.com/SeleniumHQ/fluent-selenium/compare/fluent-selenium-1.22...fluent-selenium-1.23)
-
-
 
 ### 1.22 (Nov 22, 2020)
 
