@@ -152,12 +152,13 @@ Backbone, Knockout (etc) may have similar tricks, that you can use 'executeScrip
 
 ### Stale Elements
 
-WebDriver, by default, does not handle <code>findElement</code> traversals from elements that have
+Selenium-WebDriver, by default, does not handle <code>findElement</code> traversals from elements that have
 gone stale transparently. It prefers to throw <code>StaleElementReferenceException</code>, which you
 have to catch and then do something with. Retry is one option. FluentSelenium has retry
 capability:
 
 ```java
+// this is Selenium-WebDriver code not FluentSelenium code
 new RetryAfterStaleElement() {
     public void toRetry() {
         # will keep retrying from that fist div, if StaleElementReferenceException is encountered (up to 8 seconds)    
@@ -171,6 +172,7 @@ traversal is restarted again and again.  If you're trying to store values, you'l
 problem with Java's inner-class rules, and have to **use member variables/fields** or do dirty tricks like:
 
 ```java
+// this is Selenium-WebDriver code not FluentSelenium code
 final String selectedFlight[] = new String[1];
 new RetryAfterStaleElement() {    
     public void toRetry() {
@@ -182,7 +184,7 @@ new RetryAfterStaleElement() {
 Use of the one element array is the dirty trick, because of the need for **final** with Java.   
 
 FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations.
-If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it persistent in its staleness after recovery, then the exception is throw. Recovery means finding it again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
+If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it still stale after that invidible second attempt, then the exception is re-thrown. The hope is finding the element again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
 
 ## Built-in Assertions
 
