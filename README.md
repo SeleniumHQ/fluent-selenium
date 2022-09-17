@@ -102,6 +102,8 @@ The `within()` operation will throw an exception **after** the elapsed time, if 
 
 As well as `secs(..)`, there is also `millis(..)` and `mins(..)` for time periods.
 
+It is explicit in its nature. if you don't do `within` there is no waiting. It doesn't last beyond the operation to the right of it.
+
 Also see "String Assertions / within" ([link](https://github.com/SeleniumHQ/fluent-selenium#within-a-period-of-time)) below.
 
 ### without()
@@ -124,6 +126,8 @@ fwd.div(id("foo")).div(className("bar")).without(secs(5)).span(className("baz"))
 ```
 
 This will throw an exception **after** the elapsed time, if it still hasn't **disappeared** from the page's DOM.
+
+It is explicit in its nature. if you don't do `within` there is no waiting. It doesn't last beyond the operation to the right of it.
 
 Selenium 1.0 had an API function isElementPresent. The 'without' functionality is akin to isElementNotPresent, or rather waitForElementToNotBePresent.
 
@@ -181,7 +185,8 @@ new RetryAfterStaleElement() {
     }
 }.stopAfter(secs(8));
 ```
-Use of the one element array is the dirty trick, because of the need for **final** with Java.   
+
+Use of the one element array is the dirty trick, because of the need for the `final` keyword with Java.   
 
 FluentSelenium can recover from a subset of <code>StaleElementReferenceException</code> situations.
 If the item going stale is the one that is leaf-most in your fluent expression, then it can be recovered automatically (and silently). This is a one-time deal though - if it still stale after that invidible second attempt, then the exception is re-thrown. The hope is finding the element again in the DOM, relative to its parent with the same locator. In the case above, the "fromto-column" div being stale can be recovered automatically - even during the <code>getText()</code>. The "thirdAddress" div cannot be, at least when execution has transferred to the next <code>div()</code>.
