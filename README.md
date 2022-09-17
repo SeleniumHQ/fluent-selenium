@@ -45,7 +45,6 @@ FluentSelenium works with JUnit, TestNG, ScalaTest, JBehave, Cucumber for Java, 
 13. [Java 8 (and onwards) - more fluency](#java-8-and-onwards---more-fluency)
 14. [Including it in your project](#including-it-in-your-project)
     * [Maven](#maven)
-        - [Jetty Note](#jetty-note)
     * [Non-Maven](#non-maven)
 15. [Changes](#changes)
     * [1.20 (Apr 28, 2018)](#120-apr-28-2018)
@@ -650,14 +649,15 @@ And similarly for FluentWebElementVisitor.
 </dependency>
 ```
 
-Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 3.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 3.x. ...
+Bear in mind that the FluentSelenium maven module has a transitive dependency on Selenium 4.x. You may want to override the version for your project. You'll need an exclusion for FluentSelenium, and an explicit dependency for Selenium 4.x.x 9 (see `optional` below):
 
 ```xml
 <dependency>
   <groupId>org.seleniumhq.selenium.fluent</groupId>
   <artifactId>fluent-selenium</artifactId>
-  <version>1.17</version>
+  <version>1.3.x</version>
   <scope>test</scope>
+  <!-- optional -->
   <exclusions>
     <exclusion>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -665,16 +665,14 @@ Bear in mind that the FluentSelenium maven module has a transitive dependency on
     </exclusion>
   </exclusions>
 </dependency>
+<!-- optional -->
 <dependency>
   <groupId>org.seleniumhq.selenium</groupId>
   <artifactId>selenium-java</artifactId>
-  <version>3.99.3</version>
+  <version>4.x.x</version>
   <scope>test</scope>
 </dependency>
 ```
-#### Jetty Note
-
-Also be aware that Selenium depends on Jetty. If you are too in your prod code, you may need to exclude the Selenium's choice of Jetty (v9.2.15.v20160210 - see below), and include your own instead. Jetty v9.4.0.v20161208 is where the Eclipse foundation are at, and v9.2.x is some way behind with incompatible enough methods.
 
 ### Non-Maven
 
@@ -683,59 +681,93 @@ For non-Maven build systems, [download it yourself](http://search.maven.org/#sea
 Here's what else you might need in your classpath, depending on your needs:
 
 ```
-+- junit:junit:jar:4.12:test
-+- org.hamcrest:hamcrest-all:jar:1.3:compile
-+- org.mockito:mockito-core:jar:1.10.19:test
-|  +- org.hamcrest:hamcrest-core:jar:1.1:test
-|  \- org.objenesis:objenesis:jar:2.1:test
-+- org.seleniumhq.selenium:selenium-java:jar:3.0.1:compile
-|  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.0.1:compile
-|  |  \- org.seleniumhq.selenium:selenium-remote-driver:jar:3.0.1:compile
-|  |     +- org.seleniumhq.selenium:selenium-api:jar:3.0.1:compile
-|  |     +- cglib:cglib-nodep:jar:3.2.4:compile
-|  |     +- org.apache.commons:commons-exec:jar:1.3:compile
-|  |     +- com.google.code.gson:gson:jar:2.3.1:compile
-|  |     +- com.google.guava:guava:jar:19.0:compile
-|  |     \- net.java.dev.jna:jna-platform:jar:4.1.0:compile
-|  |        \- net.java.dev.jna:jna:jar:4.1.0:compile
-|  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.0.1:compile
-|  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.0.1:compile
-|  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.0.1:compile
-|  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.0.1:compile
-|  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.0.1:compile
-|  |  \- io.netty:netty:jar:3.5.7.Final:compile
-|  +- org.seleniumhq.selenium:selenium-support:jar:3.0.1:compile
-|  +- net.sourceforge.htmlunit:htmlunit:jar:2.23:compile
-|  |  +- xalan:xalan:jar:2.7.2:compile
-|  |  |  \- xalan:serializer:jar:2.7.2:compile
-|  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
-|  |  +- org.apache.httpcomponents:httpclient:jar:4.5.2:compile
-|  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.4:compile
-|  |  +- org.apache.httpcomponents:httpmime:jar:4.5.2:compile
-|  |  +- commons-codec:commons-codec:jar:1.10:compile
-|  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.23:compile
-|  |  +- net.sourceforge.htmlunit:neko-htmlunit:jar:2.23:compile
-|  |  |  \- xerces:xercesImpl:jar:2.11.0:compile
-|  |  |     \- xml-apis:xml-apis:jar:1.4.01:compile
-|  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.20:compile
-|  |  |  \- org.w3c.css:sac:jar:1.3:compile
-|  |  +- commons-io:commons-io:jar:2.5:compile
-|  |  \- commons-logging:commons-logging:jar:1.2:compile
-|  +- com.codeborne:phantomjsdriver:jar:1.3.0:compile
-|  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.15.v20160210:compile
-|     +- org.eclipse.jetty:jetty-util:jar:9.2.15.v20160210:compile
-|     +- org.eclipse.jetty:jetty-io:jar:9.2.15.v20160210:compile
-|     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.15.v20160210:compile
-|        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.15.v20160210:compile
-\- com.codahale.metrics:metrics-core:jar:3.0.2:compile
-   \- org.slf4j:slf4j-api:jar:1.7.5:compile
+$ mvn dependency:tree
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< org.seleniumhq.selenium.fluent:fluent-selenium >-----------
+[INFO] Building fluent-selenium 1.3
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ fluent-selenium ---
+[INFO] org.seleniumhq.selenium.fluent:fluent-selenium:jar:1.3
+[INFO] +- junit:junit:jar:4.13.1:test
+[INFO] +- org.hamcrest:hamcrest-all:jar:1.3:compile
+[INFO] +- org.mockito:mockito-core:jar:1.10.19:test
+[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.1:test
+[INFO] |  \- org.objenesis:objenesis:jar:2.1:test
+[INFO] +- org.seleniumhq.selenium:selenium-java:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-api:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:4.4.0:compile
+[INFO] |  |  +- com.google.auto.service:auto-service-annotations:jar:1.0.1:compile
+[INFO] |  |  +- com.google.auto.service:auto-service:jar:1.0.1:compile
+[INFO] |  |  |  \- com.google.auto:auto-common:jar:1.2:compile
+[INFO] |  |  +- com.google.guava:guava:jar:31.1-jre:compile
+[INFO] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  |  |  +- org.checkerframework:checker-qual:jar:3.12.0:compile
+[INFO] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.11.0:compile
+[INFO] |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chromium-driver:jar:4.4.0:compile
+[INFO] |  |  \- org.seleniumhq.selenium:selenium-json:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v102:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v103:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v104:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-devtools-v85:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:4.4.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:4.4.0:compile
+[INFO] |  |  +- com.beust:jcommander:jar:1.82:compile
+[INFO] |  |  +- io.netty:netty-buffer:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-codec-http:jar:4.1.78.Final:compile
+[INFO] |  |  |  +- io.netty:netty-codec:jar:4.1.78.Final:compile
+[INFO] |  |  |  \- io.netty:netty-handler:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-common:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport-classes-epoll:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport-classes-kqueue:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport-native-epoll:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport-native-kqueue:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport-native-unix-common:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.netty:netty-transport:jar:4.1.78.Final:compile
+[INFO] |  |  |  \- io.netty:netty-resolver:jar:4.1.78.Final:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-api:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-context:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-exporter-logging:jar:1.16.0:compile
+[INFO] |  |  |  +- io.opentelemetry:opentelemetry-sdk-metrics:jar:1.16.0:compile
+[INFO] |  |  |  \- io.opentelemetry:opentelemetry-sdk-logs:jar:1.16.0-alpha:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-common:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:jar:1.16.0-alpha:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk-trace:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-sdk:jar:1.16.0:compile
+[INFO] |  |  +- io.opentelemetry:opentelemetry-semconv:jar:1.16.0-alpha:compile
+[INFO] |  |  +- io.ous:jtoml:jar:2.0.0:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:compile
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- org.asynchttpclient:async-http-client:jar:2.12.3:compile
+[INFO] |  |  |  +- org.asynchttpclient:async-http-client-netty-utils:jar:2.12.3:compile
+[INFO] |  |  |  +- io.netty:netty-codec-socks:jar:4.1.60.Final:compile
+[INFO] |  |  |  +- io.netty:netty-handler-proxy:jar:4.1.60.Final:compile
+[INFO] |  |  |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.60.Final:compile
+[INFO] |  |  |  +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.60.Final:compile
+[INFO] |  |  |  +- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  +- com.typesafe.netty:netty-reactive-streams:jar:2.0.4:compile
+[INFO] |  |  |  \- com.sun.activation:jakarta.activation:jar:1.2.2:compile
+[INFO] |  |  \- org.seleniumhq.selenium:selenium-http:jar:4.4.0:compile
+[INFO] |  |     \- dev.failsafe:failsafe:jar:3.2.4:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:4.4.0:compile
+[INFO] |  \- org.seleniumhq.selenium:selenium-support:jar:4.4.0:compile
+[INFO] \- io.dropwizard.metrics:metrics-core:jar:3.2.6:compile
+[INFO]    \- org.slf4j:slf4j-api:jar:1.7.22:compile
 ```
 
 ## Changes
 
 ### 1.3 (Aug ?, 2022)
 
-* upgrade to Selenium 4.3.0
+* upgrade to Selenium 4.4.0
 * Minimum Java Version is now 8
 
 ### 1.23 (Nov 23, 2020)
